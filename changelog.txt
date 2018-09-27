@@ -1,0 +1,16 @@
+FIFA 19 - Career mode Cheat Table
+
+Changelog:
+
+	v1.0.0:
+		- Scripts in this version: https://trello.com/b/olhWeL54/v100
+		- Changes since FIFA 18 - Career mode Cheat Table:
+			- I've added dropdown selection options for values inside database tables.
+			- 3 new fields in Players Table -> 'faceposerpreset', 'skillmoveslikelihood', 'headassetid'
+			- 1 new field in Manager Table -> 'faceposerpreset'
+			- Fixed popup when you release a player for free. It should display 0€ now.
+			- "Unlock edit player" should work in player career mode now
+			- Scouts Management -> refactored (https://i.imgur.com/AORZsOZ.png). Added detailed info about each scout available for hire.
+			- Teamkits Table - 4 new fields -> 'chestbadge', 'captainarmband', 'jerseyleftsleevebadge', 'jerseyrightsleevebadge'
+			- Added some sections to teamkits table.
+			
