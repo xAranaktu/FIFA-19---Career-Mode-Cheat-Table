@@ -14,3 +14,8 @@ Changelog:
 			- Teamkits Table - 4 new fields -> 'chestbadge', 'captainarmband', 'jerseyleftsleevebadge', 'jerseyrightsleevebadge'
 			- Added some sections to teamkits table.
 			
+	v1.0.1:
+		- Added filter for manager table (It should be possible to edit managerhead via game news panel)
+		- Added Youth Academy (There is still problem with '100% chance for 5* skill moves' will be fixed later...)
+		- Added Unlimited Training Sessions
+		- Added Training Everyday
