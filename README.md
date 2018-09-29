@@ -17,19 +17,8 @@ https://trello.com/b/oFNRNWWY/fifa-19-ct-update-progress
 List created by @maic#0386
 ```
 1. EA
-2. EA
-3. EA
-4. EA
-5. EA
-6. EA
-7. EA
-8. EA
-9. EA
-10. EA
-11. EA
-12. EA
-13. EA
-14. EA
+.
+.
 15. EA
 16. Pirma Supreme Mamba Green/Red
 17. Pirma Gladiator Silver/Red
@@ -159,26 +148,8 @@ List created by @maic#0386
 141. Adidas Nemeziz 18+ White
 142. Adidas Copa 18.1 FG CLEAR MINT / CLEAR MINT / GOLD MET
 143. EA
-144. EA
-145. EA
-146. EA
-147. EA
-148. EA
-149. EA
-150. EA
-151. EA
-152. EA
-153. EA
-154. EA
-155. EA
-156. EA
-157. EA
-158. EA
-159. EA
-160. EA
-161. EA
-162. EA
-163. EA
+.
+.
 164. EA
 165. ??
 166. Adidas Copa 18.1 Shadow Mode
@@ -203,12 +174,8 @@ List created by @maic#0386
 185. Nike Mercurial Vapor Pure Platinum
 186. Nike Phantom VSN EA Sports
 187. EA
-188. EA
-189. EA
-190. EA
-191. EA
-192. EA
-193. EA
+.
+.
 194. EA
 195. Umbro Medusae Black/Blue
 196. EA
@@ -218,10 +185,10 @@ List created by @maic#0386
 200. Umbro UX-Accuro 2 Grenadine/Black
 201. Umbro UX-Accuro 2 White/Grenadine
 202. EA
-203. EA
-204. Under Armour Magnetico Gold
-205. Under Armour Magnetico Red
-206. Under Armour Magnetico Grey
+203. Under Armour Magnetico Pro
+204. Under Armour Magnetico Pro Gold
+205. Under Armour Magnetico Pro Red
+206. Under Armour Spotlight Pro Grey
 207. EA
 208. EA
 209. Mizuno Morelia Neo II Gold
@@ -252,23 +219,8 @@ List created by @maic#0386
 234. Joma Propulsion 4
 235. Joma Black
 236. EA
-237. EA
-238. EA
-239. EA
-240. EA
-241. EA
-242. EA
-243. EA
-244. EA
-245. EA
-246. EA
-247. EA
-248. EA
-249. EA
-250. EA
-251. EA
-252. EA
-253. EA
+.
+.
 254. EA
 255. Adidas X18+ Energy Mode
 256. Adidas Predator 18+ Energy Mode
@@ -284,7 +236,19 @@ List created by @maic#0386
 266. Nike Mercurial Superfly Elite White
 267. Nike Mercurial Vapor Elite
 .
+271. Puma One 18.1 IL
+272. Puma Future 2.1 NETFIT
 .
+275. Mizuno Rebula 2 V1 Japan
+276. Mizuno Morelia Neo II Japan Gold
+277. Umbro Velocita 3 Black
+278. Umbro UX Accuro II Black
+279. Umbro Medusae II
+280. New Balance Furon 4
+282. Joma Propulsion Lite Blue/Lime
+283. Lotto Maestro 200
+284. Pirma Imperio Magno
+285. Under Armour Magnetico Pro
 .
 338. Old Hunter Shoe 1
 339. Old Hunter Shoe 2
