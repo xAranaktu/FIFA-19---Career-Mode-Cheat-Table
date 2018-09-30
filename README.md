@@ -12,6 +12,7 @@ https://trello.com/b/oFNRNWWY/fifa-19-ct-update-progress
 
 # Table of Contents
    * [Boots + ID](#boots)
+   * [Managers](#managers)
 
 ## Boots
 List created by @maic#0386
@@ -268,3 +269,6 @@ List created by @maic#0386
 353. Adidas Sneaker
 354. Adidas Sneaker
 ```
+
+## Managers
+[List created by @maic#0386](https://docs.google.com/spreadsheets/d/1-Oo7rkeEVC4cnMxfWTP4anuPuKzxo6dTBlC7XWR41Pg/edit#gid=0)
