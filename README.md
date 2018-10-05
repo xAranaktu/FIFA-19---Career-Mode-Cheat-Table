@@ -1,18 +1,29 @@
-# FIFA 19 - Career-Mode-Cheat-Table
- FIFA 19 - Career Mode Cheat Table
+# FIFA 19 - CM Cheat Table
 
-# Update Progress
-https://trello.com/b/oFNRNWWY/fifa-19-ct-update-progress
+This is a brief walk-through tutorial that illustrates how to use mine Cheat Table for FIFA 19. Before you start using it, I'd recommend you to make a __backup of your current career mode save__ and regular backups of your further progress. Trust me, you don't want to start a new career after 5 seasons because something will screw up. You need to know that this cheat table is designed for __manager career mode__. Scripts may or may not work in player career mode, especially if you are using player created by your own. I don't care about the journey mode, sorry. Also - as last year - cracked version is not supported and no, it doesn't mean that cheat table is not working with cracked version. Just if something is not working then it's because you are using cracked version. I hope it's clear now.
 
-# Release Schedule
-https://docs.google.com/spreadsheets/d/1EsYf4I4oDD6kw5jTGTFsv7rR1qL-Oausd1ZRbbSWm84/edit?usp=sharing
-
-# Become a Patron and get FIFA 19 CM Cheat Table earlier
-[![Become a Patron](https://c5.patreon.com/external/logo/become_a_patron_button@2x.png)](https://www.patreon.com/xAranaktu) 
+# Become a Patron
+[Become a Patron](https://www.patreon.com/xAranaktu)
 
 # Table of Contents
+   * [Update Progress](#update-progress)
+   * [Release Schedule](#release-schedule)
+   * [Video Tutorials](#video-tutorials)
    * [Boots + ID](#boots)
    * [Managers](#managers)
+
+
+## Update Progress
+[Track update process on Trello](https://trello.com/b/oFNRNWWY/fifa-19-ct-update-progress)
+
+
+## Release Schedule
+When new version will be released? Answer is here: [Release Schedule](https://docs.google.com/spreadsheets/d/1EsYf4I4oDD6kw5jTGTFsv7rR1qL-Oausd1ZRbbSWm84/edit?usp=sharing)
+
+## Video Tutorials
+
+Video Tutorials UC Nerd -> [Watch on YouTube](http://bit.ly/CM-Cheat-Table-19)
+
 
 ## Boots
 List created by @maic#0386
