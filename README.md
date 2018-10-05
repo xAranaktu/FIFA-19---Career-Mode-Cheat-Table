@@ -26,7 +26,7 @@ Video Tutorials UC Nerd -> [Watch on YouTube](http://bit.ly/CM-Cheat-Table-19)
 
 
 ## Boots
-List created by @maic#0386
+List created by ![discord brand](https://i.imgur.com/IlwgSdP.png)maic#0386
 ```
 1. EA
 .
@@ -282,4 +282,4 @@ List created by @maic#0386
 ```
 
 ## Managers
-[List created by @maic#0386](https://docs.google.com/spreadsheets/d/1-Oo7rkeEVC4cnMxfWTP4anuPuKzxo6dTBlC7XWR41Pg/edit#gid=0)
+[List created by](https://docs.google.com/spreadsheets/d/1-Oo7rkeEVC4cnMxfWTP4anuPuKzxo6dTBlC7XWR41Pg/edit#gid=0)![discord brand](https://i.imgur.com/IlwgSdP.png)maic#0386
