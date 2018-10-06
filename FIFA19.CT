@@ -82,6 +82,7 @@
                 <CheatEntry>
                   <ID>2058</ID>
                   <Description>"Database Tables"</Description>
+                  <Options moHideChildren="1"/>
                   <LastState/>
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>{
@@ -6702,66 +6703,146 @@ dealloc(ptrTeamplayerlinks)
                       <GroupHeader>1</GroupHeader>
                       <CheatEntries>
                         <CheatEntry>
-                          <ID>2035</ID>
-                          <Description>"Base Address - Manager table"</Description>
-                          <ShowAsHex>1</ShowAsHex>
-                          <VariableType>8 Bytes</VariableType>
-                          <Address>ptrManager</Address>
-                        </CheatEntry>
-                        <CheatEntry>
-                          <ID>2081</ID>
-                          <Description>"managerid"</Description>
-                          <VariableType>Binary</VariableType>
-                          <BitStart>0</BitStart>
-                          <BitLength>14</BitLength>
-                          <ShowAsBinary>0</ShowAsBinary>
-                          <Address>ptrManager</Address>
-                          <Offsets>
-                            <Offset>26</Offset>
-                          </Offsets>
-                        </CheatEntry>
-                        <CheatEntry>
-                          <ID>2082</ID>
-                          <Description>"headid"</Description>
-                          <VariableType>Binary</VariableType>
-                          <BitStart>6</BitStart>
-                          <BitLength>19</BitLength>
-                          <ShowAsBinary>0</ShowAsBinary>
-                          <Address>ptrManager</Address>
-                          <Offsets>
-                            <Offset>27</Offset>
-                          </Offsets>
-                        </CheatEntry>
-                        <CheatEntry>
-                          <ID>2083</ID>
-                          <Description>"firstname"</Description>
-                          <VariableType>String</VariableType>
-                          <Length>19</Length>
-                          <Unicode>0</Unicode>
-                          <CodePage>0</CodePage>
-                          <ZeroTerminate>1</ZeroTerminate>
-                          <Address>ptrManager</Address>
-                          <Offsets>
-                            <Offset>0</Offset>
-                          </Offsets>
-                        </CheatEntry>
-                        <CheatEntry>
-                          <ID>2088</ID>
-                          <Description>"surname"</Description>
-                          <VariableType>String</VariableType>
-                          <Length>19</Length>
-                          <Unicode>0</Unicode>
-                          <CodePage>0</CodePage>
-                          <ZeroTerminate>1</ZeroTerminate>
-                          <Address>ptrManager</Address>
-                          <Offsets>
-                            <Offset>13</Offset>
-                          </Offsets>
-                        </CheatEntry>
-                        <CheatEntry>
-                          <ID>2084</ID>
-                          <Description>"height"</Description>
-                          <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: '130 cm'
+                          <ID>2654</ID>
+                          <Description>"Filter"</Description>
+                          <Options moHideChildren="1"/>
+                          <LastState/>
+                          <VariableType>Auto Assembler Script</VariableType>
+                          <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_managerhead,FIFA19.exe,40 48 8B 03 44 8B C6 48) // should be unique
+alloc(newmem,$1000,"FIFA19.exe"+317CD13)
+
+
+label(code)
+label(return)
+
+alloc(managertable_teamid, 4)
+registersymbol(managertable_teamid)
+managertable_teamid:
+dd (int)11
+
+newmem:
+  mov esi, [managertable_teamid]
+code:
+  mov rax,[rbx]
+  mov r8d,esi
+  jmp return
+
+INJECT_managerhead+01:
+  jmp newmem
+  nop
+return:
+registersymbol(INJECT_managerhead)
+
+[DISABLE]
+//code from here till the end of the code will be used to disable the cheat
+INJECT_managerhead+01:
+  db 48 8B 03 44 8B C6
+
+unregistersymbol(INJECT_managerhead)
+unregistersymbol(managertable_teamid)
+dealloc(newmem)
+dealloc(managertable_teamid)
+
+
+{
+// ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+317CD13
+
+"FIFA19.exe"+317CCEF: 48 8B CF                    -  mov rcx,rdi
+"FIFA19.exe"+317CCF2: FF 50 30                    -  call qword ptr [rax+30]
+"FIFA19.exe"+317CCF5: 48 83 F8 01                 -  cmp rax,01
+"FIFA19.exe"+317CCF9: 77 4D                       -  ja FIFA19.exe+317CD48
+"FIFA19.exe"+317CCFB: 48 8B 07                    -  mov rax,[rdi]
+"FIFA19.exe"+317CCFE: 4D 8D 4D 18                 -  lea r9,[r13+18]
+"FIFA19.exe"+317CD02: 4D 8D 45 16                 -  lea r8,[r13+16]
+"FIFA19.exe"+317CD06: 48 8D 15 CB 37 11 02        -  lea rdx,[FIFA19.exe+52904D8]
+"FIFA19.exe"+317CD0D: 48 8B CF                    -  mov rcx,rdi
+"FIFA19.exe"+317CD10: FF 50 40                    -  call qword ptr [rax+40]
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+317CD13: 48 8B 03                    -  mov rax,[rbx]
+"FIFA19.exe"+317CD16: 44 8B C6                    -  mov r8d,esi
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+317CD19: 48 8D 15 E8 38 11 02        -  lea rdx,[FIFA19.exe+5290608]
+"FIFA19.exe"+317CD20: 48 8B CB                    -  mov rcx,rbx
+"FIFA19.exe"+317CD23: FF 50 10                    -  call qword ptr [rax+10]
+"FIFA19.exe"+317CD26: 4C 8B E0                    -  mov r12,rax
+"FIFA19.exe"+317CD29: 48 85 C0                    -  test rax,rax
+"FIFA19.exe"+317CD2C: 75 0B                       -  jne FIFA19.exe+317CD39
+"FIFA19.exe"+317CD2E: 41 BF 01 00 00 00           -  mov r15d,00000001
+"FIFA19.exe"+317CD34: E9 C6 00 00 00              -  jmp FIFA19.exe+317CDFF
+"FIFA19.exe"+317CD39: 48 8B 00                    -  mov rax,[rax]
+"FIFA19.exe"+317CD3C: 49 8B CC                    -  mov rcx,r12
+}
+</AssemblerScript>
+                          <CheatEntries>
+                            <CheatEntry>
+                              <ID>2655</ID>
+                              <Description>"Team ID Filter"</Description>
+                              <Options moHideChildren="1"/>
+                              <VariableType>4 Bytes</VariableType>
+                              <Address>managertable_teamid</Address>
+                              <CheatEntries>
+                                <CheatEntry>
+                                  <ID>2035</ID>
+                                  <Description>"Base Address - Manager table"</Description>
+                                  <ShowAsHex>1</ShowAsHex>
+                                  <VariableType>8 Bytes</VariableType>
+                                  <Address>ptrManager</Address>
+                                </CheatEntry>
+                                <CheatEntry>
+                                  <ID>2081</ID>
+                                  <Description>"managerid"</Description>
+                                  <VariableType>Binary</VariableType>
+                                  <BitStart>0</BitStart>
+                                  <BitLength>14</BitLength>
+                                  <ShowAsBinary>0</ShowAsBinary>
+                                  <Address>ptrManager</Address>
+                                  <Offsets>
+                                    <Offset>26</Offset>
+                                  </Offsets>
+                                </CheatEntry>
+                                <CheatEntry>
+                                  <ID>2082</ID>
+                                  <Description>"headid"</Description>
+                                  <VariableType>Binary</VariableType>
+                                  <BitStart>6</BitStart>
+                                  <BitLength>19</BitLength>
+                                  <ShowAsBinary>0</ShowAsBinary>
+                                  <Address>ptrManager</Address>
+                                  <Offsets>
+                                    <Offset>27</Offset>
+                                  </Offsets>
+                                </CheatEntry>
+                                <CheatEntry>
+                                  <ID>2083</ID>
+                                  <Description>"firstname"</Description>
+                                  <VariableType>String</VariableType>
+                                  <Length>19</Length>
+                                  <Unicode>0</Unicode>
+                                  <CodePage>0</CodePage>
+                                  <ZeroTerminate>1</ZeroTerminate>
+                                  <Address>ptrManager</Address>
+                                  <Offsets>
+                                    <Offset>0</Offset>
+                                  </Offsets>
+                                </CheatEntry>
+                                <CheatEntry>
+                                  <ID>2088</ID>
+                                  <Description>"surname"</Description>
+                                  <VariableType>String</VariableType>
+                                  <Length>19</Length>
+                                  <Unicode>0</Unicode>
+                                  <CodePage>0</CodePage>
+                                  <ZeroTerminate>1</ZeroTerminate>
+                                  <Address>ptrManager</Address>
+                                  <Offsets>
+                                    <Offset>13</Offset>
+                                  </Offsets>
+                                </CheatEntry>
+                                <CheatEntry>
+                                  <ID>2084</ID>
+                                  <Description>"height"</Description>
+                                  <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: '130 cm'
 1: '131 cm'
 2: '132 cm'
 3: '133 cm'
@@ -6848,140 +6929,144 @@ dealloc(ptrTeamplayerlinks)
 84: '214 cm'
 85: '215 cm'
 </DropDownList>
-                          <VariableType>Binary</VariableType>
-                          <BitStart>1</BitStart>
-                          <BitLength>7</BitLength>
-                          <ShowAsBinary>0</ShowAsBinary>
-                          <Address>ptrManager</Address>
-                          <Offsets>
-                            <Offset>2A</Offset>
-                          </Offsets>
-                        </CheatEntry>
-                        <CheatEntry>
-                          <ID>2085</ID>
-                          <Description>"hashighqualityhead"</Description>
-                          <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
+                                  <VariableType>Binary</VariableType>
+                                  <BitStart>1</BitStart>
+                                  <BitLength>7</BitLength>
+                                  <ShowAsBinary>0</ShowAsBinary>
+                                  <Address>ptrManager</Address>
+                                  <Offsets>
+                                    <Offset>2A</Offset>
+                                  </Offsets>
+                                </CheatEntry>
+                                <CheatEntry>
+                                  <ID>2085</ID>
+                                  <Description>"hashighqualityhead"</Description>
+                                  <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
-                          <VariableType>Binary</VariableType>
-                          <BitStart>0</BitStart>
-                          <BitLength>1</BitLength>
-                          <ShowAsBinary>0</ShowAsBinary>
-                          <Address>ptrManager</Address>
-                          <Offsets>
-                            <Offset>2B</Offset>
-                          </Offsets>
-                        </CheatEntry>
-                        <CheatEntry>
-                          <ID>2086</ID>
-                          <Description>"Gender"</Description>
-                          <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'Male'
+                                  <VariableType>Binary</VariableType>
+                                  <BitStart>0</BitStart>
+                                  <BitLength>1</BitLength>
+                                  <ShowAsBinary>0</ShowAsBinary>
+                                  <Address>ptrManager</Address>
+                                  <Offsets>
+                                    <Offset>2B</Offset>
+                                  </Offsets>
+                                </CheatEntry>
+                                <CheatEntry>
+                                  <ID>2086</ID>
+                                  <Description>"Gender"</Description>
+                                  <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'Male'
 1: 'Female'
 </DropDownList>
-                          <VariableType>Binary</VariableType>
-                          <BitStart>1</BitStart>
-                          <BitLength>1</BitLength>
-                          <ShowAsBinary>0</ShowAsBinary>
-                          <Address>ptrManager</Address>
-                          <Offsets>
-                            <Offset>2B</Offset>
-                          </Offsets>
-                        </CheatEntry>
-                        <CheatEntry>
-                          <ID>2087</ID>
-                          <Description>"suitvariationid"</Description>
-                          <VariableType>Binary</VariableType>
-                          <BitStart>2</BitStart>
-                          <BitLength>2</BitLength>
-                          <ShowAsBinary>0</ShowAsBinary>
-                          <Address>ptrManager</Address>
-                          <Offsets>
-                            <Offset>2B</Offset>
-                          </Offsets>
-                        </CheatEntry>
-                        <CheatEntry>
-                          <ID>2089</ID>
-                          <Description>"faceposerpreset"</Description>
-                          <VariableType>Binary</VariableType>
-                          <BitStart>4</BitStart>
-                          <BitLength>4</BitLength>
-                          <ShowAsBinary>0</ShowAsBinary>
-                          <Address>ptrManager</Address>
-                          <Offsets>
-                            <Offset>2B</Offset>
-                          </Offsets>
-                        </CheatEntry>
-                        <CheatEntry>
-                          <ID>2090</ID>
-                          <Description>"teamid"</Description>
-                          <VariableType>Binary</VariableType>
-                          <BitStart>0</BitStart>
-                          <BitLength>18</BitLength>
-                          <ShowAsBinary>0</ShowAsBinary>
-                          <Address>ptrManager</Address>
-                          <Offsets>
-                            <Offset>2C</Offset>
-                          </Offsets>
-                        </CheatEntry>
-                        <CheatEntry>
-                          <ID>2091</ID>
-                          <Description>"suittypeid"</Description>
-                          <VariableType>Binary</VariableType>
-                          <BitStart>2</BitStart>
-                          <BitLength>2</BitLength>
-                          <ShowAsBinary>0</ShowAsBinary>
-                          <Address>ptrManager</Address>
-                          <Offsets>
-                            <Offset>2E</Offset>
-                          </Offsets>
-                        </CheatEntry>
-                        <CheatEntry>
-                          <ID>2092</ID>
-                          <Description>"eyecolorcode"</Description>
-                          <VariableType>Binary</VariableType>
-                          <BitStart>4</BitStart>
-                          <BitLength>4</BitLength>
-                          <ShowAsBinary>0</ShowAsBinary>
-                          <Address>ptrManager</Address>
-                          <Offsets>
-                            <Offset>2E</Offset>
-                          </Offsets>
-                        </CheatEntry>
-                        <CheatEntry>
-                          <ID>2093</ID>
-                          <Description>"headclasscode"</Description>
-                          <VariableType>Binary</VariableType>
-                          <BitStart>0</BitStart>
-                          <BitLength>2</BitLength>
-                          <ShowAsBinary>0</ShowAsBinary>
-                          <Address>ptrManager</Address>
-                          <Offsets>
-                            <Offset>2F</Offset>
-                          </Offsets>
-                        </CheatEntry>
-                        <CheatEntry>
-                          <ID>2094</ID>
-                          <Description>"skintonecode"</Description>
-                          <VariableType>Binary</VariableType>
-                          <BitStart>2</BitStart>
-                          <BitLength>4</BitLength>
-                          <ShowAsBinary>0</ShowAsBinary>
-                          <Address>ptrManager</Address>
-                          <Offsets>
-                            <Offset>2F</Offset>
-                          </Offsets>
-                        </CheatEntry>
-                        <CheatEntry>
-                          <ID>2095</ID>
-                          <Description>"bodytypecode"</Description>
-                          <VariableType>Binary</VariableType>
-                          <BitStart>6</BitStart>
-                          <BitLength>7</BitLength>
-                          <ShowAsBinary>0</ShowAsBinary>
-                          <Address>ptrManager</Address>
-                          <Offsets>
-                            <Offset>2F</Offset>
-                          </Offsets>
+                                  <VariableType>Binary</VariableType>
+                                  <BitStart>1</BitStart>
+                                  <BitLength>1</BitLength>
+                                  <ShowAsBinary>0</ShowAsBinary>
+                                  <Address>ptrManager</Address>
+                                  <Offsets>
+                                    <Offset>2B</Offset>
+                                  </Offsets>
+                                </CheatEntry>
+                                <CheatEntry>
+                                  <ID>2087</ID>
+                                  <Description>"suitvariationid"</Description>
+                                  <VariableType>Binary</VariableType>
+                                  <BitStart>2</BitStart>
+                                  <BitLength>2</BitLength>
+                                  <ShowAsBinary>0</ShowAsBinary>
+                                  <Address>ptrManager</Address>
+                                  <Offsets>
+                                    <Offset>2B</Offset>
+                                  </Offsets>
+                                </CheatEntry>
+                                <CheatEntry>
+                                  <ID>2089</ID>
+                                  <Description>"faceposerpreset"</Description>
+                                  <VariableType>Binary</VariableType>
+                                  <BitStart>4</BitStart>
+                                  <BitLength>4</BitLength>
+                                  <ShowAsBinary>0</ShowAsBinary>
+                                  <Address>ptrManager</Address>
+                                  <Offsets>
+                                    <Offset>2B</Offset>
+                                  </Offsets>
+                                </CheatEntry>
+                                <CheatEntry>
+                                  <ID>2090</ID>
+                                  <Description>"teamid"</Description>
+                                  <VariableType>Binary</VariableType>
+                                  <BitStart>0</BitStart>
+                                  <BitLength>18</BitLength>
+                                  <ShowAsBinary>0</ShowAsBinary>
+                                  <Address>ptrManager</Address>
+                                  <Offsets>
+                                    <Offset>2C</Offset>
+                                  </Offsets>
+                                </CheatEntry>
+                                <CheatEntry>
+                                  <ID>2091</ID>
+                                  <Description>"suittypeid"</Description>
+                                  <VariableType>Binary</VariableType>
+                                  <BitStart>2</BitStart>
+                                  <BitLength>2</BitLength>
+                                  <ShowAsBinary>0</ShowAsBinary>
+                                  <Address>ptrManager</Address>
+                                  <Offsets>
+                                    <Offset>2E</Offset>
+                                  </Offsets>
+                                </CheatEntry>
+                                <CheatEntry>
+                                  <ID>2092</ID>
+                                  <Description>"eyecolorcode"</Description>
+                                  <VariableType>Binary</VariableType>
+                                  <BitStart>4</BitStart>
+                                  <BitLength>4</BitLength>
+                                  <ShowAsBinary>0</ShowAsBinary>
+                                  <Address>ptrManager</Address>
+                                  <Offsets>
+                                    <Offset>2E</Offset>
+                                  </Offsets>
+                                </CheatEntry>
+                                <CheatEntry>
+                                  <ID>2093</ID>
+                                  <Description>"headclasscode"</Description>
+                                  <VariableType>Binary</VariableType>
+                                  <BitStart>0</BitStart>
+                                  <BitLength>2</BitLength>
+                                  <ShowAsBinary>0</ShowAsBinary>
+                                  <Address>ptrManager</Address>
+                                  <Offsets>
+                                    <Offset>2F</Offset>
+                                  </Offsets>
+                                </CheatEntry>
+                                <CheatEntry>
+                                  <ID>2094</ID>
+                                  <Description>"skintonecode"</Description>
+                                  <VariableType>Binary</VariableType>
+                                  <BitStart>2</BitStart>
+                                  <BitLength>4</BitLength>
+                                  <ShowAsBinary>0</ShowAsBinary>
+                                  <Address>ptrManager</Address>
+                                  <Offsets>
+                                    <Offset>2F</Offset>
+                                  </Offsets>
+                                </CheatEntry>
+                                <CheatEntry>
+                                  <ID>2095</ID>
+                                  <Description>"bodytypecode"</Description>
+                                  <VariableType>Binary</VariableType>
+                                  <BitStart>6</BitStart>
+                                  <BitLength>7</BitLength>
+                                  <ShowAsBinary>0</ShowAsBinary>
+                                  <Address>ptrManager</Address>
+                                  <Offsets>
+                                    <Offset>2F</Offset>
+                                  </Offsets>
+                                </CheatEntry>
+                              </CheatEntries>
+                            </CheatEntry>
+                          </CheatEntries>
                         </CheatEntry>
                       </CheatEntries>
                     </CheatEntry>
@@ -8626,6 +8711,172 @@ dealloc(playerInjuryPtr)
           <GroupHeader>1</GroupHeader>
           <CheatEntries>
             <CheatEntry>
+              <ID>1662</ID>
+              <Description>"Unlimited Training Sessions"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_UnlimitedTraining,FIFA19.exe,45 8B 76 44 49 8B 45 08) // should be unique
+alloc(newmem_UnlimitedTraining,$1000,"FIFA19.exe"+3FA2A3C)
+
+label(code_UnlimitedTraining)
+label(ret_UnlimitedTraining)
+label(exit_UnlimitedTraining)
+label(clear_sessions_UnlimitedTraining)
+
+newmem_UnlimitedTraining:
+  mov [r14+40],00000005
+  mov [r14+44],00000007
+
+code_UnlimitedTraining:
+  mov rax,[r14+00000090]
+  cmp rax,[r14+00000098]
+  je exit_UnlimitedTraining
+
+clear_sessions_UnlimitedTraining:
+  mov byte ptr [rax+14],01
+  mov qword ptr [rax+0C],FFFFFFFF
+  mov [rax+18],FFFFFFFF
+  mov rcx,[rax+20]
+  mov [rax+28],rcx
+  add rax,40
+  cmp rax,[r14+00000098]
+  jne clear_sessions_UnlimitedTraining
+  jmp exit_UnlimitedTraining
+exit_UnlimitedTraining:
+  mov r14d,[r14+44]		// org
+  mov rax,[r13+08] 		// org
+  jmp ret_UnlimitedTraining
+
+INJECT_UnlimitedTraining:
+  jmp newmem_UnlimitedTraining
+  nop
+  nop
+  nop
+ret_UnlimitedTraining:
+registersymbol(INJECT_UnlimitedTraining)
+
+[DISABLE]
+//code_UnlimitedTraining from here till the end of the code_UnlimitedTraining will be used to disable the cheat
+INJECT_UnlimitedTraining:
+  db 45 8B 76 44 49 8B 45 08
+
+unregistersymbol(INJECT_UnlimitedTraining)
+dealloc(newmem_UnlimitedTraining)
+
+{
+// ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+3FA2A3C
+
+"FIFA19.exe"+3FA2A20: 84 C0                 -  test al,al
+"FIFA19.exe"+3FA2A22: 74 11                 -  je FIFA19.exe+3FA2A35
+"FIFA19.exe"+3FA2A24: 48 8B CF              -  mov rcx,rdi
+"FIFA19.exe"+3FA2A27: E8 64 FF F7 FF        -  call FIFA19.exe+3F22990
+"FIFA19.exe"+3FA2A2C: 84 C0                 -  test al,al
+"FIFA19.exe"+3FA2A2E: 74 05                 -  je FIFA19.exe+3FA2A35
+"FIFA19.exe"+3FA2A30: 41 B7 01              -  mov r15l,01
+"FIFA19.exe"+3FA2A33: EB 03                 -  jmp FIFA19.exe+3FA2A38
+"FIFA19.exe"+3FA2A35: 45 32 FF              -  xor r15l,r15l
+"FIFA19.exe"+3FA2A38: 41 8B 7E 40           -  mov edi,[r14+40]
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+3FA2A3C: 45 8B 76 44           -  mov r14d,[r14+44]
+"FIFA19.exe"+3FA2A40: 49 8B 45 08           -  mov rax,[r13+08]
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+3FA2A44: 48 8B 80 58 0F 00 00  -  mov rax,[rax+00000F58]
+"FIFA19.exe"+3FA2A4B: 48 8B 08              -  mov rcx,[rax]
+"FIFA19.exe"+3FA2A4E: 48 63 41 14           -  movsxd  rax,dword ptr [rcx+14]
+"FIFA19.exe"+3FA2A52: 83 F8 FF              -  cmp eax,-01
+"FIFA19.exe"+3FA2A55: 75 06                 -  jne FIFA19.exe+3FA2A5D
+"FIFA19.exe"+3FA2A57: 4C 89 65 E8           -  mov [rbp-18],r12
+"FIFA19.exe"+3FA2A5B: EB 12                 -  jmp FIFA19.exe+3FA2A6F
+"FIFA19.exe"+3FA2A5D: 4C 69 E0 18 03 00 00  -  imul r12,rax,00000318
+"FIFA19.exe"+3FA2A64: 4C 03 61 18           -  add r12,[rcx+18]
+"FIFA19.exe"+3FA2A68: 4C 89 65 E8           -  mov [rbp-18],r12
+}
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>2664</ID>
+              <Description>"Training Everyday"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_TrainingEveryDay,FIFA19.exe,83 6F 44 01 0F 89 ?? ?? ?? ?? B9 07 00 00 00) // should be unique
+alloc(newmem_TrainingEveryDay,$1000,"FIFA19.exe"+42B909A)
+
+label(code_TrainingEveryDay)
+label(ret_TrainingEveryDay)
+label(clear_sessions_TrainingEveryDay)
+registersymbol(INJECT_TrainingEveryDay)
+
+newmem_TrainingEveryDay:
+
+code_TrainingEveryDay:
+  mov [rdi+40],00000005
+  mov [rdi+44],00000007
+
+  mov rbx,[rdi+00000090]
+  cmp rbx,[rdi+00000098]
+  je INJECT_TrainingEveryDay+38F
+
+clear_sessions_TrainingEveryDay:
+  mov byte ptr [rbx+14],01
+  mov qword ptr [rbx+0C],FFFFFFFF
+  mov [rbx+18],FFFFFFFF
+  mov rsi,[rbx+20]
+  mov [rbx+28],rsi
+  add rbx,40
+  cmp rbx,[rdi+00000098]
+  jne clear_sessions_TrainingEveryDay
+  jmp INJECT_TrainingEveryDay+38F
+
+INJECT_TrainingEveryDay:
+  jmp newmem_TrainingEveryDay
+  nop
+  nop
+  nop
+  nop
+  nop
+ret_TrainingEveryDay:
+
+[DISABLE]
+//code from here till the end of the code will be used to disable the cheat
+INJECT_TrainingEveryDay:
+  sub dword ptr [rdi+44],01
+  jns INJECT_TrainingEveryDay+38F
+
+unregistersymbol(INJECT_TrainingEveryDay)
+dealloc(newmem_TrainingEveryDay)
+
+{
+// ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+42B909E
+
+"FIFA19.exe"+42B9073: 48 8D 4B 38                    -  lea rcx,[rbx+38]
+"FIFA19.exe"+42B9077: FF 15 AB 26 98 01              -  call qword ptr [FIFA19.exe+5C3B728]
+"FIFA19.exe"+42B907D: 90                             -  nop
+"FIFA19.exe"+42B907E: 48 83 C3 40                    -  add rbx,40
+"FIFA19.exe"+42B9082: 48 3B DE                       -  cmp rbx,rsi
+"FIFA19.exe"+42B9085: 75 BE                          -  jne FIFA19.exe+42B9045
+"FIFA19.exe"+42B9087: 48 8B 87 90 00 00 00           -  mov rax,[rdi+00000090]
+"FIFA19.exe"+42B908E: 48 89 87 98 00 00 00           -  mov [rdi+00000098],rax
+"FIFA19.exe"+42B9095: E9 8F 03 00 00                 -  jmp FIFA19.exe+42B9429
+"FIFA19.exe"+42B909A: 83 6F 44 01                    -  sub dword ptr [rdi+44],01
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+42B909E: 0F 89 85 03 00 00              -  jns FIFA19.exe+42B9429
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+42B90A4: B9 07 00 00 00                 -  mov ecx,00000007
+"FIFA19.exe"+42B90A9: 89 4F 44                       -  mov [rdi+44],ecx
+"FIFA19.exe"+42B90AC: E9 78 03 00 00                 -  jmp FIFA19.exe+42B9429
+"FIFA19.exe"+42B90B1: 8B 47 14                       -  mov eax,[rdi+14]
+"FIFA19.exe"+42B90B4: 89 47 40                       -  mov [rdi+40],eax
+"FIFA19.exe"+42B90B7: B9 07 00 00 00                 -  mov ecx,00000007
+"FIFA19.exe"+42B90BC: 89 4F 44                       -  mov [rdi+44],ecx
+"FIFA19.exe"+42B90BF: 48 8B 8F 90 00 00 00           -  mov rcx,[rdi+00000090]
+"FIFA19.exe"+42B90C6: 48 3B 8F 98 00 00 00           -  cmp rcx,[rdi+00000098]
+"FIFA19.exe"+42B90CD: 0F 84 56 03 00 00              -  je FIFA19.exe+42B9429
+}
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
               <ID>2501</ID>
               <Description>"Training sim - A"</Description>
               <LastState/>
@@ -9907,6 +10158,906 @@ dealloc(newmem_FatigueBase)
           </CheatEntries>
         </CheatEntry>
         <CheatEntry>
+          <ID>2657</ID>
+          <Description>"Youth Academy"</Description>
+          <Options moHideChildren="1"/>
+          <LastState Value="" RealAddress="00000000"/>
+          <GroupHeader>1</GroupHeader>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>2658</ID>
+              <Description>"Activate scripts BEFORE you load your career mode save."</Description>
+              <Options moHideChildren="1"/>
+              <LastState Value="" RealAddress="00000000"/>
+              <GroupHeader>1</GroupHeader>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>1264</ID>
+                  <Description>"SCOUT_REPORT_PLAYERS = 15"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_moreyouthplayers,FIFA19.exe,89 06 FF C7 48 83 C6 04 83 FF 02) // should be unique
+alloc(newmem_moreyoungplayers,$1000,"FIFA19.exe"+40F3D8A)
+
+label(code)
+label(return)
+
+newmem_moreyoungplayers:
+  mov eax, F
+code:
+  mov [rsi],eax
+  inc edi
+  add rsi,04
+  jmp return
+
+INJECT_moreyouthplayers:
+  jmp newmem_moreyoungplayers
+  nop
+  nop
+  nop
+return:
+registersymbol(INJECT_moreyouthplayers)
+
+[DISABLE]
+
+INJECT_moreyouthplayers:
+  db 89 06 FF C7 48 83 C6 04
+
+unregistersymbol(INJECT_moreyouthplayers)
+dealloc(newmem_moreyoungplayers)
+
+
+{
+// EXPERIENCE_%d_PERC_FIND_PLAYERS_RANGE
+// ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+40F3D8A
+
+"FIFA19.exe"+40F3D60: 4D 85 C0                    -  test r8,r8
+"FIFA19.exe"+40F3D63: 74 12                       -  je FIFA19.exe+40F3D77
+"FIFA19.exe"+40F3D65: 41 3B 10                    -  cmp edx,[r8]
+"FIFA19.exe"+40F3D68: 0F 84 CE 04 00 00           -  je FIFA19.exe+40F423C
+"FIFA19.exe"+40F3D6E: 4D 8B 40 10                 -  mov r8,[r8+10]
+"FIFA19.exe"+40F3D72: 4D 85 C0                    -  test r8,r8
+"FIFA19.exe"+40F3D75: 75 EE                       -  jne FIFA19.exe+40F3D65
+"FIFA19.exe"+40F3D77: B8 FF FF FF FF              -  mov eax,FFFFFFFF
+"FIFA19.exe"+40F3D7C: F0 FF 05 61 B7 26 02        - lock  inc [FIFA19.exe+635F4E4]
+"FIFA19.exe"+40F3D83: F0 FF 05 5A B7 26 02        - lock  inc [FIFA19.exe+635F4E4]
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+40F3D8A: 89 06                       -  mov [rsi],eax
+"FIFA19.exe"+40F3D8C: FF C7                       -  inc edi
+"FIFA19.exe"+40F3D8E: 48 83 C6 04                 -  add rsi,04
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+40F3D92: 83 FF 02                    -  cmp edi,02
+"FIFA19.exe"+40F3D95: 0F 8C B5 FE FF FF           -  jl FIFA19.exe+40F3C50
+"FIFA19.exe"+40F3D9B: 49 FF C7                    -  inc r15
+"FIFA19.exe"+40F3D9E: 49 83 FF 05                 -  cmp r15,05
+"FIFA19.exe"+40F3DA2: 0F 8C B8 FA FF FF           -  jl FIFA19.exe+40F3860
+"FIFA19.exe"+40F3DA8: 45 8B FD                    -  mov r15d,r13d
+"FIFA19.exe"+40F3DAB: 4D 8B E5                    -  mov r12,r13
+"FIFA19.exe"+40F3DAE: 66 90                       -  nop
+"FIFA19.exe"+40F3DB0: 41 FF C7                    -  inc r15d
+"FIFA19.exe"+40F3DB3: 4C 8D 05 E6 7C 28 01        -  lea r8,[FIFA19.exe+537BAA0]
+}
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>1266</ID>
+                  <Description>"Reveal ovr and pot"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_YA_REVEAL_POT_AND_OVR,FIFA19.exe, 89 07 FF C3 48 83 C7 04 83 FB 06) // should be unique
+alloc(newmem_YA_REVEAL_POT_AND_OVR,$1000,"FIFA19.exe"+40F581D)
+
+label(code_YA_REVEAL_POT_AND_OVR)
+label(ret_YA_REVEAL_POT_AND_OVR)
+
+newmem_YA_REVEAL_POT_AND_OVR:
+  xor eax, eax
+
+code_YA_REVEAL_POT_AND_OVR:
+  mov [rdi-18], eax
+  mov [rdi],eax
+  inc ebx
+  add rdi,04
+  jmp ret_YA_REVEAL_POT_AND_OVR
+
+INJECT_YA_REVEAL_POT_AND_OVR:
+  jmp newmem_YA_REVEAL_POT_AND_OVR
+  nop
+  nop
+  nop
+ret_YA_REVEAL_POT_AND_OVR:
+registersymbol(INJECT_YA_REVEAL_POT_AND_OVR)
+
+[DISABLE]
+//code_YA_REVEAL_POT_AND_OVR from here till the end of the code_YA_REVEAL_POT_AND_OVR will be used to disable the cheat
+INJECT_YA_REVEAL_POT_AND_OVR:
+  db 89 07 FF C3 48 83 C7 04
+
+unregistersymbol(INJECT_YA_REVEAL_POT_AND_OVR)
+dealloc(newmem_YA_REVEAL_POT_AND_OVR)
+
+{
+// POTENTIAL_SWING_VARIANCE
+// POTENTIAL_VARIANCE_PERC
+// ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+40F581D
+
+"FIFA19.exe"+40F57F7: 49 8B CD                    -  mov rcx,r13
+"FIFA19.exe"+40F57FA: E8 A1 6E 22 FE              -  call FIFA19.exe+231C6A0
+"FIFA19.exe"+40F57FF: 84 C0                       -  test al,al
+"FIFA19.exe"+40F5801: 74 0E                       -  je FIFA19.exe+40F5811
+"FIFA19.exe"+40F5803: 48 8D 55 80                 -  lea rdx,[rbp-80]
+"FIFA19.exe"+40F5807: 49 8B CD                    -  mov rcx,r13
+"FIFA19.exe"+40F580A: E8 F1 71 22 FE              -  call FIFA19.exe+231CA00
+"FIFA19.exe"+40F580F: EB 05                       -  jmp FIFA19.exe+40F5816
+"FIFA19.exe"+40F5811: B8 FF FF FF FF              -  mov eax,FFFFFFFF
+"FIFA19.exe"+40F5816: F0 FF 05 C7 9C 26 02        - lock  inc [FIFA19.exe+635F4E4]
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+40F581D: 89 07                       -  mov [rdi],eax
+"FIFA19.exe"+40F581F: FF C3                       -  inc ebx
+"FIFA19.exe"+40F5821: 48 83 C7 04                 -  add rdi,04
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+40F5825: 83 FB 06                    -  cmp ebx,06
+"FIFA19.exe"+40F5828: 0F 8C D2 FE FF FF           -  jl FIFA19.exe+40F5700
+"FIFA19.exe"+40F582E: B8 FF FF FF FF              -  mov eax,FFFFFFFF
+"FIFA19.exe"+40F5833: F0 0F C1 05 A9 9C 26 02     - lock  xadd [FIFA19.exe+635F4E4],eax
+"FIFA19.exe"+40F583B: FF C8                       -  dec eax
+"FIFA19.exe"+40F583D: 3D 00 00 00 01              -  cmp eax,01000000
+"FIFA19.exe"+40F5842: 72 3F                       -  jb FIFA19.exe+40F5883
+"FIFA19.exe"+40F5844: 0F 1F 40 00                 -  nop [rax+00]
+"FIFA19.exe"+40F5848: 0F 1F 84 00 00 00 00 00     -  nop [rax+rax+00000000]
+"FIFA19.exe"+40F5850: F0 FF 05 8D 9C 26 02        - lock  inc [FIFA19.exe+635F4E4]
+}
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>2656</ID>
+                  <Description>"PRIMARY_ATTRIBUTES_RANGE = [10, 20]"</Description>
+                  <Options moHideChildren="1"/>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_PrimAttr,FIFA19.exe,43 89 44 F7 30) // should be unique
+alloc(newmem_PrimAttr,$1000,"FIFA19.exe"+40F6593)
+
+label(code_PrimAttr)
+label(ret_PrimAttr)
+
+alloc(primattr_rangelow, 4)
+registersymbol(primattr_rangelow)
+primattr_rangelow:
+dd (int)10
+
+alloc(primattr_rangehigh, 4)
+registersymbol(primattr_rangehigh)
+primattr_rangehigh:
+dd (int)20
+
+newmem_PrimAttr:
+
+code_PrimAttr:
+  mov eax, [primattr_rangelow]
+  mov [r15+r14*8+2C],eax  // PRIMARY_ATTRIBUTES_RANGE_LOW_TYPE_%d = 0xA (int(10))
+  mov eax, [primattr_rangehigh]
+  mov [r15+r14*8+30],eax  // PRIMARY_ATTRIBUTES_RANGE_HIGH_TYPE_%d = 0x14 (int(20))
+
+  jmp ret_PrimAttr
+
+INJECT_PrimAttr:
+  jmp newmem_PrimAttr
+ret_PrimAttr:
+registersymbol(INJECT_PrimAttr)
+
+
+[DISABLE]
+//code_PrimAttr from here till the end of the code_PrimAttr will be used to disable the cheat
+INJECT_PrimAttr:
+  db 43 89 44 F7 30
+
+unregistersymbol(INJECT_PrimAttr)
+unregistersymbol(primattr_rangelow)
+unregistersymbol(primattr_rangehigh)
+dealloc(newmem_PrimAttr)
+dealloc(primattr_rangelow)
+dealloc(primattr_rangehigh)
+
+{
+// ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+40F6593
+
+"FIFA19.exe"+40F6564: 43 89 44 F7 2C           -  mov [r15+r14*8+2C],eax
+"FIFA19.exe"+40F6569: 4C 8D 05 E0 71 28 01     -  lea r8,[FIFA19.exe+537D750]
+"FIFA19.exe"+40F6570: BA 64 00 00 00           -  mov edx,00000064
+"FIFA19.exe"+40F6575: 48 8D 4D 80              -  lea rcx,[rbp-80]
+"FIFA19.exe"+40F6579: E8 A2 41 23 FC           -  call FIFA19.exe+32A720
+"FIFA19.exe"+40F657E: 41 B8 FF FF FF FF        -  mov r8d,FFFFFFFF
+"FIFA19.exe"+40F6584: 48 8D 55 80              -  lea rdx,[rbp-80]
+"FIFA19.exe"+40F6588: 49 8B CD                 -  mov rcx,r13
+"FIFA19.exe"+40F658B: E8 B0 62 22 FE           -  call FIFA19.exe+231C840
+"FIFA19.exe"+40F6590: 44 8B CE                 -  mov r9d,esi
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+40F6593: 43 89 44 F7 30           -  mov [r15+r14*8+30],eax
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+40F6598: 4C 8D 05 E9 71 28 01     -  lea r8,[FIFA19.exe+537D788]
+"FIFA19.exe"+40F659F: BA 64 00 00 00           -  mov edx,00000064
+"FIFA19.exe"+40F65A4: 48 8D 4D 80              -  lea rcx,[rbp-80]
+"FIFA19.exe"+40F65A8: E8 73 41 23 FC           -  call FIFA19.exe+32A720
+"FIFA19.exe"+40F65AD: 41 B8 FF FF FF FF        -  mov r8d,FFFFFFFF
+"FIFA19.exe"+40F65B3: 48 8D 55 80              -  lea rdx,[rbp-80]
+"FIFA19.exe"+40F65B7: 49 8B CD                 -  mov rcx,r13
+"FIFA19.exe"+40F65BA: E8 81 62 22 FE           -  call FIFA19.exe+231C840
+"FIFA19.exe"+40F65BF: 44 8B CE                 -  mov r9d,esi
+"FIFA19.exe"+40F65C2: 43 89 44 F7 64           -  mov [r15+r14*8+64],eax
+}
+</AssemblerScript>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>2661</ID>
+                      <Description>"Range Low"</Description>
+                      <VariableType>4 Bytes</VariableType>
+                      <Address>primattr_rangelow</Address>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2660</ID>
+                      <Description>"Range High"</Description>
+                      <VariableType>4 Bytes</VariableType>
+                      <Address>primattr_rangehigh</Address>
+                    </CheatEntry>
+                  </CheatEntries>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>1268</ID>
+                  <Description>"SECONDARY_ATTRIBUTES_RANGE = [10, 20]"</Description>
+                  <Options moHideChildren="1"/>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_SecAttr,FIFA19.exe,43 89 44 F7 68) // should be unique
+alloc(newmem_SecAttr,$1000,"FIFA19.exe"+40F65EE)
+
+label(code_SecAttr)
+label(ret_SecAttr)
+
+alloc(secmattr_rangelow, 4)
+registersymbol(secmattr_rangelow)
+secmattr_rangelow:
+dd (int)10
+
+alloc(secmattr_rangehigh, 4)
+registersymbol(secmattr_rangehigh)
+secmattr_rangehigh:
+dd (int)20
+
+newmem_SecAttr:
+code_SecAttr:
+  mov eax, [secmattr_rangelow]
+  mov [r15+r14*8+64],eax // SECONDAY_ATTRIBUTES_RANGE_LOW_TYPE_%d = 10
+  mov eax, [secmattr_rangehigh]
+  mov [r15+r14*8+68],eax // SECONDAY_ATTRIBUTES_RANGE_HIGH_TYPE_%d = 20
+  jmp ret_SecAttr
+
+INJECT_SecAttr:
+  jmp newmem_SecAttr
+ret_SecAttr:
+registersymbol(INJECT_SecAttr)
+
+
+[DISABLE]
+//code_SecAttr from here till the end of the code_SecAttr will be used to disable the cheat
+INJECT_SecAttr:
+  db 43 89 44 F7 68
+
+unregistersymbol(INJECT_SecAttr)
+unregistersymbol(secmattr_rangelow)
+unregistersymbol(secmattr_rangehigh)
+dealloc(newmem_SecAttr)
+dealloc(secmattr_rangelow)
+dealloc(secmattr_rangehigh)
+
+
+{
+// ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+40F65EE
+
+"FIFA19.exe"+40F65BF: 44 8B CE                 -  mov r9d,esi
+"FIFA19.exe"+40F65C2: 43 89 44 F7 64           -  mov [r15+r14*8+64],eax
+"FIFA19.exe"+40F65C7: 4C 8D 05 FA 71 28 01     -  lea r8,[FIFA19.exe+537D7C8]
+"FIFA19.exe"+40F65CE: BA 64 00 00 00           -  mov edx,00000064
+"FIFA19.exe"+40F65D3: 48 8D 4D 80              -  lea rcx,[rbp-80]
+"FIFA19.exe"+40F65D7: E8 44 41 23 FC           -  call FIFA19.exe+32A720
+"FIFA19.exe"+40F65DC: 41 B8 FF FF FF FF        -  mov r8d,FFFFFFFF
+"FIFA19.exe"+40F65E2: 48 8D 55 80              -  lea rdx,[rbp-80]
+"FIFA19.exe"+40F65E6: 49 8B CD                 -  mov rcx,r13
+"FIFA19.exe"+40F65E9: E8 52 62 22 FE           -  call FIFA19.exe+231C840
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+40F65EE: 43 89 44 F7 68           -  mov [r15+r14*8+68],eax
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+40F65F3: 83 FE FF                 -  cmp esi,-01
+"FIFA19.exe"+40F65F6: 74 11                    -  je FIFA19.exe+40F6609
+"FIFA19.exe"+40F65F8: 41 B8 02 00 00 00        -  mov r8d,00000002
+"FIFA19.exe"+40F65FE: 48 8D 55 F0              -  lea rdx,[rbp-10]
+"FIFA19.exe"+40F6602: 8B CE                    -  mov ecx,esi
+"FIFA19.exe"+40F6604: E8 17 0F E6 FF           -  call FIFA19.exe+3F57520
+"FIFA19.exe"+40F6609: 4C 8D 4D F0              -  lea r9,[rbp-10]
+"FIFA19.exe"+40F660D: BA 64 00 00 00           -  mov edx,00000064
+"FIFA19.exe"+40F6612: 4C 8D 05 EF 71 28 01     -  lea r8,[FIFA19.exe+537D808]
+"FIFA19.exe"+40F6619: 48 8D 4D 80              -  lea rcx,[rbp-80]
+}
+</AssemblerScript>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>2663</ID>
+                      <Description>"Range Low"</Description>
+                      <VariableType>4 Bytes</VariableType>
+                      <Address>secmattr_rangelow</Address>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2662</ID>
+                      <Description>"Range High"</Description>
+                      <VariableType>4 Bytes</VariableType>
+                      <Address>secmattr_rangehigh</Address>
+                    </CheatEntry>
+                  </CheatEntries>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>1273</ID>
+                  <Description>"MIN_PLAYER_AGE_FOR_PROMOTION = 12"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_MinAgeForPromotion,FIFA19.exe,41 B8 03 00 00 00 89 85 F4) // should be unique
+alloc(newmem_MinAgeForPromotion,$1000,"FIFA19.exe"+40F3243)
+
+label(code_MinAgeForPromotion)
+label(ret_MinAgeForPromotion)
+
+newmem_MinAgeForPromotion:
+  mov eax, #12
+code_MinAgeForPromotion:
+  mov r8d,00000003
+  jmp ret_MinAgeForPromotion
+
+INJECT_MinAgeForPromotion:
+  jmp newmem_MinAgeForPromotion
+  nop
+ret_MinAgeForPromotion:
+registersymbol(INJECT_MinAgeForPromotion)
+
+[DISABLE]
+//code_MinAgeForPromotion from here till the end of the code_MinAgeForPromotion will be used to disable the cheat
+INJECT_MinAgeForPromotion:
+  db 41 B8 03 00 00 00
+
+unregistersymbol(INJECT_MinAgeForPromotion)
+dealloc(newmem_MinAgeForPromotion)
+
+{
+// ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+40F3243
+
+"FIFA19.exe"+40F320D: 41 B8 10 00 00 00     -  mov r8d,00000010
+"FIFA19.exe"+40F3213: 89 85 0C 01 00 00     -  mov [rbp+0000010C],eax
+"FIFA19.exe"+40F3219: 48 8D 15 68 8C 28 01  -  lea rdx,[FIFA19.exe+537BE88]
+"FIFA19.exe"+40F3220: 48 8B CB              -  mov rcx,rbx
+"FIFA19.exe"+40F3223: E8 18 96 22 FE        -  call FIFA19.exe+231C840
+"FIFA19.exe"+40F3228: 41 B8 10 00 00 00     -  mov r8d,00000010
+"FIFA19.exe"+40F322E: 89 85 18 01 00 00     -  mov [rbp+00000118],eax
+"FIFA19.exe"+40F3234: 48 8D 15 75 8C 28 01  -  lea rdx,[FIFA19.exe+537BEB0]
+"FIFA19.exe"+40F323B: 48 8B CB              -  mov rcx,rbx
+"FIFA19.exe"+40F323E: E8 FD 95 22 FE        -  call FIFA19.exe+231C840
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+40F3243: 41 B8 03 00 00 00     -  mov r8d,00000003
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+40F3249: 89 85 F4 00 00 00     -  mov [rbp+000000F4],eax
+"FIFA19.exe"+40F324F: 48 8D 15 8A 8C 28 01  -  lea rdx,[FIFA19.exe+537BEE0]
+"FIFA19.exe"+40F3256: 48 8B CB              -  mov rcx,rbx
+"FIFA19.exe"+40F3259: E8 E2 95 22 FE        -  call FIFA19.exe+231C840
+"FIFA19.exe"+40F325E: 41 B8 03 00 00 00     -  mov r8d,00000003
+"FIFA19.exe"+40F3264: 89 85 04 01 00 00     -  mov [rbp+00000104],eax
+"FIFA19.exe"+40F326A: 48 8D 15 97 8C 28 01  -  lea rdx,[FIFA19.exe+537BF08]
+"FIFA19.exe"+40F3271: 48 8B CB              -  mov rcx,rbx
+"FIFA19.exe"+40F3274: E8 C7 95 22 FE        -  call FIFA19.exe+231C840
+"FIFA19.exe"+40F3279: 41 B8 06 00 00 00     -  mov r8d,00000006
+}
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>1275</ID>
+                  <Description>"YOUTH_PLAYER_AGE_RANGE = [12, 16]"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_PlayerAgeRange,FIFA19.exe,41 B8 04 00 00 00 41 89 07) // should be unique
+alloc(newmem_PlayerAgeRange,$1000,"FIFA19.exe"+40F569C)
+
+label(code_PlayerAgeRange)
+label(ret_PlayerAgeRange)
+
+newmem_PlayerAgeRange:
+  mov eax, #12 // YOUTH_PLAYER_AGE_RANGE_LOW = 12
+  mov [r15+04],eax
+  mov eax, #16 // YOUTH_PLAYER_AGE_RANGE_HIGH = 16
+  mov [r15+08],eax
+
+code_PlayerAgeRange:
+  mov r8d,00000004
+  jmp ret_PlayerAgeRange
+
+INJECT_PlayerAgeRange:
+  jmp newmem_PlayerAgeRange
+  nop
+ret_PlayerAgeRange:
+registersymbol(INJECT_PlayerAgeRange)
+
+[DISABLE]
+//code_PlayerAgeRange from here till the end of the code_PlayerAgeRange will be used to disable the cheat
+INJECT_PlayerAgeRange:
+  db 41 B8 04 00 00 00
+
+unregistersymbol(INJECT_PlayerAgeRange)
+dealloc(newmem_PlayerAgeRange)
+
+{
+// ORIGINAL code_PlayerAgeRange - INJECTION POINT: "FIFA19.exe"+3922410
+
+"FIFA19.exe"+39223E3: 41 B8 0E 00 00 00        -  mov r8d,0000000E
+"FIFA19.exe"+39223E9: 48 8B CF                 -  mov rcx,rdi
+"FIFA19.exe"+39223EC: E8 DF CE 1F FE           -  call FIFA19.exe+1B1F2D0
+"FIFA19.exe"+39223F1: 41 B1 01                 -  mov r9l,01
+"FIFA19.exe"+39223F4: 41 89 47 04              -  mov [r15+04],eax
+"FIFA19.exe"+39223F8: 41 B8 10 00 00 00        -  mov r8d,00000010
+"FIFA19.exe"+39223FE: 48 8D 15 13 FC 05 01     -  lea rdx,[FIFA19.exe+4982018]
+"FIFA19.exe"+3922405: 48 8B CF                 -  mov rcx,rdi
+"FIFA19.exe"+3922408: E8 C3 CE 1F FE           -  call FIFA19.exe+1B1F2D0
+"FIFA19.exe"+392240D: 41 B1 01                 -  mov r9l,01
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+3922410: 41 89 47 08              -  mov [r15+08],eax
+"FIFA19.exe"+3922414: 41 B8 62 00 00 00        -  mov r8d,00000062
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+392241A: 48 8D 15 77 07 06 01     -  lea rdx,[FIFA19.exe+4982B98]
+"FIFA19.exe"+3922421: 48 8B CF                 -  mov rcx,rdi
+"FIFA19.exe"+3922424: E8 A7 CE 1F FE           -  call FIFA19.exe+1B1F2D0
+"FIFA19.exe"+3922429: 41 B1 01                 -  mov r9l,01
+"FIFA19.exe"+392242C: 41 89 87 BC 06 00 00     -  mov [r15+000006BC],eax
+"FIFA19.exe"+3922433: 41 B8 10 00 00 00        -  mov r8d,00000010
+"FIFA19.exe"+3922439: 48 8D 15 38 F9 05 01     -  lea rdx,[FIFA19.exe+4981D78]
+"FIFA19.exe"+3922440: 48 8B CF                 -  mov rcx,rdi
+"FIFA19.exe"+3922443: E8 88 CE 1F FE           -  call FIFA19.exe+1B1F2D0
+"FIFA19.exe"+3922448: 41 B1 01                 -  mov r9l,01
+}
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>1276</ID>
+                  <Description>"95 Potential"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_YA_PlayerPotential,FIFA19.exe,89 06 48 8D 76 04 83 FF 02 ?? ?? 4C 8B 7C 24 48) // should be unique
+alloc(newmem_YA_PlayerPotential,$1000,"FIFA19.exe"+40F6AF0)
+
+label(code_YA_PlayerPotential)
+label(ret_YA_PlayerPotential)
+
+newmem_YA_PlayerPotential:
+  mov eax, #95 //TIER_%d_POTENTIAL_RANGE_%d = 95
+code_YA_PlayerPotential:
+  mov [rsi],eax
+  lea rsi,[rsi+04]
+  jmp ret_YA_PlayerPotential
+
+INJECT_YA_PlayerPotential:
+  jmp newmem_YA_PlayerPotential
+  nop
+ret_YA_PlayerPotential:
+registersymbol(INJECT_YA_PlayerPotential)
+
+[DISABLE]
+//code_YA_PlayerPotential from here till the end of the code_YA_PlayerPotential will be used to disable the cheat
+INJECT_YA_PlayerPotential:
+  db 89 06 48 8D 76 04
+
+unregistersymbol(INJECT_YA_PlayerPotential)
+dealloc(newmem_YA_PlayerPotential)
+
+{
+// ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+40F6AF0
+
+"FIFA19.exe"+40F6AC3: 89 7C 24 20              -  mov [rsp+20],edi
+"FIFA19.exe"+40F6AC7: 4C 8D 05 BA 6F 28 01     -  lea r8,[FIFA19.exe+537DA88]
+"FIFA19.exe"+40F6ACE: BA 64 00 00 00           -  mov edx,00000064
+"FIFA19.exe"+40F6AD3: 48 8D 4D 80              -  lea rcx,[rbp-80]
+"FIFA19.exe"+40F6AD7: E8 44 3C 23 FC           -  call FIFA19.exe+32A720
+"FIFA19.exe"+40F6ADC: 41 B8 FF FF FF FF        -  mov r8d,FFFFFFFF
+"FIFA19.exe"+40F6AE2: 48 8D 55 80              -  lea rdx,[rbp-80]
+"FIFA19.exe"+40F6AE6: 49 8B CD                 -  mov rcx,r13
+"FIFA19.exe"+40F6AE9: E8 52 5D 22 FE           -  call FIFA19.exe+231C840
+"FIFA19.exe"+40F6AEE: FF C7                    -  inc edi
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+40F6AF0: 89 06                    -  mov [rsi],eax
+"FIFA19.exe"+40F6AF2: 48 8D 76 04              -  lea rsi,[rsi+04]
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+40F6AF6: 83 FF 02                 -  cmp edi,02
+"FIFA19.exe"+40F6AF9: 7C C5                    -  jl FIFA19.exe+40F6AC0
+"FIFA19.exe"+40F6AFB: 4C 8B 7C 24 48           -  mov r15,[rsp+48]
+"FIFA19.exe"+40F6B00: 41 8B FC                 -  mov edi,r12d
+"FIFA19.exe"+40F6B03: 4C 8D 25 1E E7 25 01     -  lea r12,[FIFA19.exe+5355228]
+"FIFA19.exe"+40F6B0A: 66 0F 1F 44 00 00        -  nop [rax+rax+00]
+"FIFA19.exe"+40F6B10: 48 83 FB FF              -  cmp rbx,-01
+"FIFA19.exe"+40F6B14: 74 55                    -  je FIFA19.exe+40F6B6B
+"FIFA19.exe"+40F6B16: 48 83 FB 04              -  cmp rbx,04
+"FIFA19.exe"+40F6B1A: 7D 4F                    -  jnl FIFA19.exe+40F6B6B
+}
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>1269</ID>
+                  <Description>"100% chance for 5* weak foot"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_WeakFootChance,FIFA19.exe,FF C3 89 07 48 8D 7F 04 83 FB 06) // should be unique
+alloc(newmem_WeakFootChance,$1000,"FIFA19.exe"+40F695A)
+
+label(code_WeakFootChance)
+label(ret_WeakFootChance)
+label(foot_fivestar)
+label(foot_zero)
+
+newmem_WeakFootChance:
+
+code_WeakFootChance:
+  inc ebx
+  cmp ebx, 06
+  je foot_fivestar
+  jmp foot_zero
+  jmp ret_WeakFootChance
+
+foot_zero:
+  mov eax, 0
+  mov [rdi],eax
+  lea rdi,[rdi+04]
+  jmp ret_WeakFootChance
+
+foot_fivestar:
+  mov eax, 64
+  mov [rdi],eax
+  lea rdi,[rdi+04]
+  jmp ret_WeakFootChance
+
+INJECT_WeakFootChance:
+  jmp newmem_WeakFootChance
+  nop
+  nop
+  nop
+ret_WeakFootChance:
+registersymbol(INJECT_WeakFootChance)
+
+[DISABLE]
+//code_WeakFootChance from here till the end of the code_WeakFootChance will be used to disable the cheat
+INJECT_WeakFootChance:
+  db FF C3 89 07 48 8D 7F 04
+
+unregistersymbol(INJECT_WeakFootChance)
+dealloc(newmem_WeakFootChance)
+
+{
+// WEAKFOOT_ABILITY_LEVEL_%d_CHANCE
+// ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+40F695A
+
+"FIFA19.exe"+40F6925: 66 66 66 0F 1F 84 00 00 00 00 00  -  nop [rax+rax+00000000]
+"FIFA19.exe"+40F6930: 44 8B CB                          -  mov r9d,ebx
+"FIFA19.exe"+40F6933: 4C 8D 05 46 70 28 01              -  lea r8,[FIFA19.exe+537D980]
+"FIFA19.exe"+40F693A: BA 64 00 00 00                    -  mov edx,00000064
+"FIFA19.exe"+40F693F: 48 8D 4D 80                       -  lea rcx,[rbp-80]
+"FIFA19.exe"+40F6943: E8 D8 3D 23 FC                    -  call FIFA19.exe+32A720
+"FIFA19.exe"+40F6948: 41 B8 FF FF FF FF                 -  mov r8d,FFFFFFFF
+"FIFA19.exe"+40F694E: 48 8D 55 80                       -  lea rdx,[rbp-80]
+"FIFA19.exe"+40F6952: 49 8B CD                          -  mov rcx,r13
+"FIFA19.exe"+40F6955: E8 E6 5E 22 FE                    -  call FIFA19.exe+231C840
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+40F695A: FF C3                             -  inc ebx
+"FIFA19.exe"+40F695C: 89 07                             -  mov [rdi],eax
+"FIFA19.exe"+40F695E: 48 8D 7F 04                       -  lea rdi,[rdi+04]
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+40F6962: 83 FB 06                          -  cmp ebx,06
+"FIFA19.exe"+40F6965: 7C C9                             -  jl FIFA19.exe+40F6930
+"FIFA19.exe"+40F6967: 41 8B DC                          -  mov ebx,r12d
+"FIFA19.exe"+40F696A: 49 8D BF 58 07 00 00              -  lea rdi,[r15+00000758]
+"FIFA19.exe"+40F6971: 44 8B CB                          -  mov r9d,ebx
+"FIFA19.exe"+40F6974: 4C 8D 05 3D 70 28 01              -  lea r8,[FIFA19.exe+537D9B8]
+"FIFA19.exe"+40F697B: BA 64 00 00 00                    -  mov edx,00000064
+"FIFA19.exe"+40F6980: 48 8D 4D 80                       -  lea rcx,[rbp-80]
+"FIFA19.exe"+40F6984: E8 97 3D 23 FC                    -  call FIFA19.exe+32A720
+"FIFA19.exe"+40F6989: 41 B8 FF FF FF FF                 -  mov r8d,FFFFFFFF
+}
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>1790</ID>
+                  <Description>"Send scout to any country"</Description>
+                  <Options moHideChildren="1"/>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_allCountriesAvailable,FIFA19.exe,89 4C 24 30 B9 04 00 00 00) // should be unique
+alloc(newmem_allCountriesAvailable,$1000,"FIFA19.exe"+3FD152F)
+
+label(code_allCountriesAvailable)
+label(ret_allCountriesAvailable)
+alloc(ptr_YA_NatID, 4)
+registersymbol(ptr_YA_NatID)
+ptr_YA_NatID:
+dd (int)37
+
+newmem_allCountriesAvailable:
+  mov ecx, [ptr_YA_NatID]
+
+code_allCountriesAvailable:
+  mov [rsp+30],ecx
+  mov ecx,00000004
+  jmp ret_allCountriesAvailable
+
+INJECT_allCountriesAvailable:
+  jmp newmem_allCountriesAvailable
+  nop
+  nop
+  nop
+  nop
+ret_allCountriesAvailable:
+registersymbol(INJECT_allCountriesAvailable)
+
+[DISABLE]
+//code_allCountriesAvailable from here till the end of the code_allCountriesAvailable will be used to disable the cheat
+INJECT_allCountriesAvailable:
+  db 89 4C 24 30 B9 04 00 00 00
+
+unregistersymbol(INJECT_allCountriesAvailable)
+dealloc(newmem_allCountriesAvailable)
+unregistersymbol(ptr_YA_NatID)
+dealloc(ptr_YA_NatID)
+
+{
+// ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+3FD152F
+
+"FIFA19.exe"+3FD1502: 48 8D 54 24 40           -  lea rdx,[rsp+40]
+"FIFA19.exe"+3FD1507: 45 33 C0                 -  xor r8d,r8d
+"FIFA19.exe"+3FD150A: 48 8D 4C 24 44           -  lea rcx,[rsp+44]
+"FIFA19.exe"+3FD150F: E8 0C 5A F8 FF           -  call FIFA19.exe+3F56F20
+"FIFA19.exe"+3FD1514: 48 8D 15 6D F8 EE 00     -  lea rdx,[FIFA19.exe+4EC0D88]
+"FIFA19.exe"+3FD151B: 48 8D 04 76              -  lea rax,[rsi+rsi*2]
+"FIFA19.exe"+3FD151F: 48 8B 04 C2              -  mov rax,[rdx+rax*8]
+"FIFA19.exe"+3FD1523: 49 8D 57 10              -  lea rdx,[r15+10]
+"FIFA19.exe"+3FD1527: 42 8B 0C 98              -  mov ecx,[rax+r11*4]
+"FIFA19.exe"+3FD152B: 48 8D 45 E0              -  lea rax,[rbp-20]
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+3FD152F: 89 4C 24 30              -  mov [rsp+30],ecx
+"FIFA19.exe"+3FD1533: B9 04 00 00 00           -  mov ecx,00000004
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+3FD1538: 0F 1F 84 00 00 00 00 00  -  nop [rax+rax+00000000]
+"FIFA19.exe"+3FD1540: 48 8D 80 80 00 00 00     -  lea rax,[rax+00000080]
+"FIFA19.exe"+3FD1547: 0F 10 02                 -  movups xmm0,[rdx]
+"FIFA19.exe"+3FD154A: 0F 10 4A 10              -  movups xmm1,[rdx+10]
+"FIFA19.exe"+3FD154E: 48 8D 92 80 00 00 00     -  lea rdx,[rdx+00000080]
+"FIFA19.exe"+3FD1555: 0F 11 40 80              -  movups [rax-80],xmm0
+"FIFA19.exe"+3FD1559: 0F 10 42 A0              -  movups xmm0,[rdx-60]
+"FIFA19.exe"+3FD155D: 0F 11 48 90              -  movups [rax-70],xmm1
+"FIFA19.exe"+3FD1561: 0F 10 4A B0              -  movups xmm1,[rdx-50]
+"FIFA19.exe"+3FD1565: 0F 11 40 A0              -  movups [rax-60],xmm0
+}
+</AssemblerScript>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>1791</ID>
+                      <Description>"Nationality ID"</Description>
+                      <VariableType>4 Bytes</VariableType>
+                      <Address>ptr_YA_NatID</Address>
+                    </CheatEntry>
+                  </CheatEntries>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>1270</ID>
+                  <Description>"100% chance for 5* skill moves (need fix)"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>// TODO FIX THIS SHIT
+
+[ENABLE]
+aobscanmodule(INJECT_smchance2,FIFA19.exe,89 07 48 8D 7F 04 83 FB 0A) // should be unique
+alloc(newmem_smchance2,$1000,"FIFA19.exe"+40F699D)
+
+label(code_smchance2)
+label(return_smchance2)
+
+newmem_smchance2:
+
+code_smchance2:
+  mov [rdi],eax
+  lea rdi,[rdi+04]
+  jmp return_smchance2
+
+INJECT_smchance2:
+  jmp newmem_smchance2
+  nop
+return_smchance2:
+registersymbol(INJECT_smchance2)
+
+aobscanmodule(INJECT_SkillMoveChance,FIFA19.exe,89 03 FF C7 48 83 C3 04 49 2B) // should be unique
+alloc(newmem_SkillMoveChance,$1000,"FIFA19.exe"+40F69FE)
+
+label(code_SkillMoveChance)
+label(ret_SkillMoveChance)
+label(five_star)
+label(zero)
+
+newmem_SkillMoveChance:
+
+code_SkillMoveChance:
+  inc edi
+  cmp edi, 06
+  je five_star
+  jmp zero
+
+ zero:
+  mov eax, 1 // Chance for skill level below 5* = 0%
+  mov [rbx],eax
+  add rbx,04
+  jmp ret_SkillMoveChance
+
+five_star:
+  mov eax, #97 // Chance for skill level 5* = 100%
+  mov [rbx],eax
+  add rbx,04
+  jmp ret_SkillMoveChance
+
+INJECT_SkillMoveChance:
+  jmp newmem_SkillMoveChance
+  nop
+  nop
+  nop
+ret_SkillMoveChance:
+registersymbol(INJECT_SkillMoveChance)
+
+[DISABLE]
+//code_SkillMoveChance from here till the end of the code_SkillMoveChance will be used to disable the cheat
+INJECT_SkillMoveChance:
+  db 89 03 FF C7 48 83 C3 04
+
+unregistersymbol(INJECT_SkillMoveChance)
+dealloc(newmem_SkillMoveChance)
+
+INJECT_smchance2:
+  db 89 07 48 8D 7F 04
+
+unregistersymbol(INJECT_smchance2)
+dealloc(newmem_smchance2)
+
+
+{
+// ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+40F69FE
+
+"FIFA19.exe"+40F69D0: 45 8B CE                          -  mov r9d,r14d
+"FIFA19.exe"+40F69D3: 89 7C 24 20                       -  mov [rsp+20],edi
+"FIFA19.exe"+40F69D7: 4C 8D 05 12 70 28 01              -  lea r8,[FIFA19.exe+537D9F0]
+"FIFA19.exe"+40F69DE: BA 64 00 00 00                    -  mov edx,00000064
+"FIFA19.exe"+40F69E3: 48 8D 4D 80                       -  lea rcx,[rbp-80]
+"FIFA19.exe"+40F69E7: E8 34 3D 23 FC                    -  call FIFA19.exe+32A720
+"FIFA19.exe"+40F69EC: 41 B8 FF FF FF FF                 -  mov r8d,FFFFFFFF
+"FIFA19.exe"+40F69F2: 48 8D 55 80                       -  lea rdx,[rbp-80]
+"FIFA19.exe"+40F69F6: 49 8B CD                          -  mov rcx,r13
+"FIFA19.exe"+40F69F9: E8 42 5E 22 FE                    -  call FIFA19.exe+231C840
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+40F69FE: 89 03                             -  mov [rbx],eax
+"FIFA19.exe"+40F6A00: FF C7                             -  inc edi
+"FIFA19.exe"+40F6A02: 48 83 C3 04                       -  add rbx,04
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+40F6A06: 49 2B F4                          -  sub rsi,r12
+"FIFA19.exe"+40F6A09: 75 C5                             -  jne FIFA19.exe+40F69D0
+"FIFA19.exe"+40F6A0B: 41 FF C6                          -  inc r14d
+"FIFA19.exe"+40F6A0E: 4D 2B FC                          -  sub r15,r12
+"FIFA19.exe"+40F6A11: 75 AD                             -  jne FIFA19.exe+40F69C0
+"FIFA19.exe"+40F6A13: 48 8B 74 24 38                    -  mov rsi,[rsp+38]
+"FIFA19.exe"+40F6A18: 45 33 E4                          -  xor r12d,r12d
+"FIFA19.exe"+40F6A1B: 41 8B DC                          -  mov ebx,r12d
+"FIFA19.exe"+40F6A1E: 48 8D BE 48 08 00 00              -  lea rdi,[rsi+00000848]
+"FIFA19.exe"+40F6A25: 66 66 66 0F 1F 84 00 00 00 00 00  -  nop [rax+rax+00000000]
+}
+
+{
+// ORIGINAL CODE - INJECT_smchance2ION POINT: "FIFA19.exe"+40F699D
+
+"FIFA19.exe"+40F6971: 44 8B CB                          -  mov r9d,ebx
+"FIFA19.exe"+40F6974: 4C 8D 05 3D 70 28 01              -  lea r8,[FIFA19.exe+537D9B8]
+"FIFA19.exe"+40F697B: BA 64 00 00 00                    -  mov edx,00000064
+"FIFA19.exe"+40F6980: 48 8D 4D 80                       -  lea rcx,[rbp-80]
+"FIFA19.exe"+40F6984: E8 97 3D 23 FC                    -  call FIFA19.exe+32A720
+"FIFA19.exe"+40F6989: 41 B8 FF FF FF FF                 -  mov r8d,FFFFFFFF
+"FIFA19.exe"+40F698F: 48 8D 55 80                       -  lea rdx,[rbp-80]
+"FIFA19.exe"+40F6993: 49 8B CD                          -  mov rcx,r13
+"FIFA19.exe"+40F6996: E8 A5 5E 22 FE                    -  call FIFA19.exe+231C840
+"FIFA19.exe"+40F699B: FF C3                             -  inc ebx
+// ---------- INJECT_smchance2ING HERE ----------
+"FIFA19.exe"+40F699D: 89 07                             -  mov [rdi],eax
+"FIFA19.exe"+40F699F: 48 8D 7F 04                       -  lea rdi,[rdi+04]
+// ---------- DONE INJECT_smchance2ING  ----------
+"FIFA19.exe"+40F69A3: 83 FB 0A                          -  cmp ebx,0A
+"FIFA19.exe"+40F69A6: 7C C9                             -  jl FIFA19.exe+40F6971
+"FIFA19.exe"+40F69A8: 41 BC 01 00 00 00                 -  mov r12d,00000001
+"FIFA19.exe"+40F69AE: 49 8D 9F 80 07 00 00              -  lea rbx,[r15+00000780]
+"FIFA19.exe"+40F69B5: 45 8B F4                          -  mov r14d,r12d
+"FIFA19.exe"+40F69B8: 45 8D 7C 24 09                    -  lea r15d,[r12+09]
+"FIFA19.exe"+40F69BD: 0F 1F 00                          -  nop [rax]
+"FIFA19.exe"+40F69C0: 41 8B FC                          -  mov edi,r12d
+"FIFA19.exe"+40F69C3: BE 05 00 00 00                    -  mov esi,00000005
+"FIFA19.exe"+40F69C8: 0F 1F 84 00 00 00 00 00           -  nop [rax+rax+00000000]
+}
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>2659</ID>
+                  <Description>"Set up multiple scouting networks in the same country"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_CountryIsBeingScouted,FIFA19.exe,80 FB 01 75 0C 4C) // should be unique
+alloc(newmem_CountryIsBeingScouted,$1000,"FIFA19.exe"+3FD1808)
+
+label(code_CountryIsBeingScouted)
+label(ret_CountryIsBeingScouted)
+
+newmem_CountryIsBeingScouted:
+
+code_CountryIsBeingScouted:
+  cmp bl,01                // "CMYS_Popup_CountryIsBeingScouted"
+  jmp INJECT_CountryIsBeingScouted+11
+  jmp ret_CountryIsBeingScouted
+
+INJECT_CountryIsBeingScouted:
+  jmp newmem_CountryIsBeingScouted
+ret_CountryIsBeingScouted:
+registersymbol(INJECT_CountryIsBeingScouted)
+
+[DISABLE]
+//code_CountryIsBeingScouted from here till the end of the code_CountryIsBeingScouted will be used to disable the cheat
+INJECT_CountryIsBeingScouted:
+  db 80 FB 01 75 0C
+
+unregistersymbol(INJECT_CountryIsBeingScouted)
+dealloc(newmem_CountryIsBeingScouted)
+
+{
+// ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+3FD1808
+
+"FIFA19.exe"+3FD17E0: 48 8D 4C 24 28           -  lea rcx,[rsp+28]
+"FIFA19.exe"+3FD17E5: E8 C6 C2 50 FC           -  call FIFA19.exe+4DDAB0
+"FIFA19.exe"+3FD17EA: 90                       -  nop
+"FIFA19.exe"+3FD17EB: 48 8B CE                 -  mov rcx,rsi
+"FIFA19.exe"+3FD17EE: E8 ED D8 FF FF           -  call FIFA19.exe+3FCF0E0
+"FIFA19.exe"+3FD17F3: 0F B6 D8                 -  movzx ebx,al
+"FIFA19.exe"+3FD17F6: 48 8D 15 FB 5F 38 01     -  lea rdx,[FIFA19.exe+53577F8]
+"FIFA19.exe"+3FD17FD: 48 8D 4C 24 60           -  lea rcx,[rsp+60]
+"FIFA19.exe"+3FD1802: E8 D9 E1 25 00           -  call FIFA19.exe+422F9E0
+"FIFA19.exe"+3FD1807: 90                       -  nop
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+3FD1808: 80 FB 01                 -  cmp bl,01
+"FIFA19.exe"+3FD180B: 75 0C                    -  jne FIFA19.exe+3FD1819
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+3FD180D: 4C 8D 05 14 D4 38 01     -  lea r8,[FIFA19.exe+535EC28]
+"FIFA19.exe"+3FD1814: E9 4C 01 00 00           -  jmp FIFA19.exe+3FD1965
+"FIFA19.exe"+3FD1819: 8B BE 3C 01 00 00        -  mov edi,[rsi+0000013C]
+"FIFA19.exe"+3FD181F: 49 8B 07                 -  mov rax,[r15]
+"FIFA19.exe"+3FD1822: BA 02 00 00 00           -  mov edx,00000002
+"FIFA19.exe"+3FD1827: 49 8B CF                 -  mov rcx,r15
+"FIFA19.exe"+3FD182A: FF 50 10                 -  call qword ptr [rax+10]
+"FIFA19.exe"+3FD182D: 8B D8                    -  mov ebx,eax
+"FIFA19.exe"+3FD182F: 4D 8B 07                 -  mov r8,[r15]
+"FIFA19.exe"+3FD1832: BA 01 00 00 00           -  mov edx,00000001
+}
+</AssemblerScript>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
           <ID>469</ID>
           <Description>"In-Game Hacks"</Description>
           <Options moHideChildren="1"/>
@@ -10205,7 +11356,7 @@ bAwayTeam_Tired:
     </CheatEntry>
     <CheatEntry>
       <ID>0</ID>
-      <Description>"Become a Patreon"</Description>
+      <Description>"Become a Patron"</Description>
       <LastState Value="" RealAddress="00000000"/>
       <GroupHeader>1</GroupHeader>
       <CheatEntries>
