@@ -27,3 +27,14 @@ Changelog:
 		- Added Transfer HUB (same as last year)
 		- Added Transfer Window Configuration (Changes in transfer.ini and transfers.ini has been made by EA, we need to wait for FrostyTool)
 		- Added More efficient training (Edit script to match your preferences, by default it's only slightly better than EA config.)
+		
+	v1.0.3:
+		- Fixed 'MIN_PLAYER_AGE_FOR_PROMOTION = 12'
+		- Fixed trait names
+		- Added Unlimited Substitutions/Disable Substitutions
+		- Added script for maniuplating Match score
+		- Added 'Home/Away Team Injured players'
+		- Added pointers for player name and birthdate to "Edit Player"
+		- Added "Edit Job Offer"
+		- Added "career_managerpref Table" & "teamstadiumlinks Table"
+		- Added "Change Stadium", "Half Length", "Weather" to "Match Settings"
