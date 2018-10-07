@@ -38,3 +38,4 @@ Changelog:
 		- Added "Edit Job Offer"
 		- Added "career_managerpref Table" & "teamstadiumlinks Table"
 		- Added "Change Stadium", "Half Length", "Weather" to "Match Settings"
+		- Added "More efficient training (10x)"
