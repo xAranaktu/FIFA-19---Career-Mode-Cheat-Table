@@ -1,6 +1,7 @@
 # FIFA 19 - CM Cheat Table
 
 This is a brief walk-through tutorial that illustrates how to use mine Cheat Table for FIFA 19. Before you start using it, I'd recommend you to make a __backup of your current career mode save__ and regular backups of your further progress. Trust me, you don't want to start a new career after 5 seasons because something will screw up. You need to know that this cheat table is designed for __manager career mode__. Scripts may or may not work in player career mode, especially if you are using player created by your own. I don't care about the journey mode, sorry. Also - as last year - cracked version is not supported and no, it doesn't mean that cheat table is not working with cracked version. Just if something is not working then it's because you are using cracked version. I hope it's clear now.
+And the last thing but not least, __tick checkboxes only when you are activating scripts or opening header__. If you tick checkbox near attributes (like 'headid' in manager table) it will freeze the value and it will be applied to all other players/maangers/etc., which is probably not something that you want.
 
 # Become a Patron
 [Become a Patron](https://www.patreon.com/xAranaktu)
