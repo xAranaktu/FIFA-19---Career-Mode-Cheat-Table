@@ -29,7 +29,7 @@
           <CheatEntries>
             <CheatEntry>
               <ID>1659</ID>
-              <Description>"&lt;Will be added&gt;"</Description>
+              <Description>"http://bit.ly/CM-Cheat-Table-19"</Description>
               <LastState Value="" RealAddress="00000000"/>
               <GroupHeader>1</GroupHeader>
             </CheatEntry>
@@ -108,6 +108,7 @@ label(career_managerprefTable)
 label(career_managerinfoTable)
 label(career_usersTable)
 label(career_calendarTable)
+label(teamstadiumlinksTable)
 
 alloc(playerDataPtr, 8)
 registersymbol(playerDataPtr)
@@ -174,6 +175,11 @@ registersymbol(playercontractDataPtr)
 playercontractDataPtr:
 dq 0
 
+alloc(teamstadiumlinksDataPtr, 8)
+registersymbol(teamstadiumlinksDataPtr)
+teamstadiumlinksDataPtr:
+dq 0
+
 alloc(leagueteamlinksDataPtr, 8)
 registersymbol(leagueteamlinksDataPtr)
 leagueteamlinksDataPtr:
@@ -223,6 +229,8 @@ new_DatabaseReadCave:
   je career_playercontractTable
   cmp [rdi+8], 'qdZF'                       // leagueteamlinks
   je leagueteamlinksTable
+  cmp [rdi+8], 'kISL'						// teamstadiumlinks
+  je teamstadiumlinksTable
   cmp [rdi+8], 'lyxL'                       // teams
   je teamsTable
   cmp [rdi+8], 'RrqT'                       // teamplayerlinks
@@ -282,6 +290,10 @@ career_playercontractTable:
   mov [playercontractDataPtr], r8
   jmp code
 
+teamstadiumlinksTable:
+  mov [teamstadiumlinksDataPtr], r8
+  jmp code
+
 leagueteamlinksTable:
   mov [leagueteamlinksDataPtr], r8
   jmp code
@@ -323,6 +335,7 @@ unregistersymbol(managerinfoDataPtr)
 unregistersymbol(usersDataPtr)
 unregistersymbol(calendarDataPtr)
 unregistersymbol(playercontractDataPtr)
+unregistersymbol(teamstadiumlinksDataPtr)
 unregistersymbol(leagueteamlinksDataPtr)
 unregistersymbol(teamsDataPtr)
 unregistersymbol(ptrTeamplayerlinks)
@@ -340,6 +353,7 @@ dealloc(managerinfoDataPtr)
 dealloc(usersDataPtr)
 dealloc(calendarDataPtr)
 dealloc(playercontractDataPtr)
+dealloc(teamstadiumlinksDataPtr)
 dealloc(leagueteamlinksDataPtr)
 dealloc(teamsDataPtr)
 dealloc(ptrTeamplayerlinks)
@@ -4846,8 +4860,78 @@ dealloc(ptrTeamplayerlinks)
                               <GroupHeader>1</GroupHeader>
                               <CheatEntries>
                                 <CheatEntry>
+                                  <ID>2684</ID>
+                                  <Description>"CPU AI Only"</Description>
+                                  <Options moHideChildren="1"/>
+                                  <LastState Value="" RealAddress="00000000"/>
+                                  <Color>004000</Color>
+                                  <GroupHeader>1</GroupHeader>
+                                  <CheatEntries>
+                                    <CheatEntry>
+                                      <ID>1815</ID>
+                                      <Description>"Dives Into Tackles (CPU AI Only)"</Description>
+                                      <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
+1: 'Yes'
+</DropDownList>
+                                      <VariableType>Binary</VariableType>
+                                      <BitStart>6</BitStart>
+                                      <BitLength>1</BitLength>
+                                      <ShowAsBinary>0</ShowAsBinary>
+                                      <Address>playerDataPtr</Address>
+                                      <Offsets>
+                                        <Offset>31</Offset>
+                                      </Offsets>
+                                    </CheatEntry>
+                                    <CheatEntry>
+                                      <ID>1825</ID>
+                                      <Description>"Long Passer (CPU AI Only)"</Description>
+                                      <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
+1: 'Yes'
+</DropDownList>
+                                      <VariableType>Binary</VariableType>
+                                      <BitStart>6</BitStart>
+                                      <BitLength>1</BitLength>
+                                      <ShowAsBinary>0</ShowAsBinary>
+                                      <Address>playerDataPtr</Address>
+                                      <Offsets>
+                                        <Offset>32</Offset>
+                                      </Offsets>
+                                    </CheatEntry>
+                                    <CheatEntry>
+                                      <ID>1824</ID>
+                                      <Description>"Long Shot Taker (CPU AI Only)"</Description>
+                                      <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
+1: 'Yes'
+</DropDownList>
+                                      <VariableType>Binary</VariableType>
+                                      <BitStart>7</BitStart>
+                                      <BitLength>1</BitLength>
+                                      <ShowAsBinary>0</ShowAsBinary>
+                                      <Address>playerDataPtr</Address>
+                                      <Offsets>
+                                        <Offset>32</Offset>
+                                      </Offsets>
+                                    </CheatEntry>
+                                    <CheatEntry>
+                                      <ID>1826</ID>
+                                      <Description>"Playmaker (CPU AI Only)"</Description>
+                                      <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
+1: 'Yes'
+</DropDownList>
+                                      <VariableType>Binary</VariableType>
+                                      <BitStart>1</BitStart>
+                                      <BitLength>1</BitLength>
+                                      <ShowAsBinary>0</ShowAsBinary>
+                                      <Address>playerDataPtr</Address>
+                                      <Offsets>
+                                        <Offset>33</Offset>
+                                      </Offsets>
+                                    </CheatEntry>
+                                  </CheatEntries>
+                                </CheatEntry>
+                                <CheatEntry>
                                   <ID>1298</ID>
-                                  <Description>"Inflexibility"</Description>
+                                  <Description>"Inflexibility (?)"</Description>
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
@@ -4892,7 +4976,7 @@ dealloc(ptrTeamplayerlinks)
                                 </CheatEntry>
                                 <CheatEntry>
                                   <ID>1811</ID>
-                                  <Description>"Diver (not working?)"</Description>
+                                  <Description>"Diver (?)"</Description>
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
@@ -4922,7 +5006,7 @@ dealloc(ptrTeamplayerlinks)
                                 </CheatEntry>
                                 <CheatEntry>
                                   <ID>1813</ID>
-                                  <Description>"Injury free (not working?)"</Description>
+                                  <Description>"Solid Player"</Description>
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
@@ -4937,7 +5021,7 @@ dealloc(ptrTeamplayerlinks)
                                 </CheatEntry>
                                 <CheatEntry>
                                   <ID>1814</ID>
-                                  <Description>"Avoids using weaker foot (not working?)"</Description>
+                                  <Description>"Avoids using weaker foot (?)"</Description>
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
@@ -4951,23 +5035,8 @@ dealloc(ptrTeamplayerlinks)
                                   </Offsets>
                                 </CheatEntry>
                                 <CheatEntry>
-                                  <ID>1815</ID>
-                                  <Description>"Dives into tackles (not working?)"</Description>
-                                  <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
-1: 'Yes'
-</DropDownList>
-                                  <VariableType>Binary</VariableType>
-                                  <BitStart>6</BitStart>
-                                  <BitLength>1</BitLength>
-                                  <ShowAsBinary>0</ShowAsBinary>
-                                  <Address>playerDataPtr</Address>
-                                  <Offsets>
-                                    <Offset>31</Offset>
-                                  </Offsets>
-                                </CheatEntry>
-                                <CheatEntry>
                                   <ID>1816</ID>
-                                  <Description>"Tries to beat defensive line (not working?)"</Description>
+                                  <Description>"Tries to beat defensive line (?)"</Description>
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
@@ -4982,7 +5051,7 @@ dealloc(ptrTeamplayerlinks)
                                 </CheatEntry>
                                 <CheatEntry>
                                   <ID>1817</ID>
-                                  <Description>"Selfish (not working?)"</Description>
+                                  <Description>"Selfish (?)"</Description>
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
@@ -4997,7 +5066,7 @@ dealloc(ptrTeamplayerlinks)
                                 </CheatEntry>
                                 <CheatEntry>
                                   <ID>1822</ID>
-                                  <Description>"Leadership (not working?)"</Description>
+                                  <Description>"Leadership"</Description>
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
@@ -5012,7 +5081,7 @@ dealloc(ptrTeamplayerlinks)
                                 </CheatEntry>
                                 <CheatEntry>
                                   <ID>1821</ID>
-                                  <Description>"Argues With Referee"</Description>
+                                  <Description>"Argues With Referee (?)"</Description>
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
@@ -5027,7 +5096,7 @@ dealloc(ptrTeamplayerlinks)
                                 </CheatEntry>
                                 <CheatEntry>
                                   <ID>1820</ID>
-                                  <Description>"Early crosser"</Description>
+                                  <Description>"Early Crosser"</Description>
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
@@ -5042,7 +5111,7 @@ dealloc(ptrTeamplayerlinks)
                                 </CheatEntry>
                                 <CheatEntry>
                                   <ID>1819</ID>
-                                  <Description>"Finesse shot"</Description>
+                                  <Description>"Finesse Shot"</Description>
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
@@ -5071,38 +5140,8 @@ dealloc(ptrTeamplayerlinks)
                                   </Offsets>
                                 </CheatEntry>
                                 <CheatEntry>
-                                  <ID>1825</ID>
-                                  <Description>"Long passer"</Description>
-                                  <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
-1: 'Yes'
-</DropDownList>
-                                  <VariableType>Binary</VariableType>
-                                  <BitStart>6</BitStart>
-                                  <BitLength>1</BitLength>
-                                  <ShowAsBinary>0</ShowAsBinary>
-                                  <Address>playerDataPtr</Address>
-                                  <Offsets>
-                                    <Offset>32</Offset>
-                                  </Offsets>
-                                </CheatEntry>
-                                <CheatEntry>
-                                  <ID>1824</ID>
-                                  <Description>"Long shot taker"</Description>
-                                  <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
-1: 'Yes'
-</DropDownList>
-                                  <VariableType>Binary</VariableType>
-                                  <BitStart>7</BitStart>
-                                  <BitLength>1</BitLength>
-                                  <ShowAsBinary>0</ShowAsBinary>
-                                  <Address>playerDataPtr</Address>
-                                  <Offsets>
-                                    <Offset>32</Offset>
-                                  </Offsets>
-                                </CheatEntry>
-                                <CheatEntry>
                                   <ID>1823</ID>
-                                  <Description>"Skilled dribbling (not working?)"</Description>
+                                  <Description>"Speed Dribbler"</Description>
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
@@ -5116,23 +5155,8 @@ dealloc(ptrTeamplayerlinks)
                                   </Offsets>
                                 </CheatEntry>
                                 <CheatEntry>
-                                  <ID>1826</ID>
-                                  <Description>"Playmaker (not working?)"</Description>
-                                  <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
-1: 'Yes'
-</DropDownList>
-                                  <VariableType>Binary</VariableType>
-                                  <BitStart>1</BitStart>
-                                  <BitLength>1</BitLength>
-                                  <ShowAsBinary>0</ShowAsBinary>
-                                  <Address>playerDataPtr</Address>
-                                  <Offsets>
-                                    <Offset>33</Offset>
-                                  </Offsets>
-                                </CheatEntry>
-                                <CheatEntry>
                                   <ID>1831</ID>
-                                  <Description>"GK up for corners"</Description>
+                                  <Description>"GK up for corners (?)"</Description>
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
@@ -5147,7 +5171,7 @@ dealloc(ptrTeamplayerlinks)
                                 </CheatEntry>
                                 <CheatEntry>
                                   <ID>1830</ID>
-                                  <Description>"Puncher (not working?)"</Description>
+                                  <Description>"Puncher (?)"</Description>
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
@@ -5192,7 +5216,7 @@ dealloc(ptrTeamplayerlinks)
                                 </CheatEntry>
                                 <CheatEntry>
                                   <ID>1827</ID>
-                                  <Description>"GK One on One"</Description>
+                                  <Description>"GK One on One (?)"</Description>
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
@@ -5237,7 +5261,7 @@ dealloc(ptrTeamplayerlinks)
                                 </CheatEntry>
                                 <CheatEntry>
                                   <ID>1873</ID>
-                                  <Description>"Fans favourite"</Description>
+                                  <Description>"Fans favourite (?)"</Description>
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
@@ -5282,7 +5306,7 @@ dealloc(ptrTeamplayerlinks)
                                 </CheatEntry>
                                 <CheatEntry>
                                   <ID>1836</ID>
-                                  <Description>"Acrobatic Clearance"</Description>
+                                  <Description>"Acrobatic Clearance (?)"</Description>
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
@@ -5304,6 +5328,46 @@ dealloc(ptrTeamplayerlinks)
                               <LastState Value="" RealAddress="00000000"/>
                               <GroupHeader>1</GroupHeader>
                               <CheatEntries>
+                                <CheatEntry>
+                                  <ID>2685</ID>
+                                  <Description>"CPU AI Only"</Description>
+                                  <Options moHideChildren="1"/>
+                                  <LastState Value="" RealAddress="00000000"/>
+                                  <Color>004000</Color>
+                                  <GroupHeader>1</GroupHeader>
+                                  <CheatEntries>
+                                    <CheatEntry>
+                                      <ID>1848</ID>
+                                      <Description>"Chip Shot (CPU AI Only)"</Description>
+                                      <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
+1: 'Yes'
+</DropDownList>
+                                      <VariableType>Binary</VariableType>
+                                      <BitStart>3</BitStart>
+                                      <BitLength>1</BitLength>
+                                      <ShowAsBinary>0</ShowAsBinary>
+                                      <Address>playerDataPtr</Address>
+                                      <Offsets>
+                                        <Offset>9</Offset>
+                                      </Offsets>
+                                    </CheatEntry>
+                                    <CheatEntry>
+                                      <ID>1849</ID>
+                                      <Description>"Technical Dribbler (CPU AI Only)"</Description>
+                                      <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
+1: 'Yes'
+</DropDownList>
+                                      <VariableType>Binary</VariableType>
+                                      <BitStart>4</BitStart>
+                                      <BitLength>1</BitLength>
+                                      <ShowAsBinary>0</ShowAsBinary>
+                                      <Address>playerDataPtr</Address>
+                                      <Offsets>
+                                        <Offset>9</Offset>
+                                      </Offsets>
+                                    </CheatEntry>
+                                  </CheatEntries>
+                                </CheatEntry>
                                 <CheatEntry>
                                   <ID>1299</ID>
                                   <Description>"Skilled Dribbling"</Description>
@@ -5336,7 +5400,7 @@ dealloc(ptrTeamplayerlinks)
                                 </CheatEntry>
                                 <CheatEntry>
                                   <ID>1844</ID>
-                                  <Description>"Fancy Flicks"</Description>
+                                  <Description>"Fancy Flicks (?)"</Description>
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
@@ -5351,7 +5415,7 @@ dealloc(ptrTeamplayerlinks)
                                 </CheatEntry>
                                 <CheatEntry>
                                   <ID>1843</ID>
-                                  <Description>"Stutter Penalty"</Description>
+                                  <Description>"Stutter Penalty (?)"</Description>
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
@@ -5396,7 +5460,7 @@ dealloc(ptrTeamplayerlinks)
                                 </CheatEntry>
                                 <CheatEntry>
                                   <ID>1840</ID>
-                                  <Description>"Diving Header"</Description>
+                                  <Description>"Diving Header (?)"</Description>
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
@@ -5411,7 +5475,7 @@ dealloc(ptrTeamplayerlinks)
                                 </CheatEntry>
                                 <CheatEntry>
                                   <ID>1839</ID>
-                                  <Description>"Driven Pass"</Description>
+                                  <Description>"Driven Pass (?)"</Description>
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
@@ -5470,36 +5534,6 @@ dealloc(ptrTeamplayerlinks)
                                   </Offsets>
                                 </CheatEntry>
                                 <CheatEntry>
-                                  <ID>1848</ID>
-                                  <Description>"Chip shot"</Description>
-                                  <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
-1: 'Yes'
-</DropDownList>
-                                  <VariableType>Binary</VariableType>
-                                  <BitStart>3</BitStart>
-                                  <BitLength>1</BitLength>
-                                  <ShowAsBinary>0</ShowAsBinary>
-                                  <Address>playerDataPtr</Address>
-                                  <Offsets>
-                                    <Offset>9</Offset>
-                                  </Offsets>
-                                </CheatEntry>
-                                <CheatEntry>
-                                  <ID>1849</ID>
-                                  <Description>"Technical Dribbler"</Description>
-                                  <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
-1: 'Yes'
-</DropDownList>
-                                  <VariableType>Binary</VariableType>
-                                  <BitStart>4</BitStart>
-                                  <BitLength>1</BitLength>
-                                  <ShowAsBinary>0</ShowAsBinary>
-                                  <Address>playerDataPtr</Address>
-                                  <Offsets>
-                                    <Offset>9</Offset>
-                                  </Offsets>
-                                </CheatEntry>
-                                <CheatEntry>
                                   <ID>1850</ID>
                                   <Description>"Rushes Out Of Goal"</Description>
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
@@ -5516,7 +5550,7 @@ dealloc(ptrTeamplayerlinks)
                                 </CheatEntry>
                                 <CheatEntry>
                                   <ID>1851</ID>
-                                  <Description>"Backs Into Player"</Description>
+                                  <Description>"Backs Into Player (?)"</Description>
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
@@ -5531,7 +5565,7 @@ dealloc(ptrTeamplayerlinks)
                                 </CheatEntry>
                                 <CheatEntry>
                                   <ID>1852</ID>
-                                  <Description>"Set Play Specialist"</Description>
+                                  <Description>"Set Play Specialist (?)"</Description>
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
@@ -5546,7 +5580,7 @@ dealloc(ptrTeamplayerlinks)
                                 </CheatEntry>
                                 <CheatEntry>
                                   <ID>1853</ID>
-                                  <Description>"Takes Finesse Free Kicks"</Description>
+                                  <Description>"Takes Finesse Free Kicks (?)"</Description>
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
@@ -5561,7 +5595,7 @@ dealloc(ptrTeamplayerlinks)
                                 </CheatEntry>
                                 <CheatEntry>
                                   <ID>1857</ID>
-                                  <Description>"Target Forward"</Description>
+                                  <Description>"Target Forward (?)"</Description>
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
@@ -5606,7 +5640,7 @@ dealloc(ptrTeamplayerlinks)
                                 </CheatEntry>
                                 <CheatEntry>
                                   <ID>1961</ID>
-                                  <Description>"Blames Teammates"</Description>
+                                  <Description>"Blames Teammates (?)"</Description>
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
@@ -5651,7 +5685,7 @@ dealloc(ptrTeamplayerlinks)
                                 </CheatEntry>
                                 <CheatEntry>
                                   <ID>2078</ID>
-                                  <Description>"Tornado Skillmove"</Description>
+                                  <Description>"Tornado Skillmove (?)"</Description>
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
@@ -8476,6 +8510,373 @@ dealloc(managertable_teamid)
                         </CheatEntry>
                       </CheatEntries>
                     </CheatEntry>
+                    <CheatEntry>
+                      <ID>2710</ID>
+                      <Description>"career_managerpref Table"</Description>
+                      <Options moHideChildren="1"/>
+                      <LastState Value="" RealAddress="00000000"/>
+                      <GroupHeader>1</GroupHeader>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>2711</ID>
+                          <Description>"currency"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>2</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>managerprefDataPtr</Address>
+                          <Offsets>
+                            <Offset>0</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2712</ID>
+                          <Description>"matchdifficulty"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>2</BitStart>
+                          <BitLength>3</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>managerprefDataPtr</Address>
+                          <Offsets>
+                            <Offset>0</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2713</ID>
+                          <Description>"intlformation3"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>5</BitStart>
+                          <BitLength>10</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>managerprefDataPtr</Address>
+                          <Offsets>
+                            <Offset>0</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2714</ID>
+                          <Description>"intlformation4"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>7</BitStart>
+                          <BitLength>10</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>managerprefDataPtr</Address>
+                          <Offsets>
+                            <Offset>1</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2715</ID>
+                          <Description>"playasaiteam"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>1</BitStart>
+                          <BitLength>1</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>managerprefDataPtr</Address>
+                          <Offsets>
+                            <Offset>3</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2716</ID>
+                          <Description>"bonuspercentage"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>4</BitStart>
+                          <BitLength>5</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>managerprefDataPtr</Address>
+                          <Offsets>
+                            <Offset>4</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2717</ID>
+                          <Description>"boardfinancialstrictness"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>1</BitStart>
+                          <BitLength>2</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>managerprefDataPtr</Address>
+                          <Offsets>
+                            <Offset>5</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2718</ID>
+                          <Description>"usedsquad"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>3</BitStart>
+                          <BitLength>2</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>managerprefDataPtr</Address>
+                          <Offsets>
+                            <Offset>5</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2719</ID>
+                          <Description>"clubformation1"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>5</BitStart>
+                          <BitLength>10</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>managerprefDataPtr</Address>
+                          <Offsets>
+                            <Offset>5</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2720</ID>
+                          <Description>"stadiumid"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>7</BitStart>
+                          <BitLength>9</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>managerprefDataPtr</Address>
+                          <Offsets>
+                            <Offset>6</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2721</ID>
+                          <Description>"intlformation5"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>10</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>managerprefDataPtr</Address>
+                          <Offsets>
+                            <Offset>8</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2722</ID>
+                          <Description>"clubformation5"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>2</BitStart>
+                          <BitLength>10</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>managerprefDataPtr</Address>
+                          <Offsets>
+                            <Offset>9</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2723</ID>
+                          <Description>"clubformation2"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>4</BitStart>
+                          <BitLength>10</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>managerprefDataPtr</Address>
+                          <Offsets>
+                            <Offset>A</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2724</ID>
+                          <Description>"halflength"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>6</BitStart>
+                          <BitLength>6</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>managerprefDataPtr</Address>
+                          <Offsets>
+                            <Offset>B</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2725</ID>
+                          <Description>"intlformation1"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>4</BitStart>
+                          <BitLength>10</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>managerprefDataPtr</Address>
+                          <Offsets>
+                            <Offset>C</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2726</ID>
+                          <Description>"managerprefid"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>6</BitStart>
+                          <BitLength>1</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>managerprefDataPtr</Address>
+                          <Offsets>
+                            <Offset>D</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2727</ID>
+                          <Description>"wagebudget"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>7</BitStart>
+                          <BitLength>31</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>managerprefDataPtr</Address>
+                          <Offsets>
+                            <Offset>D</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2728</ID>
+                          <Description>"boardaidifficulty"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>6</BitStart>
+                          <BitLength>2</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>managerprefDataPtr</Address>
+                          <Offsets>
+                            <Offset>11</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2729</ID>
+                          <Description>"clubformation4"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>10</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>managerprefDataPtr</Address>
+                          <Offsets>
+                            <Offset>12</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2730</ID>
+                          <Description>"clubformation3"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>2</BitStart>
+                          <BitLength>10</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>managerprefDataPtr</Address>
+                          <Offsets>
+                            <Offset>13</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2731</ID>
+                          <Description>"startofseasontransferbudget"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>4</BitStart>
+                          <BitLength>31</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>managerprefDataPtr</Address>
+                          <Offsets>
+                            <Offset>14</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2732</ID>
+                          <Description>"transferbudget"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>3</BitStart>
+                          <BitLength>31</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>managerprefDataPtr</Address>
+                          <Offsets>
+                            <Offset>18</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2733</ID>
+                          <Description>"startofseasonwagebudget"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>2</BitStart>
+                          <BitLength>31</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>managerprefDataPtr</Address>
+                          <Offsets>
+                            <Offset>1C</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2734</ID>
+                          <Description>"skipfirsttransfer"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>1</BitStart>
+                          <BitLength>1</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>managerprefDataPtr</Address>
+                          <Offsets>
+                            <Offset>20</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2735</ID>
+                          <Description>"startofseasonplayerwages"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>2</BitStart>
+                          <BitLength>31</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>managerprefDataPtr</Address>
+                          <Offsets>
+                            <Offset>20</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2736</ID>
+                          <Description>"intlformation2"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>2</BitStart>
+                          <BitLength>10</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>managerprefDataPtr</Address>
+                          <Offsets>
+                            <Offset>3</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2737</ID>
+                      <Description>"teamstadiumlinks Table"</Description>
+                      <Options moHideChildren="1"/>
+                      <LastState Value="" RealAddress="00000000"/>
+                      <GroupHeader>1</GroupHeader>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>2738</ID>
+                          <Description>"stadiumid"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>11</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamstadiumlinksDataPtr</Address>
+                          <Offsets>
+                            <Offset>FF</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2739</ID>
+                          <Description>"stadiumname"</Description>
+                          <VariableType>String</VariableType>
+                          <Length>255</Length>
+                          <Unicode>0</Unicode>
+                          <CodePage>0</CodePage>
+                          <ZeroTerminate>1</ZeroTerminate>
+                          <Address>teamstadiumlinksDataPtr</Address>
+                          <Offsets>
+                            <Offset>0</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2741</ID>
+                          <Description>"forcedhome"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>5</BitStart>
+                          <BitLength>1</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamstadiumlinksDataPtr</Address>
+                          <Offsets>
+                            <Offset>2</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
                   </CheatEntries>
                 </CheatEntry>
               </CheatEntries>
@@ -8555,6 +8956,273 @@ dealloc(newmem_iseditplayerunlocked)
 "FIFA19_TRIAL.exe"+3F8F8C5: 74 10                 -  je FIFA19_TRIAL.exe+3F8F8D7
 }
 </AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>2702</ID>
+              <Description>"Edit Player"</Description>
+              <Options moHideChildren="1"/>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_EditPlayerName,FIFA19_TRIAL.exe,C6 44 24 20 01 45 33 C9 4C 8D 85 D0 02) // should be unique
+
+// First name
+alloc(cave_EditFirstName,$1000,"FIFA19_TRIAL.exe"+3156683)
+
+alloc(ptrEditPlayerData, 8)
+registersymbol(ptrEditPlayerData)
+ptrEditPlayerData:
+dq 0
+
+label(code_EditFirstName)
+label(ret_EditFirstName)
+
+alloc(ptrEasyEditFirstName, 8)
+registersymbol(ptrEasyEditFirstName)
+ptrEasyEditFirstName:
+dq 0
+
+cave_EditFirstName:
+  mov [ptrEditPlayerData], rdi
+code_EditFirstName:
+  mov rcx,rax
+  call qword ptr [r9+18]
+  mov [ptrEasyEditFirstName], rdx
+  jmp ret_EditFirstName
+
+// Last Name
+alloc(cave_EditLastName,$1000,"FIFA19_TRIAL.exe"+3156683)
+
+label(code_EditLastName)
+label(ret_EditLastName)
+
+alloc(ptrEasyEditLastName, 8)
+registersymbol(ptrEasyEditLastName)
+ptrEasyEditLastName:
+dq 0
+
+cave_EditLastName:
+
+code_EditLastName:
+  mov rcx,rax
+  call qword ptr [r9+18]
+  mov [ptrEasyEditLastName], rdx
+  jmp ret_EditLastName
+
+// KnownAs
+alloc(cave_EditKnownAs,$1000,"FIFA19_TRIAL.exe"+3156683)
+
+label(code_EditKnownAs)
+label(ret_EditKnownAs)
+
+alloc(ptrEasyEditKnownAs, 8)
+registersymbol(ptrEasyEditKnownAs)
+ptrEasyEditKnownAs:
+dq 0
+
+cave_EditKnownAs:
+
+code_EditKnownAs:
+  mov rcx,rax
+  call qword ptr [r9+18]
+  cmp rdx, 140000000
+  jg ret_EditKnownAs
+  mov [ptrEasyEditKnownAs], rdx
+  jmp ret_EditKnownAs
+
+// Name on Shirt
+alloc(cave_EditNameOnShirt,$1000,"FIFA19_TRIAL.exe"+3156683)
+
+label(code_EditNameOnShirt)
+label(ret_EditNameOnShirt)
+
+alloc(ptrEasyEditNameOnShirt, 8)
+registersymbol(ptrEasyEditNameOnShirt)
+ptrEasyEditNameOnShirt:
+dq 0
+
+cave_EditNameOnShirt:
+  mov [ptrEasyEditNameOnShirt], rax
+
+code_EditNameOnShirt:
+  mov rcx,rax
+  call qword ptr [r9+18]
+  jmp ret_EditNameOnShirt
+
+
+// jmps
+INJECT_EditPlayerName+41:
+  jmp cave_EditFirstName
+  nop
+  nop
+ret_EditFirstName:
+INJECT_EditPlayerName+84:
+  jmp cave_EditLastName
+  nop
+  nop
+ret_EditLastName:
+INJECT_EditPlayerName+C7:
+  jmp cave_EditKnownAs
+  nop
+  nop
+ret_EditKnownAs:
+INJECT_EditPlayerName+10A:
+  jmp cave_EditNameOnShirt
+  nop
+  nop
+ret_EditNameOnShirt:
+registersymbol(INJECT_EditPlayerName)
+
+[DISABLE]
+//code_EditFirstName from here till the end of the code_EditFirstName will be used to disable the cheat
+INJECT_EditPlayerName+41:
+  db 48 8B C8 41 FF 51 18
+
+INJECT_EditPlayerName+84:
+  db 48 8B C8 41 FF 51 18
+
+INJECT_EditPlayerName+C7:
+  db 48 8B C8 41 FF 51 18
+
+INJECT_EditPlayerName+10A:
+  db 48 8B C8 41 FF 51 18
+
+unregistersymbol(INJECT_EditPlayerName)
+unregistersymbol(ptrEditPlayerData)
+dealloc(ptrEditPlayerData)
+dealloc(cave_EditFirstName)
+unregistersymbol(ptrEasyEditFirstName)
+dealloc(ptrEasyEditFirstName)
+dealloc(cave_EditLastName)
+unregistersymbol(ptrEasyEditLastName)
+dealloc(ptrEasyEditLastName)
+dealloc(cave_EditKnownAs)
+unregistersymbol(ptrEasyEditKnownAs)
+dealloc(ptrEasyEditKnownAs)
+dealloc(cave_EditNameOnShirt)
+unregistersymbol(ptrEasyEditNameOnShirt)
+dealloc(ptrEasyEditNameOnShirt)
+
+
+{
+// ORIGINAL CODE - INJECTION POINT: "FIFA19_TRIAL.exe"+3156683
+
+"FIFA19_TRIAL.exe"+3156657: 44 89 B8 98 00 00 00  -  mov [rax+00000098],r15d
+"FIFA19_TRIAL.exe"+315665E: 48 8D 15 9B 16 A5 02  -  lea rdx,[FIFA19_TRIAL.exe+5BA7D00]
+"FIFA19_TRIAL.exe"+3156665: 48 8D 4D 10           -  lea rcx,[rbp+10]
+"FIFA19_TRIAL.exe"+3156669: E8 62 0A 4D FE        -  call FIFA19_TRIAL.exe+16270D0
+"FIFA19_TRIAL.exe"+315666E: 90                    -  nop
+"FIFA19_TRIAL.exe"+315666F: 48 8D 8D D0 02 00 00  -  lea rcx,[rbp+000002D0]
+"FIFA19_TRIAL.exe"+3156676: E8 15 74 8C FE        -  call FIFA19_TRIAL.exe+1A1DA90
+"FIFA19_TRIAL.exe"+315667B: 90                    -  nop
+"FIFA19_TRIAL.exe"+315667C: 48 8B 4D 10           -  mov rcx,[rbp+10]
+"FIFA19_TRIAL.exe"+3156680: 48 8B 01              -  mov rax,[rcx]
+// ---------- INJECTING HERE ----------
+"FIFA19_TRIAL.exe"+3156683: C6 44 24 20 01        -  mov byte ptr [rsp+20],01
+// ---------- DONE INJECTING  ----------
+"FIFA19_TRIAL.exe"+3156688: 45 33 C9              -  xor r9d,r9d
+"FIFA19_TRIAL.exe"+315668B: 4C 8D 85 D0 02 00 00  -  lea r8,[rbp+000002D0]
+"FIFA19_TRIAL.exe"+3156692: 41 8B D4              -  mov edx,r12d
+"FIFA19_TRIAL.exe"+3156695: FF 50 20              -  call qword ptr [rax+20]
+"FIFA19_TRIAL.exe"+3156698: 48 8D 95 D8 02 00 00  -  lea rdx,[rbp+000002D8]
+"FIFA19_TRIAL.exe"+315669F: 48 8D 8D E0 06 00 00  -  lea rcx,[rbp+000006E0]
+"FIFA19_TRIAL.exe"+31566A6: E8 E5 59 07 FE        -  call FIFA19_TRIAL.exe+11CC090
+"FIFA19_TRIAL.exe"+31566AB: 90                    -  nop
+"FIFA19_TRIAL.exe"+31566AC: 33 D2                 -  xor edx,edx
+"FIFA19_TRIAL.exe"+31566AE: 48 8B 4F 20           -  mov rcx,[rdi+20]
+}
+</AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>2703</ID>
+                  <Description>"First Name"</Description>
+                  <VariableType>String</VariableType>
+                  <Length>15</Length>
+                  <Unicode>0</Unicode>
+                  <CodePage>0</CodePage>
+                  <ZeroTerminate>1</ZeroTerminate>
+                  <Address>ptrEasyEditFirstName</Address>
+                  <Offsets>
+                    <Offset>0</Offset>
+                  </Offsets>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>2704</ID>
+                  <Description>"Last Name"</Description>
+                  <VariableType>String</VariableType>
+                  <Length>15</Length>
+                  <Unicode>0</Unicode>
+                  <CodePage>0</CodePage>
+                  <ZeroTerminate>1</ZeroTerminate>
+                  <Address>ptrEasyEditLastName</Address>
+                  <Offsets>
+                    <Offset>0</Offset>
+                  </Offsets>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>2705</ID>
+                  <Description>"Name on shirt"</Description>
+                  <VariableType>String</VariableType>
+                  <Length>15</Length>
+                  <Unicode>0</Unicode>
+                  <CodePage>0</CodePage>
+                  <ZeroTerminate>1</ZeroTerminate>
+                  <Address>ptrEasyEditNameOnShirt</Address>
+                  <Offsets>
+                    <Offset>0</Offset>
+                    <Offset>70</Offset>
+                  </Offsets>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>2706</ID>
+                  <Description>"Known As"</Description>
+                  <VariableType>String</VariableType>
+                  <Length>15</Length>
+                  <Unicode>0</Unicode>
+                  <CodePage>0</CodePage>
+                  <ZeroTerminate>1</ZeroTerminate>
+                  <Address>ptrEasyEditKnownAs</Address>
+                  <Offsets>
+                    <Offset>0</Offset>
+                  </Offsets>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>2707</ID>
+                  <Description>"Birthdate - Year"</Description>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>ptrEditPlayerData</Address>
+                  <Offsets>
+                    <Offset>68</Offset>
+                    <Offset>38</Offset>
+                    <Offset>0</Offset>
+                    <Offset>20</Offset>
+                  </Offsets>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>2708</ID>
+                  <Description>"Birthdate - Month"</Description>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>ptrEditPlayerData</Address>
+                  <Offsets>
+                    <Offset>68</Offset>
+                    <Offset>40</Offset>
+                    <Offset>0</Offset>
+                    <Offset>20</Offset>
+                  </Offsets>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>2709</ID>
+                  <Description>"Birthdate - Day"</Description>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>ptrEditPlayerData</Address>
+                  <Offsets>
+                    <Offset>68</Offset>
+                    <Offset>48</Offset>
+                    <Offset>0</Offset>
+                    <Offset>20</Offset>
+                  </Offsets>
+                </CheatEntry>
+              </CheatEntries>
             </CheatEntry>
           </CheatEntries>
         </CheatEntry>
@@ -8812,6 +9480,71 @@ newmem_moreEfficientTraining:
   mov [rsi+rax*4+00000344],(float)2.25 				// PERFORMANCE_GRADE_A_MODIFIER (default 1.25)
   mov [rsi+rax*4+00000358],(float)1.25  			// ? (default 1.25)
   mov [rsi+rax*4+00000364],(float)2.0  			    // ? (default 2.00)
+
+code_moreEfficientTraining:
+  movd xmm3,[rsi+1C]
+  jmp ret_moreEfficientTraining
+
+INJECT_moreEfficientTraining:
+  jmp newmem_moreEfficientTraining
+ret_moreEfficientTraining:
+registersymbol(INJECT_moreEfficientTraining)
+
+[DISABLE]
+//code_moreEfficientTraining from here till the end of the code_moreEfficientTraining will be used to disable the cheat
+INJECT_moreEfficientTraining:
+  db 66 0F 6E 5E 1C
+
+unregistersymbol(INJECT_moreEfficientTraining)
+dealloc(newmem_moreEfficientTraining)
+
+{
+// ORIGINAL CODE - INJECT_moreEfficientTrainingION POINT: "FIFA19_TRIAL.exe"+33C2C93
+
+"FIFA19_TRIAL.exe"+33C2C67: EB 81                       -  jmp FIFA19_TRIAL.exe+33C2BEA
+"FIFA19_TRIAL.exe"+33C2C69: 4B 8D 04 49                 -  lea rax,[r9+r9*2]
+"FIFA19_TRIAL.exe"+33C2C6D: F3 41 0F 10 64 83 08        -  movss xmm4,[r11+rax*4+08]
+"FIFA19_TRIAL.exe"+33C2C74: 44 8B 44 24 20              -  mov r8d,[rsp+20]
+"FIFA19_TRIAL.exe"+33C2C79: 48 8B CE                    -  mov rcx,rsi
+"FIFA19_TRIAL.exe"+33C2C7C: 8B 54 24 24                 -  mov edx,[rsp+24]
+"FIFA19_TRIAL.exe"+33C2C80: 8B 5D 08                    -  mov ebx,[rbp+08]
+"FIFA19_TRIAL.exe"+33C2C83: E8 D8 8E 08 00              -  call FIFA19_TRIAL.exe+344BB60
+"FIFA19_TRIAL.exe"+33C2C88: 48 63 84 24 C8 00 00 00     -  movsxd  rax,dword ptr [rsp+000000C8]
+"FIFA19_TRIAL.exe"+33C2C90: 8D 4B FF                    -  lea ecx,[rbx-01]
+// ---------- INJECT_moreEfficientTrainingING HERE ----------
+"FIFA19_TRIAL.exe"+33C2C93: 66 0F 6E 5E 1C              -  movd xmm3,[rsi+1C]
+// ---------- DONE INJECT_moreEfficientTrainingING  ----------
+"FIFA19_TRIAL.exe"+33C2C98: 45 33 DB                    -  xor r11d,r11d
+"FIFA19_TRIAL.exe"+33C2C9B: 0F 5B DB                    -  cvtdq2ps xmm3,xmm3
+"FIFA19_TRIAL.exe"+33C2C9E: 4C 63 C1                    -  movsxd  r8,ecx
+"FIFA19_TRIAL.exe"+33C2CA1: 41 8B CB                    -  mov ecx,r11d
+"FIFA19_TRIAL.exe"+33C2CA4: F3 0F 59 9C 86 44 03 00 00  -  mulss xmm3,[rsi+rax*4+00000344]
+"FIFA19_TRIAL.exe"+33C2CAD: 48 63 84 24 D0 00 00 00     -  movsxd  rax,dword ptr [rsp+000000D0]
+"FIFA19_TRIAL.exe"+33C2CB5: F3 0F 59 9C 86 58 03 00 00  -  mulss xmm3,[rsi+rax*4+00000358]
+"FIFA19_TRIAL.exe"+33C2CBE: F3 0F 59 9C BE 64 03 00 00  -  mulss xmm3,[rsi+rdi*4+00000364]
+"FIFA19_TRIAL.exe"+33C2CC7: F3 0F 59 DC                 -  mulss xmm3,xmm4
+"FIFA19_TRIAL.exe"+33C2CCB: F3 0F 59 C3                 -  mulss xmm0,xmm3
+}
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>2742</ID>
+              <Description>"More efficient training (10x)"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_moreEfficientTraining,FIFA19_TRIAL.exe,66 0F 6E 5E 1C 45) // should be unique
+alloc(newmem_moreEfficientTraining,$1000,"FIFA19_TRIAL.exe"+33C2C93)
+
+label(code_moreEfficientTraining)
+label(ret_moreEfficientTraining)
+
+newmem_moreEfficientTraining:
+  mov [rsi+C], #300 								// ATTRIBUTE_GROWTH_CAP (?) (default 300)
+  mov [rsi+1C], #3500								// BASE_CALC_VALUE (default 3500)
+  mov [rsi+rax*4+00000344],(float)10.0				// PERFORMANCE_GRADE_A_MODIFIER (default 1.25)
+  mov [rsi+rax*4+00000358],(float)10.0  			// ? (default 1.25)
+  mov [rsi+rax*4+00000364],(float)10.0  			    // ? (default 2.00)
 
 code_moreEfficientTraining:
   movd xmm3,[rsi+1C]
@@ -9248,6 +9981,169 @@ dealloc(newmem_allowtransferapp_btnclick)
 "FIFA19_TRIAL.exe"+38A2322: 84 C9                    -  test cl,cl
 }
 </AssemblerScript>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>732</ID>
+          <Description>"Edit Job Offer"</Description>
+          <Options moHideChildren="1"/>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_IntJobOffer,FIFA19_TRIAL.exe, 1A 48 8B 81 90 01 00 00) // should be unique
+alloc(cave_IntJobOffer,$1000,"FIFA19_TRIAL.exe"+823922E)
+alloc(NationalTeamID, 4)
+registersymbol(NationalTeamID)
+NationalTeamID:
+dd (int)1353
+
+label(code_IntJobOffer)
+label(return_IntJobOffer)
+
+cave_IntJobOffer:
+  push rdx
+  push rdi
+  mov rdx, [rcx+00000188]
+  mov rdi, [NationalTeamID]
+  mov [rdx], rdi
+  pop rdi
+  pop rdx
+
+code_IntJobOffer:
+  mov rax,[rcx+00000190]
+  jmp return_IntJobOffer
+
+INJECT_IntJobOffer+01:
+  jmp cave_IntJobOffer
+  nop
+  nop
+return_IntJobOffer:
+registersymbol(INJECT_IntJobOffer)
+
+aobscanmodule(INJECT_ClubJobOffer,FIFA19_TRIAL.exe,48 8B 83 D0 00 00 00 44 8B 24) // should be unique
+alloc(cave_ClubJobOffer,$1000,"FIFA19_TRIAL.exe"+3F7B4D0)
+alloc(ClubID, 8)
+registersymbol(ClubID)
+ClubID:
+dq 00
+label(code_ClubJobOffer)
+label(return_ClubJobOffer)
+label(magic_ClubJobOffer)
+
+cave_ClubJobOffer:
+  pushf
+  cmp rcx, 0
+  je magic_ClubJobOffer
+  jmp code_ClubJobOffer
+
+magic_ClubJobOffer:
+  mov [ClubID], rbx
+  jmp code_ClubJobOffer
+
+code_ClubJobOffer:
+  popf
+  mov rax,[rbx+000000D0]
+  jmp return_ClubJobOffer
+
+
+INJECT_ClubJobOffer:
+  jmp cave_ClubJobOffer
+  nop
+  nop
+return_ClubJobOffer:
+registersymbol(INJECT_ClubJobOffer)
+
+
+[DISABLE]
+INJECT_IntJobOffer+01:
+  db 48 8B 81 90 01 00 00
+
+unregistersymbol(NationalTeamID)
+unregistersymbol(INJECT_IntJobOffer)
+dealloc(NationalTeamID)
+dealloc(cave_IntJobOffer)
+
+INJECT_ClubJobOffer:
+  db 48 8B 83 D0 00 00 00
+
+unregistersymbol(ClubID)
+unregistersymbol(INJECT_ClubJobOffer)
+dealloc(cave_ClubJobOffer)
+dealloc(ClubID)
+
+{
+// ORIGINAL CODE - INJECTION POINT: "FIFA19_TRIAL.exe"+3F88E03
+
+"FIFA19_TRIAL.exe"+3F88DE1: 75 43                 -  jne FIFA19_TRIAL.exe+3F88E26
+"FIFA19_TRIAL.exe"+3F88DE3: 48 8B 46 08           -  mov rax,[rsi+08]
+"FIFA19_TRIAL.exe"+3F88DE7: 48 8B 80 B8 06 00 00  -  mov rax,[rax+000006B8]
+"FIFA19_TRIAL.exe"+3F88DEE: 48 8B 00              -  mov rax,[rax]
+"FIFA19_TRIAL.exe"+3F88DF1: 48 85 C0              -  test rax,rax
+"FIFA19_TRIAL.exe"+3F88DF4: 74 27                 -  je FIFA19_TRIAL.exe+3F88E1D
+"FIFA19_TRIAL.exe"+3F88DF6: 48 8B 40 30           -  mov rax,[rax+30]
+"FIFA19_TRIAL.exe"+3F88DFA: 48 8B 48 08           -  mov rcx,[rax+08]
+"FIFA19_TRIAL.exe"+3F88DFE: 48 85 C9              -  test rcx,rcx
+"FIFA19_TRIAL.exe"+3F88E01: 74 1A                 -  je FIFA19_TRIAL.exe+3F88E1D
+// ---------- INJECTING HERE ----------
+"FIFA19_TRIAL.exe"+3F88E03: 48 8B 81 90 01 00 00  -  mov rax,[rcx+00000190]
+// ---------- DONE INJECTING  ----------
+"FIFA19_TRIAL.exe"+3F88E0A: 48 2B 81 88 01 00 00  -  sub rax,[rcx+00000188]
+"FIFA19_TRIAL.exe"+3F88E11: 48 C1 F8 06           -  sar rax,06
+"FIFA19_TRIAL.exe"+3F88E15: 85 C0                 -  test eax,eax
+"FIFA19_TRIAL.exe"+3F88E17: 0F 85 10 03 00 00     -  jne FIFA19_TRIAL.exe+3F8912D
+"FIFA19_TRIAL.exe"+3F88E1D: 33 FF                 -  xor edi,edi
+"FIFA19_TRIAL.exe"+3F88E1F: 8B DF                 -  mov ebx,edi
+"FIFA19_TRIAL.exe"+3F88E21: E9 0C 03 00 00        -  jmp FIFA19_TRIAL.exe+3F89132
+"FIFA19_TRIAL.exe"+3F88E26: 48 8D 15 13 C4 2A 01  -  lea rdx,[FIFA19_TRIAL.exe+5235240]
+"FIFA19_TRIAL.exe"+3F88E2D: 49 8B CB              -  mov rcx,r11
+"FIFA19_TRIAL.exe"+3F88E30: E8 5B 34 3A FC        -  call FIFA19_TRIAL.exe+32C290
+}
+
+{
+// ORIGINAL CODE - INJECTION POINT: "FIFA19_TRIAL.exe"+3F7B4D0
+
+"FIFA19_TRIAL.exe"+3F7B4A7: FF C2                    -  inc edx
+"FIFA19_TRIAL.exe"+3F7B4A9: 89 54 24 60              -  mov [rsp+60],edx
+"FIFA19_TRIAL.exe"+3F7B4AD: 85 FF                    -  test edi,edi
+"FIFA19_TRIAL.exe"+3F7B4AF: 0F 8E 2E 09 00 00        -  jng FIFA19_TRIAL.exe+3F7BDE3
+"FIFA19_TRIAL.exe"+3F7B4B5: 33 C9                    -  xor ecx,ecx
+"FIFA19_TRIAL.exe"+3F7B4B7: 48 89 4D C8              -  mov [rbp-38],rcx
+"FIFA19_TRIAL.exe"+3F7B4BB: 8B C7                    -  mov eax,edi
+"FIFA19_TRIAL.exe"+3F7B4BD: 48 89 45 80              -  mov [rbp-80],rax
+"FIFA19_TRIAL.exe"+3F7B4C1: 48 8D 3D 10 81 32 01     -  lea rdi,[FIFA19_TRIAL.exe+52A35D8]
+"FIFA19_TRIAL.exe"+3F7B4C8: 0F 1F 84 00 00 00 00 00  -  nop [rax+rax+00000000]
+// ---------- INJECTING HERE ----------
+"FIFA19_TRIAL.exe"+3F7B4D0: 48 8B 83 D0 00 00 00     -  mov rax,[rbx+000000D0]
+// ---------- DONE INJECTING  ----------
+"FIFA19_TRIAL.exe"+3F7B4D7: 44 8B 24 08              -  mov r12d,[rax+rcx]
+"FIFA19_TRIAL.exe"+3F7B4DB: 44 89 65 B4              -  mov [rbp-4C],r12d
+"FIFA19_TRIAL.exe"+3F7B4DF: 44 8B 6C 08 04           -  mov r13d,[rax+rcx+04]
+"FIFA19_TRIAL.exe"+3F7B4E4: 8B 54 08 1C              -  mov edx,[rax+rcx+1C]
+"FIFA19_TRIAL.exe"+3F7B4E8: 89 55 B8                 -  mov [rbp-48],edx
+"FIFA19_TRIAL.exe"+3F7B4EB: 8B 54 08 08              -  mov edx,[rax+rcx+08]
+"FIFA19_TRIAL.exe"+3F7B4EF: 89 55 BC                 -  mov [rbp-44],edx
+"FIFA19_TRIAL.exe"+3F7B4F2: 8B 54 08 0C              -  mov edx,[rax+rcx+0C]
+"FIFA19_TRIAL.exe"+3F7B4F6: 89 54 24 68              -  mov [rsp+68],edx
+"FIFA19_TRIAL.exe"+3F7B4FA: 8B 54 08 10              -  mov edx,[rax+rcx+10]
+}
+</AssemblerScript>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>733</ID>
+              <Description>"NationalTeamID"</Description>
+              <VariableType>4 Bytes</VariableType>
+              <Address>NationalTeamID</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1874</ID>
+              <Description>"ClubID"</Description>
+              <VariableType>4 Bytes</VariableType>
+              <Address>ClubID</Address>
+              <Offsets>
+                <Offset>0</Offset>
+                <Offset>d0</Offset>
+              </Offsets>
             </CheatEntry>
           </CheatEntries>
         </CheatEntry>
@@ -11128,12 +12024,12 @@ dealloc(secmattr_rangehigh)
                   </CheatEntries>
                 </CheatEntry>
                 <CheatEntry>
-                  <ID>1273</ID>
+                  <ID>2683</ID>
                   <Description>"MIN_PLAYER_AGE_FOR_PROMOTION = 12"</Description>
                   <LastState/>
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>[ENABLE]
-aobscanmodule(INJECT_MinAgeForPromotion,FIFA19_TRIAL.exe,41 B8 03 00 00 00 89 85 F4) // should be unique
+aobscanmodule(INJECT_MinAgeForPromotion,FIFA19_TRIAL.exe,41 B8 03 00 00 00 89 85 E4) // should be unique
 alloc(newmem_MinAgeForPromotion,$1000,"FIFA19_TRIAL.exe"+40F3243)
 
 label(code_MinAgeForPromotion)
@@ -11160,31 +12056,31 @@ unregistersymbol(INJECT_MinAgeForPromotion)
 dealloc(newmem_MinAgeForPromotion)
 
 {
-// ORIGINAL CODE - INJECTION POINT: "FIFA19_TRIAL.exe"+40F3243
+// ORIGINAL CODE - INJECTION POINT: "FIFA19_TRIAL.exe"+40EDA53
 
-"FIFA19_TRIAL.exe"+40F320D: 41 B8 10 00 00 00     -  mov r8d,00000010
-"FIFA19_TRIAL.exe"+40F3213: 89 85 0C 01 00 00     -  mov [rbp+0000010C],eax
-"FIFA19_TRIAL.exe"+40F3219: 48 8D 15 68 8C 28 01  -  lea rdx,[FIFA19_TRIAL.exe+537BE88]
-"FIFA19_TRIAL.exe"+40F3220: 48 8B CB              -  mov rcx,rbx
-"FIFA19_TRIAL.exe"+40F3223: E8 18 96 22 FE        -  call FIFA19_TRIAL.exe+231C840
-"FIFA19_TRIAL.exe"+40F3228: 41 B8 10 00 00 00     -  mov r8d,00000010
-"FIFA19_TRIAL.exe"+40F322E: 89 85 18 01 00 00     -  mov [rbp+00000118],eax
-"FIFA19_TRIAL.exe"+40F3234: 48 8D 15 75 8C 28 01  -  lea rdx,[FIFA19_TRIAL.exe+537BEB0]
-"FIFA19_TRIAL.exe"+40F323B: 48 8B CB              -  mov rcx,rbx
-"FIFA19_TRIAL.exe"+40F323E: E8 FD 95 22 FE        -  call FIFA19_TRIAL.exe+231C840
+"FIFA19_TRIAL.exe"+40EDA1D: 41 B8 10 00 00 00     -  mov r8d,00000010
+"FIFA19_TRIAL.exe"+40EDA23: 89 85 FC 00 00 00     -  mov [rbp+000000FC],eax
+"FIFA19_TRIAL.exe"+40EDA29: 48 8D 15 F0 D9 1C 01  -  lea rdx,[FIFA19_TRIAL.exe+52BB420]
+"FIFA19_TRIAL.exe"+40EDA30: 48 8B CB              -  mov rcx,rbx
+"FIFA19_TRIAL.exe"+40EDA33: E8 08 79 21 FE        -  call FIFA19_TRIAL.exe+2305340
+"FIFA19_TRIAL.exe"+40EDA38: 41 B8 10 00 00 00     -  mov r8d,00000010
+"FIFA19_TRIAL.exe"+40EDA3E: 89 85 08 01 00 00     -  mov [rbp+00000108],eax
+"FIFA19_TRIAL.exe"+40EDA44: 48 8D 15 5D DA 1C 01  -  lea rdx,[FIFA19_TRIAL.exe+52BB4A8]
+"FIFA19_TRIAL.exe"+40EDA4B: 48 8B CB              -  mov rcx,rbx
+"FIFA19_TRIAL.exe"+40EDA4E: E8 ED 78 21 FE        -  call FIFA19_TRIAL.exe+2305340
 // ---------- INJECTING HERE ----------
-"FIFA19_TRIAL.exe"+40F3243: 41 B8 03 00 00 00     -  mov r8d,00000003
+"FIFA19_TRIAL.exe"+40EDA53: 41 B8 03 00 00 00     -  mov r8d,00000003
 // ---------- DONE INJECTING  ----------
-"FIFA19_TRIAL.exe"+40F3249: 89 85 F4 00 00 00     -  mov [rbp+000000F4],eax
-"FIFA19_TRIAL.exe"+40F324F: 48 8D 15 8A 8C 28 01  -  lea rdx,[FIFA19_TRIAL.exe+537BEE0]
-"FIFA19_TRIAL.exe"+40F3256: 48 8B CB              -  mov rcx,rbx
-"FIFA19_TRIAL.exe"+40F3259: E8 E2 95 22 FE        -  call FIFA19_TRIAL.exe+231C840
-"FIFA19_TRIAL.exe"+40F325E: 41 B8 03 00 00 00     -  mov r8d,00000003
-"FIFA19_TRIAL.exe"+40F3264: 89 85 04 01 00 00     -  mov [rbp+00000104],eax
-"FIFA19_TRIAL.exe"+40F326A: 48 8D 15 97 8C 28 01  -  lea rdx,[FIFA19_TRIAL.exe+537BF08]
-"FIFA19_TRIAL.exe"+40F3271: 48 8B CB              -  mov rcx,rbx
-"FIFA19_TRIAL.exe"+40F3274: E8 C7 95 22 FE        -  call FIFA19_TRIAL.exe+231C840
-"FIFA19_TRIAL.exe"+40F3279: 41 B8 06 00 00 00     -  mov r8d,00000006
+"FIFA19_TRIAL.exe"+40EDA59: 89 85 E4 00 00 00     -  mov [rbp+000000E4],eax
+"FIFA19_TRIAL.exe"+40EDA5F: 48 8D 15 1A DA 1C 01  -  lea rdx,[FIFA19_TRIAL.exe+52BB480]
+"FIFA19_TRIAL.exe"+40EDA66: 48 8B CB              -  mov rcx,rbx
+"FIFA19_TRIAL.exe"+40EDA69: E8 D2 78 21 FE        -  call FIFA19_TRIAL.exe+2305340
+"FIFA19_TRIAL.exe"+40EDA6E: 41 B8 03 00 00 00     -  mov r8d,00000003
+"FIFA19_TRIAL.exe"+40EDA74: 89 85 F4 00 00 00     -  mov [rbp+000000F4],eax
+"FIFA19_TRIAL.exe"+40EDA7A: 48 8D 15 87 DA 1C 01  -  lea rdx,[FIFA19_TRIAL.exe+52BB508]
+"FIFA19_TRIAL.exe"+40EDA81: 48 8B CB              -  mov rcx,rbx
+"FIFA19_TRIAL.exe"+40EDA84: E8 B7 78 21 FE        -  call FIFA19_TRIAL.exe+2305340
+"FIFA19_TRIAL.exe"+40EDA89: 41 B8 06 00 00 00     -  mov r8d,00000006
 }
 </AssemblerScript>
                 </CheatEntry>
@@ -11687,6 +12583,277 @@ dealloc(newmem_CountryIsBeingScouted)
           </CheatEntries>
         </CheatEntry>
         <CheatEntry>
+          <ID>1807</ID>
+          <Description>"Match Settings"</Description>
+          <Options moHideChildren="1"/>
+          <LastState Value="" RealAddress="00000000"/>
+          <GroupHeader>1</GroupHeader>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>683</ID>
+              <Description>"Change Stadium"</Description>
+              <Options moHideChildren="1"/>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_ChangeStadium,FIFA19_TRIAL.exe,41 8B 9D E4 13 00 00) // should be unique
+alloc(newmem_ChangeStadium,$1000,"FIFA19_TRIAL.exe"+35EFC99)
+
+label(code_ChangeStadium)
+label(ret_ChangeStadium)
+
+alloc(StadiumID, 4)
+registersymbol(StadiumID)
+StadiumID:
+dd (int)2
+
+newmem_ChangeStadium:
+  mov eax, [StadiumID]
+  mov [r13+000013E4], eax
+
+code_ChangeStadium:
+  mov ebx,[r13+000013E4]
+  jmp ret_ChangeStadium
+
+INJECT_ChangeStadium:
+  jmp newmem_ChangeStadium
+  nop
+  nop
+ret_ChangeStadium:
+registersymbol(INJECT_ChangeStadium)
+
+[DISABLE]
+//code_ChangeStadium from here till the end of the code_ChangeStadium will be used to disable the cheat
+INJECT_ChangeStadium:
+  db 41 8B 9D E4 13 00 00
+
+unregistersymbol(INJECT_ChangeStadium)
+dealloc(newmem_ChangeStadium)
+unregistersymbol(StadiumID)
+dealloc(StadiumID)
+
+{
+// ORIGINAL CODE - INJECTION POINT: "FIFA19_TRIAL.exe"+35EFC99
+
+"FIFA19_TRIAL.exe"+35EFC5B: 4C 89 67 38           -  mov [rdi+38],r12
+"FIFA19_TRIAL.exe"+35EFC5F: 8B 87 34 16 00 00     -  mov eax,[rdi+00001634]
+"FIFA19_TRIAL.exe"+35EFC65: 89 87 20 09 00 00     -  mov [rdi+00000920],eax
+"FIFA19_TRIAL.exe"+35EFC6B: 89 8F F4 11 00 00     -  mov [rdi+000011F4],ecx
+"FIFA19_TRIAL.exe"+35EFC71: 44 89 A7 18 12 00 00  -  mov [rdi+00001218],r12d
+"FIFA19_TRIAL.exe"+35EFC78: 4C 89 A7 24 09 00 00  -  mov [rdi+00000924],r12
+"FIFA19_TRIAL.exe"+35EFC7F: 4C 89 A7 2C 09 00 00  -  mov [rdi+0000092C],r12
+"FIFA19_TRIAL.exe"+35EFC86: 4C 89 A7 34 09 00 00  -  mov [rdi+00000934],r12
+"FIFA19_TRIAL.exe"+35EFC8D: 8B 87 38 16 00 00     -  mov eax,[rdi+00001638]
+"FIFA19_TRIAL.exe"+35EFC93: 89 87 1C 12 00 00     -  mov [rdi+0000121C],eax
+// ---------- INJECTING HERE ----------
+"FIFA19_TRIAL.exe"+35EFC99: 41 8B 9D E4 13 00 00  -  mov ebx,[r13+000013E4]
+// ---------- DONE INJECTING  ----------
+"FIFA19_TRIAL.exe"+35EFCA0: 89 9F 9C 15 00 00     -  mov [rdi+0000159C],ebx
+"FIFA19_TRIAL.exe"+35EFCA6: 4C 8B 74 24 58        -  mov r14,[rsp+58]
+"FIFA19_TRIAL.exe"+35EFCAB: 49 8B 06              -  mov rax,[r14]
+"FIFA19_TRIAL.exe"+35EFCAE: 44 8B C3              -  mov r8d,ebx
+"FIFA19_TRIAL.exe"+35EFCB1: 8D 51 06              -  lea edx,[rcx+06]
+"FIFA19_TRIAL.exe"+35EFCB4: 49 8B CE              -  mov rcx,r14
+"FIFA19_TRIAL.exe"+35EFCB7: FF 50 58              -  call qword ptr [rax+58]
+"FIFA19_TRIAL.exe"+35EFCBA: 41 8B 85 EC 13 00 00  -  mov eax,[r13+000013EC]
+"FIFA19_TRIAL.exe"+35EFCC1: 89 45 67              -  mov [rbp+67],eax
+"FIFA19_TRIAL.exe"+35EFCC4: 41 8B 85 F0 13 00 00  -  mov eax,[r13+000013F0]
+}
+</AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>684</ID>
+                  <Description>"StadiumID"</Description>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>StadiumID</Address>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1982</ID>
+              <Description>"Half Length"</Description>
+              <Options moHideChildren="1"/>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_Match_Half_Length,FIFA19_TRIAL.exe,45 8B 87 08 14 00 00) // should be unique
+alloc(newmem_Match_Half_Length,$1000,"FIFA19_TRIAL.exe"+35EFEFD)
+
+label(code_Match_Half_Length)
+label(ret_Match_Half_Length)
+
+alloc(HalfLength, 4)
+registersymbol(HalfLength)
+HalfLength:
+dd (int)1
+
+newmem_Match_Half_Length:
+  mov r8d, [HalfLength]
+  mov [r15+00001408], r8d
+
+code_Match_Half_Length:
+  mov r8d,[r15+00001408]
+  jmp ret_Match_Half_Length
+
+INJECT_Match_Half_Length:
+  jmp newmem_Match_Half_Length
+  nop
+  nop
+ret_Match_Half_Length:
+registersymbol(INJECT_Match_Half_Length)
+
+[DISABLE]
+//code_Match_Half_Length from here till the end of the code_Match_Half_Length will be used to disable the cheat
+INJECT_Match_Half_Length:
+  db 45 8B 87 08 14 00 00
+
+unregistersymbol(INJECT_Match_Half_Length)
+dealloc(newmem_Match_Half_Length)
+unregistersymbol(HalfLength)
+dealloc(HalfLength)
+
+{
+// ORIGINAL CODE - INJECTION POINT: "FIFA19_TRIAL.exe"+35EFEFD
+
+"FIFA19_TRIAL.exe"+35EFED2: 49 8B 45 00              -  mov rax,[r13+00]
+"FIFA19_TRIAL.exe"+35EFED6: 49 8B CD                 -  mov rcx,r13
+"FIFA19_TRIAL.exe"+35EFED9: FF 50 28                 -  call qword ptr [rax+28]
+"FIFA19_TRIAL.exe"+35EFEDC: 89 87 C8 15 00 00        -  mov [rdi+000015C8],eax
+"FIFA19_TRIAL.exe"+35EFEE2: EB 04                    -  jmp FIFA19_TRIAL.exe+35EFEE8
+"FIFA19_TRIAL.exe"+35EFEE4: 4C 8B 7D 87              -  mov r15,[rbp-79]
+"FIFA19_TRIAL.exe"+35EFEE8: 41 8B 87 04 14 00 00     -  mov eax,[r15+00001404]
+"FIFA19_TRIAL.exe"+35EFEEF: 89 87 58 1F 00 00        -  mov [rdi+00001F58],eax
+"FIFA19_TRIAL.exe"+35EFEF5: 48 8B 4C 24 58           -  mov rcx,[rsp+58]
+"FIFA19_TRIAL.exe"+35EFEFA: 48 8B 01                 -  mov rax,[rcx]
+// ---------- INJECTING HERE ----------
+"FIFA19_TRIAL.exe"+35EFEFD: 45 8B 87 08 14 00 00     -  mov r8d,[r15+00001408]
+// ---------- DONE INJECTING  ----------
+"FIFA19_TRIAL.exe"+35EFF04: 33 D2                    -  xor edx,edx
+"FIFA19_TRIAL.exe"+35EFF06: FF 50 58                 -  call qword ptr [rax+58]
+"FIFA19_TRIAL.exe"+35EFF09: 48 8B 4C 24 58           -  mov rcx,[rsp+58]
+"FIFA19_TRIAL.exe"+35EFF0E: 48 8B 01                 -  mov rax,[rcx]
+"FIFA19_TRIAL.exe"+35EFF11: 45 8B 87 0C 14 00 00     -  mov r8d,[r15+0000140C]
+"FIFA19_TRIAL.exe"+35EFF18: BA 03 00 00 00           -  mov edx,00000003
+"FIFA19_TRIAL.exe"+35EFF1D: FF 50 58                 -  call qword ptr [rax+58]
+"FIFA19_TRIAL.exe"+35EFF20: 45 8B 87 0C 14 00 00     -  mov r8d,[r15+0000140C]
+"FIFA19_TRIAL.exe"+35EFF27: 41 83 F8 06              -  cmp r8d,06
+"FIFA19_TRIAL.exe"+35EFF2B: B8 05 00 00 00           -  mov eax,00000005
+}
+</AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>1985</ID>
+                  <Description>"Half Length"</Description>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>HalfLength</Address>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1986</ID>
+              <Description>"Weather"</Description>
+              <Options moHideChildren="1"/>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_Match_Weather,FIFA19_TRIAL.exe,83 F8 FF 0F 44 C6 EB) // should be unique
+alloc(newmem_Match_Weather,$1000,"FIFA19_TRIAL.exe"+344045B)
+
+label(code_Match_Weather)
+label(ret_Match_Weather)
+
+alloc(Weather, 4)
+registersymbol(Weather)
+
+// Weather IDs:
+// 0 - Clear
+// 1 - Hazy
+// 2 - Cloudy
+// 3 - Rain
+// 4 - Showers
+// 5 - Snow
+// 6 - Flurries
+// 7 - Overcast
+// 8 - Foggy
+// OVERRIDE/WEATHER
+Weather:
+dd (int)0
+
+newmem_Match_Weather:
+  mov eax, [Weather]
+
+code_Match_Weather:
+  cmp eax,-01
+  cmove eax,esi
+  jmp ret_Match_Weather
+
+INJECT_Match_Weather:
+  jmp newmem_Match_Weather
+  nop
+ret_Match_Weather:
+registersymbol(INJECT_Match_Weather)
+
+[DISABLE]
+//code_Match_Weather from here till the end of the code_Match_Weather will be used to disable the cheat
+INJECT_Match_Weather:
+  db 83 F8 FF 0F 44 C6
+
+unregistersymbol(INJECT_Match_Weather)
+dealloc(newmem_Match_Weather)
+unregistersymbol(Weather)
+dealloc(Weather)
+
+{
+// ORIGINAL CODE - INJECTION POINT: "FIFA19_TRIAL.exe"+344045B
+
+"FIFA19_TRIAL.exe"+3440430: 41 0F B6 04 1E           -  movzx eax,byte ptr [r14+rbx]
+"FIFA19_TRIAL.exe"+3440435: 48 FF C3                 -  inc rbx
+"FIFA19_TRIAL.exe"+3440438: 3A 44 19 FF              -  cmp al,[rcx+rbx-01]
+"FIFA19_TRIAL.exe"+344043C: 75 25                    -  jne FIFA19_TRIAL.exe+3440463
+"FIFA19_TRIAL.exe"+344043E: 48 83 FB 08              -  cmp rbx,08
+"FIFA19_TRIAL.exe"+3440442: 75 EC                    -  jne FIFA19_TRIAL.exe+3440430
+"FIFA19_TRIAL.exe"+3440444: 44 8D 43 F7              -  lea r8d,[rbx-09]
+"FIFA19_TRIAL.exe"+3440448: 48 8D 15 A1 77 DA 01     -  lea rdx,[FIFA19_TRIAL.exe+51E7BF0]
+"FIFA19_TRIAL.exe"+344044F: 48 8B 0D DA 93 7F 02     -  mov rcx,[FIFA19_TRIAL.exe+5C39830]
+"FIFA19_TRIAL.exe"+3440456: E8 E5 4E EC FE           -  call FIFA19_TRIAL.exe+2305340
+// ---------- INJECTING HERE ----------
+"FIFA19_TRIAL.exe"+344045B: 83 F8 FF                 -  cmp eax,-01
+"FIFA19_TRIAL.exe"+344045E: 0F 44 C6                 -  cmove eax,esi
+// ---------- DONE INJECTING  ----------
+"FIFA19_TRIAL.exe"+3440461: EB 02                    -  jmp FIFA19_TRIAL.exe+3440465
+"FIFA19_TRIAL.exe"+3440463: 8B C6                    -  mov eax,esi
+"FIFA19_TRIAL.exe"+3440465: 48 81 C4 18 01 00 00     -  add rsp,00000118
+"FIFA19_TRIAL.exe"+344046C: 41 5F                    -  pop r15
+"FIFA19_TRIAL.exe"+344046E: 41 5E                    -  pop r14
+"FIFA19_TRIAL.exe"+3440470: 41 5D                    -  pop r13
+"FIFA19_TRIAL.exe"+3440472: 41 5C                    -  pop r12
+"FIFA19_TRIAL.exe"+3440474: 5F                       -  pop rdi
+"FIFA19_TRIAL.exe"+3440475: 5E                       -  pop rsi
+"FIFA19_TRIAL.exe"+3440476: 5B                       -  pop rbx
+}
+</AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>1983</ID>
+                  <Description>"Weather"</Description>
+                  <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'Clear'
+1: 'Hazy'
+2: 'Cloudy'
+3: 'Rain'
+4: 'Showers'
+5: 'Snow'
+6: 'Flurries'
+7: 'Overcast'
+8: 'Foggy'
+</DropDownList>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>Weather</Address>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
           <ID>1611</ID>
           <Description>"Sim Match Settings"</Description>
           <Options moHideChildren="1"/>
@@ -11897,6 +13064,122 @@ dealloc(newmem_FatigueBase)
           <LastState/>
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_matchScore,FIFA19_TRIAL.exe,44 8B 81 1C 01 00 00) // should be unique
+alloc(matchscore_cave,$1000,"FIFA19_TRIAL.exe"+2578D85)
+
+alloc(ptrHomeTeamScore, 8)
+registersymbol(ptrHomeTeamScore)
+ptrHomeTeamScore:
+dq 00
+
+alloc(ptrAwayTeamScore, 8)
+registersymbol(ptrAwayTeamScore)
+ptrAwayTeamScore:
+dq 00
+
+label(code_matchscore)
+label(home_matchscore)
+label(away_matchscore)
+label(return_matchscore)
+
+matchscore_cave:
+  pushf
+  cmp rdx, 00
+  je home_matchscore
+  cmp rdx, 01
+  je away_matchscore
+  jmp code_matchscore
+
+home_matchscore:
+  mov [ptrHomeTeamScore], rcx
+  jmp code_matchscore
+away_matchscore:
+  mov [ptrAwayTeamScore], rcx
+  jmp code_matchscore
+
+code_matchscore:
+  mov r8d,[rcx+0000011C]
+  popf
+  jmp return_matchscore
+
+INJECT_matchScore:
+  jmp matchscore_cave
+  nop
+  nop
+return_matchscore:
+registersymbol(INJECT_matchScore)
+
+aobscanmodule(INJECT_DisableSubstitutions,FIFA19_TRIAL.exe,42 8B BC 2B E4 96 00 00 46) // should be unique
+alloc(newmem_DisableSubstitutions,$1000,"FIFA19_TRIAL.exe"+118F745B)
+
+label(code_DisableSubstitutions)
+label(ret_DisableSubstitutions)
+
+alloc(bHomeTeam_NoSubs, 1)
+registersymbol(bHomeTeam_NoSubs)
+bHomeTeam_NoSubs:
+db 00
+
+alloc(bHomeTeam_UnlimitedSubs, 1)
+registersymbol(bHomeTeam_UnlimitedSubs)
+bHomeTeam_UnlimitedSubs:
+db 00
+
+alloc(bAwayTeam_NoSubs, 1)
+registersymbol(bAwayTeam_NoSubs)
+bAwayTeam_NoSubs:
+db 00
+
+alloc(bAwayTeam_UnlimitedSubs, 1)
+registersymbol(bAwayTeam_UnlimitedSubs)
+bAwayTeam_UnlimitedSubs:
+db 00
+
+
+newmem_DisableSubstitutions:
+  pushf
+  cmp rsi, 0 // HomeTeam
+  je HomeTeam_Substitutions
+  cmp rsi, 1 // AwayTeam
+  je AwayTeam_Substitutions
+  jmp code_DisableSubstitutions
+
+HomeTeam_Substitutions:
+  cmp byte ptr [bHomeTeam_NoSubs], 1
+  je code_DisableSubs
+  cmp byte ptr [bHomeTeam_UnlimitedSubs], 1
+  je code_UnlimitedSubs
+  jmp code_DisableSubstitutions
+
+AwayTeam_Substitutions:
+  cmp byte ptr [bAwayTeam_NoSubs], 1
+  je code_DisableSubs
+  cmp byte ptr [bAwayTeam_UnlimitedSubs], 1
+  je code_UnlimitedSubs
+  jmp code_DisableSubstitutions
+
+
+code_DisableSubs:
+  mov [rbx+r13+000096E4], #0
+  jmp code_DisableSubstitutions
+
+code_UnlimitedSubs:
+  mov [rbx+r13+000096E4], #7
+  jmp code_DisableSubstitutions
+
+code_DisableSubstitutions:
+  mov edi,[rbx+r13+000096E4]
+  popf
+  jmp ret_DisableSubstitutions
+
+INJECT_DisableSubstitutions:
+  jmp newmem_DisableSubstitutions
+  nop
+  nop
+  nop
+ret_DisableSubstitutions:
+registersymbol(INJECT_DisableSubstitutions)
+
 aobscanmodule(INJECT_ingame_stamina,FIFA19_TRIAL.exe,8B 43 68 41 89 82 68 03 00 00) // should be unique
 alloc(cave_ingame_stamina,$1000,"FIFA19_TRIAL.exe"+286FDF8)
 
@@ -12006,11 +13289,11 @@ HomeTeam_Injuries:
   jmp HomeTeam_skillmoves
 
 HomeTeam_Injured:
-  mov [rcx+C0], #3
+  mov [rbx+80], #3
   jmp HomeTeam_skillmoves
 
 HomeTeam_NeverInjured:
-  mov [rcx+C0], #0
+  mov [rbx+80], #0
   jmp HomeTeam_skillmoves
 
 HomeTeam_skillmoves:
@@ -12044,11 +13327,11 @@ AwayTeam_Injuries:
   jmp AwayTeam_skillmoves
 
 AwayTeam_Injured:
-  mov [rcx+C0], #3
+  mov [rbx+80], #3
   jmp AwayTeam_skillmoves
 
 AwayTeam_NeverInjured:
-  mov [rcx+C0], #0
+  mov [rbx+80], #0
   jmp AwayTeam_skillmoves
 
 AwayTeam_skillmoves:
@@ -12075,6 +13358,29 @@ registersymbol(INJECT_ingame_stamina)
 
 [DISABLE]
 //code from here till the end of the code will be used to disable the cheat
+INJECT_matchScore:
+  db 44 8B 81 1C 01 00 00
+
+unregistersymbol(INJECT_matchScore)
+dealloc(matchscore_cave)
+unregistersymbol(ptrHomeTeamScore)
+dealloc(ptrHomeTeamScore)
+unregistersymbol(ptrAwayTeamScore)
+dealloc(ptrAwayTeamScore)
+
+INJECT_DisableSubstitutions:
+  db 42 8B BC 2B E4 96 00 00
+
+unregistersymbol(INJECT_DisableSubstitutions)
+dealloc(newmem_DisableSubstitutions)
+unregistersymbol(bHomeTeam_NoSubs)
+dealloc(bHomeTeam_NoSubs)
+unregistersymbol(bHomeTeam_UnlimitedSubs)
+dealloc(bHomeTeam_UnlimitedSubs)
+unregistersymbol(bAwayTeam_NoSubs)
+dealloc(bAwayTeam_NoSubs)
+unregistersymbol(bAwayTeam_UnlimitedSubs)
+dealloc(bAwayTeam_UnlimitedSubs)
 
 INJECT_ingame_stamina:
   db 8B 43 68 41 89 82 68 03 00 00
@@ -12101,6 +13407,63 @@ unregistersymbol(bHomeTeam_FiveStars)
 dealloc(bHomeTeam_FiveStars)
 unregistersymbol(bAwayTeam_FiveStars)
 dealloc(bAwayTeam_FiveStars)
+
+{
+// ORIGINAL CODE - INJECTION POINT: "FIFA19_TRIAL.exe"+2578D85
+
+"FIFA19_TRIAL.exe"+2578D66: 49 3B D1              -  cmp rdx,r9
+"FIFA19_TRIAL.exe"+2578D69: 75 E5                 -  jne FIFA19_TRIAL.exe+2578D50
+"FIFA19_TRIAL.exe"+2578D6B: EB 3B                 -  jmp FIFA19_TRIAL.exe+2578DA8
+"FIFA19_TRIAL.exe"+2578D6D: 48 8B 47 68           -  mov rax,[rdi+68]
+"FIFA19_TRIAL.exe"+2578D71: 48 2B 47 60           -  sub rax,[rdi+60]
+"FIFA19_TRIAL.exe"+2578D75: 48 C1 F8 03           -  sar rax,03
+"FIFA19_TRIAL.exe"+2578D79: 3B D0                 -  cmp edx,eax
+"FIFA19_TRIAL.exe"+2578D7B: 73 2B                 -  jae FIFA19_TRIAL.exe+2578DA8
+"FIFA19_TRIAL.exe"+2578D7D: 4C 8B 4F 60           -  mov r9,[rdi+60]
+"FIFA19_TRIAL.exe"+2578D81: 49 8B 0C D1           -  mov rcx,[r9+rdx*8]
+// ---------- INJECTING HERE ----------
+"FIFA19_TRIAL.exe"+2578D85: 44 8B 81 1C 01 00 00  -  mov r8d,[rcx+0000011C]
+// ---------- DONE INJECTING  ----------
+"FIFA19_TRIAL.exe"+2578D8C: 85 D2                 -  test edx,edx
+"FIFA19_TRIAL.exe"+2578D8E: 75 05                 -  jne FIFA19_TRIAL.exe+2578D95
+"FIFA19_TRIAL.exe"+2578D90: 41 8B D3              -  mov edx,r11d
+"FIFA19_TRIAL.exe"+2578D93: EB 06                 -  jmp FIFA19_TRIAL.exe+2578D9B
+"FIFA19_TRIAL.exe"+2578D95: 41 3B D3              -  cmp edx,r11d
+"FIFA19_TRIAL.exe"+2578D98: 0F 44 D6              -  cmove edx,esi
+"FIFA19_TRIAL.exe"+2578D9B: 8B C2                 -  mov eax,edx
+"FIFA19_TRIAL.exe"+2578D9D: 49 8B 0C C1           -  mov rcx,[r9+rax*8]
+"FIFA19_TRIAL.exe"+2578DA1: 44 03 81 20 01 00 00  -  add r8d,[rcx+00000120]
+"FIFA19_TRIAL.exe"+2578DA8: 45 89 86 D0 00 00 00  -  mov [r14+000000D0],r8d
+}
+
+{
+// ORIGINAL code_DisableSubstitutions - INJECTION POINT: "FIFA19_TRIAL.exe"+118F745B
+// DISABLE_CPU_SUBSTITUTION
+
+"FIFA19_TRIAL.exe"+14E9548: 03 D1                    -  add edx,ecx
+"FIFA19_TRIAL.exe"+14E954A: C1 FA 05                 -  sar edx,05
+"FIFA19_TRIAL.exe"+14E954D: 8B C2                    -  mov eax,edx
+"FIFA19_TRIAL.exe"+14E954F: C1 E8 1F                 -  shr eax,1F
+"FIFA19_TRIAL.exe"+14E9552: 03 D0                    -  add edx,eax
+"FIFA19_TRIAL.exe"+14E9554: 41 3B D0                 -  cmp edx,r8d
+"FIFA19_TRIAL.exe"+14E9557: C6 44 24 70 01           -  mov byte ptr [rsp+70],01
+"FIFA19_TRIAL.exe"+14E955C: 7C 05                    -  jl FIFA19_TRIAL.exe+14E9563
+"FIFA19_TRIAL.exe"+14E955E: C6 44 24 70 00           -  mov byte ptr [rsp+70],00
+"FIFA19_TRIAL.exe"+14E9563: 4C 69 EE AC 04 00 00     -  imul r13,rsi,000004AC
+// ---------- INJECTING HERE ----------
+"FIFA19_TRIAL.exe"+118F745B: 41 8B BC 1D A0 96 00 00  -  mov edi,[r13+rbx+000096A0]
+// ---------- DONE INJECTING  ----------
+"FIFA19_TRIAL.exe"+14E9572: 45 8B B4 1D 48 8D 00 00  -  mov r14d,[r13+rbx+00008D48]
+"FIFA19_TRIAL.exe"+14E957A: 44 2B F7                 -  sub r14d,edi
+"FIFA19_TRIAL.exe"+14E957D: 85 FF                    -  test edi,edi
+"FIFA19_TRIAL.exe"+14E957F: 0F 84 84 01 00 00        -  je FIFA19_TRIAL.exe+14E9709
+"FIFA19_TRIAL.exe"+14E9585: 4C 8B FE                 -  mov r15,rsi
+"FIFA19_TRIAL.exe"+14E9588: 49 C1 E7 05              -  shl r15,05
+"FIFA19_TRIAL.exe"+14E958C: 0F 1F 40 00              -  nop [rax+00]
+"FIFA19_TRIAL.exe"+14E9590: 41 83 FE 02              -  cmp r14d,02
+"FIFA19_TRIAL.exe"+14E9594: 0F 8F 6F 01 00 00        -  jg FIFA19_TRIAL.exe+14E9709
+"FIFA19_TRIAL.exe"+14E959A: 83 FD 01                 -  cmp ebp,01
+}
 
 {
 // ORIGINAL CODE - INJECTION POINT: "FIFA19_TRIAL.exe"+286FDF8
@@ -12133,12 +13496,236 @@ dealloc(bAwayTeam_FiveStars)
 </AssemblerScript>
           <CheatEntries>
             <CheatEntry>
+              <ID>836</ID>
+              <Description>"Match Timer"</Description>
+              <Options moHideChildren="1"/>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_MatchTimer,FIFA19_TRIAL.exe,8B 41 50 89 46 10) // should be unique
+alloc(newmem,$1000,"FIFA19_TRIAL.exe"+234C6AA)
+alloc(ptrMatchTime, 8)
+registersymbol(ptrMatchTime)
+ptrMatchTime:
+dq 00
+
+label(code)
+label(return)
+
+newmem:
+  mov [ptrMatchTime], rcx
+code:
+  mov eax,[rcx+50]
+  mov [rsi+10],eax
+  jmp return
+
+INJECT_MatchTimer:
+  jmp newmem
+  nop
+return:
+registersymbol(INJECT_MatchTimer)
+
+[DISABLE]
+//code from here till the end of the code will be used to disable the cheat
+INJECT_MatchTimer:
+  db 8B 41 50 89 46 10
+
+unregistersymbol(INJECT_MatchTimer)
+dealloc(newmem)
+unregistersymbol(ptrMatchTime)
+dealloc(ptrMatchTime)
+
+{
+// ORIGINAL CODE - INJECTION POINT: "FIFA19_TRIAL.exe"+234C6AA
+
+"FIFA19_TRIAL.exe"+234C673: 48 8B 81 D0 08 00 00        -  mov rax,[rcx+000008D0]
+"FIFA19_TRIAL.exe"+234C67A: 49 89 80 F0 0C 00 00        -  mov [r8+00000CF0],rax
+"FIFA19_TRIAL.exe"+234C681: 48 8B 81 D8 08 00 00        -  mov rax,[rcx+000008D8]
+"FIFA19_TRIAL.exe"+234C688: 49 89 80 F8 0C 00 00        -  mov [r8+00000CF8],rax
+"FIFA19_TRIAL.exe"+234C68F: 48 8B 72 08                 -  mov rsi,[rdx+08]
+"FIFA19_TRIAL.exe"+234C693: 48 83 C6 10                 -  add rsi,10
+"FIFA19_TRIAL.exe"+234C697: 48 8B 81 00 09 00 00        -  mov rax,[rcx+00000900]
+"FIFA19_TRIAL.exe"+234C69E: 8B 48 20                    -  mov ecx,[rax+20]
+"FIFA19_TRIAL.exe"+234C6A1: 89 0E                       -  mov [rsi],ecx
+"FIFA19_TRIAL.exe"+234C6A3: 48 8B 8B 00 09 00 00        -  mov rcx,[rbx+00000900]
+// ---------- INJECTING HERE ----------
+"FIFA19_TRIAL.exe"+234C6AA: 8B 41 50                    -  mov eax,[rcx+50]
+"FIFA19_TRIAL.exe"+234C6AD: 89 46 10                    -  mov [rsi+10],eax
+// ---------- DONE INJECTING  ----------
+"FIFA19_TRIAL.exe"+234C6B0: 8B 41 54                    -  mov eax,[rcx+54]
+"FIFA19_TRIAL.exe"+234C6B3: 89 46 14                    -  mov [rsi+14],eax
+"FIFA19_TRIAL.exe"+234C6B6: 48 8B 8B 00 09 00 00        -  mov rcx,[rbx+00000900]
+"FIFA19_TRIAL.exe"+234C6BD: 8B 51 50                    -  mov edx,[rcx+50]
+"FIFA19_TRIAL.exe"+234C6C0: E8 8B F1 FE FF              -  call FIFA19_TRIAL.exe+233B850
+"FIFA19_TRIAL.exe"+234C6C5: F3 0F 2C C0                 -  cvttss2si eax,xmm0
+"FIFA19_TRIAL.exe"+234C6C9: 89 46 24                    -  mov [rsi+24],eax
+"FIFA19_TRIAL.exe"+234C6CC: 48 8B 83 00 09 00 00        -  mov rax,[rbx+00000900]
+"FIFA19_TRIAL.exe"+234C6D3: 8B 88 9C 00 00 00           -  mov ecx,[rax+0000009C]
+"FIFA19_TRIAL.exe"+234C6D9: 89 4E 2C                    -  mov [rsi+2C],ecx
+}
+</AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>604</ID>
+                  <Description>"End current half"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+{$lua}
+getAddressList().getMemoryRecordByDescription("TIME").Value=25000
+{$asm}
+[DISABLE]
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>597</ID>
+                  <Description>"Freeze timer"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+{$lua}
+getAddressList().getMemoryRecordByDescription("TIME").Active=true
+{$asm}
+[DISABLE]
+{$lua}
+getAddressList().getMemoryRecordByDescription("TIME").Active=false
+{$asm}
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>605</ID>
+                  <Description>"Reset timer"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+{$lua}
+getAddressList().getMemoryRecordByDescription("TIME").Value=0
+{$asm}
+[DISABLE]
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>602</ID>
+                  <Description>"TIME"</Description>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>ptrMatchTime</Address>
+                  <Offsets>
+                    <Offset>50</Offset>
+                  </Offsets>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>2686</ID>
+              <Description>"Unlimited Substitutions (USER)"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_UnlimitedSubstitutions,FIFA19_TRIAL.exe,8B 84 01 D4 8E 00 00 C3) // should be unique
+alloc(newmem_UnlimitedSubstitutions,$1000,"FIFA19_TRIAL.exe"+11982E21)
+
+label(code_UnlimitedSubstitutions)
+label(ret_UnlimitedSubstitutions)
+
+newmem_UnlimitedSubstitutions:
+
+code_UnlimitedSubstitutions:
+  mov [rcx+rax+00008ED4], #7
+  mov eax,[rcx+rax+00008ED4]
+  jmp ret_UnlimitedSubstitutions
+
+INJECT_UnlimitedSubstitutions:
+  jmp newmem_UnlimitedSubstitutions
+  nop
+  nop
+ret_UnlimitedSubstitutions:
+registersymbol(INJECT_UnlimitedSubstitutions)
+
+[DISABLE]
+//code_UnlimitedSubstitutions from here till the end of the code_UnlimitedSubstitutions will be used to disable the cheat
+INJECT_UnlimitedSubstitutions:
+  db 8B 84 01 D4 8E 00 00
+
+unregistersymbol(INJECT_UnlimitedSubstitutions)
+dealloc(newmem_UnlimitedSubstitutions)
+
+{
+// ORIGINAL CODE - INJECTION POINT: "FIFA19_TRIAL.exe"+11982E21
+
+"FIFA19_TRIAL.exe"+11982DFA: 80 3D 01 29 6D F4 00              -  cmp byte ptr [FIFA19_TRIAL.exe+6055702],00
+"FIFA19_TRIAL.exe"+11982E01: 74 07                             -  je FIFA19_TRIAL.exe+11982E0A
+"FIFA19_TRIAL.exe"+11982E03: B8 01 00 00 00                    -  mov eax,00000001
+"FIFA19_TRIAL.exe"+11982E08: EB 02                             -  jmp FIFA19_TRIAL.exe+11982E0C
+"FIFA19_TRIAL.exe"+11982E0A: 31 C0                             -  xor eax,eax
+"FIFA19_TRIAL.exe"+11982E0C: 84 C0                             -  test al,al
+"FIFA19_TRIAL.exe"+11982E0E: 74 19                             -  je FIFA19_TRIAL.exe+11982E29
+"FIFA19_TRIAL.exe"+11982E10: 48 63 C2                          -  movsxd  rax,edx
+"FIFA19_TRIAL.exe"+11982E13: 48 69 C8 08 04 00 00              -  imul rcx,rax,00000408
+"FIFA19_TRIAL.exe"+11982E1A: 48 8B 05 D7 81 6F F4              -  mov rax,[FIFA19_TRIAL.exe+607AFF8]
+// ---------- INJECTING HERE ----------
+"FIFA19_TRIAL.exe"+11982E21: 8B 84 01 D4 8E 00 00              -  mov eax,[rcx+rax+00008ED4]
+// ---------- DONE INJECTING  ----------
+"FIFA19_TRIAL.exe"+11982E28: C3                                -  ret
+"FIFA19_TRIAL.exe"+11982E29: B8 E8 03 00 00                    -  mov eax,000003E8
+"FIFA19_TRIAL.exe"+11982E2E: C3                                -  ret
+"FIFA19_TRIAL.exe"+11982E2F: 4C 8B 1C 24                       -  mov r11,[rsp]
+"FIFA19_TRIAL.exe"+11982E33: 54                                -  push rsp
+"FIFA19_TRIAL.exe"+11982E34: 48 29 0C 24                       -  sub [rsp],rcx
+"FIFA19_TRIAL.exe"+11982E38: 48 83 C1 07                       -  add rcx,07
+"FIFA19_TRIAL.exe"+11982E3C: 48 01 0C 24                       -  add [rsp],rcx
+"FIFA19_TRIAL.exe"+11982E40: BF 00 00 00 00                    -  mov edi,00000000
+"FIFA19_TRIAL.exe"+11982E45: 48 FF 04 24                       -  inc [rsp]
+}
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
               <ID>595</ID>
               <Description>"Home Team"</Description>
               <Options moHideChildren="1"/>
               <LastState Value="" RealAddress="00000000"/>
               <GroupHeader>1</GroupHeader>
               <CheatEntries>
+                <CheatEntry>
+                  <ID>1992</ID>
+                  <Description>"Home - Unlimited Substitutions (CPU)"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+bHomeTeam_UnlimitedSubs:
+  db 1
+[DISABLE]
+bHomeTeam_UnlimitedSubs:
+  db 0
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>1990</ID>
+                  <Description>"Home - Disable Substitutions (CPU)"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+bHomeTeam_NoSubs:
+  db 1
+[DISABLE]
+bHomeTeam_NoSubs:
+  db 0
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>609</ID>
+                  <Description>"Home - Injured players"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+bHomeTeam_Injured:
+  db 1
+bHomeTeam_NeverInjured:
+  db 0
+[DISABLE]
+bHomeTeam_Injured:
+  db 0
+</AssemblerScript>
+                </CheatEntry>
                 <CheatEntry>
                   <ID>603</ID>
                   <Description>"Home - 5 stars skill moves"</Description>
@@ -12182,6 +13769,15 @@ bHomeTeam_Tired:
   db 0
 </AssemblerScript>
                 </CheatEntry>
+                <CheatEntry>
+                  <ID>600</ID>
+                  <Description>"Home - Goals scored"</Description>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>ptrHomeTeamScore</Address>
+                  <Offsets>
+                    <Offset>11C</Offset>
+                  </Offsets>
+                </CheatEntry>
               </CheatEntries>
             </CheatEntry>
             <CheatEntry>
@@ -12191,6 +13787,47 @@ bHomeTeam_Tired:
               <LastState Value="" RealAddress="00000000"/>
               <GroupHeader>1</GroupHeader>
               <CheatEntries>
+                <CheatEntry>
+                  <ID>1991</ID>
+                  <Description>"Away - Unlimited Substitutions (CPU)"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+bAwayTeam_UnlimitedSubs:
+  db 1
+[DISABLE]
+bAwayTeam_UnlimitedSubs:
+  db 0
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>1989</ID>
+                  <Description>"Away - Disable Substitutions (CPU)"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+bAwayTeam_NoSubs:
+  db 1
+[DISABLE]
+bAwayTeam_NoSubs:
+  db 0
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>612</ID>
+                  <Description>"Away - Injured players"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+bAwayTeam_Injured:
+  db 1
+bAwayTeam_NeverInjured:
+  db 0
+[DISABLE]
+bAwayTeam_Injured:
+  db 0
+</AssemblerScript>
+                </CheatEntry>
                 <CheatEntry>
                   <ID>2678</ID>
                   <Description>"Away - 5 stars skill moves"</Description>
@@ -12234,6 +13871,15 @@ bAwayTeam_Tired:
   db 0
 </AssemblerScript>
                 </CheatEntry>
+                <CheatEntry>
+                  <ID>601</ID>
+                  <Description>"Away - Goals scored"</Description>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>ptrAwayTeamScore</Address>
+                  <Offsets>
+                    <Offset>11C</Offset>
+                  </Offsets>
+                </CheatEntry>
               </CheatEntries>
             </CheatEntry>
           </CheatEntries>
@@ -12248,7 +13894,7 @@ bAwayTeam_Tired:
     </CheatEntry>
     <CheatEntry>
       <ID>0</ID>
-      <Description>"Become a Patreon"</Description>
+      <Description>"Become a Patron"</Description>
       <LastState Value="" RealAddress="00000000"/>
       <GroupHeader>1</GroupHeader>
       <CheatEntries>
