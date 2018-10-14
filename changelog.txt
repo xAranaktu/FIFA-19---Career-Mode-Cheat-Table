@@ -39,3 +39,17 @@ Changelog:
 		- Added "career_managerpref Table" & "teamstadiumlinks Table"
 		- Added "Change Stadium", "Half Length", "Weather" to "Match Settings"
 		- Added "More efficient training (10x)"
+		
+	v1.0.4:
+		- Fixed editing player name (Pointer shouldn't point on nullbyte anymore)
+		- Added "More efficient training (x100)"
+		- Added "More efficient training (x9999)"
+		- Added "board.ini" to "Manager" section (Not sure if it's working)
+		- Added "Manager Rating - 99" to "Manager" section
+		- Added "seasoncount = 1" to "Manager" section (it's for unlimited career mode)
+		- Added "joboffer.ini" to "Job Offer" section
+		- Renamed "Edit Job Offers" script to "Edit Existing Job Offers" and moved it to "Job Offer" section.
+		- Added "Youth Player Retire At Age = 30" to "Youth Academy" section
+		- Added "teamplayerlinks Table" to "FIFA Database"
+		- Added "Unique Player Movement"
+		- Added "Alt + Tab Disconnect bypass" and now it's called "Dont Pause Game on AltTab"
