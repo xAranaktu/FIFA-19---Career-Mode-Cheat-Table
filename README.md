@@ -14,6 +14,7 @@ And the last thing but not least, __tick checkboxes only when you are activating
    * [Video Tutorials](#video-tutorials)
    * [Boots + ID](#boots)
    * [Managers](#managers)
+   * [Permanent stadium change](#permanent-stadium-change)
 
 
 ## Update Progress
@@ -286,3 +287,23 @@ List created by ![discord brand](https://i.imgur.com/IlwgSdP.png)maic#0386
 
 ## Managers
 [List created by](https://docs.google.com/spreadsheets/d/1-Oo7rkeEVC4cnMxfWTP4anuPuKzxo6dTBlC7XWR41Pg/edit#gid=0)![discord brand](https://i.imgur.com/IlwgSdP.png)maic#0386
+
+## Permanent Stadium Change
+How to change your home stadium permanently.
+On example I'm changing AC Milan Home Stadium from 'San Siro' (ID: 5) to 'Old Trafford' (ID: 1)
+1. In cheat table activate "career_managerpref Table" and "teamstadiumlinks Table"
+2. You need to have an __upcoming match on your home stadium__
+
+![](https://i.imgur.com/GdlyMZT.png) 
+
+3. Press 'Play Match' and go to 'Match Preview' screen
+
+![](https://i.imgur.com/VAmtWVS.jpg)
+
+4. Back to cheat table and edit __'stadiumid'__ in __career_managerpref Table__ and __'stadiumid'__ in __teamstadiumlinks Table__. Dunno if it's necessary, but for safety, I also recommend you to change 'stadiumname' in teamstadiumlinks Table.
+
+![](https://i.imgur.com/0GSyosR.png)
+
+5. Now just play this match (you will play it on old stadium) or simulate it and the next home match will be played on the new stadium. Saving and reloading career save at this point may also work, so playing match on old stadium will be not needed.
+
+![](https://i.imgur.com/nmVhcn8.jpg)
