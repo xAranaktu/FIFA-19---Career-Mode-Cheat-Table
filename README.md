@@ -15,6 +15,7 @@ And the last thing but not least, __tick checkboxes only when you are activating
    * [Boots + ID](#boots)
    * [Managers](#managers)
    * [Tattoos](#tattoos)
+   * [Celebration IDs](#celebrations)
    * [Permanent stadium change](#permanent-stadium-change)
 
 
@@ -300,6 +301,12 @@ List created by ![discord brand](https://i.imgur.com/IlwgSdP.png)maic#0386
 [Left Neck](https://imgur.com/gallery/zH4BjFd)
 
 [Right Neck](https://imgur.com/gallery/xL00oF3)
+
+## Celebrations
+
+List created by ![discord brand](https://i.imgur.com/IlwgSdP.png)Nv#0303
+
+[Celebrations](https://docs.google.com/spreadsheets/d/1RmTzmdlN9bGpU2w5hHmX_z1vNg2kP52bXxUSVDHCYh4/edit?usp=sharing)
 
 ## Permanent Stadium Change
 How to change your home stadium permanently.
