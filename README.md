@@ -291,19 +291,14 @@ List created by ![discord brand](https://i.imgur.com/IlwgSdP.png)maic#0386
 
 ## Tattoos
 
-__Left Arm__
 [Left Arm](https://imgur.com/gallery/ZKdgWkq)
 
-__Right Arm__
 [Right Arm](https://imgur.com/gallery/J40W0TX)
 
-__Back Neck__
 [Back Neck](https://imgur.com/gallery/gy3pv5n)
 
-__Left Neck__
 [Left Neck](https://imgur.com/gallery/zH4BjFd)
 
-__Right Neck__
 [Right Neck](https://imgur.com/gallery/xL00oF3)
 
 ## Permanent Stadium Change
