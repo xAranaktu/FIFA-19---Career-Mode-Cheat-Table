@@ -65,6 +65,67 @@
       <GroupHeader>1</GroupHeader>
       <CheatEntries>
         <CheatEntry>
+          <ID>2793</ID>
+          <Description>"Dont Pause Game on AltTab"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_alttab,FIFA19.exe,B9 05 15 00 00 48 89 5C 24 58 41) // should be unique
+alloc(newmem_alttab,$1000,"FIFA19.exe"+14A991C)
+
+label(code_alttab)
+label(ret_alttab)
+
+newmem_alttab:
+  add rsp, 48
+  ret
+code_alttab:
+  mov ecx,00001505
+  jmp ret_alttab
+
+INJECT_alttab:
+  jmp newmem_alttab
+ret_alttab:
+registersymbol(INJECT_alttab)
+
+[DISABLE]
+//code_alttab from here till the end of the code_alttab will be used to disable the cheat
+INJECT_alttab:
+  db B9 05 15 00 00
+
+unregistersymbol(INJECT_alttab)
+dealloc(newmem_alttab)
+
+{
+// ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+117A49B4
+// OnAltTab
+"FIFA19.exe"+117A4980: 4C 8B 1C 24                             -  mov r11,[rsp]
+"FIFA19.exe"+117A4984: 48 89 04 24                             -  mov [rsp],rax
+"FIFA19.exe"+117A4988: 48 8D 05 A1 4F FE F6                    -  lea rax,[FIFA19.exe+8789930]
+"FIFA19.exe"+117A498F: 48 87 04 24                             -  xchg [rsp],rax
+"FIFA19.exe"+117A4993: C3                                      -  ret
+"FIFA19.exe"+117A4994: 66 66 66 2E 0F 1F 84 00 00 00 00 00     -  nop cs:[rax+rax+00000000]
+"FIFA19.exe"+117A49A0: 48 83 EC 48                             -  sub rsp,48
+"FIFA19.exe"+117A49A4: 4C 8B 0D B5 2F 8D F4                    -  mov r9,[FIFA19.exe+6077960]
+"FIFA19.exe"+117A49AB: 4D 85 C9                                -  test r9,r9
+"FIFA19.exe"+117A49AE: 0F 84 41 01 00 00                       -  je FIFA19.exe+117A4AF5
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+117A49B4: B9 05 15 00 00                          -  mov ecx,00001505
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+117A49B9: 48 89 5C 24 58                          -  mov [rsp+58],rbx
+"FIFA19.exe"+117A49BE: 41 89 C8                                -  mov r8d,ecx
+"FIFA19.exe"+117A49C1: 48 89 74 24 60                          -  mov [rsp+60],rsi
+"FIFA19.exe"+117A49C6: 48 8D 15 C7 72 7A F3                    -  lea rdx,[FIFA19.exe+4F4BC94]
+"FIFA19.exe"+117A49CD: 0F 1F 00                                -  nop [rax]
+"FIFA19.exe"+117A49D0: 0F B6 02                                -  movzx eax,byte ptr [rdx]
+"FIFA19.exe"+117A49D3: 48 8D 52 01                             -  lea rdx,[rdx+01]
+"FIFA19.exe"+117A49D7: 45 6B C0 21                             -  imul r8d,r8d,21
+"FIFA19.exe"+117A49DB: 41 01 C0                                -  add r8d,eax
+"FIFA19.exe"+117A49DE: 85 C0                                   -  test eax,eax
+}
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
           <ID>1667</ID>
           <Description>"FIFA Database"</Description>
           <Options moHideChildren="1"/>
@@ -85,13 +146,7 @@
                   <Options moHideChildren="1"/>
                   <LastState/>
                   <VariableType>Auto Assembler Script</VariableType>
-                  <AssemblerScript>{
-  Game   : FIFA19.exe
-  Date   : 2019-09-21
-  Author : Aranaktu
-}
-
-[ENABLE]
+                  <AssemblerScript>[ENABLE]
 //code from here to '[DISABLE]' will be used to enable the cheat
 aobscanmodule(INJECT_DatabaseRead,FIFA19.exe, 48 01 DA 4C 03 46 30)
 alloc(new_DatabaseReadCave,$1000,"FIFA19.exe"+12541435)
@@ -401,13 +456,6 @@ dealloc(ptrTeamplayerlinks)
                           <ShowAsHex>1</ShowAsHex>
                           <VariableType>8 Bytes</VariableType>
                           <Address>playerDataPtr</Address>
-                        </CheatEntry>
-                        <CheatEntry>
-                          <ID>1865</ID>
-                          <Description>"Base Address - teamplayerlinks table"</Description>
-                          <ShowAsHex>1</ShowAsHex>
-                          <VariableType>8 Bytes</VariableType>
-                          <Address>ptrTeamplayerlinks</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>1104</ID>
@@ -6730,6 +6778,214 @@ dealloc(ptrTeamplayerlinks)
                       </CheatEntries>
                     </CheatEntry>
                     <CheatEntry>
+                      <ID>2761</ID>
+                      <Description>"teamplayerlinks Table"</Description>
+                      <Options moHideChildren="1"/>
+                      <LastState Value="" RealAddress="00000000"/>
+                      <GroupHeader>1</GroupHeader>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>1865</ID>
+                          <Description>"Base Address - teamplayerlinks table"</Description>
+                          <ShowAsHex>1</ShowAsHex>
+                          <VariableType>8 Bytes</VariableType>
+                          <Address>ptrTeamplayerlinks</Address>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2762</ID>
+                          <Description>"isamongtopscorers"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>1</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>ptrTeamplayerlinks</Address>
+                          <Offsets>
+                            <Offset>1</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2763</ID>
+                          <Description>"yellows"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>1</BitStart>
+                          <BitLength>6</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>ptrTeamplayerlinks</Address>
+                          <Offsets>
+                            <Offset>1</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2764</ID>
+                          <Description>"isamongtopscorersinteam"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>7</BitStart>
+                          <BitLength>1</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>ptrTeamplayerlinks</Address>
+                          <Offsets>
+                            <Offset>1</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2765</ID>
+                          <Description>"leaguegoals"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>8</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>ptrTeamplayerlinks</Address>
+                          <Offsets>
+                            <Offset>0</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2766</ID>
+                          <Description>"jerseynumber"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>7</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>ptrTeamplayerlinks</Address>
+                          <Offsets>
+                            <Offset>2</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2767</ID>
+                          <Description>"position"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>7</BitStart>
+                          <BitLength>6</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>ptrTeamplayerlinks</Address>
+                          <Offsets>
+                            <Offset>2</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2768</ID>
+                          <Description>"artificialkey"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>5</BitStart>
+                          <BitLength>19</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>ptrTeamplayerlinks</Address>
+                          <Offsets>
+                            <Offset>3</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2769</ID>
+                          <Description>"teamid"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>18</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>ptrTeamplayerlinks</Address>
+                          <Offsets>
+                            <Offset>6</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2770</ID>
+                          <Description>"leaguegoalsprevmatch"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>2</BitStart>
+                          <BitLength>4</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>ptrTeamplayerlinks</Address>
+                          <Offsets>
+                            <Offset>8</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2771</ID>
+                          <Description>"injury"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>6</BitStart>
+                          <BitLength>6</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>ptrTeamplayerlinks</Address>
+                          <Offsets>
+                            <Offset>8</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2772</ID>
+                          <Description>"leagueappearances"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>4</BitStart>
+                          <BitLength>6</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>ptrTeamplayerlinks</Address>
+                          <Offsets>
+                            <Offset>9</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2773</ID>
+                          <Description>"istopscorer"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>2</BitStart>
+                          <BitLength>1</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>ptrTeamplayerlinks</Address>
+                          <Offsets>
+                            <Offset>A</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2774</ID>
+                          <Description>"leaguegoalsprevthreematches"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>3</BitStart>
+                          <BitLength>5</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>ptrTeamplayerlinks</Address>
+                          <Offsets>
+                            <Offset>A</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2775</ID>
+                          <Description>"playerid"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>19</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>ptrTeamplayerlinks</Address>
+                          <Offsets>
+                            <Offset>B</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2776</ID>
+                          <Description>"form"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>3</BitStart>
+                          <BitLength>3</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>ptrTeamplayerlinks</Address>
+                          <Offsets>
+                            <Offset>D</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2777</ID>
+                          <Description>"reds"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>6</BitStart>
+                          <BitLength>5</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>ptrTeamplayerlinks</Address>
+                          <Offsets>
+                            <Offset>D</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                    <CheatEntry>
                       <ID>2050</ID>
                       <Description>"Manager Table"</Description>
                       <Options moHideChildren="1"/>
@@ -8884,6 +9140,1473 @@ dealloc(managertable_teamid)
           </CheatEntries>
         </CheatEntry>
         <CheatEntry>
+          <ID>2787</ID>
+          <Description>"Unique Player Movement"</Description>
+          <Options moHideChildren="1"/>
+          <LastState Value="" RealAddress="00000000"/>
+          <GroupHeader>1</GroupHeader>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>2781</ID>
+              <Description>"Unique Run Style"</Description>
+              <Options moHideChildren="1"/>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_uniquedribble,FIFA19.exe,81 FA 18 FD 02 00) // should be unique
+alloc(newmem_uniquedribble,$1000,"FIFA19.exe"+29D6220)
+
+label(sterling)
+label(sterling_loop)
+label(apply_sterling_dribble)
+
+label(robben)
+label(robben_loop)
+label(apply_robben_dribble)
+
+label(messi)
+label(messi_loop)
+label(apply_messi_dribble)
+
+label(ftorres)
+label(ftorres_loop)
+label(apply_ftorres_dribble)
+
+label(ytoure)
+label(ytoure_loop)
+label(apply_ytoure_dribble)
+
+label(jalba)
+label(jalba_loop)
+label(apply_jalba_dribble)
+
+label(lsuarez)
+label(lsuarez_loop)
+label(apply_lsuarez_dribble)
+
+label(kante)
+label(kante_loop)
+label(apply_kante_dribble)
+
+label(salah)
+label(salah_loop)
+label(apply_salah_dribble)
+
+label(debruyne)
+label(debruyne_loop)
+label(apply_debruyne_dribble)
+
+label(lukaku)
+label(lukaku_loop)
+label(apply_lukaku_dribble)
+
+label(dybala)
+label(dybala_loop)
+label(apply_dybala_dribble)
+
+label(pogba)
+label(pogba_loop)
+label(apply_pogba_dribble)
+
+label(code_uniquedribble)
+label(ret_uniquedribble)
+
+globalalloc(arr_DribbleLike_Sterling,512)
+globalalloc(arr_DribbleLike_Robben,512)
+globalalloc(arr_DribbleLike_Messi,512)
+globalalloc(arr_DribbleLike_FernandoTorres,512)
+globalalloc(arr_DribbleLike_YayaToure,512)
+globalalloc(arr_DribbleLike_JordiAlba,512)
+globalalloc(arr_DribbleLike_Suarez,512)
+globalalloc(arr_DribbleLike_Kante,512)
+globalalloc(arr_DribbleLike_Salah,512)
+globalalloc(arr_DribbleLike_debruyne,512)
+globalalloc(arr_DribbleLike_lukaku,512)
+globalalloc(arr_DribbleLike_dybala,512)
+globalalloc(arr_DribbleLike_pogba,512)
+
+alloc(bDribbleLike_Sterling, 1)
+registersymbol(bDribbleLike_Sterling)
+bDribbleLike_Sterling:
+db 00
+
+alloc(bDribbleLike_Robben, 1)
+registersymbol(bDribbleLike_Robben)
+bDribbleLike_Robben:
+db 00
+
+alloc(bDribbleLike_Messi, 1)
+registersymbol(bDribbleLike_Messi)
+bDribbleLike_Messi:
+db 00
+
+alloc(bDribbleLike_FernandoTorres, 1)
+registersymbol(bDribbleLike_FernandoTorres)
+bDribbleLike_FernandoTorres:
+db 00
+
+alloc(bDribbleLike_YayaToure, 1)
+registersymbol(bDribbleLike_YayaToure)
+bDribbleLike_YayaToure:
+db 00
+
+alloc(bDribbleLike_JordiAlba, 1)
+registersymbol(bDribbleLike_JordiAlba)
+bDribbleLike_JordiAlba:
+db 00
+
+alloc(bDribbleLike_Suarez, 1)
+registersymbol(bDribbleLike_Suarez)
+bDribbleLike_Suarez:
+db 00
+
+alloc(bDribbleLike_Kante, 1)
+registersymbol(bDribbleLike_Kante)
+bDribbleLike_Kante:
+db 00
+
+alloc(bDribbleLike_Salah, 1)
+registersymbol(bDribbleLike_Salah)
+bDribbleLike_Salah:
+db 00
+
+alloc(bDribbleLike_debruyne, 1)
+registersymbol(bDribbleLike_debruyne)
+bDribbleLike_debruyne:
+db 00
+
+alloc(bDribbleLike_lukaku, 1)
+registersymbol(bDribbleLike_lukaku)
+bDribbleLike_lukaku:
+db 00
+
+alloc(bDribbleLike_dybala, 1)
+registersymbol(bDribbleLike_dybala)
+bDribbleLike_dybala:
+db 00
+
+alloc(bDribbleLike_pogba, 1)
+registersymbol(bDribbleLike_pogba)
+bDribbleLike_pogba:
+db 00
+
+newmem_uniquedribble:
+  xor r15d, r15d
+sterling:
+  cmp [bDribbleLike_Sterling], 1
+  jne robben
+  mov r15d, [arr_DribbleLike_Sterling+4] // Array_Size
+  cmp r15d, 0
+  je robben
+
+sterling_loop:
+  cmp edx, [arr_DribbleLike_Sterling+r15d*4]
+  je apply_sterling_dribble  // Current players is in arr_DribbleLike_Sterling
+  dec r15d
+  jnz sterling_loop
+  jmp robben  // Check next
+
+apply_sterling_dribble:
+  mov r15l, 1
+  mov [rsp+22],r15l
+
+robben:
+  cmp [bDribbleLike_Robben], 1
+  jne messi
+  mov r15d, [arr_DribbleLike_Robben+4] // Array_Size
+  cmp r15d, 0
+  je messi
+
+robben_loop:
+  cmp edx, [arr_DribbleLike_Robben+r15d*4]
+  je apply_robben_dribble  // Current players is in arr_DribbleLike_Robben
+  dec r15d
+  jnz robben_loop
+  jmp messi  // Check next
+
+apply_robben_dribble:
+  mov cl, 1
+  mov [rsp+23], cl
+
+messi:
+  cmp [bDribbleLike_Messi], 1
+  jne ftorres
+  mov r15d, [arr_DribbleLike_Messi+4] // Array_Size
+  cmp r15d, 0
+  je ftorres
+
+messi_loop:
+  cmp edx, [arr_DribbleLike_Messi+r15d*4]
+  je apply_messi_dribble  // Current players is in arr_DribbleLike_Messi
+  dec r15d
+  jnz messi_loop
+  jmp ftorres  // Check next
+
+apply_messi_dribble:
+  mov r8l, 1
+  mov [rsp+24], r8l
+
+ftorres:
+  cmp [bDribbleLike_FernandoTorres], 1
+  jne ytoure
+  mov r15d, [arr_DribbleLike_FernandoTorres+4] // Array_Size
+  cmp r15d, 0
+  je ytoure
+
+ftorres_loop:
+  cmp edx, [arr_DribbleLike_FernandoTorres+r15d*4]
+  je apply_ftorres_dribble  // Current players is in arr_DribbleLike_FernandoTorres
+  dec r15d
+  jnz ftorres_loop
+  jmp ytoure  // Check next
+
+apply_ftorres_dribble:
+  mov r9l, 1
+  mov [rsp+25], r9l
+
+ytoure:
+  cmp [bDribbleLike_YayaToure], 1
+  jne jalba
+  mov r15d, [arr_DribbleLike_YayaToure+4] // Array_Size
+  cmp r15d, 0
+  je jalba
+
+ytoure_loop:
+  cmp edx, [arr_DribbleLike_YayaToure+r15d*4]
+  je apply_ytoure_dribble  // Current players is in arr_DribbleLike_YayaToure
+  dec r15d
+  jnz ytoure_loop
+  jmp jalba  // Check next
+
+apply_ytoure_dribble:
+  mov r10l, 1
+  mov [rsp+26], r10l
+
+jalba:
+  cmp [bDribbleLike_JordiAlba], 1
+  jne lsuarez
+  mov r15d, [arr_DribbleLike_JordiAlba+4] // Array_Size
+  cmp r15d, 0
+  je lsuarez
+
+jalba_loop:
+  cmp edx, [arr_DribbleLike_JordiAlba+r15d*4]
+  je apply_jalba_dribble  // Current players is in arr_DribbleLike_JordiAlba
+  dec r15d
+  jnz jalba_loop
+  jmp lsuarez  // Check next
+
+apply_jalba_dribble:
+  mov al, 1
+  mov [rsp+20], al
+
+lsuarez:
+  cmp [bDribbleLike_Suarez], 1
+  jne salah
+  mov r15d, [arr_DribbleLike_Suarez+4] // Array_Size
+  cmp r15d, 0
+  je salah
+
+lsuarez_loop:
+  cmp edx, [arr_DribbleLike_Suarez+r15d*4]
+  je apply_lsuarez_dribble  // Current players is in arr_DribbleLike_Suarez
+  dec r15d
+  jnz lsuarez_loop
+  jmp salah  // Check next
+
+apply_lsuarez_dribble:
+  mov r13l, 1
+
+salah:
+  cmp [arr_DribbleLike_Salah], 1
+  jne debruyne
+  mov r15d, [arr_DribbleLike_Salah+4] // Array_Size
+  cmp r15d, 0
+  je debruyne
+
+salah_loop:
+  cmp edx, [arr_DribbleLike_Salah+r15d*4]
+  je apply_salah_dribble  // Current players is in arr_DribbleLike_Salah
+  dec r15d
+  jnz salah_loop
+  jmp debruyne  // Check next
+
+apply_salah_dribble:
+  mov bl, 1
+  mov [rsp+28], bl
+
+debruyne:
+  cmp [arr_DribbleLike_debruyne], 1
+  jne lukaku
+  mov r15d, [arr_DribbleLike_debruyne+4] // Array_Size
+  cmp r15d, 0
+  je lukaku
+
+debruyne_loop:
+  cmp edx, [arr_DribbleLike_debruyne+r15d*4]
+  je apply_debruyne_dribble  // Current players is in arr_DribbleLike_debruyne
+  dec r15d
+  jnz debruyne_loop
+  jmp lukaku  // Check next
+
+apply_debruyne_dribble:
+  mov dil, 1
+  mov [rsp+29], dil
+
+lukaku:
+  cmp [arr_DribbleLike_lukaku], 1
+  jne dybala
+  mov r15d, [arr_DribbleLike_lukaku+4] // Array_Size
+  cmp r15d, 0
+  je dybala
+
+lukaku_loop:
+  cmp edx, [arr_DribbleLike_lukaku+r15d*4]
+  je apply_lukaku_dribble  // Current players is in arr_DribbleLike_lukaku
+  dec r15d
+  jnz lukaku_loop
+  jmp dybala  // Check next
+
+apply_lukaku_dribble:
+  mov r12l, 1
+
+dybala:
+  cmp [arr_DribbleLike_dybala], 1
+  jne pogba
+  mov r15d, [arr_DribbleLike_dybala+4] // Array_Size
+  cmp r15d, 0
+  je pogba
+
+dybala_loop:
+  cmp edx, [arr_DribbleLike_dybala+r15d*4]
+  je apply_dybala_dribble  // Current players is in arr_DribbleLike_dybala
+  dec r15d
+  jnz dybala_loop
+  jmp pogba  // Check next
+
+apply_dybala_dribble:
+  mov r14l, 1
+  mov [rsp+2A], r14l
+
+pogba:
+  cmp [arr_DribbleLike_pogba], 1
+  jne kante
+  mov r15d, [arr_DribbleLike_pogba+4] // Array_Size
+  cmp r15d, 0
+  je kante
+
+pogba_loop:
+  cmp edx, [arr_DribbleLike_pogba+r15d*4]
+  je apply_pogba_dribble  // Current players is in arr_DribbleLike_pogba
+  dec r15d
+  jnz pogba_loop
+  jmp kante  // Check next
+
+apply_pogba_dribble:
+  mov dl, 1
+  mov [rsp+2B], dl
+
+kante:
+  cmp [bDribbleLike_Kante], 1
+  jne code_uniquedribble
+  mov r15d, [arr_DribbleLike_Kante+4] // Array_Size
+  cmp r15d, 0
+  je code_uniquedribble
+
+kante_loop:
+  cmp edx, [arr_DribbleLike_Kante+r15d*4]
+  je apply_kante_dribble  // Current players is in arr_DribbleLike_Kante
+  dec r15d
+  jnz kante_loop
+  jmp code_uniquedribble  // Check next
+
+apply_kante_dribble:
+  mov r11l, 1
+  mov [rsp+27], r11l
+  xor r15d, r15d
+  jmp ret_uniquedribble
+
+code_uniquedribble:
+  xor r15d, r15d
+  jmp ret_uniquedribble
+
+INJECT_uniquedribble:
+  jmp newmem_uniquedribble
+  nop
+ret_uniquedribble:
+registersymbol(INJECT_uniquedribble)
+
+[DISABLE]
+//code_uniquedribble from here till the end of the code_uniquedribble will be used to disable the cheat
+INJECT_uniquedribble:
+  db 81 FA 18 FD 02 00
+
+unregistersymbol(INJECT_uniquedribble)
+dealloc(newmem_uniquedribble)
+unregistersymbol(bDribbleLike_Sterling)
+dealloc(bDribbleLike_Sterling)
+unregistersymbol(bDribbleLike_Robben)
+dealloc(bDribbleLike_Robben)
+unregistersymbol(bDribbleLike_Messi)
+dealloc(bDribbleLike_Messi)
+unregistersymbol(bDribbleLike_FernandoTorres)
+dealloc(bDribbleLike_FernandoTorres)
+unregistersymbol(bDribbleLike_YayaToure)
+dealloc(bDribbleLike_YayaToure)
+unregistersymbol(bDribbleLike_JordiAlba)
+dealloc(bDribbleLike_JordiAlba)
+unregistersymbol(bDribbleLike_Suarez)
+dealloc(bDribbleLike_Suarez)
+unregistersymbol(bDribbleLike_Kante)
+dealloc(bDribbleLike_Kante)
+unregistersymbol(bDribbleLike_Salah)
+dealloc(bDribbleLike_Salah)
+unregistersymbol(bDribbleLike_debruyne)
+dealloc(bDribbleLike_debruyne)
+unregistersymbol(bDribbleLike_lukaku)
+dealloc(bDribbleLike_lukaku)
+unregistersymbol(bDribbleLike_dybala)
+dealloc(bDribbleLike_dybala)
+unregistersymbol(bDribbleLike_pogba)
+dealloc(bDribbleLike_pogba)
+{
+// ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+29D6220
+
+"FIFA19.exe"+29D61F1: 0F 94 C3              -  sete bl
+"FIFA19.exe"+29D61F4: 88 5C 24 28           -  mov [rsp+28],bl
+"FIFA19.exe"+29D61F8: 81 FA D9 F1 02 00     -  cmp edx,0002F1D9
+"FIFA19.exe"+29D61FE: 40 0F 94 C7           -  sete dil
+"FIFA19.exe"+29D6202: 40 88 7C 24 29        -  mov [rsp+29],dil
+"FIFA19.exe"+29D6207: 81 FA F9 EF 02 00     -  cmp edx,0002EFF9
+"FIFA19.exe"+29D620D: 41 0F 94 C4           -  sete r12l
+"FIFA19.exe"+29D6211: 81 FA A6 38 03 00     -  cmp edx,000338A6
+"FIFA19.exe"+29D6217: 41 0F 94 C6           -  sete r14l
+"FIFA19.exe"+29D621B: 44 88 74 24 2A        -  mov [rsp+2A],r14l
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+29D6220: 81 FA 18 FD 02 00     -  cmp edx,0002FD18
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+29D6226: 0F 94 C2              -  sete dl
+"FIFA19.exe"+29D6229: 88 54 24 2B           -  mov [rsp+2B],dl
+"FIFA19.exe"+29D622D: 45 84 FF              -  test r15l,r15l
+"FIFA19.exe"+29D6230: 75 3C                 -  jne FIFA19.exe+29D626E
+"FIFA19.exe"+29D6232: 84 C9                 -  test cl,cl
+"FIFA19.exe"+29D6234: 75 38                 -  jne FIFA19.exe+29D626E
+"FIFA19.exe"+29D6236: 45 84 C0              -  test r8l,r8l
+"FIFA19.exe"+29D6239: 75 33                 -  jne FIFA19.exe+29D626E
+"FIFA19.exe"+29D623B: 45 84 C9              -  test r9l,r9l
+"FIFA19.exe"+29D623E: 75 2E                 -  jne FIFA19.exe+29D626E
+}
+</AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>2070</ID>
+                  <Description>"Run Like:"</Description>
+                  <Options moHideChildren="1"/>
+                  <LastState Value="" RealAddress="00000000"/>
+                  <GroupHeader>1</GroupHeader>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>2071</ID>
+                      <Description>"Sterling (edit playerids inside script!)"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+local playerids = {0, 0} -- IDs of the players which will dribble like Sterling. Last ID must be 0!
+local i = 0
+local addr = "arr_DribbleLike_Sterling"
+local players_arr = getAddress(addr)
+
+while i &lt; 128 do
+  local playerid = playerids[i]
+  if playerid == 0 then break end
+  writeInteger(players_arr + 4, i+1) -- Array size
+  writeInteger(players_arr + 4 + i*4, playerid)
+  i = i + 1
+end
+{$asm}
+
+bDribbleLike_Sterling:
+  db 1
+[DISABLE]
+bDribbleLike_Sterling:
+  db 0
+
+{$lua}
+local i = 0
+local addr = "arr_DribbleLike_Sterling"
+local players_arr = getAddress(addr)
+while i &lt; 128 do
+  writeInteger(players_arr + i*4, 0)   -- clear arr_DribbleLike_Sterling
+  i = i + 1
+end
+{$asm}
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2072</ID>
+                      <Description>"Robben (edit playerids inside script!)"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+local playerids = {236610, 233049, 0} -- IDs of the players which will dribble like Robben. Last ID must be 0!
+local i = 0
+local addr = "arr_DribbleLike_Robben"
+local players_arr = getAddress(addr)
+
+while i &lt; 128 do
+  local playerid = playerids[i]
+  if playerid == 0 then break end
+  writeInteger(players_arr + 4, i+1) -- Array size
+  writeInteger(players_arr + 4 + i*4, playerid)
+  i = i + 1
+end
+{$asm}
+
+bDribbleLike_Robben:
+  db 1
+
+[DISABLE]
+bDribbleLike_Robben:
+  db 0
+
+{$lua}
+local i = 0
+local addr = "arr_DribbleLike_Robben"
+local players_arr = getAddress(addr)
+while i &lt; 128 do
+  writeInteger(players_arr + i*4, 0)   -- clear arr_DribbleLike_Robben
+  i = i + 1
+end
+{$asm}
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2073</ID>
+                      <Description>"Messi (edit playerids inside script!)"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+local playerids = {0, 0} -- IDs of the players which will dribble like Messi. Last ID must be 0!
+local i = 0
+local addr = "arr_DribbleLike_Messi"
+local players_arr = getAddress(addr)
+
+while i &lt; 128 do
+  local playerid = playerids[i]
+  if playerid == 0 then break end
+  writeInteger(players_arr + 4, i+1) -- Array size
+  writeInteger(players_arr + 4 + i*4, playerid)
+  i = i + 1
+end
+{$asm}
+
+bDribbleLike_Messi:
+  db 1
+[DISABLE]
+bDribbleLike_Messi:
+  db 0
+
+{$lua}
+local i = 0
+local addr = "arr_DribbleLike_Messi"
+local players_arr = getAddress(addr)
+while i &lt; 128 do
+  writeInteger(players_arr + i*4, 0)   -- clear arr_DribbleLike_Messi
+  i = i + 1
+end
+{$asm}
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2074</ID>
+                      <Description>"Fernando Torres (edit playerids inside script!)"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+local playerids = {0, 0} -- IDs of the players which will dribble like FernandoTorres. Last ID must be 0!
+local i = 0
+local addr = "arr_DribbleLike_FernandoTorres"
+local players_arr = getAddress(addr)
+
+while i &lt; 128 do
+  local playerid = playerids[i]
+  if playerid == 0 then break end
+  writeInteger(players_arr + 4, i+1) -- Array size
+  writeInteger(players_arr + 4 + i*4, playerid)
+  i = i + 1
+end
+{$asm}
+
+bDribbleLike_FernandoTorres:
+  db 1
+[DISABLE]
+bDribbleLike_FernandoTorres:
+  db 0
+
+{$lua}
+local i = 0
+local addr = "arr_DribbleLike_FernandoTorres"
+local players_arr = getAddress(addr)
+while i &lt; 128 do
+  writeInteger(players_arr + i*4, 0)   -- clear arr_DribbleLike_FernandoTorres
+  i = i + 1
+end
+{$asm}
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2075</ID>
+                      <Description>"Yaya Toure (edit playerids inside script!)"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+local playerids = {0, 0} -- IDs of the players which will dribble like YayaToure. Last ID must be 0!
+local i = 0
+local addr = "arr_DribbleLike_YayaToure"
+local players_arr = getAddress(addr)
+
+while i &lt; 128 do
+  local playerid = playerids[i]
+  if playerid == 0 then break end
+  writeInteger(players_arr + 4, i+1) -- Array size
+  writeInteger(players_arr + 4 + i*4, playerid)
+  i = i + 1
+end
+{$asm}
+
+bDribbleLike_YayaToure:
+  db 1
+[DISABLE]
+bDribbleLike_YayaToure:
+  db 0
+
+{$lua}
+local i = 0
+local addr = "arr_DribbleLike_YayaToure"
+local players_arr = getAddress(addr)
+while i &lt; 128 do
+  writeInteger(players_arr + i*4, 0)   -- clear arr_DribbleLike_YayaToure
+  i = i + 1
+end
+{$asm}
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>1993</ID>
+                      <Description>"Jordi Alba (edit playerids inside script!)"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+local playerids = {0, 0} -- IDs of the players which will dribble like JordiAlba. Last ID must be 0!
+local i = 0
+local addr = "arr_DribbleLike_JordiAlba"
+local players_arr = getAddress(addr)
+
+while i &lt; 128 do
+  local playerid = playerids[i]
+  if playerid == 0 then break end
+  writeInteger(players_arr + 4, i+1) -- Array size
+  writeInteger(players_arr + 4 + i*4, playerid)
+  i = i + 1
+end
+{$asm}
+bDribbleLike_JordiAlba:
+  db 1
+[DISABLE]
+bDribbleLike_JordiAlba:
+  db 0
+
+{$lua}
+local i = 0
+local addr = "arr_DribbleLike_JordiAlba"
+local players_arr = getAddress(addr)
+while i &lt; 128 do
+  writeInteger(players_arr + i*4, 0)   -- clear arr_DribbleLike_JordiAlba
+  i = i + 1
+end
+{$asm}
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2076</ID>
+                      <Description>"Luis Suarez (edit playerids inside script!)"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+local playerids = {0, 0}-- IDs of the players which will dribble like Suarez. Last ID must be 0!
+local i = 0
+local addr = "arr_DribbleLike_Suarez"
+local players_arr = getAddress(addr)
+
+while i &lt; 128 do
+  local playerid = playerids[i]
+  if playerid == 0 then break end
+  writeInteger(players_arr + 4, i+1) -- Array size
+  writeInteger(players_arr + 4 + i*4, playerid)
+  i = i + 1
+end
+{$asm}
+
+bDribbleLike_Suarez:
+  db 1
+
+[DISABLE]
+bDribbleLike_Suarez:
+  db 0
+
+{$lua}
+local i = 0
+local addr = "arr_DribbleLike_Suarez"
+local players_arr = getAddress(addr)
+while i &lt; 128 do
+  writeInteger(players_arr + i*4, 0)   -- clear arr_DribbleLike_Suarez
+  i = i + 1
+end
+{$asm}
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2077</ID>
+                      <Description>"Kante (edit playerids inside script!)"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+local playerids = {0, 0} -- IDs of the players which will dribble like Kante. Last ID must be 0!
+local i = 0
+local addr = "arr_DribbleLike_Kante"
+local players_arr = getAddress(addr)
+
+while i &lt; 128 do
+  local playerid = playerids[i]
+  if playerid == 0 then break end
+  writeInteger(players_arr + 4, i+1) -- Array size
+  writeInteger(players_arr + 4 + i*4, playerid)
+  i = i + 1
+end
+{$asm}
+
+bDribbleLike_Kante:
+  db 1
+[DISABLE]
+bDribbleLike_Kante:
+  db 0
+
+{$lua}
+local i = 0
+local addr = "arr_DribbleLike_Kante"
+local players_arr = getAddress(addr)
+while i &lt; 128 do
+  writeInteger(players_arr + i*4, 0)   -- clear arr_DribbleLike_Kante
+  i = i + 1
+end
+{$asm}
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2782</ID>
+                      <Description>"Salah (edit playerids inside script!)"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+local playerids = {209331, 0} -- IDs of the players which will dribble like Salah. Last ID must be 0!
+local i = 0
+local addr = "arr_DribbleLike_Salah"
+local players_arr = getAddress(addr)
+
+while i &lt; 128 do
+  local playerid = playerids[i]
+  if playerid == 0 then break end
+  writeInteger(players_arr + 4, i+1) -- Array size
+  writeInteger(players_arr + 4 + i*4, playerid)
+  i = i + 1
+end
+{$asm}
+
+bDribbleLike_Salah:
+  db 1
+[DISABLE]
+bDribbleLike_Salah:
+  db 0
+
+{$lua}
+local i = 0
+local addr = "arr_DribbleLike_Salah"
+local players_arr = getAddress(addr)
+while i &lt; 128 do
+  writeInteger(players_arr + i*4, 0)   -- clear arr_DribbleLike_Salah
+  i = i + 1
+end
+{$asm}
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2783</ID>
+                      <Description>"De Bruyne (edit playerids inside script!)"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+local playerids = {192985, 0} -- IDs of the players which will dribble like debruyne. Last ID must be 0!
+local i = 0
+local addr = "arr_DribbleLike_debruyne"
+local players_arr = getAddress(addr)
+
+while i &lt; 128 do
+  local playerid = playerids[i]
+  if playerid == 0 then break end
+  writeInteger(players_arr + 4, i+1) -- Array size
+  writeInteger(players_arr + 4 + i*4, playerid)
+  i = i + 1
+end
+{$asm}
+
+bDribbleLike_debruyne:
+  db 1
+[DISABLE]
+bDribbleLike_debruyne:
+  db 0
+
+{$lua}
+local i = 0
+local addr = "arr_DribbleLike_debruyne"
+local players_arr = getAddress(addr)
+while i &lt; 128 do
+  writeInteger(players_arr + i*4, 0)   -- clear arr_DribbleLike_debruyne
+  i = i + 1
+end
+{$asm}
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2784</ID>
+                      <Description>"Lukaku (edit playerids inside script!)"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+local playerids = {0, 0} -- IDs of the players which will dribble like lukaku. Last ID must be 0!
+local i = 0
+local addr = "arr_DribbleLike_lukaku"
+local players_arr = getAddress(addr)
+
+while i &lt; 128 do
+  local playerid = playerids[i]
+  if playerid == 0 then break end
+  writeInteger(players_arr + 4, i+1) -- Array size
+  writeInteger(players_arr + 4 + i*4, playerid)
+  i = i + 1
+end
+{$asm}
+
+bDribbleLike_lukaku:
+  db 1
+[DISABLE]
+bDribbleLike_lukaku:
+  db 0
+
+{$lua}
+local i = 0
+local addr = "arr_DribbleLike_lukaku"
+local players_arr = getAddress(addr)
+while i &lt; 128 do
+  writeInteger(players_arr + i*4, 0)   -- clear arr_DribbleLike_lukaku
+  i = i + 1
+end
+{$asm}
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2785</ID>
+                      <Description>"Dybala (edit playerids inside script!)"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+local playerids = {0, 0} -- IDs of the players which will dribble like dybala. Last ID must be 0!
+local i = 0
+local addr = "arr_DribbleLike_dybala"
+local players_arr = getAddress(addr)
+
+while i &lt; 128 do
+  local playerid = playerids[i]
+  if playerid == 0 then break end
+  writeInteger(players_arr + 4, i+1) -- Array size
+  writeInteger(players_arr + 4 + i*4, playerid)
+  i = i + 1
+end
+{$asm}
+
+bDribbleLike_dybala:
+  db 1
+[DISABLE]
+bDribbleLike_dybala:
+  db 0
+
+{$lua}
+local i = 0
+local addr = "arr_DribbleLike_dybala"
+local players_arr = getAddress(addr)
+while i &lt; 128 do
+  writeInteger(players_arr + i*4, 0)   -- clear arr_DribbleLike_dybala
+  i = i + 1
+end
+{$asm}
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2786</ID>
+                      <Description>"Pogba (edit playerids inside script!)"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+local playerids = {0, 0} -- IDs of the players which will dribble like pogba. Last ID must be 0!
+local i = 0
+local addr = "arr_DribbleLike_pogba"
+local players_arr = getAddress(addr)
+
+while i &lt; 128 do
+  local playerid = playerids[i]
+  if playerid == 0 then break end
+  writeInteger(players_arr + 4, i+1) -- Array size
+  writeInteger(players_arr + 4 + i*4, playerid)
+  i = i + 1
+end
+{$asm}
+
+bDribbleLike_pogba:
+  db 1
+[DISABLE]
+bDribbleLike_pogba:
+  db 0
+
+{$lua}
+local i = 0
+local addr = "arr_DribbleLike_pogba"
+local players_arr = getAddress(addr)
+while i &lt; 128 do
+  writeInteger(players_arr + i*4, 0)   -- clear arr_DribbleLike_pogba
+  i = i + 1
+end
+{$asm}
+</AssemblerScript>
+                    </CheatEntry>
+                  </CheatEntries>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>2062</ID>
+              <Description>"Unique Sprint Style"</Description>
+              <Options moHideChildren="1"/>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_uniquesprint,FIFA19.exe,41 89 B0 48 5B 00 00) // should be unique
+alloc(newmem_uniquesprint,$1000,"FIFA19.exe"+2A0B2F1)
+
+label(messi)
+label(messi_sprint_loop)
+label(apply_messi_sprint)
+
+label(cronaldo)
+label(cronaldo_sprint_loop)
+label(apply_cronaldo_sprint)
+
+label(robben)
+label(robben_sprint_loop)
+label(apply_robben_sprint)
+
+label(yayatoure)
+label(yayatoure_sprint_loop)
+label(apply_yayatoure_sprint)
+
+label(bale)
+label(bale_sprint_loop)
+label(apply_bale_sprint)
+
+label(neymarandalba)
+label(neymarandalba_sprint_loop)
+label(apply_neymarandalba_sprint)
+
+label(return_success)
+
+label(code_uniquesprint)
+label(ret_uniquesprint)
+
+globalalloc(arr_SprintLike_Messi,512)
+globalalloc(arr_SprintLike_CRonaldo,512)
+globalalloc(arr_SprintLike_Robben,512)
+globalalloc(arr_SprintLike_YayaToure,512)
+globalalloc(arr_SprintLike_Bale,512)
+globalalloc(arr_SprintLike_NeymarAndAlba,512)
+
+alloc(bSprintLike_Messi, 1)
+registersymbol(bSprintLike_Messi)
+bSprintLike_Messi:
+db 00
+
+alloc(bSprintLike_CRonaldo, 1)
+registersymbol(bSprintLike_CRonaldo)
+bSprintLike_CRonaldo:
+db 00
+
+alloc(bSprintLike_Robben, 1)
+registersymbol(bSprintLike_Robben)
+bSprintLike_Robben:
+db 00
+
+alloc(bSprintLike_YayaToure, 1)
+registersymbol(bSprintLike_YayaToure)
+bSprintLike_YayaToure:
+db 00
+
+alloc(bSprintLike_Bale, 1)
+registersymbol(bSprintLike_Bale)
+bSprintLike_Bale:
+db 00
+
+alloc(bSprintLike_NeymarAndAlba, 1)
+registersymbol(bSprintLike_NeymarAndAlba)
+bSprintLike_NeymarAndAlba:
+db 00
+
+newmem_uniquesprint:
+  push r15
+  push rcx
+  mov rcx, [rdi+10]
+  mov rcx, [rcx+18]
+  mov rcx, [rcx+4] // playerid
+  xor r15d, r15d
+
+messi:
+  cmp [bSprintLike_Messi], 1
+  jne cronaldo
+  mov r15d, [arr_SprintLike_Messi+4] // Array_Size
+  cmp r15d, 0
+  je cronaldo
+
+messi_sprint_loop:
+  cmp ecx, [arr_SprintLike_Messi+r15d*4]
+  je apply_messi_sprint  // Current players is in arr_SprintLike_Messi
+  dec r15d
+  jnz messi_sprint_loop
+  jmp cronaldo  // Check next
+
+apply_messi_sprint:
+  mov esi, 8
+  jmp return_success
+
+cronaldo:
+  cmp [bSprintLike_CRonaldo], 1
+  jne robben
+  mov r15d, [arr_SprintLike_CRonaldo+4] // Array_Size
+  cmp r15d, 0
+  je robben
+
+cronaldo_sprint_loop:
+  cmp ecx, [arr_SprintLike_CRonaldo+r15d*4]
+  je apply_cronaldo_sprint  // Current players is in arr_SprintLike_CRonaldo
+  dec r15d
+  jnz cronaldo_sprint_loop
+  jmp robben  // Check next
+
+apply_cronaldo_sprint:
+  mov esi, 10
+  jmp return_success
+
+robben:
+  cmp [bSprintLike_Robben], 1
+  jne yayatoure
+  mov r15d, [arr_SprintLike_Robben+4] // Array_Size
+  cmp r15d, 0
+  je yayatoure
+
+robben_sprint_loop:
+  cmp ecx, [arr_SprintLike_Robben+r15d*4]
+  je apply_robben_sprint  // Current players is in arr_SprintLike_Robben
+  dec r15d
+  jnz robben_sprint_loop
+  jmp yayatoure  // Check next
+
+apply_robben_sprint:
+  mov esi, 20
+  jmp return_success
+
+yayatoure:
+  cmp [bSprintLike_YayaToure], 1
+  jne bale
+  mov r15d, [arr_SprintLike_YayaToure+4] // Array_Size
+  cmp r15d, 0
+  je bale
+
+yayatoure_sprint_loop:
+  cmp ecx, [arr_SprintLike_YayaToure+r15d*4]
+  je apply_yayatoure_sprint  // Current players is in arr_SprintLike_yayatoure
+  dec r15d
+  jnz yayatoure_sprint_loop
+  jmp bale  // Check next
+
+apply_yayatoure_sprint:
+  mov esi, 80
+  jmp return_success
+
+bale:
+  cmp [bSprintLike_Bale], 1
+  jne neymarandalba
+  mov r15d, [arr_SprintLike_Bale+4] // Array_Size
+  cmp r15d, 0
+  je neymarandalba
+
+bale_sprint_loop:
+  cmp ecx, [arr_SprintLike_Bale+r15d*4]
+  je apply_bale_sprint  // Current players is in arr_SprintLike_Bale
+  dec r15d
+  jnz bale_sprint_loop
+  jmp neymarandalba  // Check next
+
+apply_bale_sprint:
+  mov esi, 40
+  jmp return_success
+
+neymarandalba:
+  cmp [bSprintLike_NeymarAndAlba], 1
+  jne code_uniquesprint
+  mov r15d, [arr_SprintLike_NeymarAndAlba+4] // Array_Size
+  cmp r15d, 0
+  je code_uniquesprint
+
+neymarandalba_sprint_loop:
+  cmp ecx, [arr_SprintLike_NeymarAndAlba+r15d*4]
+  je apply_neymarandalba_sprint  // Current players is in arr_SprintLike_NeymarAndAlba
+  dec r15d
+  jnz neymarandalba_sprint_loop
+  jmp code_uniquesprint  // Check next
+
+apply_neymarandalba_sprint:
+  mov esi, 2002
+  jmp return_success
+
+
+code_uniquesprint:
+  pop rcx
+  pop r15
+  mov [r8+00005B48],esi
+  jmp ret_uniquesprint
+return_success:
+  pop rcx
+  pop r15
+  mov [r8+00005B48],esi
+  jmp ret_uniquesprint
+
+INJECT_uniquesprint:
+  jmp newmem_uniquesprint
+  nop
+  nop
+ret_uniquesprint:
+registersymbol(INJECT_uniquesprint)
+
+[DISABLE]
+//code_uniquesprint from here till the end of the code_uniquesprint will be used to disable the cheat
+INJECT_uniquesprint:
+  db 41 89 B0 48 5B 00 00
+
+unregistersymbol(INJECT_uniquesprint)
+dealloc(newmem_uniquesprint)
+unregistersymbol(bSprintLike_Messi)
+dealloc(bSprintLike_Messi)
+unregistersymbol(bSprintLike_CRonaldo)
+dealloc(bSprintLike_CRonaldo)
+unregistersymbol(bSprintLike_Robben)
+dealloc(bSprintLike_Robben)
+unregistersymbol(bSprintLike_YayaToure)
+dealloc(bSprintLike_YayaToure)
+unregistersymbol(bSprintLike_Bale)
+dealloc(bSprintLike_Bale)
+unregistersymbol(bSprintLike_NeymarAndAlba)
+dealloc(bSprintLike_NeymarAndAlba)
+
+
+{
+// ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+2A0B2F1
+
+"FIFA19.exe"+2A0B2C3: BE 00 10 00 00           -  mov esi,00001000
+"FIFA19.exe"+2A0B2C8: B9 00 20 00 00           -  mov ecx,00002000
+"FIFA19.exe"+2A0B2CD: F3 0F 10 05 5B B2 8E 02  -  movss xmm0,[FIFA19.exe+52F6530]
+"FIFA19.exe"+2A0B2D5: EB 12                    -  jmp FIFA19.exe+2A0B2E9
+"FIFA19.exe"+2A0B2D7: BE 00 01 00 00           -  mov esi,00000100
+"FIFA19.exe"+2A0B2DC: B9 00 02 00 00           -  mov ecx,00000200
+"FIFA19.exe"+2A0B2E1: F3 0F 10 05 6B B2 8E 02  -  movss xmm0,[FIFA19.exe+52F6554]
+"FIFA19.exe"+2A0B2E9: 0F 2F C2                 -  comiss xmm0,xmm2
+"FIFA19.exe"+2A0B2EC: 0F 47 F1                 -  cmova esi,ecx
+"FIFA19.exe"+2A0B2EF: 0B F0                    -  or esi,eax
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+2A0B2F1: 41 89 B0 48 5B 00 00     -  mov [r8+00005B48],esi
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+2A0B2F8: 48 8B 0D 69 9D 64 03     -  mov rcx,[FIFA19.exe+6055068]
+"FIFA19.exe"+2A0B2FF: 48 8B 01                 -  mov rax,[rcx]
+"FIFA19.exe"+2A0B302: 40 88 6C 24 28           -  mov [rsp+28],bpl
+"FIFA19.exe"+2A0B307: C7 44 24 20 01 00 00 00  -  mov [rsp+20],00000001
+"FIFA19.exe"+2A0B30F: 4C 8D 0D D2 8C 77 02     -  lea r9,[FIFA19.exe+5183FE8]
+"FIFA19.exe"+2A0B316: 4C 8D 05 33 1A 54 02     -  lea r8,[FIFA19.exe+4F4CD50]
+"FIFA19.exe"+2A0B31D: BA 38 00 00 00           -  mov edx,00000038
+"FIFA19.exe"+2A0B322: FF 50 38                 -  call qword ptr [rax+38]
+"FIFA19.exe"+2A0B325: 48 8B D8                 -  mov rbx,rax
+"FIFA19.exe"+2A0B328: 48 89 84 24 90 00 00 00  -  mov [rsp+00000090],rax
+}
+</AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>2063</ID>
+                  <Description>"Sprint Like:"</Description>
+                  <Options moHideChildren="1"/>
+                  <LastState Value="" RealAddress="00000000"/>
+                  <GroupHeader>1</GroupHeader>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>2064</ID>
+                      <Description>"Messi (edit playerids inside script!)"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+local playerids = {158023, 0} -- IDs of the players which will sprint like Messi. '158023' is original Messi. Last ID must be 0!
+local i = 0
+local addr = "arr_SprintLike_Messi"
+local players_arr = getAddress(addr)
+
+while i &lt; 128 do
+  local playerid = playerids[i]
+  if playerid == 0 then break end
+  writeInteger(players_arr + 4, i+1) -- Array size
+  writeInteger(players_arr + 4 + i*4, playerid)
+  i = i + 1
+end
+{$asm}
+
+bSprintLike_Messi:
+  db 1
+[DISABLE]
+bSprintLike_Messi:
+  db 0
+
+{$lua}
+local i = 0
+local addr = "arr_SprintLike_Messi"
+local players_arr = getAddress(addr)
+while i &lt; 128 do
+  writeInteger(players_arr + i*4, 0)   -- clear arr_SprintLike_Messi
+  i = i + 1
+end
+{$asm}
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2065</ID>
+                      <Description>"Cristiano Ronaldo (edit playerids inside script!)"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+local playerids = {20801, 180206, 0} -- IDs of the players which will sprint like CRonaldo. '20801' is original CRonaldo. Last ID must be 0!
+local i = 0
+local addr = "arr_SprintLike_CRonaldo"
+local players_arr = getAddress(addr)
+
+while i &lt; 128 do
+  local playerid = playerids[i]
+  if playerid == 0 then break end
+  writeInteger(players_arr + 4, i+1) -- Array size
+  writeInteger(players_arr + 4 + i*4, playerid)
+  i = i + 1
+end
+{$asm}
+
+bSprintLike_CRonaldo:
+  db 1
+[DISABLE]
+bSprintLike_CRonaldo:
+  db 0
+
+{$lua}
+local i = 0
+local addr = "arr_SprintLike_CRonaldo"
+local players_arr = getAddress(addr)
+while i &lt; 128 do
+  writeInteger(players_arr + i*4, 0)   -- clear arr_SprintLike_CRonaldo
+  i = i + 1
+end
+{$asm}
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2066</ID>
+                      <Description>"Robben (edit playerids inside script!)"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+local playerids = {9014, 0} -- IDs of the players which will sprint like Robben. '9014' is original Robben. Last ID must be 0!
+local i = 0
+local addr = "arr_SprintLike_Robben"
+local players_arr = getAddress(addr)
+
+while i &lt; 128 do
+  local playerid = playerids[i]
+  if playerid == 0 then break end
+  writeInteger(players_arr + 4, i+1) -- Array size
+  writeInteger(players_arr + 4 + i*4, playerid)
+  i = i + 1
+end
+{$asm}
+
+bSprintLike_Robben:
+  db 1
+[DISABLE]
+bSprintLike_Robben:
+  db 0
+
+{$lua}
+local i = 0
+local addr = "arr_SprintLike_Robben"
+local players_arr = getAddress(addr)
+while i &lt; 128 do
+  writeInteger(players_arr + i*4, 0)   -- clear arr_SprintLike_Robben
+  i = i + 1
+end
+{$asm}
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2067</ID>
+                      <Description>"Yaya Toure (edit playerids inside script!)"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+local playerids = {20289, 0} -- IDs of the players which will sprint like YayaToure. '20289' is original YayaToure. Last ID must be 0!
+local i = 0
+local addr = "arr_SprintLike_YayaToure"
+local players_arr = getAddress(addr)
+
+while i &lt; 128 do
+  local playerid = playerids[i]
+  if playerid == 0 then break end
+  writeInteger(players_arr + 4, i+1) -- Array size
+  writeInteger(players_arr + 4 + i*4, playerid)
+  i = i + 1
+end
+{$asm}
+
+bSprintLike_YayaToure:
+  db 1
+[DISABLE]
+bSprintLike_YayaToure:
+  db 0
+
+{$lua}
+local i = 0
+local addr = "arr_SprintLike_YayaToure"
+local players_arr = getAddress(addr)
+while i &lt; 128 do
+  writeInteger(players_arr + i*4, 0)   -- clear arr_SprintLike_YayaToure
+  i = i + 1
+end
+{$asm}
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2068</ID>
+                      <Description>"Bale (edit playerids inside script!)"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+local playerids = {173731, 0} -- IDs of the players which will sprint like Bale. '173731' is original Bale. Last ID must be 0!
+local i = 0
+local addr = "arr_SprintLike_Bale"
+local players_arr = getAddress(addr)
+
+while i &lt; 128 do
+  local playerid = playerids[i]
+  if playerid == 0 then break end
+  writeInteger(players_arr + 4, i+1) -- Array size
+  writeInteger(players_arr + 4 + i*4, playerid)
+  i = i + 1
+end
+{$asm}
+
+bSprintLike_Bale:
+  db 1
+[DISABLE]
+bSprintLike_Bale:
+  db 0
+
+{$lua}
+local i = 0
+local addr = "arr_SprintLike_Bale"
+local players_arr = getAddress(addr)
+while i &lt; 128 do
+  writeInteger(players_arr + i*4, 0)   -- clear arr_SprintLike_Bale
+  i = i + 1
+end
+{$asm}
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2069</ID>
+                      <Description>"Neymar/Jordi Alba (edit playerids inside script!)"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+local playerids = {190871, 189332, 0} -- IDs of the players which will sprint like Neymar/Jordi Alba. '190871' is original Neymar, '189332' is original Jordi Alba. Last ID must be 0!
+local i = 0
+local addr = "arr_SprintLike_NeymarAndAlba"
+local players_arr = getAddress(addr)
+
+while i &lt; 128 do
+  local playerid = playerids[i]
+  if playerid == 0 then break end
+  writeInteger(players_arr + 4, i+1) -- Array size
+  writeInteger(players_arr + 4 + i*4, playerid)
+  i = i + 1
+end
+{$asm}
+
+bSprintLike_NeymarAndAlba:
+  db 1
+[DISABLE]
+bSprintLike_NeymarAndAlba:
+  db 0
+
+{$lua}
+local i = 0
+local addr = "arr_SprintLike_NeymarAndAlba"
+local players_arr = getAddress(addr)
+while i &lt; 128 do
+  writeInteger(players_arr + i*4, 0)   -- clear arr_SprintLike_NeymarAndAlba
+  i = i + 1
+end
+{$asm}
+</AssemblerScript>
+                    </CheatEntry>
+                  </CheatEntries>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
           <ID>2096</ID>
           <Description>"Editing Player"</Description>
           <Options moHideChildren="1"/>
@@ -8987,7 +10710,16 @@ cave_EditFirstName:
 code_EditFirstName:
   mov rcx,rax
   call qword ptr [r9+18]
+  cmp byte [rdx], 0
+  jne FirstNameIn_RDX
+  jmp FirstNameIn_R11
+
+FirstNameIn_RDX:
   mov [ptrEasyEditFirstName], rdx
+  jmp ret_EditFirstName
+
+FirstNameIn_R11:
+  mov [ptrEasyEditFirstName], r11
   jmp ret_EditFirstName
 
 // Last Name
@@ -9006,7 +10738,15 @@ cave_EditLastName:
 code_EditLastName:
   mov rcx,rax
   call qword ptr [r9+18]
+  cmp byte [rdx], 0
+  jne LastNameIn_RDX
+  jmp LastNameIn_R11
+
+LastNameIn_RDX:
   mov [ptrEasyEditLastName], rdx
+  jmp ret_EditLastName
+LastNameIn_R11:
+  mov [ptrEasyEditLastName], r11
   jmp ret_EditLastName
 
 // KnownAs
@@ -9027,7 +10767,16 @@ code_EditKnownAs:
   call qword ptr [r9+18]
   cmp rdx, 140000000
   jg ret_EditKnownAs
+  cmp byte [rdx], 0
+  jne KnownAsNameIn_RDX
+  jmp KnownAsNameIn_R11
+
+KnownAsNameIn_RDX:
   mov [ptrEasyEditKnownAs], rdx
+  jmp ret_EditKnownAs
+
+KnownAsNameIn_R11:
+  mov [ptrEasyEditKnownAs], r11
   jmp ret_EditKnownAs
 
 // Name on Shirt
@@ -9137,7 +10886,7 @@ dealloc(ptrEasyEditNameOnShirt)
                   <ID>2703</ID>
                   <Description>"First Name"</Description>
                   <VariableType>String</VariableType>
-                  <Length>15</Length>
+                  <Length>25</Length>
                   <Unicode>0</Unicode>
                   <CodePage>0</CodePage>
                   <ZeroTerminate>1</ZeroTerminate>
@@ -9150,7 +10899,7 @@ dealloc(ptrEasyEditNameOnShirt)
                   <ID>2704</ID>
                   <Description>"Last Name"</Description>
                   <VariableType>String</VariableType>
-                  <Length>15</Length>
+                  <Length>25</Length>
                   <Unicode>0</Unicode>
                   <CodePage>0</CodePage>
                   <ZeroTerminate>1</ZeroTerminate>
@@ -9163,7 +10912,7 @@ dealloc(ptrEasyEditNameOnShirt)
                   <ID>2705</ID>
                   <Description>"Name on shirt"</Description>
                   <VariableType>String</VariableType>
-                  <Length>15</Length>
+                  <Length>25</Length>
                   <Unicode>0</Unicode>
                   <CodePage>0</CodePage>
                   <ZeroTerminate>1</ZeroTerminate>
@@ -9177,7 +10926,7 @@ dealloc(ptrEasyEditNameOnShirt)
                   <ID>2706</ID>
                   <Description>"Known As"</Description>
                   <VariableType>String</VariableType>
-                  <Length>15</Length>
+                  <Length>25</Length>
                   <Unicode>0</Unicode>
                   <CodePage>0</CodePage>
                   <ZeroTerminate>1</ZeroTerminate>
@@ -9529,7 +11278,7 @@ dealloc(newmem_moreEfficientTraining)
             </CheatEntry>
             <CheatEntry>
               <ID>2742</ID>
-              <Description>"More efficient training (10x)"</Description>
+              <Description>"More efficient training (x10)"</Description>
               <LastState/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
@@ -9540,11 +11289,141 @@ label(code_moreEfficientTraining)
 label(ret_moreEfficientTraining)
 
 newmem_moreEfficientTraining:
-  mov [rsi+C], #300 								// ATTRIBUTE_GROWTH_CAP (?) (default 300)
-  mov [rsi+1C], #3500								// BASE_CALC_VALUE (default 3500)
-  mov [rsi+rax*4+00000344],(float)10.0				// PERFORMANCE_GRADE_A_MODIFIER (default 1.25)
-  mov [rsi+rax*4+00000358],(float)10.0  			// ? (default 1.25)
-  mov [rsi+rax*4+00000364],(float)10.0  			    // ? (default 2.00)
+  mov [rsi+C], #99999999 								// ATTRIBUTE_GROWTH_CAP (?) (default 300)
+  mov [rsi+1C], #110000								// BASE_CALC_VALUE (default 3500)
+  mov [rsi+rax*4+00000344],(float)1.0				// PERFORMANCE_GRADE_A_MODIFIER (default 1.25)
+  mov [rsi+rax*4+00000358],(float)1.0  			// ? (default 1.25)
+  mov [rsi+rax*4+00000364],(float)1.0  			    // ? (default 2.00)
+
+code_moreEfficientTraining:
+  movd xmm3,[rsi+1C]
+  jmp ret_moreEfficientTraining
+
+INJECT_moreEfficientTraining:
+  jmp newmem_moreEfficientTraining
+ret_moreEfficientTraining:
+registersymbol(INJECT_moreEfficientTraining)
+
+[DISABLE]
+//code_moreEfficientTraining from here till the end of the code_moreEfficientTraining will be used to disable the cheat
+INJECT_moreEfficientTraining:
+  db 66 0F 6E 5E 1C
+
+unregistersymbol(INJECT_moreEfficientTraining)
+dealloc(newmem_moreEfficientTraining)
+
+{
+// ORIGINAL CODE - INJECT_moreEfficientTrainingION POINT: "FIFA19.exe"+33C2C93
+
+"FIFA19.exe"+33C2C67: EB 81                       -  jmp FIFA19.exe+33C2BEA
+"FIFA19.exe"+33C2C69: 4B 8D 04 49                 -  lea rax,[r9+r9*2]
+"FIFA19.exe"+33C2C6D: F3 41 0F 10 64 83 08        -  movss xmm4,[r11+rax*4+08]
+"FIFA19.exe"+33C2C74: 44 8B 44 24 20              -  mov r8d,[rsp+20]
+"FIFA19.exe"+33C2C79: 48 8B CE                    -  mov rcx,rsi
+"FIFA19.exe"+33C2C7C: 8B 54 24 24                 -  mov edx,[rsp+24]
+"FIFA19.exe"+33C2C80: 8B 5D 08                    -  mov ebx,[rbp+08]
+"FIFA19.exe"+33C2C83: E8 D8 8E 08 00              -  call FIFA19.exe+344BB60
+"FIFA19.exe"+33C2C88: 48 63 84 24 C8 00 00 00     -  movsxd  rax,dword ptr [rsp+000000C8]
+"FIFA19.exe"+33C2C90: 8D 4B FF                    -  lea ecx,[rbx-01]
+// ---------- INJECT_moreEfficientTrainingING HERE ----------
+"FIFA19.exe"+33C2C93: 66 0F 6E 5E 1C              -  movd xmm3,[rsi+1C]
+// ---------- DONE INJECT_moreEfficientTrainingING  ----------
+"FIFA19.exe"+33C2C98: 45 33 DB                    -  xor r11d,r11d
+"FIFA19.exe"+33C2C9B: 0F 5B DB                    -  cvtdq2ps xmm3,xmm3
+"FIFA19.exe"+33C2C9E: 4C 63 C1                    -  movsxd  r8,ecx
+"FIFA19.exe"+33C2CA1: 41 8B CB                    -  mov ecx,r11d
+"FIFA19.exe"+33C2CA4: F3 0F 59 9C 86 44 03 00 00  -  mulss xmm3,[rsi+rax*4+00000344]
+"FIFA19.exe"+33C2CAD: 48 63 84 24 D0 00 00 00     -  movsxd  rax,dword ptr [rsp+000000D0]
+"FIFA19.exe"+33C2CB5: F3 0F 59 9C 86 58 03 00 00  -  mulss xmm3,[rsi+rax*4+00000358]
+"FIFA19.exe"+33C2CBE: F3 0F 59 9C BE 64 03 00 00  -  mulss xmm3,[rsi+rdi*4+00000364]
+"FIFA19.exe"+33C2CC7: F3 0F 59 DC                 -  mulss xmm3,xmm4
+"FIFA19.exe"+33C2CCB: F3 0F 59 C3                 -  mulss xmm0,xmm3
+}
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>2744</ID>
+              <Description>"More efficient training (x100)"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_moreEfficientTraining,FIFA19.exe,66 0F 6E 5E 1C 45) // should be unique
+alloc(newmem_moreEfficientTraining,$1000,"FIFA19.exe"+33C2C93)
+
+label(code_moreEfficientTraining)
+label(ret_moreEfficientTraining)
+
+newmem_moreEfficientTraining:
+  mov [rsi+C], #999999 								// ATTRIBUTE_GROWTH_CAP (?) (default 300)
+  mov [rsi+1C], #1100000								// BASE_CALC_VALUE (default 3500)
+  mov [rsi+rax*4+00000344],(float)1.0				// PERFORMANCE_GRADE_A_MODIFIER (default 1.25)
+  mov [rsi+rax*4+00000358],(float)1.0  			// ? (default 1.25)
+  mov [rsi+rax*4+00000364],(float)1.0  			    // ? (default 2.00)
+
+code_moreEfficientTraining:
+  movd xmm3,[rsi+1C]
+  jmp ret_moreEfficientTraining
+
+INJECT_moreEfficientTraining:
+  jmp newmem_moreEfficientTraining
+ret_moreEfficientTraining:
+registersymbol(INJECT_moreEfficientTraining)
+
+[DISABLE]
+//code_moreEfficientTraining from here till the end of the code_moreEfficientTraining will be used to disable the cheat
+INJECT_moreEfficientTraining:
+  db 66 0F 6E 5E 1C
+
+unregistersymbol(INJECT_moreEfficientTraining)
+dealloc(newmem_moreEfficientTraining)
+
+{
+// ORIGINAL CODE - INJECT_moreEfficientTrainingION POINT: "FIFA19.exe"+33C2C93
+
+"FIFA19.exe"+33C2C67: EB 81                       -  jmp FIFA19.exe+33C2BEA
+"FIFA19.exe"+33C2C69: 4B 8D 04 49                 -  lea rax,[r9+r9*2]
+"FIFA19.exe"+33C2C6D: F3 41 0F 10 64 83 08        -  movss xmm4,[r11+rax*4+08]
+"FIFA19.exe"+33C2C74: 44 8B 44 24 20              -  mov r8d,[rsp+20]
+"FIFA19.exe"+33C2C79: 48 8B CE                    -  mov rcx,rsi
+"FIFA19.exe"+33C2C7C: 8B 54 24 24                 -  mov edx,[rsp+24]
+"FIFA19.exe"+33C2C80: 8B 5D 08                    -  mov ebx,[rbp+08]
+"FIFA19.exe"+33C2C83: E8 D8 8E 08 00              -  call FIFA19.exe+344BB60
+"FIFA19.exe"+33C2C88: 48 63 84 24 C8 00 00 00     -  movsxd  rax,dword ptr [rsp+000000C8]
+"FIFA19.exe"+33C2C90: 8D 4B FF                    -  lea ecx,[rbx-01]
+// ---------- INJECT_moreEfficientTrainingING HERE ----------
+"FIFA19.exe"+33C2C93: 66 0F 6E 5E 1C              -  movd xmm3,[rsi+1C]
+// ---------- DONE INJECT_moreEfficientTrainingING  ----------
+"FIFA19.exe"+33C2C98: 45 33 DB                    -  xor r11d,r11d
+"FIFA19.exe"+33C2C9B: 0F 5B DB                    -  cvtdq2ps xmm3,xmm3
+"FIFA19.exe"+33C2C9E: 4C 63 C1                    -  movsxd  r8,ecx
+"FIFA19.exe"+33C2CA1: 41 8B CB                    -  mov ecx,r11d
+"FIFA19.exe"+33C2CA4: F3 0F 59 9C 86 44 03 00 00  -  mulss xmm3,[rsi+rax*4+00000344]
+"FIFA19.exe"+33C2CAD: 48 63 84 24 D0 00 00 00     -  movsxd  rax,dword ptr [rsp+000000D0]
+"FIFA19.exe"+33C2CB5: F3 0F 59 9C 86 58 03 00 00  -  mulss xmm3,[rsi+rax*4+00000358]
+"FIFA19.exe"+33C2CBE: F3 0F 59 9C BE 64 03 00 00  -  mulss xmm3,[rsi+rdi*4+00000364]
+"FIFA19.exe"+33C2CC7: F3 0F 59 DC                 -  mulss xmm3,xmm4
+"FIFA19.exe"+33C2CCB: F3 0F 59 C3                 -  mulss xmm0,xmm3
+}
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>2745</ID>
+              <Description>"More efficient training (x99999)"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_moreEfficientTraining,FIFA19.exe,66 0F 6E 5E 1C 45) // should be unique
+alloc(newmem_moreEfficientTraining,$1000,"FIFA19.exe"+33C2C93)
+
+label(code_moreEfficientTraining)
+label(ret_moreEfficientTraining)
+
+newmem_moreEfficientTraining:
+  mov [rsi+C], #999999 								// ATTRIBUTE_GROWTH_CAP (?) (default 300)
+  mov [rsi+1C], #9996500                            // BASE_CALC_VALUE (default 3500)
+  mov [rsi+rax*4+00000344],(float)1.0				// PERFORMANCE_GRADE_A_MODIFIER (default 1.25)
+  mov [rsi+rax*4+00000358],(float)1.0  			    // ? (default 1.25)
+  mov [rsi+rax*4+00000364],(float)1.0  			    // ? (default 2.00)
 
 code_moreEfficientTraining:
   movd xmm3,[rsi+1C]
@@ -9736,6 +11615,212 @@ dealloc(newmem_SimA)
 "FIFA19.exe"+33C051D: 49 2B C8              -  sub rcx,r8
 "FIFA19.exe"+33C0520: 49 8B C5              -  mov rax,r13
 "FIFA19.exe"+33C0523: 48 F7 E9              -  imul rcx
+}
+</AssemblerScript>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>2757</ID>
+          <Description>"Manager"</Description>
+          <Options moHideChildren="1"/>
+          <LastState Value="" RealAddress="00000000"/>
+          <GroupHeader>1</GroupHeader>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>2746</ID>
+              <Description>"board.ini (Activate before you load Career Save)"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_boardini,FIFA19.exe,89 44 24 50 41 8B FE) // should be unique
+alloc(newmem_boardini,$1000,"FIFA19.exe"+40E6891)
+
+label(code_boardini)
+label(ret_boardini)
+
+newmem_boardini:
+  mov [rsp+34], #15    // MIN_POINTS = 15 // Minimum number of points the manager must have to avoid being sacked.
+  mov [rsp+38], #5     //POINTS_WIN = 5 // Board confidence points added for winning a game.
+  mov [rsp+3C], #1     //POINTS_DRAW = 1 // Board confidence points added for a draw game.
+  mov [rsp+40], #-5    //POINTS_LOSS = -5 // Board confidence points added for losing a game. It can be negative.
+  mov [rsp+44], #6     //LOSING_STREAK = 6 // Number of games that the manager must loss in a row to be considered a losing streak.
+  mov [rsp+48], #15    //FIRST_CHECK = 15 // Number of games that the team must play before the first board check.
+  mov [rsp+4C], #5     //INTERVAL_BETWEEN_CHECK = 5 // Number of games played before doing a check again.
+  mov [rsp+50], #14    //INTERVAL_BETWEEN_PREFORMANCE_EMAILS = 14 // Number of days before sent the next Your Performance so Far e-mail
+
+code_boardini:
+  mov [rsp+50],eax
+  mov edi,r14d
+  jmp ret_boardini
+
+INJECT_boardini:
+  jmp newmem_boardini
+  nop
+  nop
+ret_boardini:
+registersymbol(INJECT_boardini)
+
+[DISABLE]
+//code_boardini from here till the end of the code_boardini will be used to disable the cheat
+INJECT_boardini:
+  db 89 44 24 50 41 8B FE
+
+unregistersymbol(INJECT_boardini)
+dealloc(newmem_boardini)
+
+{
+// ORIGINAL CODE - INJECT_boardiniION POINT: "FIFA19.exe"+40E6891
+
+"FIFA19.exe"+40E6863: 89 44 24 48                    -  mov [rsp+48],eax
+"FIFA19.exe"+40E6867: 48 8D 15 3A 1B 1D 01           -  lea rdx,[FIFA19.exe+52B83A8]
+"FIFA19.exe"+40E686E: 48 8B CB                       -  mov rcx,rbx
+"FIFA19.exe"+40E6871: E8 CA EA 21 FE                 -  call FIFA19.exe+2305340
+"FIFA19.exe"+40E6876: 45 8D 44 24 09                 -  lea r8d,[r12+09]
+"FIFA19.exe"+40E687B: 89 44 24 4C                    -  mov [rsp+4C],eax
+"FIFA19.exe"+40E687F: 48 8D 15 82 1B 1D 01           -  lea rdx,[FIFA19.exe+52B8408]
+"FIFA19.exe"+40E6886: 48 8B CB                       -  mov rcx,rbx
+"FIFA19.exe"+40E6889: E8 B2 EA 21 FE                 -  call FIFA19.exe+2305340
+"FIFA19.exe"+40E688E: 45 33 F6                       -  xor r14d,r14d
+// ---------- INJECT_boardiniING HERE ----------
+"FIFA19.exe"+40E6891: 89 44 24 50                    -  mov [rsp+50],eax
+"FIFA19.exe"+40E6895: 41 8B FE                       -  mov edi,r14d
+// ---------- DONE INJECT_boardiniING  ----------
+"FIFA19.exe"+40E6898: 48 8D 74 24 68                 -  lea rsi,[rsp+68]
+"FIFA19.exe"+40E689D: 0F 1F 00                       -  nop [rax]
+"FIFA19.exe"+40E68A0: 4C 8D 0D 1D E3 F2 00           -  lea r9,[FIFA19.exe+5014BC4]
+"FIFA19.exe"+40E68A7: 89 7C 24 20                    -  mov [rsp+20],edi
+"FIFA19.exe"+40E68AB: 4C 8D 05 2E 1B 1D 01           -  lea r8,[FIFA19.exe+52B83E0]
+"FIFA19.exe"+40E68B2: BA 64 00 00 00                 -  mov edx,00000064
+"FIFA19.exe"+40E68B7: 48 8D 4D F0                    -  lea rcx,[rbp-10]
+"FIFA19.exe"+40E68BB: E8 50 0B 24 FC                 -  call FIFA19.exe+327410
+"FIFA19.exe"+40E68C0: B8 FF FF FF FF                 -  mov eax,FFFFFFFF
+"FIFA19.exe"+40E68C5: F0 0F C1 05 13 B8 14 02        - lock  xadd [FIFA19.exe+62320E0],eax
+}
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>2754</ID>
+              <Description>"Manager Rating - 99"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_ManagerRating,FIFA19.exe,89 83 70 05 00 00 48 83) // should be unique
+alloc(newmem_ManagerRating,$1000,"FIFA19.exe"+41A17BC)
+
+label(code_ManagerRating)
+label(ret_ManagerRating)
+
+newmem_ManagerRating:
+
+code_ManagerRating:
+  mov [rbx+00000568], #99
+  mov [rbx+0000056C], #99
+  mov [rbx+00000570], #99
+  jmp ret_ManagerRating
+
+INJECT_ManagerRating:
+  jmp newmem_ManagerRating
+  nop
+ret_ManagerRating:
+registersymbol(INJECT_ManagerRating)
+
+[DISABLE]
+//code_ManagerRating from here till the end of the code_ManagerRating will be used to disable the cheat
+INJECT_ManagerRating:
+  db 89 83 70 05 00 00
+
+unregistersymbol(INJECT_ManagerRating)
+dealloc(newmem_ManagerRating)
+
+{
+// ORIGINAL CODE - INJECT_ManagerRatingION POINT: "FIFA19.exe"+41A17BC
+
+"FIFA19.exe"+41A179C: CC                    -  int 3
+"FIFA19.exe"+41A179D: CC                    -  int 3
+"FIFA19.exe"+41A179E: CC                    -  int 3
+"FIFA19.exe"+41A179F: CC                    -  int 3
+"FIFA19.exe"+41A17A0: 40 53                 -  push rbx
+"FIFA19.exe"+41A17A2: 48 83 EC 20           -  sub rsp,20
+"FIFA19.exe"+41A17A6: 48 8B D9              -  mov rbx,rcx
+"FIFA19.exe"+41A17A9: 48 8D 91 68 05 00 00  -  lea rdx,[rcx+00000568]
+"FIFA19.exe"+41A17B0: 48 81 C1 98 0A 00 00  -  add rcx,00000A98
+"FIFA19.exe"+41A17B7: E8 E4 F3 FB FF        -  call FIFA19.exe+4160BA0
+// ---------- INJECT_ManagerRatingING HERE ----------
+"FIFA19.exe"+41A17BC: 89 83 70 05 00 00     -  mov [rbx+00000570],eax
+// ---------- DONE INJECT_ManagerRatingING  ----------
+"FIFA19.exe"+41A17C2: 48 83 C4 20           -  add rsp,20
+"FIFA19.exe"+41A17C6: 5B                    -  pop rbx
+"FIFA19.exe"+41A17C7: C3                    -  ret
+"FIFA19.exe"+41A17C8: CC                    -  int 3
+"FIFA19.exe"+41A17C9: CC                    -  int 3
+"FIFA19.exe"+41A17CA: CC                    -  int 3
+"FIFA19.exe"+41A17CB: CC                    -  int 3
+"FIFA19.exe"+41A17CC: CC                    -  int 3
+"FIFA19.exe"+41A17CD: CC                    -  int 3
+"FIFA19.exe"+41A17CE: CC                    -  int 3
+}
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>2780</ID>
+              <Description>"seasoncount = 1"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_editCareerUsers,FIFA19.exe,8B 03 89 45 90 8B) // should be unique
+alloc(newmem_editCareerUsers,$1000,"FIFA19.exe"+42E4BF7)
+
+label(code_editCareerUsers)
+label(ret_editCareerUsers)
+
+newmem_editCareerUsers:
+  mov [rbx+2C4], 1
+code_editCareerUsers:
+  mov eax,[rbx]
+  mov [rbp-70],eax
+  jmp ret_editCareerUsers
+
+INJECT_editCareerUsers:
+  jmp newmem_editCareerUsers
+ret_editCareerUsers:
+registersymbol(INJECT_editCareerUsers)
+
+[DISABLE]
+//code_editCareerUsers from here till the end of the code_editCareerUsers will be used to disable the cheat
+INJECT_editCareerUsers:
+  db 8B 03 89 45 90
+
+unregistersymbol(INJECT_editCareerUsers)
+dealloc(newmem_editCareerUsers)
+
+{
+// ORIGINAL code_editCareerUsers - INJECT_editCareerUsersION POINT: "FIFA19.exe"+42E4BF7
+
+"FIFA19.exe"+42E4BD3: 66 0F 7F 85 D0 00 00 00           -  movdqa [rbp+000000D0],xmm0
+"FIFA19.exe"+42E4BDB: C6 85 E0 00 00 00 01              -  mov byte ptr [rbp+000000E0],01
+"FIFA19.exe"+42E4BE2: 85 F6                             -  test esi,esi
+"FIFA19.exe"+42E4BE4: 78 0F                             -  js FIFA19.exe+42E4BF5
+"FIFA19.exe"+42E4BE6: 41 3B 77 10                       -  cmp esi,[r15+10]
+"FIFA19.exe"+42E4BEA: 7D 09                             -  jnl FIFA19.exe+42E4BF5
+"FIFA19.exe"+42E4BEC: 49 8B 5F 18                       -  mov rbx,[r15+18]
+"FIFA19.exe"+42E4BF0: 49 03 DE                          -  add rbx,r14
+"FIFA19.exe"+42E4BF3: EB 02                             -  jmp FIFA19.exe+42E4BF7
+"FIFA19.exe"+42E4BF5: 33 DB                             -  xor ebx,ebx
+// ---------- INJECT_editCareerUsersING HERE ----------
+"FIFA19.exe"+42E4BF7: 8B 03                             -  mov eax,[rbx]
+"FIFA19.exe"+42E4BF9: 89 45 90                          -  mov [rbp-70],eax
+// ---------- DONE INJECT_editCareerUsersING  ----------
+"FIFA19.exe"+42E4BFC: 8B 83 8C 01 00 00                 -  mov eax,[rbx+0000018C]
+"FIFA19.exe"+42E4C02: 89 85 B8 00 00 00                 -  mov [rbp+000000B8],eax
+"FIFA19.exe"+42E4C08: 8B 83 90 01 00 00                 -  mov eax,[rbx+00000190]
+"FIFA19.exe"+42E4C0E: 89 85 BC 00 00 00                 -  mov [rbp+000000BC],eax
+"FIFA19.exe"+42E4C14: 48 8D 53 08                       -  lea rdx,[rbx+08]
+"FIFA19.exe"+42E4C18: 48 85 D2                          -  test rdx,rdx
+"FIFA19.exe"+42E4C1B: 74 32                             -  je FIFA19.exe+42E4C4F
+"FIFA19.exe"+42E4C1D: 48 8D 7D 94                       -  lea rdi,[rbp-6C]
+"FIFA19.exe"+42E4C21: B9 60 00 00 00                    -  mov ecx,00000060
+"FIFA19.exe"+42E4C26: 48 8D 45 94                       -  lea rax,[rbp-6C]
 }
 </AssemblerScript>
             </CheatEntry>
@@ -9981,169 +12066,6 @@ dealloc(newmem_allowtransferapp_btnclick)
 "FIFA19.exe"+38A2322: 84 C9                    -  test cl,cl
 }
 </AssemblerScript>
-            </CheatEntry>
-          </CheatEntries>
-        </CheatEntry>
-        <CheatEntry>
-          <ID>732</ID>
-          <Description>"Edit Job Offer"</Description>
-          <Options moHideChildren="1"/>
-          <LastState/>
-          <VariableType>Auto Assembler Script</VariableType>
-          <AssemblerScript>[ENABLE]
-aobscanmodule(INJECT_IntJobOffer,FIFA19.exe, 1A 48 8B 81 90 01 00 00) // should be unique
-alloc(cave_IntJobOffer,$1000,"FIFA19.exe"+823922E)
-alloc(NationalTeamID, 4)
-registersymbol(NationalTeamID)
-NationalTeamID:
-dd (int)1353
-
-label(code_IntJobOffer)
-label(return_IntJobOffer)
-
-cave_IntJobOffer:
-  push rdx
-  push rdi
-  mov rdx, [rcx+00000188]
-  mov rdi, [NationalTeamID]
-  mov [rdx], rdi
-  pop rdi
-  pop rdx
-
-code_IntJobOffer:
-  mov rax,[rcx+00000190]
-  jmp return_IntJobOffer
-
-INJECT_IntJobOffer+01:
-  jmp cave_IntJobOffer
-  nop
-  nop
-return_IntJobOffer:
-registersymbol(INJECT_IntJobOffer)
-
-aobscanmodule(INJECT_ClubJobOffer,FIFA19.exe,48 8B 83 D0 00 00 00 44 8B 24) // should be unique
-alloc(cave_ClubJobOffer,$1000,"FIFA19.exe"+3F7B4D0)
-alloc(ClubID, 8)
-registersymbol(ClubID)
-ClubID:
-dq 00
-label(code_ClubJobOffer)
-label(return_ClubJobOffer)
-label(magic_ClubJobOffer)
-
-cave_ClubJobOffer:
-  pushf
-  cmp rcx, 0
-  je magic_ClubJobOffer
-  jmp code_ClubJobOffer
-
-magic_ClubJobOffer:
-  mov [ClubID], rbx
-  jmp code_ClubJobOffer
-
-code_ClubJobOffer:
-  popf
-  mov rax,[rbx+000000D0]
-  jmp return_ClubJobOffer
-
-
-INJECT_ClubJobOffer:
-  jmp cave_ClubJobOffer
-  nop
-  nop
-return_ClubJobOffer:
-registersymbol(INJECT_ClubJobOffer)
-
-
-[DISABLE]
-INJECT_IntJobOffer+01:
-  db 48 8B 81 90 01 00 00
-
-unregistersymbol(NationalTeamID)
-unregistersymbol(INJECT_IntJobOffer)
-dealloc(NationalTeamID)
-dealloc(cave_IntJobOffer)
-
-INJECT_ClubJobOffer:
-  db 48 8B 83 D0 00 00 00
-
-unregistersymbol(ClubID)
-unregistersymbol(INJECT_ClubJobOffer)
-dealloc(cave_ClubJobOffer)
-dealloc(ClubID)
-
-{
-// ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+3F88E03
-
-"FIFA19.exe"+3F88DE1: 75 43                 -  jne FIFA19.exe+3F88E26
-"FIFA19.exe"+3F88DE3: 48 8B 46 08           -  mov rax,[rsi+08]
-"FIFA19.exe"+3F88DE7: 48 8B 80 B8 06 00 00  -  mov rax,[rax+000006B8]
-"FIFA19.exe"+3F88DEE: 48 8B 00              -  mov rax,[rax]
-"FIFA19.exe"+3F88DF1: 48 85 C0              -  test rax,rax
-"FIFA19.exe"+3F88DF4: 74 27                 -  je FIFA19.exe+3F88E1D
-"FIFA19.exe"+3F88DF6: 48 8B 40 30           -  mov rax,[rax+30]
-"FIFA19.exe"+3F88DFA: 48 8B 48 08           -  mov rcx,[rax+08]
-"FIFA19.exe"+3F88DFE: 48 85 C9              -  test rcx,rcx
-"FIFA19.exe"+3F88E01: 74 1A                 -  je FIFA19.exe+3F88E1D
-// ---------- INJECTING HERE ----------
-"FIFA19.exe"+3F88E03: 48 8B 81 90 01 00 00  -  mov rax,[rcx+00000190]
-// ---------- DONE INJECTING  ----------
-"FIFA19.exe"+3F88E0A: 48 2B 81 88 01 00 00  -  sub rax,[rcx+00000188]
-"FIFA19.exe"+3F88E11: 48 C1 F8 06           -  sar rax,06
-"FIFA19.exe"+3F88E15: 85 C0                 -  test eax,eax
-"FIFA19.exe"+3F88E17: 0F 85 10 03 00 00     -  jne FIFA19.exe+3F8912D
-"FIFA19.exe"+3F88E1D: 33 FF                 -  xor edi,edi
-"FIFA19.exe"+3F88E1F: 8B DF                 -  mov ebx,edi
-"FIFA19.exe"+3F88E21: E9 0C 03 00 00        -  jmp FIFA19.exe+3F89132
-"FIFA19.exe"+3F88E26: 48 8D 15 13 C4 2A 01  -  lea rdx,[FIFA19.exe+5235240]
-"FIFA19.exe"+3F88E2D: 49 8B CB              -  mov rcx,r11
-"FIFA19.exe"+3F88E30: E8 5B 34 3A FC        -  call FIFA19.exe+32C290
-}
-
-{
-// ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+3F7B4D0
-
-"FIFA19.exe"+3F7B4A7: FF C2                    -  inc edx
-"FIFA19.exe"+3F7B4A9: 89 54 24 60              -  mov [rsp+60],edx
-"FIFA19.exe"+3F7B4AD: 85 FF                    -  test edi,edi
-"FIFA19.exe"+3F7B4AF: 0F 8E 2E 09 00 00        -  jng FIFA19.exe+3F7BDE3
-"FIFA19.exe"+3F7B4B5: 33 C9                    -  xor ecx,ecx
-"FIFA19.exe"+3F7B4B7: 48 89 4D C8              -  mov [rbp-38],rcx
-"FIFA19.exe"+3F7B4BB: 8B C7                    -  mov eax,edi
-"FIFA19.exe"+3F7B4BD: 48 89 45 80              -  mov [rbp-80],rax
-"FIFA19.exe"+3F7B4C1: 48 8D 3D 10 81 32 01     -  lea rdi,[FIFA19.exe+52A35D8]
-"FIFA19.exe"+3F7B4C8: 0F 1F 84 00 00 00 00 00  -  nop [rax+rax+00000000]
-// ---------- INJECTING HERE ----------
-"FIFA19.exe"+3F7B4D0: 48 8B 83 D0 00 00 00     -  mov rax,[rbx+000000D0]
-// ---------- DONE INJECTING  ----------
-"FIFA19.exe"+3F7B4D7: 44 8B 24 08              -  mov r12d,[rax+rcx]
-"FIFA19.exe"+3F7B4DB: 44 89 65 B4              -  mov [rbp-4C],r12d
-"FIFA19.exe"+3F7B4DF: 44 8B 6C 08 04           -  mov r13d,[rax+rcx+04]
-"FIFA19.exe"+3F7B4E4: 8B 54 08 1C              -  mov edx,[rax+rcx+1C]
-"FIFA19.exe"+3F7B4E8: 89 55 B8                 -  mov [rbp-48],edx
-"FIFA19.exe"+3F7B4EB: 8B 54 08 08              -  mov edx,[rax+rcx+08]
-"FIFA19.exe"+3F7B4EF: 89 55 BC                 -  mov [rbp-44],edx
-"FIFA19.exe"+3F7B4F2: 8B 54 08 0C              -  mov edx,[rax+rcx+0C]
-"FIFA19.exe"+3F7B4F6: 89 54 24 68              -  mov [rsp+68],edx
-"FIFA19.exe"+3F7B4FA: 8B 54 08 10              -  mov edx,[rax+rcx+10]
-}
-</AssemblerScript>
-          <CheatEntries>
-            <CheatEntry>
-              <ID>733</ID>
-              <Description>"NationalTeamID"</Description>
-              <VariableType>4 Bytes</VariableType>
-              <Address>NationalTeamID</Address>
-            </CheatEntry>
-            <CheatEntry>
-              <ID>1874</ID>
-              <Description>"ClubID"</Description>
-              <VariableType>4 Bytes</VariableType>
-              <Address>ClubID</Address>
-              <Offsets>
-                <Offset>0</Offset>
-                <Offset>d0</Offset>
-              </Offsets>
             </CheatEntry>
           </CheatEntries>
         </CheatEntry>
@@ -10944,6 +12866,251 @@ bFreeScouts:
                       </Offsets>
                     </CheatEntry>
                   </CheatEntries>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>2759</ID>
+          <Description>"Job Offer"</Description>
+          <Options moHideChildren="1"/>
+          <LastState Value="" RealAddress="00000000"/>
+          <GroupHeader>1</GroupHeader>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>2758</ID>
+              <Description>"joboffer.ini (Activate before you load Career Save)"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_JobOfferINI,FIFA19.exe,89 45 3B B8 FF FF FF FF) // should be unique
+alloc(newmem_JobOfferINI,$1000,"FIFA19.exe"+40E7756)
+
+label(code_JobOfferINI)
+label(ret_JobOfferINI)
+
+newmem_JobOfferINI:
+  mov byte [rbp-38], 2				//  DEBUG_EASY_JOB_HUNTS = 2			// 0 - off, 1 - on, 2 - Are you kidding?
+  mov [rbp-19], #99					//  CHANCE_RANDOM_OFFER = 99				// How likely a random offer will be sent
+  mov [rbp-9], #30					//  RANDOM_LEAGUES_TO_PROCESS = 30			// How many leagues to look at if you are receving random job offers
+  mov [rbp-5], #35					//	CHANCE_USE_LEAGUE_ABOVE = 35			// Chance of looking league above
+  mov [rbp-1], #20					//  MAXATTEMPTS_FINDJOB = 20			// How many iterations on teams in a league to do increasing the range each time. Higher number = slower
+  mov [rbp+3], #20					// MODIFIER_PER_LOOP = 20				// How much the overall increases/decreases by on each iteration.  Smaller number = less likely
+  mov [rbp+7], #10					// FIRED_OVERALL_HIT = 10				// Overall rating less than current team to look for new jobs at
+  mov [rbp+B], #60					// NEWJOB_OVERALL_INC = 60				// If we are looking for a better job, overall higher that we should look at
+  mov [rbp+F], #1					// NUM_GAMES_PLAYED = 1				// Min number of games a league should play before we consider firing their managers
+code_JobOfferINI:
+  mov [rbp+3B],eax
+  mov eax,FFFFFFFF
+  jmp ret_JobOfferINI
+
+INJECT_JobOfferINI:
+  jmp newmem_JobOfferINI
+  nop
+  nop
+  nop
+ret_JobOfferINI:
+registersymbol(INJECT_JobOfferINI)
+
+[DISABLE]
+//code_JobOfferINI from here till the end of the code_JobOfferINI will be used to disable the cheat
+INJECT_JobOfferINI:
+  db 89 45 3B B8 FF FF FF FF
+
+unregistersymbol(INJECT_JobOfferINI)
+dealloc(newmem_JobOfferINI)
+
+{
+// ORIGINAL CODE - INJECT_JobOfferINIION POINT: "FIFA19.exe"+40E7756
+
+"FIFA19.exe"+40E7726: 41 B8 FF FF FF FF           -  mov r8d,FFFFFFFF
+"FIFA19.exe"+40E772C: 89 45 33                    -  mov [rbp+33],eax
+"FIFA19.exe"+40E772F: 48 8D 15 A2 09 1D 01        -  lea rdx,[FIFA19.exe+52B80D8]
+"FIFA19.exe"+40E7736: 48 8B CF                    -  mov rcx,rdi
+"FIFA19.exe"+40E7739: E8 02 DC 21 FE              -  call FIFA19.exe+2305340
+"FIFA19.exe"+40E773E: 41 B8 FF FF FF FF           -  mov r8d,FFFFFFFF
+"FIFA19.exe"+40E7744: 89 45 37                    -  mov [rbp+37],eax
+"FIFA19.exe"+40E7747: 48 8D 15 72 09 1D 01        -  lea rdx,[FIFA19.exe+52B80C0]
+"FIFA19.exe"+40E774E: 48 8B CF                    -  mov rcx,rdi
+"FIFA19.exe"+40E7751: E8 EA DB 21 FE              -  call FIFA19.exe+2305340
+// ---------- INJECT_JobOfferINIING HERE ----------
+"FIFA19.exe"+40E7756: 89 45 3B                    -  mov [rbp+3B],eax
+"FIFA19.exe"+40E7759: B8 FF FF FF FF              -  mov eax,FFFFFFFF
+// ---------- DONE INJECT_JobOfferINIING  ----------
+"FIFA19.exe"+40E775E: F0 0F C1 05 7A A9 14 02     - lock  xadd [FIFA19.exe+62320E0],eax
+"FIFA19.exe"+40E7766: FF C8                       -  dec eax
+"FIFA19.exe"+40E7768: 3D 00 00 00 01              -  cmp eax,01000000
+"FIFA19.exe"+40E776D: 72 34                       -  jb FIFA19.exe+40E77A3
+"FIFA19.exe"+40E776F: 90                          -  nop
+"FIFA19.exe"+40E7770: F0 FF 05 69 A9 14 02        - lock  inc [FIFA19.exe+62320E0]
+"FIFA19.exe"+40E7777: 8B 05 63 A9 14 02           -  mov eax,[FIFA19.exe+62320E0]
+"FIFA19.exe"+40E777D: 85 C0                       -  test eax,eax
+"FIFA19.exe"+40E777F: 7F 0C                       -  jg FIFA19.exe+40E778D
+"FIFA19.exe"+40E7781: F3 90                       - repe  nop
+}
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>732</ID>
+              <Description>"Edit Existing Job Offers"</Description>
+              <Options moHideChildren="1"/>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_IntJobOffer,FIFA19.exe, 1A 48 8B 81 90 01 00 00) // should be unique
+alloc(cave_IntJobOffer,$1000,"FIFA19.exe"+823922E)
+alloc(NationalTeamID, 4)
+registersymbol(NationalTeamID)
+NationalTeamID:
+dd (int)1353
+
+label(code_IntJobOffer)
+label(return_IntJobOffer)
+
+cave_IntJobOffer:
+  push rdx
+  push rdi
+  mov rdx, [rcx+00000188]
+  mov rdi, [NationalTeamID]
+  mov [rdx], rdi
+  pop rdi
+  pop rdx
+
+code_IntJobOffer:
+  mov rax,[rcx+00000190]
+  jmp return_IntJobOffer
+
+INJECT_IntJobOffer+01:
+  jmp cave_IntJobOffer
+  nop
+  nop
+return_IntJobOffer:
+registersymbol(INJECT_IntJobOffer)
+
+aobscanmodule(INJECT_ClubJobOffer,FIFA19.exe,48 8B 83 D0 00 00 00 44 8B 24) // should be unique
+alloc(cave_ClubJobOffer,$1000,"FIFA19.exe"+3F7B4D0)
+alloc(ClubID, 8)
+registersymbol(ClubID)
+ClubID:
+dq 00
+label(code_ClubJobOffer)
+label(return_ClubJobOffer)
+label(magic_ClubJobOffer)
+
+cave_ClubJobOffer:
+  pushf
+  cmp rcx, 0
+  je magic_ClubJobOffer
+  jmp code_ClubJobOffer
+
+magic_ClubJobOffer:
+  mov [ClubID], rbx
+  jmp code_ClubJobOffer
+
+code_ClubJobOffer:
+  popf
+  mov rax,[rbx+000000D0]
+  jmp return_ClubJobOffer
+
+
+INJECT_ClubJobOffer:
+  jmp cave_ClubJobOffer
+  nop
+  nop
+return_ClubJobOffer:
+registersymbol(INJECT_ClubJobOffer)
+
+
+[DISABLE]
+INJECT_IntJobOffer+01:
+  db 48 8B 81 90 01 00 00
+
+unregistersymbol(NationalTeamID)
+unregistersymbol(INJECT_IntJobOffer)
+dealloc(NationalTeamID)
+dealloc(cave_IntJobOffer)
+
+INJECT_ClubJobOffer:
+  db 48 8B 83 D0 00 00 00
+
+unregistersymbol(ClubID)
+unregistersymbol(INJECT_ClubJobOffer)
+dealloc(cave_ClubJobOffer)
+dealloc(ClubID)
+
+{
+// ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+3F88E03
+
+"FIFA19.exe"+3F88DE1: 75 43                 -  jne FIFA19.exe+3F88E26
+"FIFA19.exe"+3F88DE3: 48 8B 46 08           -  mov rax,[rsi+08]
+"FIFA19.exe"+3F88DE7: 48 8B 80 B8 06 00 00  -  mov rax,[rax+000006B8]
+"FIFA19.exe"+3F88DEE: 48 8B 00              -  mov rax,[rax]
+"FIFA19.exe"+3F88DF1: 48 85 C0              -  test rax,rax
+"FIFA19.exe"+3F88DF4: 74 27                 -  je FIFA19.exe+3F88E1D
+"FIFA19.exe"+3F88DF6: 48 8B 40 30           -  mov rax,[rax+30]
+"FIFA19.exe"+3F88DFA: 48 8B 48 08           -  mov rcx,[rax+08]
+"FIFA19.exe"+3F88DFE: 48 85 C9              -  test rcx,rcx
+"FIFA19.exe"+3F88E01: 74 1A                 -  je FIFA19.exe+3F88E1D
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+3F88E03: 48 8B 81 90 01 00 00  -  mov rax,[rcx+00000190]
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+3F88E0A: 48 2B 81 88 01 00 00  -  sub rax,[rcx+00000188]
+"FIFA19.exe"+3F88E11: 48 C1 F8 06           -  sar rax,06
+"FIFA19.exe"+3F88E15: 85 C0                 -  test eax,eax
+"FIFA19.exe"+3F88E17: 0F 85 10 03 00 00     -  jne FIFA19.exe+3F8912D
+"FIFA19.exe"+3F88E1D: 33 FF                 -  xor edi,edi
+"FIFA19.exe"+3F88E1F: 8B DF                 -  mov ebx,edi
+"FIFA19.exe"+3F88E21: E9 0C 03 00 00        -  jmp FIFA19.exe+3F89132
+"FIFA19.exe"+3F88E26: 48 8D 15 13 C4 2A 01  -  lea rdx,[FIFA19.exe+5235240]
+"FIFA19.exe"+3F88E2D: 49 8B CB              -  mov rcx,r11
+"FIFA19.exe"+3F88E30: E8 5B 34 3A FC        -  call FIFA19.exe+32C290
+}
+
+{
+// ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+3F7B4D0
+
+"FIFA19.exe"+3F7B4A7: FF C2                    -  inc edx
+"FIFA19.exe"+3F7B4A9: 89 54 24 60              -  mov [rsp+60],edx
+"FIFA19.exe"+3F7B4AD: 85 FF                    -  test edi,edi
+"FIFA19.exe"+3F7B4AF: 0F 8E 2E 09 00 00        -  jng FIFA19.exe+3F7BDE3
+"FIFA19.exe"+3F7B4B5: 33 C9                    -  xor ecx,ecx
+"FIFA19.exe"+3F7B4B7: 48 89 4D C8              -  mov [rbp-38],rcx
+"FIFA19.exe"+3F7B4BB: 8B C7                    -  mov eax,edi
+"FIFA19.exe"+3F7B4BD: 48 89 45 80              -  mov [rbp-80],rax
+"FIFA19.exe"+3F7B4C1: 48 8D 3D 10 81 32 01     -  lea rdi,[FIFA19.exe+52A35D8]
+"FIFA19.exe"+3F7B4C8: 0F 1F 84 00 00 00 00 00  -  nop [rax+rax+00000000]
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+3F7B4D0: 48 8B 83 D0 00 00 00     -  mov rax,[rbx+000000D0]
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+3F7B4D7: 44 8B 24 08              -  mov r12d,[rax+rcx]
+"FIFA19.exe"+3F7B4DB: 44 89 65 B4              -  mov [rbp-4C],r12d
+"FIFA19.exe"+3F7B4DF: 44 8B 6C 08 04           -  mov r13d,[rax+rcx+04]
+"FIFA19.exe"+3F7B4E4: 8B 54 08 1C              -  mov edx,[rax+rcx+1C]
+"FIFA19.exe"+3F7B4E8: 89 55 B8                 -  mov [rbp-48],edx
+"FIFA19.exe"+3F7B4EB: 8B 54 08 08              -  mov edx,[rax+rcx+08]
+"FIFA19.exe"+3F7B4EF: 89 55 BC                 -  mov [rbp-44],edx
+"FIFA19.exe"+3F7B4F2: 8B 54 08 0C              -  mov edx,[rax+rcx+0C]
+"FIFA19.exe"+3F7B4F6: 89 54 24 68              -  mov [rsp+68],edx
+"FIFA19.exe"+3F7B4FA: 8B 54 08 10              -  mov edx,[rax+rcx+10]
+}
+</AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>733</ID>
+                  <Description>"NationalTeamID"</Description>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>NationalTeamID</Address>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>1874</ID>
+                  <Description>"ClubID"</Description>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>ClubID</Address>
+                  <Offsets>
+                    <Offset>0</Offset>
+                    <Offset>d0</Offset>
+                  </Offsets>
                 </CheatEntry>
               </CheatEntries>
             </CheatEntry>
@@ -12147,6 +14314,68 @@ dealloc(newmem_PlayerAgeRange)
 "FIFA19.exe"+3922440: 48 8B CF                 -  mov rcx,rdi
 "FIFA19.exe"+3922443: E8 88 CE 1F FE           -  call FIFA19.exe+1B1F2D0
 "FIFA19.exe"+3922448: 41 B1 01                 -  mov r9l,01
+}
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>2760</ID>
+                  <Description>"Youth Player Retire At Age = 30"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_YouthPlayersRetirement,FIFA19.exe,41 FF C4 89 03) // should be unique
+alloc(new_YouthPlayersRetirement,$1000,"FIFA19.exe"+40F154A)
+
+label(code_YouthPlayersRetirement)
+label(ret_YouthPlayersRetirement)
+
+new_YouthPlayersRetirement:
+  mov eax, #30
+code_YouthPlayersRetirement:
+  inc r12d
+  mov [rbx],eax
+  jmp ret_YouthPlayersRetirement
+
+INJECT_YouthPlayersRetirement:
+  jmp new_YouthPlayersRetirement
+ret_YouthPlayersRetirement:
+registersymbol(INJECT_YouthPlayersRetirement)
+
+[DISABLE]
+//code_YouthPlayersRetirement from here till the end of the code_YouthPlayersRetirement will be used to disable the cheat
+INJECT_YouthPlayersRetirement:
+  db 41 FF C4 89 03
+
+unregistersymbol(INJECT_YouthPlayersRetirement)
+dealloc(new_YouthPlayersRetirement)
+
+{
+// ORIGINAL CODE - INJECT_YouthPlayersRetirementION POINT: "FIFA19.exe"+40F154A
+
+"FIFA19.exe"+40F151C: 0F 1F 40 00              -  nop [rax+00]
+"FIFA19.exe"+40F1520: 45 8B CC                 -  mov r9d,r12d
+"FIFA19.exe"+40F1523: 4C 8D 05 76 B0 1C 01     -  lea r8,[FIFA19.exe+52BC5A0]
+"FIFA19.exe"+40F152A: BA 64 00 00 00           -  mov edx,00000064
+"FIFA19.exe"+40F152F: 48 8D 4D 80              -  lea rcx,[rbp-80]
+"FIFA19.exe"+40F1533: E8 D8 5E 23 FC           -  call FIFA19.exe+327410
+"FIFA19.exe"+40F1538: 41 B8 FF FF FF FF        -  mov r8d,FFFFFFFF
+"FIFA19.exe"+40F153E: 48 8D 55 80              -  lea rdx,[rbp-80]
+"FIFA19.exe"+40F1542: 49 8B CD                 -  mov rcx,r13
+"FIFA19.exe"+40F1545: E8 F6 3D 21 FE           -  call FIFA19.exe+2305340
+// ---------- INJECT_YouthPlayersRetirementING HERE ----------
+"FIFA19.exe"+40F154A: 41 FF C4                 -  inc r12d
+"FIFA19.exe"+40F154D: 89 03                    -  mov [rbx],eax
+// ---------- DONE INJECT_YouthPlayersRetirementING  ----------
+"FIFA19.exe"+40F154F: 48 8D 5B 04              -  lea rbx,[rbx+04]
+"FIFA19.exe"+40F1553: 41 83 FC 02              -  cmp r12d,02
+"FIFA19.exe"+40F1557: 7C C7                    -  jl FIFA19.exe+40F1520
+"FIFA19.exe"+40F1559: 41 B8 03 00 00 00        -  mov r8d,00000003
+"FIFA19.exe"+40F155F: 48 8D 15 12 B0 1C 01     -  lea rdx,[FIFA19.exe+52BC578]
+"FIFA19.exe"+40F1566: 49 8B CD                 -  mov rcx,r13
+"FIFA19.exe"+40F1569: E8 D2 3D 21 FE           -  call FIFA19.exe+2305340
+"FIFA19.exe"+40F156E: 48 8B 4C 24 40           -  mov rcx,[rsp+40]
+"FIFA19.exe"+40F1573: 4C 8B A4 24 90 01 00 00  -  mov r12,[rsp+00000190]
+"FIFA19.exe"+40F157B: 48 8B 9C 24 B0 01 00 00  -  mov rbx,[rsp+000001B0]
 }
 </AssemblerScript>
                 </CheatEntry>
