@@ -53,3 +53,9 @@ Changelog:
 		- Added "teamplayerlinks Table" to "FIFA Database"
 		- Added "Unique Player Movement"
 		- Added "Alt + Tab Disconnect bypass" and now it's called "Dont Pause Game on AltTab"
+		
+	v1.0.5:
+		- Fixed Following scripts:
+			- Dont Pause Game on AltTab
+			- Morale
+			- Unlock "Edit Player" in career menu
