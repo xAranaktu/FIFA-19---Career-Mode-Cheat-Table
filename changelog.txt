@@ -65,6 +65,5 @@ Changelog:
 		- Fixed Following scripts:
 			- Training Everyday
 			- Unlimited Training Sessions
-			- Unlock "Edit Player" in career menu
 			- Edit Existing Job Offers
 			
