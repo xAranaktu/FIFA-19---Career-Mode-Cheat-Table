@@ -59,3 +59,12 @@ Changelog:
 			- Dont Pause Game on AltTab
 			- Morale
 			- Unlock "Edit Player" in career menu
+			
+	v1.0.6:
+		- Added "Regens" -> "Disable Player Regens"
+		- Fixed Following scripts:
+			- Training Everyday
+			- Unlimited Training Sessions
+			- Unlock "Edit Player" in career menu
+			- Edit Existing Job Offers
+			
