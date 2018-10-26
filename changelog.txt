@@ -67,3 +67,80 @@ Changelog:
 			- Unlimited Training Sessions
 			- Edit Existing Job Offers
 			
+	FIFA 19 - Career mode Cheat Table
+
+Changelog:
+
+	v1.0.0:
+		- Scripts in this version: https://trello.com/b/olhWeL54/v100
+		- Changes since FIFA 18 - Career mode Cheat Table:
+			- I've added dropdown selection options for values inside database tables.
+			- 3 new fields in Players Table -> 'faceposerpreset', 'skillmoveslikelihood', 'headassetid'
+			- 1 new field in Manager Table -> 'faceposerpreset'
+			- Fixed popup when you release a player for free. It should display 0€ now.
+			- "Unlock edit player" should work in player career mode now
+			- Scouts Management -> refactored (https://i.imgur.com/AORZsOZ.png). Added detailed info about each scout available for hire.
+			- Teamkits Table - 4 new fields -> 'chestbadge', 'captainarmband', 'jerseyleftsleevebadge', 'jerseyrightsleevebadge'
+			- Added some sections to teamkits table.
+			
+	v1.0.1:
+		- Added filter for manager table (It should be possible to edit managerhead via game news panel)
+		- Added Youth Academy (There is still problem with '100% chance for 5* skill moves' will be fixed later...)
+		- Added Unlimited Training Sessions
+		- Added Training Everyday
+		
+	v1.0.2:
+		- Added Side Changer (Just remember that you need to change Controller ID from '0' to '4' if you are playing on keyboard)
+		- Added '5 star skill moves'. To 'In-Game Hacks'
+		- Added Player Contract (same as last year)
+		- Added Transfer HUB (same as last year)
+		- Added Transfer Window Configuration (Changes in transfer.ini and transfers.ini has been made by EA, we need to wait for FrostyTool)
+		- Added More efficient training (Edit script to match your preferences, by default it's only slightly better than EA config.)
+		
+	v1.0.3:
+		- Fixed 'MIN_PLAYER_AGE_FOR_PROMOTION = 12'
+		- Fixed trait names
+		- Added Unlimited Substitutions/Disable Substitutions
+		- Added script for maniuplating Match score
+		- Added 'Home/Away Team Injured players'
+		- Added pointers for player name and birthdate to "Edit Player"
+		- Added "Edit Job Offer"
+		- Added "career_managerpref Table" & "teamstadiumlinks Table"
+		- Added "Change Stadium", "Half Length", "Weather" to "Match Settings"
+		- Added "More efficient training (10x)"
+		
+	v1.0.4:
+		- Fixed editing player name (Pointer shouldn't point on nullbyte anymore)
+		- Added "More efficient training (x100)"
+		- Added "More efficient training (x9999)"
+		- Added "board.ini" to "Manager" section (Not sure if it's working)
+		- Added "Manager Rating - 99" to "Manager" section
+		- Added "seasoncount = 1" to "Manager" section (it's for unlimited career mode)
+		- Added "joboffer.ini" to "Job Offer" section
+		- Renamed "Edit Job Offers" script to "Edit Existing Job Offers" and moved it to "Job Offer" section.
+		- Added "Youth Player Retire At Age = 30" to "Youth Academy" section
+		- Added "teamplayerlinks Table" to "FIFA Database"
+		- Added "Unique Player Movement"
+		- Added "Alt + Tab Disconnect bypass" and now it's called "Dont Pause Game on AltTab"
+		
+	v1.0.5:
+		- Fixed Following scripts:
+			- Dont Pause Game on AltTab
+			- Morale
+			- Unlock "Edit Player" in career menu
+			
+	v1.0.6:
+		- Added "Regens" -> "Disable Player Regens"
+		- Fixed Following scripts:
+			- Training Everyday
+			- Unlimited Training Sessions
+			- Edit Existing Job Offers
+			
+	v1.0.7:
+		- Game will not longer crash after activating Training Everyday script
+		- Fixed Following scripts: 
+			- Free & Unlimited Releasing Players
+			- Edit Player
+			- Unique Sprint Style
+			
+			
