@@ -74,3 +74,9 @@ Changelog:
 			- Edit Player
 			- Unique Sprint Style
 			
+	v1.0.8:
+		- Fixed Following scripts: 
+			- Free & Unlimited Releasing Players
+			- Match Settings -> Half Length
+			- In-Game Hacks -> Match score
+			
