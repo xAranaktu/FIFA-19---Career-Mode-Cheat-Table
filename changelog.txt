@@ -81,5 +81,5 @@ Changelog:
 			- In-Game Hacks -> Match score
 			
 	v1.0.9:
-	- Fixed Following scripts: 
-		- Morale
+		- Fixed Following scripts: 
+			- Morale
