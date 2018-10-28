@@ -80,3 +80,6 @@ Changelog:
 			- Match Settings -> Half Length
 			- In-Game Hacks -> Match score
 			
+	v1.0.9:
+	- Fixed Following scripts: 
+		- Morale
