@@ -15,6 +15,7 @@ And the last thing but not least, __tick checkboxes only when you are activating
    * [FIFA 19 IDs](#fifa-19-ids)
    * [Permanent Stadium Change](#permanent-stadium-change)
    * [Changing Player Head Model](#changing-player-head-model)
+   * [Changing Manager Head Model](#changing-manager-head-model)
 
 
 ## Update Progress
@@ -56,7 +57,7 @@ On example I'm changing AC Milan Home Stadium from 'San Siro' (ID: 5) to 'Old Tr
 ![](https://i.imgur.com/nmVhcn8.jpg)
 
 ## Changing Player Head Model
-__List of Head IDs can be found on [FIFA 19 IDs](#fifa-19-ids) list__
+__List of Head IDs can be found on [FIFA 19 IDs](https://docs.google.com/spreadsheets/d/1eYx5j7FZwlaPKymv3_G-ezZKtfWmQ6hwjXukAfqYoto/edit?usp=sharing) list__
 
 Now in __FIFA Database->Database Tables->Players table__ set:
 
@@ -71,3 +72,18 @@ __Effect__
 
 ![Before](https://i.imgur.com/t8pm49W.jpg)
 ![After](https://i.imgur.com/PFVjDjy.jpg)
+
+## Changing Manager Head Model
+__List of Head IDs can be found on [FIFA 19 IDs](https://docs.google.com/spreadsheets/d/1eYx5j7FZwlaPKymv3_G-ezZKtfWmQ6hwjXukAfqYoto/edit?usp=sharing) list__
+
+Method 1 (my method):
+1. Activate "Manager Table"
+2. Activate "Filter"
+3. In "Team ID Filter" put ID of your team. From sofifa for example or from [FIFA 19 IDs](https://docs.google.com/spreadsheets/d/1eYx5j7FZwlaPKymv3_G-ezZKtfWmQ6hwjXukAfqYoto/edit?usp=sharing).
+4. Activate "Team ID Filter"
+5. Go to "News" in-game.
+6. If teamid in manager table will be your teamid - 1 (as on screen below) then you can make your changes.
+![](https://i.imgur.com/hxxc0EW.png)
+7. If condition from point 6. is not met you need to find a news which will query manager database. Just click randomly on different tabs and news until you will have same situation as on screen above.
+
+[Method 2 (Dunno who is the author of this)](https://docs.google.com/document/d/e/2PACX-1vTwIl5tMySFCSqymJsBXtAOSKFNmyv7kUfembGp7EFbXFJzcjmnAGh9N8LHKU5GBl8rfSJU2cckiCyA/pub)
