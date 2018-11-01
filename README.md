@@ -84,6 +84,8 @@ Method 1 (my method):
 5. Go to "News" in-game.
 6. If teamid in manager table will be your teamid - 1 (as on screen below) then you can make your changes.
 ![](https://i.imgur.com/hxxc0EW.png)
-7. If condition from point 6. is not met you need to find a news which will query manager database. Just click randomly on different tabs and news until you will have same situation as on screen above.
+7. Put any Head Model id from [FIFA 19 IDs](https://docs.google.com/spreadsheets/d/1eYx5j7FZwlaPKymv3_G-ezZKtfWmQ6hwjXukAfqYoto/edit?usp=sharing) in 'headid' field to change head model of your manager.
+
+__If condition from point 6. is not met you need to find a news which will query manager database. Just click randomly on different tabs and news until you will have same situation as on screen above.__
 
 [Method 2 (Dunno who is the author of this)](https://docs.google.com/document/d/e/2PACX-1vTwIl5tMySFCSqymJsBXtAOSKFNmyv7kUfembGp7EFbXFJzcjmnAGh9N8LHKU5GBl8rfSJU2cckiCyA/pub)
