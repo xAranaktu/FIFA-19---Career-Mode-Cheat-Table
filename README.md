@@ -116,6 +116,7 @@ Video Tutorials UC Nerd -> [Watch on YouTube](http://bit.ly/CM-Cheat-Table-19)
   ![](https://i.imgur.com/gOa3Nvu.png)
   
   - Find on Edit Player list player that you want to edit and click on him
+  
   ![](https://i.imgur.com/FI0o5xo.png)
   
   - You can edit player name now including "Known As" name. Remember to click on "Apply & Exit" to save the changes.
