@@ -13,7 +13,8 @@ And the last thing but not least, __tick checkboxes only when you are activating
    * [Release Schedule](#release-schedule)
    * [Video Tutorials](#video-tutorials)
    * [FIFA 19 IDs](#fifa-19-ids)
-   * [Permanent stadium change](#permanent-stadium-change)
+   * [Permanent Stadium Change](#permanent-stadium-change)
+   * [Changing Player Head Model](#changing-player-head-model)
 
 
 ## Update Progress
@@ -53,3 +54,20 @@ On example I'm changing AC Milan Home Stadium from 'San Siro' (ID: 5) to 'Old Tr
 5. Now just play this match (you will play it on old stadium) or simulate it and the next home match will be played on the new stadium. Saving and reloading career save at this point may also work, so playing match on old stadium will be not needed.
 
 ![](https://i.imgur.com/nmVhcn8.jpg)
+
+## Changing Player Head Model
+__List of Head IDs can be found on [FIFA 19 IDs](#fifa-19-ids) list__
+
+Now in __FIFA Database->Database Tables->Players table__ set:
+
+1. Has High Quality Head to __1__
+2. Head Class Code to __0__
+3. Head Asset ID to __ID you want to use (i.e 1198)__
+4. Head Variation to __0__
+
+![](https://i.imgur.com/bMTnNbg.png)
+
+__Effect__
+
+![Before](https://i.imgur.com/t8pm49W.jpg)
+![After](https://i.imgur.com/PFVjDjy.jpg)
