@@ -12,11 +12,13 @@ And the last thing but not least, __tick checkboxes only when you are activating
    * [Update Progress](#update-progress)
    * [Release Schedule](#release-schedule)
    * [Video Tutorials](#video-tutorials)
+   * [Frequently asked questions](#faq)
    * [FIFA 19 IDs](#fifa-19-ids)
    * [Permanent Stadium Change](#permanent-stadium-change)
    * [Changing Player Head Model](#changing-player-head-model)
    * [Changing Manager Head Model](#changing-manager-head-model)
    * [Removing injury from a player](#removing-injury-from-a-player)
+   * [Contract Negotiation](#contract-negotiation)
 
 
 ## Update Progress
@@ -32,6 +34,95 @@ When new version will be released? Answer is here: [Release Schedule](https://do
 Video Tutorials UC Nerd -> [Watch on YouTube](http://bit.ly/CM-Cheat-Table-19)
 
 
+## F.A.Q
+
+* __Can you make a cheat for FUT/Pro Clubs?__
+  - No, I can't. Stop asking about that.
+
+
+* __Can you add X/Y/Z ?__
+  - Depends on what it is. If you have got a request write [here](https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table/labels/enhancement) and maybe one day you will see it added to the table.
+
+
+* __It's possible to make X/Y/Z?__
+  - It's my favourite question. Guys, basically everything is possible, but not everything is worth doing. Do you want to play as Mario? Sure, it's possible, but I'll not spend 5 years on trying to import Mario model to the game just because one crazy guy wants to replace Messi with Italian plumber. If you have got a request write [here](https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table/labels/enhancement) and maybe one day you will see it added to the table.
+
+
+* __How can I edit age of a player?__
+  - "Editing Player->Edit Player" and change "Birth Year". Editing birthdate under "player_data" is more complex.  It seems to be a number of days since 15.10.1582. You can use [online date calculators](https://www.timeanddate.com/date/durationresult.html?y1=1582&m1=10&d1=15&y2=2017&m2=9&d2=29&ti=on) for this. start date must be 1582-10-15, end date should be a date of birth of your player. if you want to have 17yo player just put there for example 2010-7-3. Result will be "156 221". So, if you set Messi birthdate to "156221" he should be 17yo.
+
+
+* __How can I edit player traits?__
+  - "FIFA Database->Database Tables->Players Table->Traits". As far as I know there is no limit, so your player can have all traits.
+
+
+* __Why cracked version is not supported?__
+  -  Cracked version is not supported because I've got original game copy bought on Origin. Most probably my game version and your game version will differ because I've got the newest patch, and you not. So, ingame functions are different, addresses are different, after a few patches we will probably play a different game.
+
+
+* __After activating function nothing happens, what's wrong?__
+  - Try to restart the game and cheat engine, or maybe even your PC, also make sure you have started FIFA before cheat engine and you are attached to the game process. If it's not helping try to use older versions of cheat table.
+
+
+* __My game is crashing.__
+  - It's a right time to use your save backup. :)
+
+* __How to keep options in cheat table activated permanently?__
+  - You can use lua to make your life easier. Press "CTRL+ALT+L" in cheat engine to open Cheat Table Lua script. [here](http://fearlessrevolution.com/viewtopic.php?f=4&t=4976&p=21649#p21608) you can read how to use autoattach.lua script.
+
+* __What's "Transfer.ini & Transfers.ini"?__
+  - This script is allowing to edit some settings from these .ini files. Generally, it can be used to make transfer window more active. This script is using default settings, you need to edit it to see any difference in the game. Right-click -> Change script -> Edit what you want to edit (Just change value after "#".) -> Ok -> Activate script -> Load your career save.
+
+
+* __How to use "Send scout to any country"?__
+  - Choose scout -> Set up a Scouting Network -> In CE activate "Send scout to any country" and change "Nationality ID" -> Back to FIFA window and send scout on a mission (doesn't matter which country you pick). Nationality ID's list is available [here](https://docs.google.com/spreadsheets/d/1eYx5j7FZwlaPKymv3_G-ezZKtfWmQ6hwjXukAfqYoto/edit?usp=sharing)
+
+    
+* __How to replace generic manager with real one?__
+  - [Changing Manager Head Model](#changing-manager-head-model)
+  
+* __How can I make my player to run exactly the same as 'Ronaldo'?__
+  - I've written short guide how to do that on the soccergaming forum. -> [How to run like Ronaldo](http://soccergaming.com/index.php?threads/fifa-18-career-mode-cheat-table.6459576/page-17#post-6488623)
+  
+* __How to edit data in career_managerpref/career_managerinfo/career_users/career_calendar Table?__
+    
+    Same as in FIFA 18. :)
+
+  - In Cheat Engine Settings change debugger method to "VEH Debugger" (https://i.imgur.com/z4Q94Hn.png)
+  - Activate "Database Tables" script
+  - Load your career save to initialize pointers.
+  - Exit career
+  - In Cheat Engine go to "Memory Viewer" -> Press "CTRL + G" -> Go to address "INJECT_DatabaseRead" -> Follow jmp (https://i.imgur.com/gPHckIj.png) -> Scroll down until you will see "mov [usersDataPtr],r8" instruction -> Set breakpoint there (https://i.imgur.com/QZCd8ZO.png)
+  - Load your career save, when game will freeze do the changes in database tables.
+  - After you edit what you want go back to memory Viewer and delete breakpoint (https://i.imgur.com/o7YrN2V.png)
+  - press 'F9' to unfreeze the game (https://i.imgur.com/jMBAnGd.png)
+
+* __Can I buy player who “recently joined a club”?__
+  - Yes, you need to edit "playerjointeamdate". Value "158229" should be fine. You will find it in "FIFA Database->Database Tables->Players table->Player Info".
+  
+* __How can I change player name?__
+  
+  - In "Editing Player" activate "Edit Player" script.
+  - In game go to "Edit Player" 
+  
+  ![](https://i.imgur.com/lzIThn0.png)
+  
+  - If you want to edit "Known As" name you need to initialize pointers on a player that has got that name. In example. Arthur from FC Barcelona or Isco from Real. To initialize pointers you need to enter into editing Arthur and then just "Done"->"Apply & Exit"
+  
+  ![](https://i.imgur.com/l5xy7Tv.png)
+  
+  - Now you can see in Cheat Table that it's ready for editing player names
+  
+  ![](https://i.imgur.com/gOa3Nvu.png)
+  
+  - Find on Edit Player list player that you want to edit and click on him
+  ![](https://i.imgur.com/FI0o5xo.png)
+  
+  - You can edit player name now including "Known As" name. Remember to click on "Apply & Exit" to save the changes.
+  
+  ![](https://i.imgur.com/FaeU9kX.png)
+  
+  
 ## FIFA 19 IDs
 
 List of FIFA 19 IDs is available here -> [Google Drive](https://docs.google.com/spreadsheets/d/1eYx5j7FZwlaPKymv3_G-ezZKtfWmQ6hwjXukAfqYoto/edit?usp=sharing) 
@@ -113,3 +204,20 @@ __If condition from point 6. is not met you need to find a news which will query
 - Done. Injury has been removed
 
 ![](https://i.imgur.com/c6w3wvm.png)
+
+
+## Contract Negotiation
+Any terms you set here will be accepted by the player during contract negotiations.
+
+[Contract Negotiation - Video Tutorial by Und3rcov3r Nerd
+](https://youtu.be/Y9t2QilaC8M?t=65)
+
+* **Contract Negotiation**
+  - Wage - Self-explanatory. It's 500 by default. 
+  - Contract Length - Self-explanatory. It's 72 by default (6 years). 
+  - Release Clause - Self-explanatory. It's 0 by default, so a player will not have a release clause. 
+  - Squad Role - It's 5 by default. 5 = Prospect, 4 = Sporadic, 3 = Rotation, 2 = Important, 1 = Crucial
+  - Signing Bonus - It's 0 by default.
+  - Bonus Type - It's 0 by default. 0 = Appearances, 1 = Clean Sheets, 2 = Goals scored
+  - Bonus Type - Count - It's 50 by default. 
+  - Bonus Type - Sum - It's 5 by default. You will pay 5$ after player will reach bonus type count.
