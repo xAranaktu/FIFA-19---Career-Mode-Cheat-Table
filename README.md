@@ -93,14 +93,23 @@ __If condition from point 6. is not met you need to find a news which will query
 
 ## Removing injury from a player
 
-1. Activate "Players Injuries" script
-2. Go to "Transfers" -> "Search Players" in-game
+- Activate "Players Injuries" script
+- Go to "Transfers" -> "Search Players" in-game
+
 ![](https://i.imgur.com/NsH5CM1.jpg)
-3. Find injured player
+
+- Find injured player
+
 ![](https://i.imgur.com/Hx8JCuv.png)
-4. Click on him
+
+- Click on him
+
 ![](https://i.imgur.com/iKa2bbS.png)
-5. Now in Cheat Engine change following values: playerid to '4294967295', Recovery Date to '20080101' and set the rest to '0'
+
+- Now in Cheat Engine change following values: playerid to '4294967295', Recovery Date to '20080101' and set the rest to '0'
+
 ![](https://i.imgur.com/IhY8W8c.png)
-6. Done. Injury has been removed
+
+- Done. Injury has been removed
+
 ![](https://i.imgur.com/c6w3wvm.png)
