@@ -11153,7 +11153,7 @@ dealloc(playerInjuryPtr)
               <LastState/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
-aobscanmodule(INJECT_UnlimitedTraining,FIFA19_TRIAL.exe,45 8B 76 44 49 8B 45 08) // should be unique
+aobscanmodule(INJECT_UnlimitedTraining,FIFA19_TRIAL.exe,45 8B 76 44 49 8B 4D 08) // should be unique
 alloc(newmem_UnlimitedTraining,$1000,"FIFA19_TRIAL.exe"+3FA2A3C)
 
 label(code_UnlimitedTraining)
@@ -11162,6 +11162,7 @@ label(exit_UnlimitedTraining)
 label(clear_sessions_UnlimitedTraining)
 
 newmem_UnlimitedTraining:
+  mov [r14+14],00000005
   mov [r14+40],00000005
   mov [r14+44],00000007
 
@@ -11182,7 +11183,7 @@ clear_sessions_UnlimitedTraining:
   jmp exit_UnlimitedTraining
 exit_UnlimitedTraining:
   mov r14d,[r14+44]		// org
-  mov rax,[r13+08] 		// org
+  mov rcx,[r13+08] 		// org
   jmp ret_UnlimitedTraining
 
 INJECT_UnlimitedTraining:
@@ -11196,7 +11197,7 @@ registersymbol(INJECT_UnlimitedTraining)
 [DISABLE]
 //code_UnlimitedTraining from here till the end of the code_UnlimitedTraining will be used to disable the cheat
 INJECT_UnlimitedTraining:
-  db 45 8B 76 44 49 8B 45 08
+  db 45 8B 76 44 49 8B 4D 08
 
 unregistersymbol(INJECT_UnlimitedTraining)
 dealloc(newmem_UnlimitedTraining)
@@ -11497,34 +11498,44 @@ dealloc(newmem_moreEfficientTraining)
               <LastState/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
-aobscanmodule(INJECT_TrainingEveryDay,FIFA19_TRIAL.exe,83 6F 44 01 0F 89 ?? ?? ?? ?? B9 07 00 00 00) // should be unique
+aobscanmodule(INJECT_TrainingEveryDay,FIFA19_TRIAL.exe,83 6B 44 01 0F 89 ?? ?? ?? ?? C7 43 44 07 00 00 00) // should be unique
 alloc(newmem_TrainingEveryDay,$1000,"FIFA19_TRIAL.exe"+42B909A)
 
 label(code_TrainingEveryDay)
 label(ret_TrainingEveryDay)
 label(clear_sessions_TrainingEveryDay)
+label(funcret_TrainingEveryDay)
 registersymbol(INJECT_TrainingEveryDay)
 
 newmem_TrainingEveryDay:
 
 code_TrainingEveryDay:
-  mov [rdi+40],00000005
-  mov [rdi+44],00000007
+  mov [rbx+14],00000005
+  mov [rbx+40],00000005
+  mov [rbx+44],00000007
 
-  mov rbx,[rdi+00000090]
-  cmp rbx,[rdi+00000098]
-  je INJECT_TrainingEveryDay+38F
+  mov r14,[rbx+00000090]
+  cmp r14,[rbx+00000098]
+  je funcret_TrainingEveryDay
 
 clear_sessions_TrainingEveryDay:
-  mov byte ptr [rbx+14],01
-  mov qword ptr [rbx+0C],FFFFFFFF
-  mov [rbx+18],FFFFFFFF
-  mov rsi,[rbx+20]
-  mov [rbx+28],rsi
-  add rbx,40
-  cmp rbx,[rdi+00000098]
+  mov byte ptr [r14+14],01
+  mov qword ptr [r14+0C],FFFFFFFF
+  mov [r14+18],FFFFFFFF
+  mov rsi,[r14+20]
+  mov [r14+28],rsi
+  add r14,40
+  cmp r14,[rbx+00000098]
   jne clear_sessions_TrainingEveryDay
-  jmp INJECT_TrainingEveryDay+38F
+  jmp funcret_TrainingEveryDay
+
+funcret_TrainingEveryDay:
+  mov rbx,[rsp+50]
+  mov rbp,[rsp+58]
+  mov rsi,[rsp+60]
+  add rsp, 40
+  pop rdi
+  ret
 
 INJECT_TrainingEveryDay:
   jmp newmem_TrainingEveryDay
@@ -11538,15 +11549,14 @@ ret_TrainingEveryDay:
 [DISABLE]
 //code from here till the end of the code will be used to disable the cheat
 INJECT_TrainingEveryDay:
-  sub dword ptr [rdi+44],01
-  jns INJECT_TrainingEveryDay+38F
+  db 83 6B 44 01 0F 89 78 03 00 00
 
 unregistersymbol(INJECT_TrainingEveryDay)
 dealloc(newmem_TrainingEveryDay)
 
 {
 // ORIGINAL CODE - INJECTION POINT: "FIFA19_TRIAL.exe"+42B909E
-
+// Remaining days
 "FIFA19_TRIAL.exe"+42B9073: 48 8D 4B 38                    -  lea rcx,[rbx+38]
 "FIFA19_TRIAL.exe"+42B9077: FF 15 AB 26 98 01              -  call qword ptr [FIFA19_TRIAL.exe+5C3B728]
 "FIFA19_TRIAL.exe"+42B907D: 90                             -  nop
@@ -13008,7 +13018,7 @@ INJECT_IntJobOffer:
 return_IntJobOffer:
 registersymbol(INJECT_IntJobOffer)
 
-aobscanmodule(INJECT_ClubJobOffer,FIFA19_TRIAL.exe,48 8B 83 D0 00 00 00 44 8B 24) // should be unique
+aobscanmodule(INJECT_ClubJobOffer,FIFA19_TRIAL.exe,48 8B 86 D0 00 00 00 8B 34) // should be unique
 alloc(cave_ClubJobOffer,$1000,"FIFA19_TRIAL.exe"+3F7B4D0)
 alloc(ClubID, 8)
 registersymbol(ClubID)
@@ -13025,12 +13035,12 @@ cave_ClubJobOffer:
   jmp code_ClubJobOffer
 
 magic_ClubJobOffer:
-  mov [ClubID], rbx
+  mov [ClubID], rsi
   jmp code_ClubJobOffer
 
 code_ClubJobOffer:
   popf
-  mov rax,[rbx+000000D0]
+  mov rax,[rsi+000000D0]
   jmp return_ClubJobOffer
 
 
@@ -13052,7 +13062,7 @@ dealloc(NationalTeamID)
 dealloc(cave_IntJobOffer)
 
 INJECT_ClubJobOffer:
-  db 48 8B 83 D0 00 00 00
+  db 48 8B 86 D0 00 00 00
 
 unregistersymbol(ClubID)
 unregistersymbol(INJECT_ClubJobOffer)
@@ -13089,7 +13099,7 @@ dealloc(ClubID)
 
 {
 // ORIGINAL CODE - INJECTION POINT: "FIFA19_TRIAL.exe"+3F7B4D0
-
+// Find wage
 "FIFA19_TRIAL.exe"+3F7B4A7: FF C2                    -  inc edx
 "FIFA19_TRIAL.exe"+3F7B4A9: 89 54 24 60              -  mov [rsp+60],edx
 "FIFA19_TRIAL.exe"+3F7B4AD: 85 FF                    -  test edi,edi
@@ -14853,6 +14863,86 @@ dealloc(newmem_CountryIsBeingScouted)
 "FIFA19_TRIAL.exe"+3FD182D: 8B D8                    -  mov ebx,eax
 "FIFA19_TRIAL.exe"+3FD182F: 4D 8B 07                 -  mov r8,[r15]
 "FIFA19_TRIAL.exe"+3FD1832: BA 01 00 00 00           -  mov edx,00000001
+}
+</AssemblerScript>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>2796</ID>
+          <Description>"Regens"</Description>
+          <Options moHideChildren="1"/>
+          <LastState Value="" RealAddress="00000000"/>
+          <GroupHeader>1</GroupHeader>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>2797</ID>
+              <Description>"Activate script before you load your career save"</Description>
+              <Options moHideChildren="1"/>
+              <LastState Value="" RealAddress="00000000"/>
+              <GroupHeader>1</GroupHeader>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>2795</ID>
+                  <Description>"Disable Player Regens"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+//code_NoPlayerRegens from here to '[DISABLE]' will be used to enable the cheat
+aobscanmodule(INJECT_NoPlayerRegens,FIFA19_TRIAL.exe,41 BF 10 00 00 00 48 8B CE) // should be unique
+alloc(newmem_NoPlayerRegens,$1000,"FIFA19_TRIAL.exe"+40DCD14)
+
+label(code_NoPlayerRegens)
+label(ret_NoPlayerRegens)
+
+newmem_NoPlayerRegens:
+  xor eax, eax
+code_NoPlayerRegens:
+  mov r15d,00000010
+  jmp ret_NoPlayerRegens
+
+INJECT_NoPlayerRegens:
+  jmp newmem_NoPlayerRegens
+  nop
+ret_NoPlayerRegens:
+registersymbol(INJECT_NoPlayerRegens)
+
+[DISABLE]
+//code_NoPlayerRegens from here till the end of the code_NoPlayerRegens will be used to disable the cheat
+INJECT_NoPlayerRegens:
+  db 41 BF 10 00 00 00
+
+unregistersymbol(INJECT_NoPlayerRegens)
+dealloc(newmem_NoPlayerRegens)
+
+{
+// ORIGINAL code_NoPlayerRegens - INJECT_NoPlayerRegensION POINT: "FIFA19_TRIAL.exe"+40DCD14
+
+"FIFA19_TRIAL.exe"+40DCCE5: 48 C7 85 00 01 00 00 FF FF FF FF  -  mov qword ptr [rbp+00000100],FFFFFFFF
+"FIFA19_TRIAL.exe"+40DCCF0: 44 8D 42 64                       -  lea r8d,[rdx+64]
+"FIFA19_TRIAL.exe"+40DCCF4: E8 7D A3 37 00                    -  call FIFA19_TRIAL.exe+4457076
+"FIFA19_TRIAL.exe"+40DCCF9: 45 33 C0                          -  xor r8d,r8d
+"FIFA19_TRIAL.exe"+40DCCFC: CC                                -  int 3
+"FIFA19_TRIAL.exe"+40DCCFD: 8D 15 3D 5B 1D 01                 -  lea edx,[FIFA19_TRIAL.exe+52B2840]
+"FIFA19_TRIAL.exe"+40DCD03: 48 8B CE                          -  mov rcx,rsi
+"FIFA19_TRIAL.exe"+40DCD06: E8 35 86 22 FE                    -  call FIFA19_TRIAL.exe+2305340
+"FIFA19_TRIAL.exe"+40DCD0B: 85 C0                             -  test eax,eax
+"FIFA19_TRIAL.exe"+40DCD0D: 48 8D 15 8C 5B 1D 01              -  lea rdx,[FIFA19_TRIAL.exe+52B28A0]
+// ---------- INJECT_NoPlayerRegensING HERE ----------
+"FIFA19_TRIAL.exe"+40DCD14: 41 BF 10 00 00 00                 -  mov r15d,00000010
+// ---------- DONE INJECT_NoPlayerRegensING  ----------
+"FIFA19_TRIAL.exe"+40DCD1A: 48 8B CE                          -  mov rcx,rsi
+"FIFA19_TRIAL.exe"+40DCD1D: 45 8B C7                          -  mov r8d,r15d
+"FIFA19_TRIAL.exe"+40DCD20: 0F 95 44 24 30                    -  setne byte ptr [rsp+30]
+"FIFA19_TRIAL.exe"+40DCD25: E8 16 86 22 FE                    -  call FIFA19_TRIAL.exe+2305340
+"FIFA19_TRIAL.exe"+40DCD2A: 45 8D 47 0A                       -  lea r8d,[r15+0A]
+"FIFA19_TRIAL.exe"+40DCD2E: 89 44 24 34                       -  mov [rsp+34],eax
+"FIFA19_TRIAL.exe"+40DCD32: 48 8D 15 3F 5B 1D 01              -  lea rdx,[FIFA19_TRIAL.exe+52B2878]
+"FIFA19_TRIAL.exe"+40DCD39: 48 8B CE                          -  mov rcx,rsi
+"FIFA19_TRIAL.exe"+40DCD3C: E8 FF 85 22 FE                    -  call FIFA19_TRIAL.exe+2305340
+"FIFA19_TRIAL.exe"+40DCD41: 45 8D 47 1D                       -  lea r8d,[r15+1D]
 }
 </AssemblerScript>
                 </CheatEntry>
