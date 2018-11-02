@@ -2,6 +2,12 @@
 <CheatTable CheatEngineTableVersion="27">
   <CheatEntries>
     <CheatEntry>
+      <ID>2794</ID>
+      <Description>"v1.0.7"</Description>
+      <LastState Value="" RealAddress="00000000"/>
+      <GroupHeader>1</GroupHeader>
+    </CheatEntry>
+    <CheatEntry>
       <ID>1664</ID>
       <Description>"------------------------"</Description>
       <LastState Value="" RealAddress="00000000"/>
@@ -9684,7 +9690,7 @@ end
                       <VariableType>Auto Assembler Script</VariableType>
                       <AssemblerScript>[ENABLE]
 {$lua}
-local playerids = {236610, 233049, 0} -- IDs of the players which will dribble like Robben. Last ID must be 0!
+local playerids = {236610, 220253, 0} -- IDs of the players which will dribble like Robben. Last ID must be 0!
 local i = 0
 local addr = "arr_DribbleLike_Robben"
 local players_arr = getAddress(addr)
@@ -10145,7 +10151,7 @@ end
               <LastState/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
-aobscanmodule(INJECT_uniquesprint,FIFA19.exe,41 89 B0 48 5B 00 00) // should be unique
+aobscanmodule(INJECT_uniquesprint,FIFA19.exe,89 B1 48 5B 00 00) // should be unique
 alloc(newmem_uniquesprint,$1000,"FIFA19.exe"+2A0B2F1)
 
 label(messi)
@@ -10334,17 +10340,16 @@ apply_neymarandalba_sprint:
 code_uniquesprint:
   pop rcx
   pop r15
-  mov [r8+00005B48],esi
+  mov [rcx+00005B48],esi
   jmp ret_uniquesprint
 return_success:
   pop rcx
   pop r15
-  mov [r8+00005B48],esi
+  mov [rcx+00005B48],esi
   jmp ret_uniquesprint
 
 INJECT_uniquesprint:
   jmp newmem_uniquesprint
-  nop
   nop
 ret_uniquesprint:
 registersymbol(INJECT_uniquesprint)
@@ -10352,7 +10357,7 @@ registersymbol(INJECT_uniquesprint)
 [DISABLE]
 //code_uniquesprint from here till the end of the code_uniquesprint will be used to disable the cheat
 INJECT_uniquesprint:
-  db 41 89 B0 48 5B 00 00
+  db 89 B1 48 5B 00 00
 
 unregistersymbol(INJECT_uniquesprint)
 dealloc(newmem_uniquesprint)
@@ -10370,33 +10375,6 @@ unregistersymbol(bSprintLike_NeymarAndAlba)
 dealloc(bSprintLike_NeymarAndAlba)
 
 
-{
-// ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+2A0B2F1
-
-"FIFA19.exe"+2A0B2C3: BE 00 10 00 00           -  mov esi,00001000
-"FIFA19.exe"+2A0B2C8: B9 00 20 00 00           -  mov ecx,00002000
-"FIFA19.exe"+2A0B2CD: F3 0F 10 05 5B B2 8E 02  -  movss xmm0,[FIFA19.exe+52F6530]
-"FIFA19.exe"+2A0B2D5: EB 12                    -  jmp FIFA19.exe+2A0B2E9
-"FIFA19.exe"+2A0B2D7: BE 00 01 00 00           -  mov esi,00000100
-"FIFA19.exe"+2A0B2DC: B9 00 02 00 00           -  mov ecx,00000200
-"FIFA19.exe"+2A0B2E1: F3 0F 10 05 6B B2 8E 02  -  movss xmm0,[FIFA19.exe+52F6554]
-"FIFA19.exe"+2A0B2E9: 0F 2F C2                 -  comiss xmm0,xmm2
-"FIFA19.exe"+2A0B2EC: 0F 47 F1                 -  cmova esi,ecx
-"FIFA19.exe"+2A0B2EF: 0B F0                    -  or esi,eax
-// ---------- INJECTING HERE ----------
-"FIFA19.exe"+2A0B2F1: 41 89 B0 48 5B 00 00     -  mov [r8+00005B48],esi
-// ---------- DONE INJECTING  ----------
-"FIFA19.exe"+2A0B2F8: 48 8B 0D 69 9D 64 03     -  mov rcx,[FIFA19.exe+6055068]
-"FIFA19.exe"+2A0B2FF: 48 8B 01                 -  mov rax,[rcx]
-"FIFA19.exe"+2A0B302: 40 88 6C 24 28           -  mov [rsp+28],bpl
-"FIFA19.exe"+2A0B307: C7 44 24 20 01 00 00 00  -  mov [rsp+20],00000001
-"FIFA19.exe"+2A0B30F: 4C 8D 0D D2 8C 77 02     -  lea r9,[FIFA19.exe+5183FE8]
-"FIFA19.exe"+2A0B316: 4C 8D 05 33 1A 54 02     -  lea r8,[FIFA19.exe+4F4CD50]
-"FIFA19.exe"+2A0B31D: BA 38 00 00 00           -  mov edx,00000038
-"FIFA19.exe"+2A0B322: FF 50 38                 -  call qword ptr [rax+38]
-"FIFA19.exe"+2A0B325: 48 8B D8                 -  mov rbx,rax
-"FIFA19.exe"+2A0B328: 48 89 84 24 90 00 00 00  -  mov [rsp+00000090],rax
-}
 </AssemblerScript>
               <CheatEntries>
                 <CheatEntry>
@@ -10451,7 +10429,7 @@ end
                       <VariableType>Auto Assembler Script</VariableType>
                       <AssemblerScript>[ENABLE]
 {$lua}
-local playerids = {20801, 180206, 0} -- IDs of the players which will sprint like CRonaldo. '20801' is original CRonaldo. Last ID must be 0!
+local playerids = {20801, 220253, 0} -- IDs of the players which will sprint like CRonaldo. '20801' is original CRonaldo. Last ID must be 0!
 local i = 0
 local addr = "arr_SprintLike_CRonaldo"
 local players_arr = getAddress(addr)
@@ -10707,7 +10685,7 @@ unregistersymbol(_dojmp_ISEDITPLAYERUNLOCKED)
               <LastState/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
-aobscanmodule(INJECT_EditPlayerName,FIFA19.exe,C6 44 24 20 01 45 33 C9 4C 8D 85 D0 02) // should be unique
+aobscanmodule(INJECT_EditPlayerName,FIFA19.exe,C6 44 24 20 01 45 33 C9 4C 8D 85 D0 06) // should be unique
 
 // First name
 alloc(cave_EditFirstName,$1000,"FIFA19.exe"+3156683)
@@ -10875,7 +10853,7 @@ dealloc(ptrEasyEditNameOnShirt)
 
 {
 // ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+3156683
-
+// Known as name
 "FIFA19.exe"+3156657: 44 89 B8 98 00 00 00  -  mov [rax+00000098],r15d
 "FIFA19.exe"+315665E: 48 8D 15 9B 16 A5 02  -  lea rdx,[FIFA19.exe+5BA7D00]
 "FIFA19.exe"+3156665: 48 8D 4D 10           -  lea rcx,[rbp+10]
@@ -11495,7 +11473,7 @@ dealloc(newmem_moreEfficientTraining)
             <CheatEntry>
               <ID>2664</ID>
               <Description>"Training Everyday"</Description>
-              <LastState/>
+              <LastState Activated="1"/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 aobscanmodule(INJECT_TrainingEveryDay,FIFA19.exe,83 6B 44 01 0F 89 ?? ?? ?? ?? C7 43 44 07 00 00 00) // should be unique
@@ -11508,6 +11486,8 @@ label(funcret_TrainingEveryDay)
 registersymbol(INJECT_TrainingEveryDay)
 
 newmem_TrainingEveryDay:
+  push r14
+  push rdi
 
 code_TrainingEveryDay:
   mov [rbx+14],00000005
@@ -11530,6 +11510,8 @@ clear_sessions_TrainingEveryDay:
   jmp funcret_TrainingEveryDay
 
 funcret_TrainingEveryDay:
+  pop rdi
+  pop r14
   mov rbx,[rsp+50]
   mov rbp,[rsp+58]
   mov rsi,[rsp+60]
@@ -13152,14 +13134,16 @@ dealloc(ClubID)
           <LastState/>
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>[ENABLE]
-aobscanmodule(INJECT_UnlimitedPlayerRelease,FIFA19.exe,39 47 54 40 0F 9C C7) // should be unique
+aobscanmodule(INJECT_UnlimitedPlayerRelease,FIFA19.exe,39 46 54 40 0F 9C C7) // should be unique
 alloc(newmem_UnlimitedPlayerRelease,$1000,"FIFA19.exe"+42E2868)
 
 label(code_UnlimitedPlayerRelease)
 label(ret_UnlimitedPlayerRelease)
 
 newmem_UnlimitedPlayerRelease:
-  mov [rdi+54], 0
+  mov [rdi+14], #999
+  mov [rsi+54], #0
+  mov eax, [rdi+14]
 code_UnlimitedPlayerRelease:
   cmp [rdi+54],eax
   setl dil
@@ -13212,7 +13196,7 @@ registersymbol(INJECT_ReleasePlayerFee)
 [DISABLE]
 //code_UnlimitedPlayerRelease from here till the end of the code_UnlimitedPlayerRelease will be used to disable the cheat
 INJECT_UnlimitedPlayerRelease:
-  db 39 47 54 40 0F 9C C7
+  db 39 46 54 40 0F 9C C7
 
 unregistersymbol(INJECT_UnlimitedPlayerRelease)
 dealloc(newmem_UnlimitedPlayerRelease)
@@ -13231,7 +13215,7 @@ dealloc(newmem_ReleasePlayerFee)
 
 {
 // ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+42E2868
-
+cm_ap_release_releasetoomanyplayers
 "FIFA19.exe"+42E2847: 48 8B 10              -  mov rdx,[rax]
 "FIFA19.exe"+42E284A: 44 8B 6A 30           -  mov r13d,[rdx+30]
 "FIFA19.exe"+42E284E: 41 8B D6              -  mov edx,r14d
@@ -14863,86 +14847,6 @@ dealloc(newmem_CountryIsBeingScouted)
 "FIFA19.exe"+3FD182D: 8B D8                    -  mov ebx,eax
 "FIFA19.exe"+3FD182F: 4D 8B 07                 -  mov r8,[r15]
 "FIFA19.exe"+3FD1832: BA 01 00 00 00           -  mov edx,00000001
-}
-</AssemblerScript>
-                </CheatEntry>
-              </CheatEntries>
-            </CheatEntry>
-          </CheatEntries>
-        </CheatEntry>
-        <CheatEntry>
-          <ID>2796</ID>
-          <Description>"Regens"</Description>
-          <Options moHideChildren="1"/>
-          <LastState Value="" RealAddress="00000000"/>
-          <GroupHeader>1</GroupHeader>
-          <CheatEntries>
-            <CheatEntry>
-              <ID>2797</ID>
-              <Description>"Activate script before you load your career save"</Description>
-              <Options moHideChildren="1"/>
-              <LastState Value="" RealAddress="00000000"/>
-              <GroupHeader>1</GroupHeader>
-              <CheatEntries>
-                <CheatEntry>
-                  <ID>2795</ID>
-                  <Description>"Disable Player Regens"</Description>
-                  <LastState/>
-                  <VariableType>Auto Assembler Script</VariableType>
-                  <AssemblerScript>[ENABLE]
-//code_NoPlayerRegens from here to '[DISABLE]' will be used to enable the cheat
-aobscanmodule(INJECT_NoPlayerRegens,FIFA19.exe,41 BF 10 00 00 00 48 8B CE) // should be unique
-alloc(newmem_NoPlayerRegens,$1000,"FIFA19.exe"+40DCD14)
-
-label(code_NoPlayerRegens)
-label(ret_NoPlayerRegens)
-
-newmem_NoPlayerRegens:
-  xor eax, eax
-code_NoPlayerRegens:
-  mov r15d,00000010
-  jmp ret_NoPlayerRegens
-
-INJECT_NoPlayerRegens:
-  jmp newmem_NoPlayerRegens
-  nop
-ret_NoPlayerRegens:
-registersymbol(INJECT_NoPlayerRegens)
-
-[DISABLE]
-//code_NoPlayerRegens from here till the end of the code_NoPlayerRegens will be used to disable the cheat
-INJECT_NoPlayerRegens:
-  db 41 BF 10 00 00 00
-
-unregistersymbol(INJECT_NoPlayerRegens)
-dealloc(newmem_NoPlayerRegens)
-
-{
-// ORIGINAL code_NoPlayerRegens - INJECT_NoPlayerRegensION POINT: "FIFA19.exe"+40DCD14
-
-"FIFA19.exe"+40DCCE5: 48 C7 85 00 01 00 00 FF FF FF FF  -  mov qword ptr [rbp+00000100],FFFFFFFF
-"FIFA19.exe"+40DCCF0: 44 8D 42 64                       -  lea r8d,[rdx+64]
-"FIFA19.exe"+40DCCF4: E8 7D A3 37 00                    -  call FIFA19.exe+4457076
-"FIFA19.exe"+40DCCF9: 45 33 C0                          -  xor r8d,r8d
-"FIFA19.exe"+40DCCFC: CC                                -  int 3
-"FIFA19.exe"+40DCCFD: 8D 15 3D 5B 1D 01                 -  lea edx,[FIFA19.exe+52B2840]
-"FIFA19.exe"+40DCD03: 48 8B CE                          -  mov rcx,rsi
-"FIFA19.exe"+40DCD06: E8 35 86 22 FE                    -  call FIFA19.exe+2305340
-"FIFA19.exe"+40DCD0B: 85 C0                             -  test eax,eax
-"FIFA19.exe"+40DCD0D: 48 8D 15 8C 5B 1D 01              -  lea rdx,[FIFA19.exe+52B28A0]
-// ---------- INJECT_NoPlayerRegensING HERE ----------
-"FIFA19.exe"+40DCD14: 41 BF 10 00 00 00                 -  mov r15d,00000010
-// ---------- DONE INJECT_NoPlayerRegensING  ----------
-"FIFA19.exe"+40DCD1A: 48 8B CE                          -  mov rcx,rsi
-"FIFA19.exe"+40DCD1D: 45 8B C7                          -  mov r8d,r15d
-"FIFA19.exe"+40DCD20: 0F 95 44 24 30                    -  setne byte ptr [rsp+30]
-"FIFA19.exe"+40DCD25: E8 16 86 22 FE                    -  call FIFA19.exe+2305340
-"FIFA19.exe"+40DCD2A: 45 8D 47 0A                       -  lea r8d,[r15+0A]
-"FIFA19.exe"+40DCD2E: 89 44 24 34                       -  mov [rsp+34],eax
-"FIFA19.exe"+40DCD32: 48 8D 15 3F 5B 1D 01              -  lea rdx,[FIFA19.exe+52B2878]
-"FIFA19.exe"+40DCD39: 48 8B CE                          -  mov rcx,rsi
-"FIFA19.exe"+40DCD3C: E8 FF 85 22 FE                    -  call FIFA19.exe+2305340
-"FIFA19.exe"+40DCD41: 45 8D 47 1D                       -  lea r8d,[r15+1D]
 }
 </AssemblerScript>
                 </CheatEntry>
