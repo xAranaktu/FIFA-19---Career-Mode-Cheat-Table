@@ -3,7 +3,7 @@
   <CheatEntries>
     <CheatEntry>
       <ID>2794</ID>
-      <Description>"v1.0.7"</Description>
+      <Description>"v1.0.8"</Description>
       <LastState Value="" RealAddress="00000000"/>
       <GroupHeader>1</GroupHeader>
     </CheatEntry>
@@ -11473,7 +11473,7 @@ dealloc(newmem_moreEfficientTraining)
             <CheatEntry>
               <ID>2664</ID>
               <Description>"Training Everyday"</Description>
-              <LastState Activated="1"/>
+              <LastState/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 aobscanmodule(INJECT_TrainingEveryDay,FIFA19_TRIAL.exe,83 6B 44 01 0F 89 ?? ?? ?? ?? C7 43 44 07 00 00 00) // should be unique
@@ -13145,8 +13145,7 @@ newmem_UnlimitedPlayerRelease:
   mov [rsi+54], #0
   mov eax, [rdi+14]
 code_UnlimitedPlayerRelease:
-  cmp [rdi+54],eax
-  setl dil
+  mov dil, 1
   jmp ret_UnlimitedPlayerRelease
 
 INJECT_UnlimitedPlayerRelease:
@@ -14948,7 +14947,7 @@ dealloc(StadiumID)
               <LastState/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
-aobscanmodule(INJECT_Match_Half_Length,FIFA19_TRIAL.exe,45 8B 87 08 14 00 00) // should be unique
+aobscanmodule(INJECT_Match_Half_Length,FIFA19_TRIAL.exe,45 8B 87 08 14 00 00 33) // should be unique
 alloc(newmem_Match_Half_Length,$1000,"FIFA19_TRIAL.exe"+35EFEFD)
 
 label(code_Match_Half_Length)
@@ -15336,7 +15335,7 @@ dealloc(newmem_FatigueBase)
           <LastState/>
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>[ENABLE]
-aobscanmodule(INJECT_matchScore,FIFA19_TRIAL.exe,44 8B 81 1C 01 00 00) // should be unique
+aobscanmodule(INJECT_matchScore,FIFA19_TRIAL.exe,48 8B 41 20 48 89 42 20 8B 41 28 89 42 28 41 8B 54) // should be unique
 alloc(matchscore_cave,$1000,"FIFA19_TRIAL.exe"+2578D85)
 
 alloc(ptrHomeTeamScore, 8)
@@ -15374,7 +15373,7 @@ code_matchscore:
   popf
   jmp return_matchscore
 
-INJECT_matchScore:
+INJECT_matchScore+5B:
   jmp matchscore_cave
   nop
   nop
@@ -15630,7 +15629,7 @@ registersymbol(INJECT_ingame_stamina)
 
 [DISABLE]
 //code from here till the end of the code will be used to disable the cheat
-INJECT_matchScore:
+INJECT_matchScore+5B:
   db 44 8B 81 1C 01 00 00
 
 unregistersymbol(INJECT_matchScore)
