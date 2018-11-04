@@ -3,7 +3,7 @@
   <CheatEntries>
     <CheatEntry>
       <ID>2794</ID>
-      <Description>"v1.0.8"</Description>
+      <Description>"v1.0.9"</Description>
       <LastState Value="" RealAddress="00000000"/>
       <GroupHeader>1</GroupHeader>
     </CheatEntry>
@@ -67,7 +67,7 @@
       <ID>1666</ID>
       <Description>"Scripts"</Description>
       <Options moHideChildren="1"/>
-      <LastState Value="" RealAddress="00000000"/>
+      <LastState Value="" Activated="1" RealAddress="00000000"/>
       <GroupHeader>1</GroupHeader>
       <CheatEntries>
         <CheatEntry>
@@ -13567,9 +13567,8 @@ label(code)
 label(return)
 
 newmem_disablemorale:
-
+  xor cl, cl
 code:
-  setne cl
   mov [rdi+10],cl
   jmp return
 
@@ -13660,10 +13659,10 @@ label(return)
 
 newmem_bettermorale:
   //[MORALE_LEVELS]
-  mov [rdi+2C], #20 // VERY_HIGH
-  mov [rdi+28], #15 // HIGH
-  mov [rdi+24], #10 // NORMAL
-  mov [rdi+20], #5  // LOW
+  mov [rdi+2C], #4 // VERY_HIGH
+  mov [rdi+28], #3 // HIGH
+  mov [rdi+24], #2 // NORMAL
+  mov [rdi+20], #1  // LOW
   mov eax, #0  // VERY LOW [rdi+1C]
 code:
   mov r8d,FFFFFFFF
@@ -14846,6 +14845,86 @@ dealloc(newmem_CountryIsBeingScouted)
 "FIFA19.exe"+3FD182D: 8B D8                    -  mov ebx,eax
 "FIFA19.exe"+3FD182F: 4D 8B 07                 -  mov r8,[r15]
 "FIFA19.exe"+3FD1832: BA 01 00 00 00           -  mov edx,00000001
+}
+</AssemblerScript>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>2796</ID>
+          <Description>"Regens"</Description>
+          <Options moHideChildren="1"/>
+          <LastState Value="" RealAddress="00000000"/>
+          <GroupHeader>1</GroupHeader>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>2797</ID>
+              <Description>"Activate script before you load your career save"</Description>
+              <Options moHideChildren="1"/>
+              <LastState Value="" RealAddress="00000000"/>
+              <GroupHeader>1</GroupHeader>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>2795</ID>
+                  <Description>"Disable Player Regens"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+//code_NoPlayerRegens from here to '[DISABLE]' will be used to enable the cheat
+aobscanmodule(INJECT_NoPlayerRegens,FIFA19.exe,41 BF 10 00 00 00 48 8B CE) // should be unique
+alloc(newmem_NoPlayerRegens,$1000,"FIFA19.exe"+40DCD14)
+
+label(code_NoPlayerRegens)
+label(ret_NoPlayerRegens)
+
+newmem_NoPlayerRegens:
+  xor eax, eax
+code_NoPlayerRegens:
+  mov r15d,00000010
+  jmp ret_NoPlayerRegens
+
+INJECT_NoPlayerRegens:
+  jmp newmem_NoPlayerRegens
+  nop
+ret_NoPlayerRegens:
+registersymbol(INJECT_NoPlayerRegens)
+
+[DISABLE]
+//code_NoPlayerRegens from here till the end of the code_NoPlayerRegens will be used to disable the cheat
+INJECT_NoPlayerRegens:
+  db 41 BF 10 00 00 00
+
+unregistersymbol(INJECT_NoPlayerRegens)
+dealloc(newmem_NoPlayerRegens)
+
+{
+// ORIGINAL code_NoPlayerRegens - INJECT_NoPlayerRegensION POINT: "FIFA19.exe"+40DCD14
+
+"FIFA19.exe"+40DCCE5: 48 C7 85 00 01 00 00 FF FF FF FF  -  mov qword ptr [rbp+00000100],FFFFFFFF
+"FIFA19.exe"+40DCCF0: 44 8D 42 64                       -  lea r8d,[rdx+64]
+"FIFA19.exe"+40DCCF4: E8 7D A3 37 00                    -  call FIFA19.exe+4457076
+"FIFA19.exe"+40DCCF9: 45 33 C0                          -  xor r8d,r8d
+"FIFA19.exe"+40DCCFC: CC                                -  int 3
+"FIFA19.exe"+40DCCFD: 8D 15 3D 5B 1D 01                 -  lea edx,[FIFA19.exe+52B2840]
+"FIFA19.exe"+40DCD03: 48 8B CE                          -  mov rcx,rsi
+"FIFA19.exe"+40DCD06: E8 35 86 22 FE                    -  call FIFA19.exe+2305340
+"FIFA19.exe"+40DCD0B: 85 C0                             -  test eax,eax
+"FIFA19.exe"+40DCD0D: 48 8D 15 8C 5B 1D 01              -  lea rdx,[FIFA19.exe+52B28A0]
+// ---------- INJECT_NoPlayerRegensING HERE ----------
+"FIFA19.exe"+40DCD14: 41 BF 10 00 00 00                 -  mov r15d,00000010
+// ---------- DONE INJECT_NoPlayerRegensING  ----------
+"FIFA19.exe"+40DCD1A: 48 8B CE                          -  mov rcx,rsi
+"FIFA19.exe"+40DCD1D: 45 8B C7                          -  mov r8d,r15d
+"FIFA19.exe"+40DCD20: 0F 95 44 24 30                    -  setne byte ptr [rsp+30]
+"FIFA19.exe"+40DCD25: E8 16 86 22 FE                    -  call FIFA19.exe+2305340
+"FIFA19.exe"+40DCD2A: 45 8D 47 0A                       -  lea r8d,[r15+0A]
+"FIFA19.exe"+40DCD2E: 89 44 24 34                       -  mov [rsp+34],eax
+"FIFA19.exe"+40DCD32: 48 8D 15 3F 5B 1D 01              -  lea rdx,[FIFA19.exe+52B2878]
+"FIFA19.exe"+40DCD39: 48 8B CE                          -  mov rcx,rsi
+"FIFA19.exe"+40DCD3C: E8 FF 85 22 FE                    -  call FIFA19.exe+2305340
+"FIFA19.exe"+40DCD41: 45 8D 47 1D                       -  lea r8d,[r15+1D]
 }
 </AssemblerScript>
                 </CheatEntry>

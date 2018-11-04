@@ -3,7 +3,7 @@
   <CheatEntries>
     <CheatEntry>
       <ID>2794</ID>
-      <Description>"v1.0.8"</Description>
+      <Description>"v1.0.9"</Description>
       <LastState Value="" RealAddress="00000000"/>
       <GroupHeader>1</GroupHeader>
     </CheatEntry>
@@ -67,7 +67,7 @@
       <ID>1666</ID>
       <Description>"Scripts"</Description>
       <Options moHideChildren="1"/>
-      <LastState Value="" RealAddress="00000000"/>
+      <LastState Value="" Activated="1" RealAddress="00000000"/>
       <GroupHeader>1</GroupHeader>
       <CheatEntries>
         <CheatEntry>
@@ -13567,9 +13567,8 @@ label(code)
 label(return)
 
 newmem_disablemorale:
-
+  xor cl, cl
 code:
-  setne cl
   mov [rdi+10],cl
   jmp return
 
@@ -13660,10 +13659,10 @@ label(return)
 
 newmem_bettermorale:
   //[MORALE_LEVELS]
-  mov [rdi+2C], #20 // VERY_HIGH
-  mov [rdi+28], #15 // HIGH
-  mov [rdi+24], #10 // NORMAL
-  mov [rdi+20], #5  // LOW
+  mov [rdi+2C], #4 // VERY_HIGH
+  mov [rdi+28], #3 // HIGH
+  mov [rdi+24], #2 // NORMAL
+  mov [rdi+20], #1  // LOW
   mov eax, #0  // VERY LOW [rdi+1C]
 code:
   mov r8d,FFFFFFFF
