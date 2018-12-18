@@ -81,5 +81,12 @@ Changelog:
 			- In-Game Hacks -> Match score
 			
 	v1.0.9:
-		- Fixed Following scripts: 
-			- Morale
+	- Fixed Following scripts: 
+		- Morale
+		
+	v1.0.10:
+	- Added FIFA Database -> Database Tables -> Teams Table
+	- Fixed Following scripts: 
+		- Edit Player
+		- Edit Existing Job Offers
+		- Unique Sprint Style
