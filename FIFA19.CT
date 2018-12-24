@@ -3,7 +3,7 @@
   <CheatEntries>
     <CheatEntry>
       <ID>2794</ID>
-      <Description>"v1.0.9"</Description>
+      <Description>"v1.0.10"</Description>
       <LastState Value="" RealAddress="00000000"/>
       <GroupHeader>1</GroupHeader>
     </CheatEntry>
@@ -67,7 +67,7 @@
       <ID>1666</ID>
       <Description>"Scripts"</Description>
       <Options moHideChildren="1"/>
-      <LastState Value="" Activated="1" RealAddress="00000000"/>
+      <LastState Value="" RealAddress="00000000"/>
       <GroupHeader>1</GroupHeader>
       <CheatEntries>
         <CheatEntry>
@@ -6818,6 +6818,1156 @@ dealloc(ptrTeamplayerlinks)
                       </CheatEntries>
                     </CheatEntry>
                     <CheatEntry>
+                      <ID>2798</ID>
+                      <Description>"Teams Table"</Description>
+                      <Options moHideChildren="1"/>
+                      <LastState Value="" RealAddress="00000000"/>
+                      <GroupHeader>1</GroupHeader>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>2880</ID>
+                          <Description>"teamname"</Description>
+                          <VariableType>String</VariableType>
+                          <Length>60</Length>
+                          <Unicode>0</Unicode>
+                          <CodePage>0</CodePage>
+                          <ZeroTerminate>1</ZeroTerminate>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>14</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2799</ID>
+                          <Description>"defmentality"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>7</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>51</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2800</ID>
+                          <Description>"balltype"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>8</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>4</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2801</ID>
+                          <Description>"powid"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>7</BitStart>
+                          <BitLength>15</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>51</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2802</ID>
+                          <Description>"defensivestyle"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>6</BitStart>
+                          <BitLength>3</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>53</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2803</ID>
+                          <Description>"teamcolor1g"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>8</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>5</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2804</ID>
+                          <Description>"rightfreekicktakerid"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>1</BitStart>
+                          <BitLength>19</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>54</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2805</ID>
+                          <Description>"flamethrowercannon"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>4</BitStart>
+                          <BitLength>3</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>56</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2806</ID>
+                          <Description>"domesticprestige"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>7</BitStart>
+                          <BitLength>5</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>56</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2807</ID>
+                          <Description>"teamcolor1r"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>8</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>6</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2808</ID>
+                          <Description>"genericint2"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>4</BitStart>
+                          <BitLength>7</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>57</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2809</ID>
+                          <Description>"defensivedepth"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>3</BitStart>
+                          <BitLength>4</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>58</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2810</ID>
+                          <Description>"hasvikingclap"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>7</BitStart>
+                          <BitLength>1</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>58</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2811</ID>
+                          <Description>"jerseytype"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>2</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>59</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2812</ID>
+                          <Description>"clubworth"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>24</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>7</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2813</ID>
+                          <Description>"popularity"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>2</BitStart>
+                          <BitLength>4</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>59</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2814</ID>
+                          <Description>"hastifo"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>6</BitStart>
+                          <BitLength>1</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>59</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2815</ID>
+                          <Description>"teamstadiumcapacity"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>7</BitStart>
+                          <BitLength>20</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>59</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2816</ID>
+                          <Description>"iscompetitionscarfenabled"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>3</BitStart>
+                          <BitLength>2</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>5C</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2817</ID>
+                          <Description>"cityid"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>5</BitStart>
+                          <BitLength>10</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>5C</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2818</ID>
+                          <Description>"teamcolor2b"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>8</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>A</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2819</ID>
+                          <Description>"defensivewidth"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>7</BitStart>
+                          <BitLength>4</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>5D</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2820</ID>
+                          <Description>"rivalteam"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>3</BitStart>
+                          <BitLength>18</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>5E</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2821</ID>
+                          <Description>"isbannerenabled"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>5</BitStart>
+                          <BitLength>2</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>60</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2822</ID>
+                          <Description>"midfieldrating"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>7</BitStart>
+                          <BitLength>7</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>60</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2823</ID>
+                          <Description>"matchdayoverallrating"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>6</BitStart>
+                          <BitLength>7</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>61</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2824</ID>
+                          <Description>"matchdaymidfieldrating"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>5</BitStart>
+                          <BitLength>7</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>62</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2825</ID>
+                          <Description>"assetid"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>32</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>0</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2826</ID>
+                          <Description>"attackrating"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>4</BitStart>
+                          <BitLength>7</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>63</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2827</ID>
+                          <Description>"playersinboxcorner"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>3</BitStart>
+                          <BitLength>3</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>64</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2828</ID>
+                          <Description>"teamcolor2r"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>8</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>B</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2829</ID>
+                          <Description>"foundationyear"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>8</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>C</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2830</ID>
+                          <Description>"longitude"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>6</BitStart>
+                          <BitLength>9</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>64</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2831</ID>
+                          <Description>"buspassing"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>7</BitStart>
+                          <BitLength>7</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>65</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2832</ID>
+                          <Description>"matchdaydefenserating"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>6</BitStart>
+                          <BitLength>7</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>66</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2833</ID>
+                          <Description>"defenserating"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>5</BitStart>
+                          <BitLength>7</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>67</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2834</ID>
+                          <Description>"iscompetitionpoleflagenabled"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>4</BitStart>
+                          <BitLength>2</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>68</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2835</ID>
+                          <Description>"skinnyflags"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>6</BitStart>
+                          <BitLength>1</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>68</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2836</ID>
+                          <Description>"defteamwidth"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>7</BitStart>
+                          <BitLength>7</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>68</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2837</ID>
+                          <Description>"longkicktakerid"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>6</BitStart>
+                          <BitLength>19</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>69</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2838</ID>
+                          <Description>"bodytypeid"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>1</BitStart>
+                          <BitLength>2</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>6C</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2839</ID>
+                          <Description>"trait1vweak"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>3</BitStart>
+                          <BitLength>21</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>6C</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2840</ID>
+                          <Description>"busdribbling"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>7</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>6F</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2841</ID>
+                          <Description>"rightcornerkicktakerid"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>7</BitStart>
+                          <BitLength>19</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>6F</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2842</ID>
+                          <Description>"suitvariationid"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>2</BitStart>
+                          <BitLength>1</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>72</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2843</ID>
+                          <Description>"teamcolor3r"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>8</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>D</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2844</ID>
+                          <Description>"uefa_cl_wins"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>3</BitStart>
+                          <BitLength>9</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>72</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2845</ID>
+                          <Description>"domesticcups"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>4</BitStart>
+                          <BitLength>10</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>73</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2846</ID>
+                          <Description>"defaggression"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>6</BitStart>
+                          <BitLength>7</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>74</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>49</ID>
+                          <Description>"teamcolor1b"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>8</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>E</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2847</ID>
+                          <Description>"ethnicity"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>5</BitStart>
+                          <BitLength>4</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>75</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2848</ID>
+                          <Description>"leftcornerkicktakerid"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>1</BitStart>
+                          <BitLength>19</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>76</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2849</ID>
+                          <Description>"opponentweakthreshold"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>8</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>F</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2850</ID>
+                          <Description>"youthdevelopment"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>4</BitStart>
+                          <BitLength>4</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>78</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2851</ID>
+                          <Description>"latitude"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>8</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>10</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2852</ID>
+                          <Description>"teamid"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>18</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>79</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>56</ID>
+                          <Description>"uefa_el_wins"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>2</BitStart>
+                          <BitLength>9</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>7B</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2853</ID>
+                          <Description>"trait1vequal"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>3</BitStart>
+                          <BitLength>21</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>7C</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2854</ID>
+                          <Description>"suittypeid"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>2</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>7F</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2855</ID>
+                          <Description>"teamcolor3g"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>8</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>11</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2856</ID>
+                          <Description>"numtransfersin"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>2</BitStart>
+                          <BitLength>5</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>7F</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2857</ID>
+                          <Description>"opponentstrongthreshold"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>8</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>12</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2858</ID>
+                          <Description>"playersinboxfk"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>7</BitStart>
+                          <BitLength>3</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>7F</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2859</ID>
+                          <Description>"stanchionflamethrower"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>2</BitStart>
+                          <BitLength>2</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>80</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2860</ID>
+                          <Description>"captainid"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>4</BitStart>
+                          <BitLength>19</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>80</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2861</ID>
+                          <Description>"offensivestyle"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>7</BitStart>
+                          <BitLength>2</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>82</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2862</ID>
+                          <Description>"personalityid"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>1</BitStart>
+                          <BitLength>2</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>83</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2863</ID>
+                          <Description>"playersinboxcross"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>3</BitStart>
+                          <BitLength>4</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>83</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2864</ID>
+                          <Description>"prev_el_champ"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>7</BitStart>
+                          <BitLength>1</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>83</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2865</ID>
+                          <Description>"leftfreekicktakerid"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>19</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>84</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2866</ID>
+                          <Description>"leaguetitles"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>3</BitStart>
+                          <BitLength>10</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>86</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2867</ID>
+                          <Description>"genericbanner"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>5</BitStart>
+                          <BitLength>1</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>87</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2868</ID>
+                          <Description>"buspositioning"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>6</BitStart>
+                          <BitLength>1</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>87</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2869</ID>
+                          <Description>"ccpositioning"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>7</BitStart>
+                          <BitLength>1</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>87</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2870</ID>
+                          <Description>"busbuildupspeed"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>7</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>88</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2871</ID>
+                          <Description>"transferbudget"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>7</BitStart>
+                          <BitLength>29</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>88</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2872</ID>
+                          <Description>"ccshooting"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>4</BitStart>
+                          <BitLength>7</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>8C</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2873</ID>
+                          <Description>"overallrating"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>3</BitStart>
+                          <BitLength>7</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>8D</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2874</ID>
+                          <Description>"teamcolor2g"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>8</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>13</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2875</ID>
+                          <Description>"offensivewidth"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>2</BitStart>
+                          <BitLength>4</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>8E</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2876</ID>
+                          <Description>"ccpassing"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>6</BitStart>
+                          <BitLength>7</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>8E</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2877</ID>
+                          <Description>"profitability"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>5</BitStart>
+                          <BitLength>4</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>8F</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2878</ID>
+                          <Description>"utcoffset"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>1</BitStart>
+                          <BitLength>5</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>90</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2879</ID>
+                          <Description>"penaltytakerid"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>6</BitStart>
+                          <BitLength>19</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>90</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2881</ID>
+                          <Description>"freekicktakerid"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>1</BitStart>
+                          <BitLength>19</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>93</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2882</ID>
+                          <Description>"crowdskintonecode"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>4</BitStart>
+                          <BitLength>4</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>95</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2883</ID>
+                          <Description>"defdefenderline"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>1</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>96</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2884</ID>
+                          <Description>"internationalprestige"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>1</BitStart>
+                          <BitLength>5</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>96</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2885</ID>
+                          <Description>"trainingstadium"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>6</BitStart>
+                          <BitLength>11</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>96</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2886</ID>
+                          <Description>"form"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>1</BitStart>
+                          <BitLength>7</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>98</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2887</ID>
+                          <Description>"genericint1"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>7</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>99</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2888</ID>
+                          <Description>"cccrossing"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>7</BitStart>
+                          <BitLength>7</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>99</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2889</ID>
+                          <Description>"teamcolor3b"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>0</BitStart>
+                          <BitLength>8</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>50</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2890</ID>
+                          <Description>"trait1vstrong"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>6</BitStart>
+                          <BitLength>21</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>9A</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                        <CheatEntry>
+                          <ID>2891</ID>
+                          <Description>"matchdayattackrating"</Description>
+                          <VariableType>Binary</VariableType>
+                          <BitStart>3</BitStart>
+                          <BitLength>7</BitLength>
+                          <ShowAsBinary>0</ShowAsBinary>
+                          <Address>teamsDataPtr</Address>
+                          <Offsets>
+                            <Offset>9D</Offset>
+                          </Offsets>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                    <CheatEntry>
                       <ID>2761</ID>
                       <Description>"teamplayerlinks Table"</Description>
                       <Options moHideChildren="1"/>
@@ -10151,7 +11301,7 @@ end
               <LastState/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
-aobscanmodule(INJECT_uniquesprint,FIFA19.exe,89 B1 48 5B 00 00) // should be unique
+aobscanmodule(INJECT_uniquesprint,FIFA19.exe,41 89 B0 48 5B 00 00) // should be unique
 alloc(newmem_uniquesprint,$1000,"FIFA19.exe"+2A0B2F1)
 
 label(messi)
@@ -10340,16 +11490,17 @@ apply_neymarandalba_sprint:
 code_uniquesprint:
   pop rcx
   pop r15
-  mov [rcx+00005B48],esi
+  mov [r8+00005B48],esi
   jmp ret_uniquesprint
 return_success:
   pop rcx
   pop r15
-  mov [rcx+00005B48],esi
+  mov [r8+00005B48],esi
   jmp ret_uniquesprint
 
 INJECT_uniquesprint:
   jmp newmem_uniquesprint
+  nop
   nop
 ret_uniquesprint:
 registersymbol(INJECT_uniquesprint)
@@ -10357,7 +11508,7 @@ registersymbol(INJECT_uniquesprint)
 [DISABLE]
 //code_uniquesprint from here till the end of the code_uniquesprint will be used to disable the cheat
 INJECT_uniquesprint:
-  db 89 B1 48 5B 00 00
+  db 41 89 B0 48 5B 00 00
 
 unregistersymbol(INJECT_uniquesprint)
 dealloc(newmem_uniquesprint)
@@ -10375,6 +11526,33 @@ unregistersymbol(bSprintLike_NeymarAndAlba)
 dealloc(bSprintLike_NeymarAndAlba)
 
 
+{
+// ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+2A0B2F1
+
+"FIFA19.exe"+2A0B2C3: BE 00 10 00 00           -  mov esi,00001000
+"FIFA19.exe"+2A0B2C8: B9 00 20 00 00           -  mov ecx,00002000
+"FIFA19.exe"+2A0B2CD: F3 0F 10 05 5B B2 8E 02  -  movss xmm0,[FIFA19.exe+52F6530]
+"FIFA19.exe"+2A0B2D5: EB 12                    -  jmp FIFA19.exe+2A0B2E9
+"FIFA19.exe"+2A0B2D7: BE 00 01 00 00           -  mov esi,00000100
+"FIFA19.exe"+2A0B2DC: B9 00 02 00 00           -  mov ecx,00000200
+"FIFA19.exe"+2A0B2E1: F3 0F 10 05 6B B2 8E 02  -  movss xmm0,[FIFA19.exe+52F6554]
+"FIFA19.exe"+2A0B2E9: 0F 2F C2                 -  comiss xmm0,xmm2
+"FIFA19.exe"+2A0B2EC: 0F 47 F1                 -  cmova esi,ecx
+"FIFA19.exe"+2A0B2EF: 0B F0                    -  or esi,eax
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+2A0B2F1: 41 89 B0 48 5B 00 00     -  mov [r8+00005B48],esi
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+2A0B2F8: 48 8B 0D 69 9D 64 03     -  mov rcx,[FIFA19.exe+6055068]
+"FIFA19.exe"+2A0B2FF: 48 8B 01                 -  mov rax,[rcx]
+"FIFA19.exe"+2A0B302: 40 88 6C 24 28           -  mov [rsp+28],bpl
+"FIFA19.exe"+2A0B307: C7 44 24 20 01 00 00 00  -  mov [rsp+20],00000001
+"FIFA19.exe"+2A0B30F: 4C 8D 0D D2 8C 77 02     -  lea r9,[FIFA19.exe+5183FE8]
+"FIFA19.exe"+2A0B316: 4C 8D 05 33 1A 54 02     -  lea r8,[FIFA19.exe+4F4CD50]
+"FIFA19.exe"+2A0B31D: BA 38 00 00 00           -  mov edx,00000038
+"FIFA19.exe"+2A0B322: FF 50 38                 -  call qword ptr [rax+38]
+"FIFA19.exe"+2A0B325: 48 8B D8                 -  mov rbx,rax
+"FIFA19.exe"+2A0B328: 48 89 84 24 90 00 00 00  -  mov [rsp+00000090],rax
+}
 </AssemblerScript>
               <CheatEntries>
                 <CheatEntry>
@@ -10685,7 +11863,7 @@ unregistersymbol(_dojmp_ISEDITPLAYERUNLOCKED)
               <LastState/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
-aobscanmodule(INJECT_EditPlayerName,FIFA19.exe,C6 44 24 20 01 45 33 C9 4C 8D 85 D0 06) // should be unique
+aobscanmodule(INJECT_EditPlayerName,FIFA19.exe,C6 44 24 20 01 45 33 C9 4C 8D 85 D0 02) // should be unique
 
 // First name
 alloc(cave_EditFirstName,$1000,"FIFA19.exe"+3156683)
@@ -10854,6 +12032,8 @@ dealloc(ptrEasyEditNameOnShirt)
 {
 // ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+3156683
 // Known as name
+// C6 44 24 20 01 45 33 C9 4C 8D 85 D0 02
+// C6 44 24 20 01 45 33 C9 4C 8D 85 D0 06
 "FIFA19.exe"+3156657: 44 89 B8 98 00 00 00  -  mov [rax+00000098],r15d
 "FIFA19.exe"+315665E: 48 8D 15 9B 16 A5 02  -  lea rdx,[FIFA19.exe+5BA7D00]
 "FIFA19.exe"+3156665: 48 8D 4D 10           -  lea rcx,[rbp+10]
@@ -13000,7 +14180,7 @@ INJECT_IntJobOffer:
 return_IntJobOffer:
 registersymbol(INJECT_IntJobOffer)
 
-aobscanmodule(INJECT_ClubJobOffer,FIFA19.exe,48 8B 86 D0 00 00 00 8B 34) // should be unique
+aobscanmodule(INJECT_ClubJobOffer,FIFA19.exe,48 8B 83 D0 00 00 00 8B 34) // should be unique
 alloc(cave_ClubJobOffer,$1000,"FIFA19.exe"+3F7B4D0)
 alloc(ClubID, 8)
 registersymbol(ClubID)
@@ -13017,12 +14197,12 @@ cave_ClubJobOffer:
   jmp code_ClubJobOffer
 
 magic_ClubJobOffer:
-  mov [ClubID], rsi
+  mov [ClubID], rbx
   jmp code_ClubJobOffer
 
 code_ClubJobOffer:
   popf
-  mov rax,[rsi+000000D0]
+  mov rax,[rbx+000000D0]
   jmp return_ClubJobOffer
 
 
@@ -13044,7 +14224,7 @@ dealloc(NationalTeamID)
 dealloc(cave_IntJobOffer)
 
 INJECT_ClubJobOffer:
-  db 48 8B 86 D0 00 00 00
+  db 48 8B 83 D0 00 00 00
 
 unregistersymbol(ClubID)
 unregistersymbol(INJECT_ClubJobOffer)
@@ -16257,7 +17437,84 @@ bAwayTeam_Tired:
       </CheatEntries>
     </CheatEntry>
   </CheatEntries>
-  <UserdefinedSymbols/>
+  <UserdefinedSymbols>
+    <SymbolEntry>
+      <Name>arr_SprintLike_Messi</Name>
+      <Address>00760000</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>arr_SprintLike_CRonaldo</Name>
+      <Address>00760200</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>arr_SprintLike_Robben</Name>
+      <Address>00760400</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>arr_SprintLike_YayaToure</Name>
+      <Address>00760600</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>arr_SprintLike_Bale</Name>
+      <Address>00760800</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>arr_SprintLike_NeymarAndAlba</Name>
+      <Address>00760A00</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>arr_DribbleLike_Sterling</Name>
+      <Address>00760C00</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>arr_DribbleLike_Robben</Name>
+      <Address>00760E00</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>arr_DribbleLike_Messi</Name>
+      <Address>00761000</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>arr_DribbleLike_FernandoTorres</Name>
+      <Address>00761200</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>arr_DribbleLike_YayaToure</Name>
+      <Address>00761400</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>arr_DribbleLike_JordiAlba</Name>
+      <Address>00761600</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>arr_DribbleLike_Suarez</Name>
+      <Address>00761800</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>arr_DribbleLike_Kante</Name>
+      <Address>00761A00</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>arr_DribbleLike_Salah</Name>
+      <Address>00761C00</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>arr_DribbleLike_debruyne</Name>
+      <Address>00761E00</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>arr_DribbleLike_lukaku</Name>
+      <Address>00762000</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>arr_DribbleLike_dybala</Name>
+      <Address>00762200</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>arr_DribbleLike_pogba</Name>
+      <Address>00762400</Address>
+    </SymbolEntry>
+  </UserdefinedSymbols>
   <LuaScript>function AutoAttach()
 	local ProcessName = "FIFA19.exe"
 	local ProcessName_Trial = "FIFA19_TRIAL.exe"
