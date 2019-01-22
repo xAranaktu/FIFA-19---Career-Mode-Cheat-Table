@@ -90,3 +90,19 @@ Changelog:
 		- Edit Player
 		- Edit Existing Job Offers
 		- Unique Sprint Style
+        
+    v1.0.11:
+    - Fixed Following scripts: 
+        - Edit Player
+		- Edit Existing Job Offers
+		- Unique Sprint Style
+        - In-Game Hacks
+    - Added 'Non-CM Related' section. Here will be all scripts which are not strict related to career mode only.
+    - Added 'CreatePlayerMax = 999' to 'Non-CM Related'. This should allow you to create 999 players, instead of 30.
+    - Moved 'Dont Pause Game on AltTab' to 'Non-CM Related'
+    - Added missing 'Salah' bodytype to dropdown options
+    - Added missing hair colors to dropdown options
+    - Added all nationalities to dropdown options
+    - Added pointer for "Jersey Number"  to "Editing Player"->"Edit Player"
+    - Added 'Form' -> 'Disable form' (Didn't tested)
+    
