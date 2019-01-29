@@ -3,7 +3,7 @@
   <CheatEntries>
     <CheatEntry>
       <ID>2794</ID>
-      <Description>"v1.0.10"</Description>
+      <Description>"v1.0.11"</Description>
       <LastState Value="" RealAddress="00000000"/>
       <GroupHeader>1</GroupHeader>
     </CheatEntry>
@@ -71,11 +71,17 @@
       <GroupHeader>1</GroupHeader>
       <CheatEntries>
         <CheatEntry>
-          <ID>2793</ID>
-          <Description>"Dont Pause Game on AltTab"</Description>
-          <LastState/>
-          <VariableType>Auto Assembler Script</VariableType>
-          <AssemblerScript>[ENABLE]
+          <ID>2895</ID>
+          <Description>"Non-CM Related"</Description>
+          <LastState Value="" RealAddress="00000000"/>
+          <GroupHeader>1</GroupHeader>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>2793</ID>
+              <Description>"Dont Pause Game on AltTab"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
 aobscanmodule(INJECT_alttab,FIFA19_TRIAL.exe,48 83 EC 48 4C 8B 0D ?? ?? ?? ?? 4D 85 C9 0F 84) // should be unique
 alloc(newmem_alttab,$1000,"FIFA19_TRIAL.exe"+EBD22E0)
 
@@ -164,6 +170,78 @@ Update 3
 "FIFA19_TRIAL.exe"+EBD2313: 66 66 66 66 2E 0F 1F 84 00 00 00 00 00     -  nop cs:[rax+rax+00000000]
 }
 </AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>2896</ID>
+              <Description>"CreatePlayerMax = 999"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_CreatePlayerMax,FIFA19_TRIAL.exe,83 FF 1E 7C 36) // should be unique
+alloc(newmem_CreatePlayerMax,$1000,"FIFA19_TRIAL.exe"+316E667)
+
+label(code_CreatePlayerMax)
+label(ret_CreatePlayerMax)
+
+newmem_CreatePlayerMax:
+
+code_CreatePlayerMax:
+  cmp edi,3E7
+  jl INJECT_CreatePlayerMax+3B
+  jmp ret_CreatePlayerMax
+
+INJECT_CreatePlayerMax:
+  jmp newmem_CreatePlayerMax
+ret_CreatePlayerMax:
+registersymbol(INJECT_CreatePlayerMax)
+
+[DISABLE]
+//code_CreatePlayerMax from here till the end of the code_CreatePlayerMax will be used to disable the cheat
+INJECT_CreatePlayerMax:
+  db 83 FF 1E 7C 36
+
+unregistersymbol(INJECT_CreatePlayerMax)
+dealloc(newmem_CreatePlayerMax)
+
+{
+// ORIGINAL code_CreatePlayerMax - INJECT_CreatePlayerMaxION POINT: "FIFA19_TRIAL.exe"+316E667
+// create_playerid
+// NumPlrs.%d
+
+"FIFA19_TRIAL.exe"+316E647: 49 8B 07                 -  mov rax,[r15]
+"FIFA19_TRIAL.exe"+316E64A: 33 D2                    -  xor edx,edx
+"FIFA19_TRIAL.exe"+316E64C: 49 8B CF                 -  mov rcx,r15
+"FIFA19_TRIAL.exe"+316E64F: FF 50 28                 -  call qword ptr [rax+28]
+"FIFA19_TRIAL.exe"+316E652: 48 8B 10                 -  mov rdx,[rax]
+"FIFA19_TRIAL.exe"+316E655: 48 8B C8                 -  mov rcx,rax
+"FIFA19_TRIAL.exe"+316E658: FF 52 18                 -  call qword ptr [rdx+18]
+"FIFA19_TRIAL.exe"+316E65B: 0F B6 D8                 -  movzx ebx,al
+"FIFA19_TRIAL.exe"+316E65E: 83 BE 18 0B 00 00 00     -  cmp dword ptr [rsi+00000B18],00
+"FIFA19_TRIAL.exe"+316E665: 75 3B                    -  jne FIFA19_TRIAL.exe+316E6A2
+// ---------- INJECT_CreatePlayerMaxING HERE ----------
+"FIFA19_TRIAL.exe"+316E667: 83 FF 1E                 -  cmp edi,1E
+"FIFA19_TRIAL.exe"+316E66A: 7C 36                    -  jl FIFA19_TRIAL.exe+316E6A2
+// ---------- DONE INJECT_CreatePlayerMaxING  ----------
+"FIFA19_TRIAL.exe"+316E66C: 84 C0                    -  test al,al
+"FIFA19_TRIAL.exe"+316E66E: 75 32                    -  jne FIFA19_TRIAL.exe+316E6A2
+"FIFA19_TRIAL.exe"+316E670: 4C 8D 25 12 D7 9E 01     -  lea r12,[FIFA19_TRIAL.exe+4B5BD89]
+"FIFA19_TRIAL.exe"+316E677: 4C 89 64 24 20           -  mov [rsp+20],r12
+"FIFA19_TRIAL.exe"+316E67C: BA 52 4C 50 43           -  mov edx,43504C52
+"FIFA19_TRIAL.exe"+316E681: B9 5E 00 00 00           -  mov ecx,0000005E
+"FIFA19_TRIAL.exe"+316E686: 41 B9 32 4B 44 53        -  mov r9d,53444B32
+"FIFA19_TRIAL.exe"+316E68C: 41 B8 50 58 41 4D        -  mov r8d,4D415850
+"FIFA19_TRIAL.exe"+316E692: E8 29 64 21 FE           -  call FIFA19_TRIAL.exe+1384AC0
+"FIFA19_TRIAL.exe"+316E697: 33 DB                    -  xor ebx,ebx
+}
+</AssemblerScript>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>2897</ID>
+          <Description>"------------------------"</Description>
+          <LastState Value="" RealAddress="00000000"/>
+          <GroupHeader>1</GroupHeader>
         </CheatEntry>
         <CheatEntry>
           <ID>1667</ID>
@@ -1057,6 +1135,225 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>84</ID>
                               <Description>"Nationality"</Description>
+                              <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">149: 'Afghanistan'
+1: 'Albania'
+97: 'Algeria'
+194: 'American Samoa'
+2: 'Andorra'
+98: 'Angola'
+62: 'Anguilla'
+63: 'Antigua and Barbuda'
+52: 'Argentina'
+3: 'Armenia'
+64: 'Aruba'
+195: 'Australia'
+4: 'Austria'
+5: 'Azerbaijan'
+65: 'Bahamas'
+150: 'Bahrain'
+151: 'Bangladesh'
+66: 'Barbados'
+6: 'Belarus'
+7: 'Belgium'
+67: 'Belize'
+99: 'Benin'
+68: 'Bermuda'
+152: 'Bhutan'
+53: 'Bolivia'
+8: 'Bosnia and Herzegovina'
+100: 'Botswana'
+54: 'Brazil'
+69: 'British Virgin Islands'
+153: 'Brunei Darussalam'
+9: 'Bulgaria'
+101: 'Burkina Faso'
+102: 'Burundi'
+154: 'Cambodia'
+103: 'Cameroon'
+70: 'Canada'
+104: 'Cape Verde Islands'
+71: 'Cayman Islands'
+105: 'Central African Republic'
+106: 'Chad'
+55: 'Chile'
+155: 'China PR'
+213: 'Chinese Taipei'
+56: 'Colombia'
+214: 'Comoros'
+107: 'Congo'
+110: 'Congo DR'
+196: 'Cook Islands'
+72: 'Costa Rica'
+108: 'Côte d'Ivoire'
+209: 'Created Players Country'
+216: 'Creation Zone'
+10: 'Croatia'
+73: 'Cuba'
+85: 'Curaçao'
+11: 'Cyprus'
+12: 'Czech Republic'
+13: 'Denmark'
+109: 'Djibouti'
+74: 'Dominica'
+207: 'Dominican Republic'
+57: 'Ecuador'
+111: 'Egypt'
+76: 'El Salvador'
+14: 'England'
+112: 'Equatorial Guinea'
+113: 'Eritrea'
+208: 'Estonia'
+114: 'Ethiopia'
+16: 'Faroe Islands'
+197: 'Fiji'
+17: 'Finland'
+18: 'France'
+210: 'Free Agents Country'
+19: 'FYR Macedonia'
+115: 'Gabon'
+116: 'Gambia'
+20: 'Georgia'
+21: 'Germany'
+117: 'Ghana'
+205: 'Gibraltar'
+22: 'Greece'
+206: 'Greenland'
+77: 'Grenada'
+157: 'Guam'
+78: 'Guatemala'
+118: 'Guinea'
+119: 'Guinea-Bissau'
+79: 'Guyana'
+80: 'Haiti'
+34: 'Holland'
+81: 'Honduras'
+158: 'Hong Kong'
+23: 'Hungary'
+24: 'Iceland'
+159: 'India'
+160: 'Indonesia'
+75: 'International'
+222: 'International Women'
+161: 'Iran'
+162: 'Iraq'
+26: 'Israel'
+27: 'Italy'
+82: 'Jamaica'
+163: 'Japan'
+164: 'Jordan'
+165: 'Kazakhstan'
+120: 'Kenya'
+166: 'Korea DPR'
+167: 'Korea Republic'
+219: 'Kosovo'
+168: 'Kuwait'
+169: 'Kyrgyzstan'
+170: 'Laos'
+28: 'Latvia'
+171: 'Lebanon'
+121: 'Lesotho'
+122: 'Liberia'
+123: 'Libya'
+29: 'Liechtenstein'
+30: 'Lithuania'
+31: 'Luxembourg'
+172: 'Macau'
+124: 'Madagascar'
+125: 'Malawi'
+173: 'Malaysia'
+174: 'Maldives'
+126: 'Mali'
+32: 'Malta'
+127: 'Mauritania'
+128: 'Mauritius'
+83: 'Mexico'
+33: 'Moldova'
+175: 'Mongolia'
+15: 'Montenegro'
+84: 'Montserrat'
+129: 'Morocco'
+130: 'Mozambique'
+176: 'Myanmar'
+131: 'Namibia'
+177: 'Nepal'
+215: 'New Caledonia'
+198: 'New Zealand'
+86: 'Nicaragua'
+132: 'Niger'
+133: 'Nigeria'
+35: 'Northern Ireland'
+36: 'Norway'
+178: 'Oman'
+179: 'Pakistan'
+180: 'Palestine'
+87: 'Panama'
+199: 'Papua New Guinea'
+58: 'Paraguay'
+59: 'Peru'
+181: 'Philippines'
+37: 'Poland'
+38: 'Portugal'
+88: 'Puerto Rico'
+182: 'Qatar'
+25: 'Republic of Ireland'
+211: 'Rest of World'
+39: 'Romania'
+40: 'Russia'
+134: 'Rwanda'
+200: 'Samoa'
+41: 'San Marino'
+135: 'São Tomé e Príncipe'
+183: 'Saudi Arabia'
+42: 'Scotland'
+136: 'Senegal'
+51: 'Serbia'
+137: 'Seychelles'
+138: 'Sierra Leone'
+184: 'Singapore'
+43: 'Slovakia'
+44: 'Slovenia'
+201: 'Solomon Islands'
+139: 'Somalia'
+140: 'South Africa'
+218: 'South Sudan'
+45: 'Spain'
+185: 'Sri Lanka'
+89: 'St. Kitts and Nevis'
+90: 'St. Lucia'
+91: 'St. Vincent and the Grenadines'
+141: 'Sudan'
+92: 'Suriname'
+142: 'Swaziland'
+46: 'Sweden'
+47: 'Switzerland'
+186: 'Syria'
+202: 'Tahiti'
+187: 'Tajikistan'
+143: 'Tanzania'
+188: 'Thailand'
+212: 'Timor-Leste'
+144: 'Togo'
+203: 'Tonga'
+93: 'Trinidad and Tobago'
+145: 'Tunisia'
+48: 'Turkey'
+189: 'Turkmenistan'
+94: 'Turks and Caicos Islands'
+146: 'Uganda'
+49: 'Ukraine'
+190: 'United Arab Emirates'
+95: 'United States'
+60: 'Uruguay'
+96: 'US Virgin Islands'
+191: 'Uzbekistan'
+204: 'Vanuatu'
+61: 'Venezuela'
+192: 'Vietnam'
+50: 'Wales'
+193: 'Yemen'
+147: 'Zambia'
+148: 'Zimbabwe'
+</DropDownList>
                               <VariableType>Binary</VariableType>
                               <BitStart>0</BitStart>
                               <BitLength>12</BitLength>
@@ -6175,15 +6472,15 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>112</ID>
                               <Description>"bodytypecode"</Description>
-                              <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'Lean'
-1: 'Normal'
-2: 'Stocky'
-3: 'Lean'
-4: 'Normal'
-5: 'Stocky'
-6: 'Lean'
-7: 'Normal'
-8: 'Stocky'
+                              <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'Average and Lean'
+1: 'Average and Normal'
+2: 'Average and Stocky'
+3: 'Tall and Lean'
+4: 'Tall and Normal'
+5: 'Tall and Stocky'
+6: 'Short and Lean'
+7: 'Short and Normal'
+8: 'Short and Stocky'
 9: 'Messi'
 10: 'Very Tall and Lean'
 11: 'Akinfenwa'
@@ -6192,6 +6489,7 @@ dealloc(ptrTeamplayerlinks)
 14: 'Shaqiri'
 15: 'Cristiano Ronaldo'
 16: 'Leroux (Only Women)'
+24: 'Salah'
 </DropDownList>
                               <VariableType>Binary</VariableType>
                               <BitStart>1</BitStart>
@@ -6241,6 +6539,10 @@ dealloc(ptrTeamplayerlinks)
 9: 'Gray'
 10: 'Green'
 11: 'Violet'
+12: 'Tan'
+13: 'Dark Red'
+14: 'Blue'
+15: 'Blue'
 </DropDownList>
                               <VariableType>Binary</VariableType>
                               <BitStart>0</BitStart>
@@ -6603,7 +6905,7 @@ dealloc(ptrTeamplayerlinks)
                             </CheatEntry>
                             <CheatEntry>
                               <ID>98</ID>
-                              <Description>"Skill Moves likelihood (?????)"</Description>
+                              <Description>"Skill Moves likelihood"</Description>
                               <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: '1 Star'
 1: '2 Stars'
 2: '3 Stars'
@@ -11301,7 +11603,7 @@ end
               <LastState/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
-aobscanmodule(INJECT_uniquesprint,FIFA19_TRIAL.exe,41 89 B0 48 5B 00 00) // should be unique
+aobscanmodule(INJECT_uniquesprint,FIFA19_TRIAL.exe,89 B1 48 5B 00 00) // should be unique
 alloc(newmem_uniquesprint,$1000,"FIFA19_TRIAL.exe"+2A0B2F1)
 
 label(messi)
@@ -11490,17 +11792,16 @@ apply_neymarandalba_sprint:
 code_uniquesprint:
   pop rcx
   pop r15
-  mov [r8+00005B48],esi
+  mov [rcx+00005B48],esi
   jmp ret_uniquesprint
 return_success:
   pop rcx
   pop r15
-  mov [r8+00005B48],esi
+  mov [rcx+00005B48],esi
   jmp ret_uniquesprint
 
 INJECT_uniquesprint:
   jmp newmem_uniquesprint
-  nop
   nop
 ret_uniquesprint:
 registersymbol(INJECT_uniquesprint)
@@ -11508,7 +11809,7 @@ registersymbol(INJECT_uniquesprint)
 [DISABLE]
 //code_uniquesprint from here till the end of the code_uniquesprint will be used to disable the cheat
 INJECT_uniquesprint:
-  db 41 89 B0 48 5B 00 00
+  db 89 B1 48 5B 00 00
 
 unregistersymbol(INJECT_uniquesprint)
 dealloc(newmem_uniquesprint)
@@ -11526,33 +11827,6 @@ unregistersymbol(bSprintLike_NeymarAndAlba)
 dealloc(bSprintLike_NeymarAndAlba)
 
 
-{
-// ORIGINAL CODE - INJECTION POINT: "FIFA19_TRIAL.exe"+2A0B2F1
-
-"FIFA19_TRIAL.exe"+2A0B2C3: BE 00 10 00 00           -  mov esi,00001000
-"FIFA19_TRIAL.exe"+2A0B2C8: B9 00 20 00 00           -  mov ecx,00002000
-"FIFA19_TRIAL.exe"+2A0B2CD: F3 0F 10 05 5B B2 8E 02  -  movss xmm0,[FIFA19_TRIAL.exe+52F6530]
-"FIFA19_TRIAL.exe"+2A0B2D5: EB 12                    -  jmp FIFA19_TRIAL.exe+2A0B2E9
-"FIFA19_TRIAL.exe"+2A0B2D7: BE 00 01 00 00           -  mov esi,00000100
-"FIFA19_TRIAL.exe"+2A0B2DC: B9 00 02 00 00           -  mov ecx,00000200
-"FIFA19_TRIAL.exe"+2A0B2E1: F3 0F 10 05 6B B2 8E 02  -  movss xmm0,[FIFA19_TRIAL.exe+52F6554]
-"FIFA19_TRIAL.exe"+2A0B2E9: 0F 2F C2                 -  comiss xmm0,xmm2
-"FIFA19_TRIAL.exe"+2A0B2EC: 0F 47 F1                 -  cmova esi,ecx
-"FIFA19_TRIAL.exe"+2A0B2EF: 0B F0                    -  or esi,eax
-// ---------- INJECTING HERE ----------
-"FIFA19_TRIAL.exe"+2A0B2F1: 41 89 B0 48 5B 00 00     -  mov [r8+00005B48],esi
-// ---------- DONE INJECTING  ----------
-"FIFA19_TRIAL.exe"+2A0B2F8: 48 8B 0D 69 9D 64 03     -  mov rcx,[FIFA19_TRIAL.exe+6055068]
-"FIFA19_TRIAL.exe"+2A0B2FF: 48 8B 01                 -  mov rax,[rcx]
-"FIFA19_TRIAL.exe"+2A0B302: 40 88 6C 24 28           -  mov [rsp+28],bpl
-"FIFA19_TRIAL.exe"+2A0B307: C7 44 24 20 01 00 00 00  -  mov [rsp+20],00000001
-"FIFA19_TRIAL.exe"+2A0B30F: 4C 8D 0D D2 8C 77 02     -  lea r9,[FIFA19_TRIAL.exe+5183FE8]
-"FIFA19_TRIAL.exe"+2A0B316: 4C 8D 05 33 1A 54 02     -  lea r8,[FIFA19_TRIAL.exe+4F4CD50]
-"FIFA19_TRIAL.exe"+2A0B31D: BA 38 00 00 00           -  mov edx,00000038
-"FIFA19_TRIAL.exe"+2A0B322: FF 50 38                 -  call qword ptr [rax+38]
-"FIFA19_TRIAL.exe"+2A0B325: 48 8B D8                 -  mov rbx,rax
-"FIFA19_TRIAL.exe"+2A0B328: 48 89 84 24 90 00 00 00  -  mov [rsp+00000090],rax
-}
 </AssemblerScript>
               <CheatEntries>
                 <CheatEntry>
@@ -11863,7 +12137,7 @@ unregistersymbol(_dojmp_ISEDITPLAYERUNLOCKED)
               <LastState/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
-aobscanmodule(INJECT_EditPlayerName,FIFA19_TRIAL.exe,C6 44 24 20 01 45 33 C9 4C 8D 85 D0 02) // should be unique
+aobscanmodule(INJECT_EditPlayerName,FIFA19_TRIAL.exe,C6 44 24 20 01 45 33 C9 4C 8D 85 D0 06) // should be unique
 
 // First name
 alloc(cave_EditFirstName,$1000,"FIFA19_TRIAL.exe"+3156683)
@@ -12032,8 +12306,6 @@ dealloc(ptrEasyEditNameOnShirt)
 {
 // ORIGINAL CODE - INJECTION POINT: "FIFA19_TRIAL.exe"+3156683
 // Known as name
-// C6 44 24 20 01 45 33 C9 4C 8D 85 D0 02
-// C6 44 24 20 01 45 33 C9 4C 8D 85 D0 06
 "FIFA19_TRIAL.exe"+3156657: 44 89 B8 98 00 00 00  -  mov [rax+00000098],r15d
 "FIFA19_TRIAL.exe"+315665E: 48 8D 15 9B 16 A5 02  -  lea rdx,[FIFA19_TRIAL.exe+5BA7D00]
 "FIFA19_TRIAL.exe"+3156665: 48 8D 4D 10           -  lea rcx,[rbp+10]
@@ -12145,6 +12417,18 @@ dealloc(ptrEasyEditNameOnShirt)
                   <Offsets>
                     <Offset>68</Offset>
                     <Offset>48</Offset>
+                    <Offset>0</Offset>
+                    <Offset>20</Offset>
+                  </Offsets>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>2894</ID>
+                  <Description>"Jersey Number"</Description>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>ptrEditPlayerData</Address>
+                  <Offsets>
+                    <Offset>68</Offset>
+                    <Offset>20</Offset>
                     <Offset>0</Offset>
                     <Offset>20</Offset>
                   </Offsets>
@@ -14180,7 +14464,7 @@ INJECT_IntJobOffer:
 return_IntJobOffer:
 registersymbol(INJECT_IntJobOffer)
 
-aobscanmodule(INJECT_ClubJobOffer,FIFA19_TRIAL.exe,48 8B 83 D0 00 00 00 8B 34) // should be unique
+aobscanmodule(INJECT_ClubJobOffer,FIFA19_TRIAL.exe,48 8B 86 D0 00 00 00 8B 34) // should be unique
 alloc(cave_ClubJobOffer,$1000,"FIFA19_TRIAL.exe"+3F7B4D0)
 alloc(ClubID, 8)
 registersymbol(ClubID)
@@ -14197,12 +14481,12 @@ cave_ClubJobOffer:
   jmp code_ClubJobOffer
 
 magic_ClubJobOffer:
-  mov [ClubID], rbx
+  mov [ClubID], rsi
   jmp code_ClubJobOffer
 
 code_ClubJobOffer:
   popf
-  mov rax,[rbx+000000D0]
+  mov rax,[rsi+000000D0]
   jmp return_ClubJobOffer
 
 
@@ -14224,7 +14508,7 @@ dealloc(NationalTeamID)
 dealloc(cave_IntJobOffer)
 
 INJECT_ClubJobOffer:
-  db 48 8B 83 D0 00 00 00
+  db 48 8B 86 D0 00 00 00
 
 unregistersymbol(ClubID)
 unregistersymbol(INJECT_ClubJobOffer)
@@ -14888,6 +15172,77 @@ dealloc(newmem_bettermorale)
 "FIFA19_TRIAL.exe"+40F8D3D: 48 8B CB                 -  mov rcx,rbx
 "FIFA19_TRIAL.exe"+40F8D40: E8 FB 3A 22 FE           -  call FIFA19_TRIAL.exe+231C840
 "FIFA19_TRIAL.exe"+40F8D45: F3 0F 10 15 7F 14 2C 01  -  movss xmm2,[FIFA19_TRIAL.exe+53BA1CC]
+}
+</AssemblerScript>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>2899</ID>
+          <Description>"Form"</Description>
+          <Options moHideChildren="1"/>
+          <LastState Value="" RealAddress="00000000"/>
+          <GroupHeader>1</GroupHeader>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>2898</ID>
+              <Description>"Disable form (?)"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobscanmodule(INJECT_FORM_SETTINGS,FIFA19_TRIAL.exe,89 86 F8 00 00 00 B8) // should be unique
+alloc(newmem_formsettings,$1000,"FIFA19_TRIAL.exe"+389C870)
+
+label(code_formsettings)
+label(ret_formsettings)
+
+newmem_formsettings:
+
+code_formsettings:
+  mov [rsi+000000F4], #0    // PLAYER_EVAL/BAD
+  mov [rsi+000000F8], #99   // PLAYER_EVAL/NEUTRAL
+  jmp ret_formsettings
+
+INJECT_FORM_SETTINGS:
+  jmp newmem_formsettings
+  nop
+ret_formsettings:
+registersymbol(INJECT_FORM_SETTINGS)
+
+[DISABLE]
+//code_formsettings from here till the end of the code_formsettings will be used to disable the cheat
+INJECT_FORM_SETTINGS:
+  db 89 86 F8 00 00 00
+
+unregistersymbol(INJECT_FORM_SETTINGS)
+dealloc(newmem_formsettings)
+
+{
+// ORIGINAL code_formsettings - INJECTION POINT: "FIFA19_TRIAL.exe"+389C870
+
+"FIFA19_TRIAL.exe"+389C847: 48 8B CF                    -  mov rcx,rdi
+"FIFA19_TRIAL.exe"+389C84A: E8 21 DA A9 FE              -  call FIFA19_TRIAL.exe+233A270
+"FIFA19_TRIAL.exe"+389C84F: 84 C0                       -  test al,al
+"FIFA19_TRIAL.exe"+389C851: 74 11                       -  je FIFA19_TRIAL.exe+389C864
+"FIFA19_TRIAL.exe"+389C853: 48 8D 15 96 49 AB 01        -  lea rdx,[FIFA19_TRIAL.exe+53511F0]
+"FIFA19_TRIAL.exe"+389C85A: 48 8B CF                    -  mov rcx,rdi
+"FIFA19_TRIAL.exe"+389C85D: E8 6E DD A9 FE              -  call FIFA19_TRIAL.exe+233A5D0
+"FIFA19_TRIAL.exe"+389C862: EB 05                       -  jmp FIFA19_TRIAL.exe+389C869
+"FIFA19_TRIAL.exe"+389C864: B8 FF FF FF FF              -  mov eax,FFFFFFFF
+"FIFA19_TRIAL.exe"+389C869: F0 FF 05 48 1A B1 02        - lock  inc [FIFA19_TRIAL.exe+63AE2B8]
+// ---------- INJECTING HERE ----------
+"FIFA19_TRIAL.exe"+389C870: 89 86 F8 00 00 00           -  mov [rsi+000000F8],eax
+// ---------- DONE INJECTING  ----------
+"FIFA19_TRIAL.exe"+389C876: B8 FF FF FF FF              -  mov eax,FFFFFFFF
+"FIFA19_TRIAL.exe"+389C87B: F0 0F C1 05 35 1A B1 02     - lock  xadd [FIFA19_TRIAL.exe+63AE2B8],eax
+"FIFA19_TRIAL.exe"+389C883: FF C8                       -  dec eax
+"FIFA19_TRIAL.exe"+389C885: 3D 00 00 00 01              -  cmp eax,01000000
+"FIFA19_TRIAL.exe"+389C88A: 72 37                       -  jb FIFA19_TRIAL.exe+389C8C3
+"FIFA19_TRIAL.exe"+389C88C: 0F 1F 40 00                 -  nop [rax+00]
+"FIFA19_TRIAL.exe"+389C890: F0 FF 05 21 1A B1 02        - lock  inc [FIFA19_TRIAL.exe+63AE2B8]
+"FIFA19_TRIAL.exe"+389C897: 8B 05 1B 1A B1 02           -  mov eax,[FIFA19_TRIAL.exe+63AE2B8]
+"FIFA19_TRIAL.exe"+389C89D: 85 C0                       -  test eax,eax
+"FIFA19_TRIAL.exe"+389C89F: 7F 0C                       -  jg FIFA19_TRIAL.exe+389C8AD
 }
 </AssemblerScript>
             </CheatEntry>
@@ -16594,7 +16949,7 @@ dealloc(newmem_FatigueBase)
           <LastState/>
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>[ENABLE]
-aobscanmodule(INJECT_matchScore,FIFA19_TRIAL.exe,48 8B 41 20 48 89 42 20 8B 41 28 89 42 28 41 8B 54) // should be unique
+aobscanmodule(INJECT_matchScore,FIFA19_TRIAL.exe,0F 11 41 20 48 8B 40 30 48 89 41 30 41 8B 54) // should be unique
 alloc(matchscore_cave,$1000,"FIFA19_TRIAL.exe"+2578D85)
 
 alloc(ptrHomeTeamScore, 8)
@@ -16632,7 +16987,7 @@ code_matchscore:
   popf
   jmp return_matchscore
 
-INJECT_matchScore+5B:
+INJECT_matchScore+58:
   jmp matchscore_cave
   nop
   nop
@@ -16710,7 +17065,7 @@ INJECT_DisableSubstitutions:
 ret_DisableSubstitutions:
 registersymbol(INJECT_DisableSubstitutions)
 
-aobscanmodule(INJECT_ingame_stamina,FIFA19_TRIAL.exe,8B 43 68 41 89 82 68 03 00 00) // should be unique
+aobscanmodule(INJECT_ingame_stamina,FIFA19_TRIAL.exe,8B 43 68 41 89 82 78 03 00 00) // should be unique
 alloc(cave_ingame_stamina,$1000,"FIFA19_TRIAL.exe"+286FDF8)
 
 alloc(bHomeTeam_Tired, 1)
@@ -16872,7 +17227,7 @@ AwayTeam_skillmoves:
 
 code_ingame_stamina:
   mov eax,[rbx+68]
-  mov [r10+00000368],eax
+  mov [r10+00000378],eax
   popf
   jmp ret_ingame_stamina
 
@@ -16888,7 +17243,7 @@ registersymbol(INJECT_ingame_stamina)
 
 [DISABLE]
 //code from here till the end of the code will be used to disable the cheat
-INJECT_matchScore+5B:
+INJECT_matchScore+58:
   db 44 8B 81 1C 01 00 00
 
 unregistersymbol(INJECT_matchScore)
@@ -16913,7 +17268,7 @@ unregistersymbol(bAwayTeam_UnlimitedSubs)
 dealloc(bAwayTeam_UnlimitedSubs)
 
 INJECT_ingame_stamina:
-  db 8B 43 68 41 89 82 68 03 00 00
+  db 8B 43 68 41 89 82 78 03 00 00
 
 unregistersymbol(INJECT_ingame_stamina)
 dealloc(cave_ingame_stamina)
@@ -17022,6 +17377,35 @@ dealloc(bAwayTeam_FiveStars)
 "FIFA19_TRIAL.exe"+286FE1A: 48 63 08                       -  movsxd  rcx,dword ptr [rax]
 "FIFA19_TRIAL.exe"+286FE1D: F3 41 0F 58 84 8B 18 17 00 00  -  addss xmm0,dword ptr [r11+rcx*4+00001718]
 "FIFA19_TRIAL.exe"+286FE27: F3 0F 5F C8                    -  maxss xmm1,xmm0
+}
+
+{
+// ORIGINAL CODE - INJECTION POINT: "FIFA19_TRIAL.exe"+118FC6AC
+STAMINA2
+"FIFA19_TRIAL.exe"+118FC690: E0 39                             -  loopne FIFA19_TRIAL.exe+118FC6CB
+"FIFA19_TRIAL.exe"+118FC692: E0 C1                             -  loopne FIFA19_TRIAL.exe+118FC655
+"FIFA19_TRIAL.exe"+118FC694: E9 2E FC AA FC                    -  jmp FIFA19_TRIAL.exe+E3AC2C7
+"FIFA19_TRIAL.exe"+118FC699: DF CD                             -  fisttp ebp
+"FIFA19_TRIAL.exe"+118FC69B: 54                                -  push rsp
+"FIFA19_TRIAL.exe"+118FC69C: F6 A7 C1 40 E7 BC                 -  mul byte ptr [rdi-4318BF3F]
+"FIFA19_TRIAL.exe"+118FC6A2: E0 31                             -  loopne FIFA19_TRIAL.exe+118FC6D5
+"FIFA19_TRIAL.exe"+118FC6A4: C0 41 88 82                       -  rol byte ptr [rcx-78],-7E
+"FIFA19_TRIAL.exe"+118FC6A8: 74 03                             -  je FIFA19_TRIAL.exe+118FC6AD
+"FIFA19_TRIAL.exe"+118FC6AA: 00 00                             -  add [rax],al
+// ---------- INJECTING HERE ----------
+"FIFA19_TRIAL.exe"+118FC6AC: 8B 43 68                          -  mov eax,[rbx+68]
+"FIFA19_TRIAL.exe"+118FC6AF: 41 89 82 78 03 00 00              -  mov [r10+00000378],eax
+// ---------- DONE INJECTING  ----------
+"FIFA19_TRIAL.exe"+118FC6B6: 4C 8B 5B 28                       -  mov r11,[rbx+28]
+"FIFA19_TRIAL.exe"+118FC6BA: F3 0F 10 4B 64                    -  movss xmm1,[rbx+64]
+"FIFA19_TRIAL.exe"+118FC6BF: 4D 85 DB                          -  test r11,r11
+"FIFA19_TRIAL.exe"+118FC6C2: 74 23                             -  je FIFA19_TRIAL.exe+118FC6E7
+"FIFA19_TRIAL.exe"+118FC6C4: 48 8B 43 18                       -  mov rax,[rbx+18]
+"FIFA19_TRIAL.exe"+118FC6C8: 0F 28 C1                          -  movaps xmm0,xmm1
+"FIFA19_TRIAL.exe"+118FC6CB: 0F 57 C9                          -  xorps xmm1,xmm1
+"FIFA19_TRIAL.exe"+118FC6CE: 48 63 08                          -  movsxd  rcx,dword ptr [rax]
+"FIFA19_TRIAL.exe"+118FC6D1: F3 41 0F 58 84 8B 18 17 00 00     -  addss xmm0,dword ptr [r11+rcx*4+00001718]
+"FIFA19_TRIAL.exe"+118FC6DB: F3 0F 5F C8                       -  maxss xmm1,xmm0
 }
 </AssemblerScript>
           <CheatEntries>
@@ -17212,7 +17596,7 @@ dealloc(newmem_UnlimitedSubstitutions)
               <ID>595</ID>
               <Description>"Home Team"</Description>
               <Options moHideChildren="1"/>
-              <LastState Value="" RealAddress="00000000"/>
+              <LastState Value="" Activated="1" RealAddress="00000000"/>
               <GroupHeader>1</GroupHeader>
               <CheatEntries>
                 <CheatEntry>
@@ -17314,7 +17698,7 @@ bHomeTeam_Tired:
               <ID>596</ID>
               <Description>"Away Team"</Description>
               <Options moHideChildren="1"/>
-              <LastState Value="" RealAddress="00000000"/>
+              <LastState Value="" Activated="1" RealAddress="00000000"/>
               <GroupHeader>1</GroupHeader>
               <CheatEntries>
                 <CheatEntry>
@@ -17440,27 +17824,27 @@ bAwayTeam_Tired:
   <UserdefinedSymbols>
     <SymbolEntry>
       <Name>arr_SprintLike_Messi</Name>
-      <Address>00760000</Address>
+      <Address>00700000</Address>
     </SymbolEntry>
     <SymbolEntry>
       <Name>arr_SprintLike_CRonaldo</Name>
-      <Address>00760200</Address>
+      <Address>00700200</Address>
     </SymbolEntry>
     <SymbolEntry>
       <Name>arr_SprintLike_Robben</Name>
-      <Address>00760400</Address>
+      <Address>00700400</Address>
     </SymbolEntry>
     <SymbolEntry>
       <Name>arr_SprintLike_YayaToure</Name>
-      <Address>00760600</Address>
+      <Address>00700600</Address>
     </SymbolEntry>
     <SymbolEntry>
       <Name>arr_SprintLike_Bale</Name>
-      <Address>00760800</Address>
+      <Address>00700800</Address>
     </SymbolEntry>
     <SymbolEntry>
       <Name>arr_SprintLike_NeymarAndAlba</Name>
-      <Address>00760A00</Address>
+      <Address>00700A00</Address>
     </SymbolEntry>
     <SymbolEntry>
       <Name>arr_DribbleLike_Sterling</Name>
