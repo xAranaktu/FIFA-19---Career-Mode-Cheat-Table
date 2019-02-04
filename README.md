@@ -183,6 +183,8 @@ __If condition from point 6. is not met you need to find a news which will query
 
 [Method 2 (Dunno who is the author of this)](https://docs.google.com/document/d/e/2PACX-1vTwIl5tMySFCSqymJsBXtAOSKFNmyv7kUfembGp7EFbXFJzcjmnAGh9N8LHKU5GBl8rfSJU2cckiCyA/pub)
 
+[Method 3 (RDBM 19)](https://docs.google.com/document/d/1LUM2z1cO_RcS2k91Jpea04lhQW33cjOO1-2BXeE-CSM/edit?usp=sharing)
+
 ## Removing injury from a player
 
 - Activate "Players Injuries" script
