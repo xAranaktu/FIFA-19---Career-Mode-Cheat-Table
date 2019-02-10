@@ -147,7 +147,7 @@ Because cheat table contains a lot of scripts, you may want to let cheat engine 
   * Select scripts which will be activated and save (https://i.imgur.com/P27Gji5.gifv)
   * Next time when you run Cheat Table selected scripts will be automatically activate by cheat engine
   
-* For cheat table version below 1.0.0 to 1.0.11
+* For cheat table version from 1.0.0 to 1.0.11
   * You can use lua to make your life easier. Press "CTRL+ALT+L" in cheat engine to open Cheat Table Lua script. [here](http://fearlessrevolution.com/viewtopic.php?f=4&t=4976&p=21649#p21608) you can read how to use autoattach.lua script.
 
 
