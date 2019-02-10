@@ -45,7 +45,9 @@ When new version will be released? Answer is here: [Release Schedule](https://do
 * Run FIFA and go to main menu (https://i.imgur.com/Jnq60Hf.jpg)
 * Run Cheat Engine
 * Allow Cheat Engine to execute Lua scripts (https://i.imgur.com/oOdOq7M.gifv)
-* Open Cheat Table in Cheat Engine and wait a few seconds until it will connect with game and GUI will be shown (only in v1.1.0+) (https://i.imgur.com/pb0GIC1.gifv)
+* Open Cheat Table in Cheat Engine (https://i.imgur.com/pb0GIC1.gifv)
+  * if you have latest Cheat table then just wait a few seconds until it will connect with the game and GUI will be shown (as on gif)
+  * if you have cheat table version from v1.0.0 to v1.0.11 then press 'CTRL+P' and open 'FIFA19.exe' process (https://i.imgur.com/RjGdB8B.png)
 * Activate your favourite scripts and load career save. :)
 
 ## F.A.Q
