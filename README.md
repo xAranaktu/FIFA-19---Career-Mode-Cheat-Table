@@ -12,7 +12,9 @@ And the last thing but not least, __tick checkboxes only when you are activating
    * [Update Progress](#update-progress)
    * [Release Schedule](#release-schedule)
    * [Video Tutorials](#video-tutorials)
+   * [Getting Started](#getting-started)
    * [Frequently asked questions](#faq)
+   * [Auto activating scripts](#auto-activating-scripts)
    * [FIFA 19 IDs](#fifa-19-ids)
    * [Permanent Stadium Change](#permanent-stadium-change)
    * [Changing Player Head Model](#changing-player-head-model)
@@ -21,18 +23,30 @@ And the last thing but not least, __tick checkboxes only when you are activating
    * [Contract Negotiation](#contract-negotiation)
 
 
-## Update Progress
-[Track update process on Trello](https://trello.com/b/oFNRNWWY/fifa-19-ct-update-progress)
-
-
 ## Release Schedule
 When new version will be released? Answer is here: [Release Schedule](https://docs.google.com/spreadsheets/d/1EsYf4I4oDD6kw5jTGTFsv7rR1qL-Oausd1ZRbbSWm84/edit?usp=sharing)
 
 
 ## Video Tutorials
 
-Video Tutorials UC Nerd -> [Watch on YouTube](http://bit.ly/CM-Cheat-Table-19)
+[Video Tutorials by UC Nerd](http://bit.ly/CM-Cheat-Table-19)
 
+[Video Tutorials by FIFER](https://www.youtube.com/channel/UCLeUj4JLawrik11Ch9uoU_Q)
+
+
+## Getting Started
+* Download necessary software (if you don't have any of those):
+  * [Newest version of cheat engine](https://www.cheatengine.org/downloads.php)
+  * [Newest version of cheat table](https://mega.nz/#F!QIlRHIRD!NWSxbzysLhTzgvQeuFg0mg)
+  * [Winrar](https://www.rarlab.com/download.htm) or [7zip](https://www.7-zip.org/)
+  
+* Install Cheat Engine
+* Unzip Cheat Table with Winrar/7zip (doesn't matter where it's up to you.)
+* Run FIFA and go to main menu (https://i.imgur.com/Jnq60Hf.jpg)
+* Run Cheat Engine
+* Allow Cheat Engine to execute Lua scripts (https://i.imgur.com/oOdOq7M.gifv)
+* Open Cheat Table in Cheat Engine and wait a few seconds until it will connect with game and GUI will be shown (only in v1.1.0+) (https://i.imgur.com/pb0GIC1.gifv)
+* Activate your favourite scripts and load career save. :)
 
 ## F.A.Q
 
@@ -68,7 +82,7 @@ Video Tutorials UC Nerd -> [Watch on YouTube](http://bit.ly/CM-Cheat-Table-19)
   - It's a right time to use your save backup. :)
 
 * __How to keep options in cheat table activated permanently?__
-  - You can use lua to make your life easier. Press "CTRL+ALT+L" in cheat engine to open Cheat Table Lua script. [here](http://fearlessrevolution.com/viewtopic.php?f=4&t=4976&p=21649#p21608) you can read how to use autoattach.lua script.
+  - [Auto activating scripts](#auto-activating-scripts)
 
 * __What's "Transfer.ini & Transfers.ini"?__
   - This script is allowing to edit some settings from these .ini files. Generally, it can be used to make transfer window more active. This script is using default settings, you need to edit it to see any difference in the game. Right-click -> Change script -> Edit what you want to edit (Just change value after "#".) -> Ok -> Activate script -> Load your career save.
@@ -123,7 +137,18 @@ Video Tutorials UC Nerd -> [Watch on YouTube](http://bit.ly/CM-Cheat-Table-19)
   
   ![](https://i.imgur.com/FaeU9kX.png)
   
+
+## Auto activating scripts
+Because cheat table contains a lot of scripts, you may want to let cheat engine to activate it for you.
+* For latest cheat table version
+  * Go to settings (https://i.imgur.com/y7AnsA3.png)
+  * Select scripts which will be activated and save (https://i.imgur.com/P27Gji5.gifv)
+  * Next time when you run Cheat Table selected scripts will be automatically activate by cheat engine
   
+* For cheat table version below 1.0.0 to 1.0.11
+  * You can use lua to make your life easier. Press "CTRL+ALT+L" in cheat engine to open Cheat Table Lua script. [here](http://fearlessrevolution.com/viewtopic.php?f=4&t=4976&p=21649#p21608) you can read how to use autoattach.lua script.
+
+
 ## FIFA 19 IDs
 
 List of FIFA 19 IDs is available here -> [Google Drive](https://docs.google.com/spreadsheets/d/1eYx5j7FZwlaPKymv3_G-ezZKtfWmQ6hwjXukAfqYoto/edit?usp=sharing) 
