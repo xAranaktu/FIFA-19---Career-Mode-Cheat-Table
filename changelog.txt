@@ -94,8 +94,8 @@ Changelog:
     v1.0.11:
     - Fixed Following scripts: 
         - Edit Player
-	- Edit Existing Job Offers
-	- Unique Sprint Style
+		- Edit Existing Job Offers
+		- Unique Sprint Style
         - In-Game Hacks
     - Added 'Non-CM Related' section. Here will be all scripts which are not strict related to career mode only.
     - Added 'CreatePlayerMax = 999' to 'Non-CM Related'. This should allow you to create 999 players, instead of 30.
@@ -110,3 +110,6 @@ Changelog:
     - Added GUI
     - Removed unnecessary 'More efficient training' scripts.
     
+    v1.1.1:
+    - Editing player is now only possible when GUI is synced with the game
+    - MOAR LOGS
