@@ -110,6 +110,7 @@ Changelog:
     - Added GUI
     - Removed unnecessary 'More efficient training' scripts.
     
-    v1.1.1:
-    - Editing player is now only possible when GUI is synced with the game
-    - MOAR LOGS
+    v1.1.2:
+    - Offsets with numbers only are now converted to string.
+    - Fixed problem in LIP with parsing some hex offsets to '1.#INF'
+    
