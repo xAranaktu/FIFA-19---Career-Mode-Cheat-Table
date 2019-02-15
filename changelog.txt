@@ -114,3 +114,8 @@ Changelog:
     - Offsets with numbers only are now converted to string.
     - Fixed problem in LIP with parsing some hex offsets to '1.#INF'
     
+    v1.1.3:
+    - Added 'Head Class Code' to GUI
+    - Another fix in LIP (invalid interpetation of offsets)
+    - Added hotkey for 'Search player by ID'. It's 'Enter' be default, can be changed in settings.
+    - Added 'Clear Cached Files' and 'Restore Default Settings' buttons to main settings.
