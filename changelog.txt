@@ -119,3 +119,7 @@ Changelog:
     - Another fix in LIP (invalid interpetation of offsets)
     - Added hotkey for 'Search player by ID'. It's 'Enter' be default, can be changed in settings.
     - Added 'Clear Cached Files' and 'Restore Default Settings' buttons to main settings.
+    
+    v1.1.4:
+    - Game will not longer crash after deactivating "Dont Pause Game on AltTab" script
+    - You don't need to be in main menu to activate cheat table anymore. You can run cheat table even before you run FIFA.
