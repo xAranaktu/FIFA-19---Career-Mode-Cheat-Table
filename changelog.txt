@@ -123,3 +123,8 @@ Changelog:
     v1.1.4:
     - Game will not longer crash after deactivating "Dont Pause Game on AltTab" script
     - You don't need to be in main menu to activate cheat table anymore. You can run cheat table even before you run FIFA.
+    
+    v1.1.5:
+    - Fixed bug causing not displaying minifaces of a players with headtypecode == 0 
+    - Added icons bodytypecodes to the dropdown
+    - Detecting if cheat table is not unziped (error will be displayed)
