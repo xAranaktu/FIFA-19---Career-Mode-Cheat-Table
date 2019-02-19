@@ -128,3 +128,6 @@ Changelog:
     - Fixed bug causing not displaying minifaces of a players with headtypecode == 0 
     - Added icons bodytypecodes to the dropdown
     - Detecting if cheat table is not unziped (error will be displayed)
+    
+    v1.1.6:
+    - Minor bug fixes
