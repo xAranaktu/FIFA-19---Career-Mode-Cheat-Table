@@ -131,3 +131,6 @@ Changelog:
     
     v1.1.6:
     - Minor bug fixes
+    
+    v1.1.7:
+    - Fixed "Database Tables" Script.
