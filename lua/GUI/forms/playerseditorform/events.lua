@@ -80,7 +80,6 @@ end
 -- OnClose Players Editor Form
 function PlayersEditorFormClose(sender)
     check_if_has_unapplied_player_changes()
-    destroy_hotkeys()
     return caHide
 end
 

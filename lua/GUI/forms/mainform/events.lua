@@ -43,10 +43,11 @@ end
 
 -- Close
 function MainExitClick(sender)
-    -- Deactivate scripts on Exit while in DEBUG MODE
-    if DEBUG_MODE then
-        deactive_all(getAddressList().getMemoryRecordByDescription('Scripts'))
-    end
+    -- Deactivate scripts on Exit
+    -- getAddressList().getMemoryRecordByDescription("Scripts").Active=false
+    -- getAddressList().getMemoryRecordByDescription("FIFA Database").Active=false
+    -- getAddressList().getMemoryRecordByDescription("WARNING!! Make a backup save before you edit anything here!").Active=false
+    -- getAddressList().getMemoryRecordByDescription("Database Tables").Active=false
 
     -- Deactivate "GUI" script
     ADDR_LIST.getMemoryRecordByID(CT_MEMORY_RECORDS['GUI_SCRIPT']).Active = false

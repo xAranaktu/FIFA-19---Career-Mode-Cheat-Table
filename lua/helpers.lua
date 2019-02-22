@@ -18,7 +18,7 @@ end
 
 -- Check Cheat Table Version
 function check_ct_version()
-    local ver = '1.1.3'
+    local ver = '1.1.2'
     do_log(string.format('Cheat table version: %s', ver))
     MainWindowForm.LabelCTVer.Caption = ver -- update version in GUI
     ADDR_LIST.getMemoryRecordByID(2794).Description = string.format("v%s", ver) -- update version in cheat table
@@ -190,7 +190,7 @@ function update_offset(name, save)
     local res = AOBScanModule(getfield(string.format('AOB_DATA.%s', name)))
     local res_count = res.getCount()
     if res_count == 0 then 
-        do_log(string.format("%s AOBScanModule error. Try to restart FIFA and Cheat Engine", name), 'ERROR')
+        do_log(string.format("%s AOBScanModule error", name), 'ERROR')
         return false
     elseif res_count > 1 then
         do_log(string.format("%s AOBScanModule multiple matches - %i found", name, res_count), 'WARNING')
@@ -466,8 +466,7 @@ function load_cfg()
                 1666, 1667, 1668, 2058
             },
             hotkeys = {
-                sync_with_game = 'VK_F5',
-                search_player_by_id = 'VK_RETURN'
+                sync_with_game = 'VK_F5'
             },
             other = {
                 something = 'something'

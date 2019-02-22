@@ -528,7 +528,6 @@ function get_components_description_player_edit()
         HasHighQualityHeadCB = {id = 52, modifier = 0},
         HeadAssetIDEdit = {id = 57, modifier = 0},
         HeadVariationEdit = {id = 97, modifier = 0},
-        HeadClassCodeEdit = {id = 82, modifier = 0},
         TattooLeftArmEdit = {id = 9, modifier = 0},
         TattooRightArmEdit = {id = 54, modifier = 0},
         TattooLeftNeckEdit = {id = 103, modifier = 0},

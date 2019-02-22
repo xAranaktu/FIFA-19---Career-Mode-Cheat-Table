@@ -57,10 +57,6 @@ function SettingsSaveSettingsClick(sender)
     end
 
     new_cfg_data.auto_activate = scripts_ids
-
-    new_cfg_data.hotkeys.sync_with_game = SettingsForm.SyncWithGameHotkeyEdit.Text
-    new_cfg_data.hotkeys.search_player_by_id = SettingsForm.SearchPlayerByIDHotkeyEdit.Text
-
     save_changes_in_settingsform(new_cfg_data)
     showMessage('Settings has been saved.')
 end
@@ -100,26 +96,6 @@ function GUIOpacityEditChange(sender)
     new_cfg_data.gui.opacity = opacity
 end
 
--- Buttons
-function RestoreDefaultSettingsButtonClick(sender)
-    if messageDialog("Are you sure you want to restore default settings?\nThis will also clear your cached files\nCheat Table and FIFA restart will be required.", mtInformation, mbYes,mbNo) == mrNo then
-        return
-    end
-    do_log('Restore Default Settings')
-    delete_directory(string.gsub(DATA_DIR, "/","\\"):sub(1,-2))
-    delete_directory(string.gsub(CACHE_DIR, "/","\\"):sub(1,-2))
-    showMessage('Default settings restored. Please, restart FIFA and Cheat Engine.')
-end
-
-function ClearCacheButtonClick(sender)
-    if messageDialog("Are you sure you want to delete all cached files?", mtInformation, mbYes,mbNo) == mrNo then
-        return
-    end
-    do_log('Clear Cached Files')
-    delete_directory(string.gsub(CACHE_DIR, "/","\\"):sub(1,-2))
-
-    create_dirs()
-    copy_template_files()
-
-    showMessage('All cached files has been deleted.')
+function SyncWithGameHotkeyEditChange(sender)
+    new_cfg_data.hotkeys.sync_with_game = sender.Text
 end
