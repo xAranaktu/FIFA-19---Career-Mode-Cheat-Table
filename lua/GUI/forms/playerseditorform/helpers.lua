@@ -1,5 +1,6 @@
 PlayerTeamContext = {}
 
+
 function check_if_has_unapplied_player_changes()
     if HAS_UNAPPLIED_PLAYER_CHANGES then
         if messageDialog("You have some unapplied changes in player editor\nDo you want to apply them?", mtInformation, mbYes,mbNo) == mrYes then
@@ -35,8 +36,22 @@ function FillHeadTypeCB(args)
     end
 end
 
+PLAYEREDIT_HOTKEYS_OBJECTS = {}
 function create_hotkeys()
-    createHotkey(SyncImageClick, _G[CFG_DATA.hotkeys.sync_with_game])
+    destroy_hotkeys()
+    if CFG_DATA.hotkeys.sync_with_game then
+        table.insert(PLAYEREDIT_HOTKEYS_OBJECTS, createHotkey(SyncImageClick, _G[CFG_DATA.hotkeys.sync_with_game]))
+    end
+    if CFG_DATA.hotkeys.search_player_by_id then
+        table.insert(PLAYEREDIT_HOTKEYS_OBJECTS, createHotkey(SearchPlayerByIDClick, _G[CFG_DATA.hotkeys.search_player_by_id]))
+    end
+end
+
+function destroy_hotkeys()
+    for i=1,#PLAYEREDIT_HOTKEYS_OBJECTS do
+        PLAYEREDIT_HOTKEYS_OBJECTS[i].destroy()
+    end
+    PLAYEREDIT_HOTKEYS_OBJECTS = {}
 end
 
 function reset_components()
