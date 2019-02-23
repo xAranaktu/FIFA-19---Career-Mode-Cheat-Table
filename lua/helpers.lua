@@ -18,7 +18,7 @@ end
 
 -- Check Cheat Table Version
 function check_ct_version()
-    local ver = '1.1.3'
+    local ver = '1.1.4'
     do_log(string.format('Cheat table version: %s', ver))
     MainWindowForm.LabelCTVer.Caption = ver -- update version in GUI
     ADDR_LIST.getMemoryRecordByID(2794).Description = string.format("v%s", ver) -- update version in cheat table
@@ -42,12 +42,7 @@ function copy_template_files()
     os_execute(string.format('%s & %s', cmd1, cmd2))
 end
 
-function init_logger()
-    if DEBUG_MODE then return nil end
-    local time = os.date("*t")
-    return io.open("logs/log_".. string.format("%02d-%02d-%02d", time.year, time.month, time.day) .. ".txt", "a+")
-end
-
+local time = os.date("*t")
 function do_log(text, level)
     if level == nil then
         level = 'INFO'
@@ -59,7 +54,9 @@ function do_log(text, level)
         if level == 'ERROR' then
             showMessage(text)
         end
-        LOGGER:write(string.format("[ %s ] %s - %s\n", level, os.date("%c", os.time()), text))
+        logger = io.open("logs/log_".. string.format("%02d-%02d-%02d", time.year, time.month, time.day) .. ".txt", "a+")
+        logger:write(string.format("[ %s ] %s - %s\n", level, os.date("%c", os.time()), text))
+        io.close(logger)
     end
 end
 
@@ -279,7 +276,7 @@ function autoactivate_scripts()
         do_log(string.format('Activating %s (%d)', script_record.Description, script_id), 'INFO')
         script_record.Active = true
     end
-    initDBPtrs()
+    initPtrs()
 end
 
 -- find record in game database and update pointer in CT
@@ -337,7 +334,20 @@ function find_record_and_update_CT(memrec_id, value_to_find, sizeOf, first_ptrna
     return bFound
 end
 
-function initDBPtrs()
+function getScreenID()
+    return readString(readPointer(SCREEN_ID_PTR))
+end
+
+function logScreenID()
+    local screen_id = getScreenID()
+    if not screen_id then 
+        do_log('Current Screen: nil')
+    else
+        do_log('Current Screen: ' .. screen_id)
+    end
+end
+
+function initPtrs()
     local codeGameDB = tonumber(get_validated_address('AOB_codeGameDB'), 16)
     local base_ptr = readPointer(byteTableToDword(readBytes(codeGameDB+4, 4, true)) + codeGameDB + 8)
 
@@ -370,6 +380,7 @@ end
 function load_aobs()
     return {
         AOB_codeGameDB = '48 0F 44 2D ?? ?? ?? ?? 8B 4D 08',
+        AOB_screenID = '4C 0F 45 35 ?? ?? ?? ?? 49 8B FF 48 FF C7 41 80 3C',
         AOB_Form_Settings = '89 86 F8 00 00 00 B8',
         AOB_CreatePlayerMax = '83 FF 1E 7C 36',
         AOB_AltTab = '48 83 EC 48 4C 8B 0D ?? ?? ?? ?? 4D 85 C9 0F 84',

@@ -16,10 +16,7 @@ require 'lua/GUI/forms/mainform/events';
 require 'lua/GUI/forms/playerseditorform/events';
 require 'lua/GUI/forms/settingsform/events';
 
--- LOGGER
-LOGGER = init_logger()
 do_log('New session started', 'INFO')
-
 
 -- DEFAULT GLOBALS, better leave it as is
 
@@ -34,6 +31,8 @@ FORMS = {
     MainWindowForm, PlayersEditorForm, SettingsForm
 }
 SETTINGS_INDEX = 0
+-- DEFAULT GLOBALS, better leave it as is
+
 
 -- DEFAULT GLOBALS, may be overwritten in load_cfg()
 CACHE_DIR = FIFA_SETTINGS_DIR .. 'Cheat Table/cache/';
@@ -62,12 +61,29 @@ if getOpenedProcessID() == 0 then
 else
     do_log('Restart required, getOpenedProcessID != 0', 'ERROR')
     update_status_label("Restart FIFA and Cheat Engine.")
+    assert(false, 'Restart required, getOpenedProcessID != 0')
 end
 -- end
 
 -- After attach
 function start()
     update_status_label("Attached to the game process.")
+
+    -- "FIFA19.exe"+06267F98
+    -- MM_TAB_HOME
+    -- MM_TAB_PLAY
+    -- MM_TAB_ONLINE
+    local screenid_aob = tonumber(get_validated_address('AOB_screenID'), 16)
+    SCREEN_ID_PTR = byteTableToDword(readBytes(screenid_aob+4, 4, true)) + screenid_aob + 8
+    logScreenID()
+
+    -- Don't activate too early
+    do_log("Waiting for valid screen")
+    while getScreenID() == nil do
+        sleep(1000)
+    end
+    logScreenID()
+
     -- update_offsets()
     -- save_cfg()
     autoactivate_scripts()
