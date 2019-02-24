@@ -189,15 +189,11 @@ function find_player_by_id(playerid)
         do_log("ptrFirstTeamplayerlinks not initialized", 'ERROR')
         return false
     end
-    
-    -- measure time
-    local start_time = os.time()
-    
+
     -- players table
     local sizeOf = 100 -- Size of one record in players database table (0x64)
     local player_addr = find_record_in_game_db(0, CT_MEMORY_RECORDS['PLAYERID'], playerid, sizeOf, 'firstPlayerDataPtr')['addr']
-    
-    
+
     if player_addr then
         -- Update in Cheat Table
         writeQword('playerDataPtr', player_addr)

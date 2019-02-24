@@ -18,7 +18,7 @@ end
 
 -- Check Cheat Table Version
 function check_ct_version()
-    local ver = '1.1.4'
+    local ver = '1.1.5'
     do_log(string.format('Cheat table version: %s', ver))
     MainWindowForm.LabelCTVer.Caption = ver -- update version in GUI
     ADDR_LIST.getMemoryRecordByID(2794).Description = string.format("v%s", ver) -- update version in cheat table
