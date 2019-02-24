@@ -49,11 +49,7 @@ function load_headshot(playerid, headtypecode, haircolorcode)
         fpath = string.format('heads/p%d.png', playerid)
     else
         -- youthheads
-        if headtypecode == 0 then
-            fpath = string.format('youthheads/p%d.png', haircolorcode)
-        else
-            fpath = string.format('youthheads/p%d%02d.png', headtypecode, haircolorcode)
-        end
+        fpath = string.format('youthheads/p%d%02d.png', headtypecode, haircolorcode)
     end
     local url = string.format('https://fifatracker.net/static/img/assets/%d/%s', FIFA, fpath)
     local img_ss = load_img(fpath, url)

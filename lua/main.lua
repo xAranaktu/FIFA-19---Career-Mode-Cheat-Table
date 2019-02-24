@@ -59,7 +59,7 @@ if getOpenedProcessID() == 0 then
     timer_setInterval(AutoAttachTimer, 1000)
     timer_setEnabled(AutoAttachTimer, true)
 else
-    do_log('Restart required, getOpenedProcessID != 0. Dont open process in Cheat Engine. Cheat Table will do it for you if you allow for lua code execution.', 'ERROR')
+    do_log('Restart required, getOpenedProcessID != 0', 'ERROR')
     update_status_label("Restart FIFA and Cheat Engine.")
     assert(false, 'Restart required, getOpenedProcessID != 0')
 end

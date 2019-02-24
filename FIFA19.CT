@@ -8,7 +8,7 @@
   <CheatEntries>
     <CheatEntry>
       <ID>2794</ID>
-      <Description>"v1.1.5"</Description>
+      <Description>"v1.1.4"</Description>
       <LastState Value="" RealAddress="00000000"/>
       <GroupHeader>1</GroupHeader>
     </CheatEntry>
@@ -6816,11 +6816,6 @@ dealloc(ptrTeamplayerlinks)
 14: 'Shaqiri'
 15: 'Cristiano Ronaldo'
 16: 'Leroux (Only Women)'
-18: 'Maradona (base)'
-19: 'Maradona (prime/medium)'
-20: 'Ronaldinho'
-22: 'Ronaldo (base)'
-23: 'Ronaldo (prime/medium)'
 24: 'Salah'
 </DropDownList>
                               <VariableType>Binary</VariableType>
@@ -18142,10 +18137,7 @@ bAwayTeam_Tired:
       <Address>004D0A00</Address>
     </SymbolEntry>
   </UserdefinedSymbols>
-  <LuaScript>local status, _ = pcall(require, "lua/main")
-if not status then
-   showMessage('Error\nUnzip archive first!')
-end
+  <LuaScript>require 'lua/main';
 
 </LuaScript>
 </CheatTable>
