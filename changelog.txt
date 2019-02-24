@@ -134,3 +134,11 @@ Changelog:
     
     v1.1.7:
     - Fixed "Database Tables" Script.
+    
+    v1.1.8:
+    - Added Cheat Table installer.
+    - Added 'Play As Player' Section. All scripts for player career mode will be added here for now.
+    - Added 'Positive decision on transfer request' script to 'Play As Player'.
+    - Added 'Edit Transfer Bid' script to 'Play As Player'.
+    - Fixed '100% chance for 5* skill moves' script.
+    - Added 'users lua scripts' folder with 'randomize.lua' and 'untuck_shirts.lua'
