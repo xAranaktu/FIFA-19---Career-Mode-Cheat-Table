@@ -71,7 +71,7 @@ function load_crest(teamid)
     local img_ss = load_img(fpath, url)
     
     -- If file is not a png file use notfound.png
-    if not img_ss then return load_img('heads/notfound.png', 'https://fifatracker.net/static/img/assets/common/crest/notfound.png') end
+    if not img_ss then return load_img('crest/notfound.png', 'https://fifatracker.net/static/img/assets/common/crest/notfound.png') end
     
     return img_ss
 end
@@ -92,7 +92,8 @@ function load_img(path, url)
         img=int.getURL(url)
         int.destroy()
         -- If file is not a png file
-        if string.sub(img, 2, 4) ~= 'PNG' then
+        if img == nil or string.sub(img, 2, 4) ~= 'PNG' then
+            do_log('Img is nil: '.. url, 'WARNING')
             return false
         end
         f=io.open(CACHE_DIR .. path, "w+b")

@@ -18,10 +18,13 @@ end
 
 -- Check Cheat Table Version
 function check_ct_version()
-    local ver = '1.1.5'
+    local ver = '1.1.6'
     do_log(string.format('Cheat table version: %s', ver))
     MainWindowForm.LabelCTVer.Caption = ver -- update version in GUI
-    ADDR_LIST.getMemoryRecordByID(2794).Description = string.format("v%s", ver) -- update version in cheat table
+    local ver_record = ADDR_LIST.getMemoryRecordByID(2794)
+    if ver_record then
+        ver_record.Description = string.format("v%s", ver) -- update version in cheat table
+    end
 end
 
 function create_dirs()
@@ -249,15 +252,15 @@ function auto_attach_to_process()
     local ProcessName_Trial = CFG_DATA.game.name_trial	
     local ProcIDTrial = getProcessIDFromProcessName(ProcessName_Trial)
     
-    local attached_to = nil
+    
     if ProcIDNormal ~= nil then
         openProcess(ProcessName)
-        attached_to = ProcessName
     elseif ProcIDTrial ~= nil then
         openProcess(ProcessName_Trial)
-        attached_to = ProcessName_Trial
     end
-    
+
+    local attached_to = getOpenedProcessName()
+
     local pid = getOpenedProcessID()
     if pid > 0 and attached_to ~= nil then
         timer_setEnabled(AutoAttachTimer, false)
@@ -270,11 +273,24 @@ function auto_attach_to_process()
 end
 
 function autoactivate_scripts()
+    -- Always activate database tables script
+    local always_activate = {
+        1666, 1667, 1668, 2058
+    }
+    for i=1, #always_activate do
+        local script_id = always_activate[i]
+        local script_record = ADDR_LIST.getMemoryRecordByID(script_id)
+        do_log(string.format('Activating %s (%d)', script_record.Description, script_id), 'INFO')
+        script_record.Active = true
+    end
+
     for i=1, #CFG_DATA.auto_activate do
         local script_id = CFG_DATA.auto_activate[i]
         local script_record = ADDR_LIST.getMemoryRecordByID(script_id)
         do_log(string.format('Activating %s (%d)', script_record.Description, script_id), 'INFO')
-        script_record.Active = true
+        if not script_record.Active then
+            script_record.Active = true
+        end
     end
     initPtrs()
 end

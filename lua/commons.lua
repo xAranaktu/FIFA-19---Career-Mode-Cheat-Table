@@ -1,3 +1,26 @@
+function getProcessNameFromProcessID(iProcessID)
+  if iProcessID < 1 then return 0 end
+  local plist = createStringlist()
+  getProcesslist(plist)
+  for i=1, strings_getCount(plist)-1 do
+    local process = strings_getString(plist, i)
+    local offset = string.find(process,'-')
+    local pid = tonumber('0x'..string.sub(process,1,offset-1))
+    local pname = string.sub(process,offset+1)
+    if pid == iProcessID then return pname end
+  end
+  return 0
+end
+
+function getOpenedProcessName()
+  local process = getOpenedProcessID()
+  if process ~= 0 and getProcessIDFromProcessName(DefaultProccessName) == getOpenedProcessID() then
+    if checkOpenedProcess(DefaultProccessName) == true then return DefaultProccessName end
+    return 0
+  end
+  return getProcessNameFromProcessID(getOpenedProcessID())
+end
+
 function deepcopy(orig)
   local orig_type = type(orig)
   local copy
