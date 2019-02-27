@@ -1,0 +1,22 @@
+-- FIFA Edition
+FIFA = "19"
+
+-- PROCESS BASE ADDRESS - Updated after attach
+BASE_ADDRESS = nil
+
+-- Size of FIFA module
+FIFA_MODULE_SIZE = nil
+
+-- CHEAT TABLE ADDRESS LIST
+ADDR_LIST = getAddressList()
+
+-- SOME CHEAT TABLE MEMORY RECORDS
+CT_MEMORY_RECORDS = {
+    HEADTYPECODE = 37,
+    BIRTHDATE = 45,
+    PLAYERID = 93,
+    HAIRCOLORCODE = 2080,
+    TEAMID = 2769,
+    GUI_SCRIPT = 2892,
+    CURRDATE = 2908,
+}
