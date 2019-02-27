@@ -18,7 +18,7 @@ end
 
 -- Check Cheat Table Version
 function check_ct_version()
-    local ver = '1.1.6'
+    local ver = '1.1.7'
     do_log(string.format('Cheat table version: %s', ver))
     MainWindowForm.LabelCTVer.Caption = ver -- update version in GUI
     local ver_record = ADDR_LIST.getMemoryRecordByID(2794)
@@ -400,7 +400,7 @@ function load_aobs()
         AOB_Form_Settings = '89 86 F8 00 00 00 B8',
         AOB_CreatePlayerMax = '83 FF 1E 7C 36',
         AOB_AltTab = '48 83 EC 48 4C 8B 0D ?? ?? ?? ?? 4D 85 C9 0F 84',
-        AOB_DatabaseRead = '48 01 DA 4C 03 46 30',
+        AOB_DatabaseRead = '48 ?? ?? 4C 03 46 30 E8',
         AOB_ManagerHead = '40 48 8B 03 44 8B C6 48',
         AOB_UniqueDribble = '81 FA 18 FD 02 00',
         AOB_UniqueSprint = '89 B1 48 5B 00 00',

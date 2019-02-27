@@ -8,7 +8,7 @@
   <CheatEntries>
     <CheatEntry>
       <ID>2794</ID>
-      <Description>"v1.1.6"</Description>
+      <Description>"v1.1.7"</Description>
       <LastState Value="" RealAddress="00000000"/>
       <GroupHeader>1</GroupHeader>
     </CheatEntry>
@@ -71,7 +71,7 @@
     <CheatEntry>
       <ID>2892</ID>
       <Description>"GUI"</Description>
-      <LastState Activated="1"/>
+      <LastState/>
       <VariableType>Auto Assembler Script</VariableType>
       <AssemblerScript>[ENABLE]
 {$lua}
@@ -133,7 +133,7 @@ ret_alttab:
 [DISABLE]
 //code_alttab from here till the end of the code_alttab will be used to disable the cheat
 $INJECT_ALTTAB:
-  db 48 83 EC 48 4C 8B 0D 0D A4 B9 F7
+  db 48 83 EC 48 4C 8B 0D AD 34 34 F7
 
 dealloc(newmem_alttab)
 
@@ -546,7 +546,7 @@ return:
 [DISABLE]
 //code from here till the end of the code will be used to disable the cheat
 $INJECT_DatabaseRead:
-  db 48 01 DA 4C 03 46 30
+  db 48 03 D3 4C 03 46 30
 
 unregistersymbol(playerDataPtr)
 unregistersymbol(ptrTeamkits)
