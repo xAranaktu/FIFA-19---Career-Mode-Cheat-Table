@@ -96,9 +96,14 @@ function load_img(path, url)
             do_log('Img is nil: '.. url, 'WARNING')
             return false
         end
-        f=io.open(CACHE_DIR .. path, "w+b")
-        f:write(img)
-        io.close(f)
+        f, err=io.open(CACHE_DIR .. path, "w+b")
+        if f then
+            f:write(img)
+            io.close(f)
+        else
+            do_log('Error opening img file: ' .. CACHE_DIR .. path)
+            do_log('Error - ' .. err)
+        end
     end
     return createStringStream(img)
 end

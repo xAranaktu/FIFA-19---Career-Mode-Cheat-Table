@@ -8,7 +8,7 @@
   <CheatEntries>
     <CheatEntry>
       <ID>2794</ID>
-      <Description>"v1.1.7"</Description>
+      <Description>"v1.1.8"</Description>
       <LastState Value="" RealAddress="00000000"/>
       <GroupHeader>1</GroupHeader>
     </CheatEntry>
@@ -71,7 +71,7 @@
     <CheatEntry>
       <ID>2892</ID>
       <Description>"GUI"</Description>
-      <LastState/>
+      <LastState Activated="1"/>
       <VariableType>Auto Assembler Script</VariableType>
       <AssemblerScript>[ENABLE]
 {$lua}
@@ -89,24 +89,25 @@ PlayersEditorForm.hide()
       <ID>1666</ID>
       <Description>"Scripts"</Description>
       <Options moHideChildren="1"/>
-      <LastState Value="" RealAddress="00000000"/>
+      <LastState Value="" Activated="1" RealAddress="00000000"/>
       <GroupHeader>1</GroupHeader>
       <CheatEntries>
         <CheatEntry>
           <ID>2895</ID>
           <Description>"Non-CM Related"</Description>
           <Options moHideChildren="1"/>
-          <LastState Value="" RealAddress="00000000"/>
+          <LastState Value="" Activated="1" RealAddress="00000000"/>
           <GroupHeader>1</GroupHeader>
           <CheatEntries>
             <CheatEntry>
               <ID>2793</ID>
               <Description>"Dont Pause Game on AltTab"</Description>
-              <LastState/>
+              <LastState Activated="1"/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_ALTTAB = get_validated_address('AOB_AltTab')
+ORG_ALTTAB = readBytes(INJECT_ALTTAB, 11, true)
 
 {$asm}
 alloc(newmem_alttab, $1000, $INJECT_ALTTAB)
@@ -132,8 +133,9 @@ ret_alttab:
 
 [DISABLE]
 //code_alttab from here till the end of the code_alttab will be used to disable the cheat
-$INJECT_ALTTAB:
-  db 48 83 EC 48 4C 8B 0D AD 34 34 F7
+{$lua}
+writeBytes(INJECT_ALTTAB, ORG_ALTTAB)
+{$asm}
 
 dealloc(newmem_alttab)
 
@@ -203,6 +205,7 @@ Update 3
               <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_CreatePlayerMax = get_validated_address('AOB_CreatePlayerMax')
+ORG_CreatePlayerMax = readBytes(INJECT_CreatePlayerMax, 5, true)
 
 {$asm}
 alloc(newmem_CreatePlayerMax,$1000,$INJECT_CreatePlayerMax)
@@ -223,8 +226,9 @@ ret_CreatePlayerMax:
 
 [DISABLE]
 //code_CreatePlayerMax from here till the end of the code_CreatePlayerMax will be used to disable the cheat
-$INJECT_CreatePlayerMax:
-  db 83 FF 1E 7C 36
+{$lua}
+writeBytes(INJECT_CreatePlayerMax, ORG_CreatePlayerMax)
+{$asm}
 
 dealloc(newmem_CreatePlayerMax)
 
@@ -269,17 +273,204 @@ dealloc(newmem_CreatePlayerMax)
           <GroupHeader>1</GroupHeader>
         </CheatEntry>
         <CheatEntry>
+          <ID>2913</ID>
+          <Description>"Play As Player"</Description>
+          <Options moHideChildren="1"/>
+          <LastState Value="" RealAddress="00000000"/>
+          <GroupHeader>1</GroupHeader>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>2912</ID>
+              <Description>"Positive decision on transfer request"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>{ Game   : FIFA19.exe
+  Version:
+  Date   : 2019-02-23
+  Author : Pawel
+
+  Play As Player Only
+  Your manager will always agree on your transfer request
+
+  1. Activate script
+  2. Request transfer
+}
+
+[ENABLE]
+{$lua}
+INJECT_AgreeTransferRequest = get_validated_address('AOB_AgreeTransferRequest')
+ORG_AgreeTransferRequest = readBytes(INJECT_AgreeTransferRequest, 10, true)
+
+{$asm}
+alloc(newmem_AgreeTransferRequest,$1000,$INJECT_AgreeTransferRequest)
+
+label(code_AgreeTransferRequest)
+label(ret_AgreeTransferRequest)
+
+newmem_AgreeTransferRequest:
+  mov eax, 3 // 2 may work too.
+code_AgreeTransferRequest:
+  mov r14d,eax
+  mov [rsp+00000090],eax
+  jmp ret_AgreeTransferRequest
+
+$INJECT_AgreeTransferRequest:
+  jmp newmem_AgreeTransferRequest
+  nop
+  nop
+  nop
+  nop
+  nop
+ret_AgreeTransferRequest:
+
+[DISABLE]
+//code_AgreeTransferRequest from here till the end of the code_AgreeTransferRequest will be used to disable the cheat
+{$lua}
+writeBytes(INJECT_AgreeTransferRequest, ORG_AgreeTransferRequest)
+{$asm}
+
+dealloc(newmem_AgreeTransferRequest)
+
+{
+// ^ from PapListWithdrawalResponse
+// ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+36CDAF0
+
+"FIFA19.exe"+36CDAD1: 75 08                 -  jne FIFA19.exe+36CDADB
+"FIFA19.exe"+36CDAD3: 40 80 FE 01           -  cmp sil,01
+"FIFA19.exe"+36CDAD7: 75 02                 -  jne FIFA19.exe+36CDADB
+"FIFA19.exe"+36CDAD9: B3 01                 -  mov bl,01
+"FIFA19.exe"+36CDADB: 44 0F B6 CB           -  movzx r9d,bl
+"FIFA19.exe"+36CDADF: 45 8B C5              -  mov r8d,r13d
+"FIFA19.exe"+36CDAE2: 8B D5                 -  mov edx,ebp
+"FIFA19.exe"+36CDAE4: 49 8B CE              -  mov rcx,r14
+"FIFA19.exe"+36CDAE7: E8 84 44 CD FF        -  call FIFA19.exe+33A1F70
+"FIFA19.exe"+36CDAEC: 48 8B 4F 08           -  mov rcx,[rdi+08]
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+36CDAF0: 44 8B F0              -  mov r14d,eax
+"FIFA19.exe"+36CDAF3: 89 84 24 90 00 00 00  -  mov [rsp+00000090],eax
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+36CDAFA: E8 41 BC D1 FF        -  call FIFA19.exe+33E9740
+"FIFA19.exe"+36CDAFF: 48 8B C8              -  mov rcx,rax
+"FIFA19.exe"+36CDB02: 48 8B 10              -  mov rdx,[rax]
+"FIFA19.exe"+36CDB05: FF 52 40              -  call qword ptr [rdx+40]
+"FIFA19.exe"+36CDB08: 48 8B C8              -  mov rcx,rax
+"FIFA19.exe"+36CDB0B: E8 90 BC D1 FF        -  call FIFA19.exe+33E97A0
+"FIFA19.exe"+36CDB10: 33 D2                 -  xor edx,edx
+"FIFA19.exe"+36CDB12: 48 8B C8              -  mov rcx,rax
+"FIFA19.exe"+36CDB15: 44 8D 42 64           -  lea r8d,[rdx+64]
+"FIFA19.exe"+36CDB19: E8 C2 93 A6 00        -  call FIFA19.exe+4136EE0
+}
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>2945</ID>
+              <Description>"Edit Transfer Bid"</Description>
+              <Options moHideChildren="1"/>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+{$lua}
+INJECT_EditPlayerBid = get_validated_address('AOB_EditPlayerBid')
+ORG_EditPlayerBid = readBytes(INJECT_EditPlayerBid, 6, true)
+
+{$asm}
+alloc(cave_EditPlayerBid,$1000,$INJECT_EditPlayerBid)
+alloc(PAP_ClubID, 4)
+registersymbol(PAP_ClubID)
+PAP_ClubID:
+dd (int)241
+
+alloc(PAP_OfferedWage, 4)
+registersymbol(PAP_OfferedWage)
+PAP_OfferedWage:
+dd (int)250000
+
+label(code_EditPlayerBid)
+label(return_EditPlayerBid)
+
+cave_EditPlayerBid:
+  mov rcx, [PAP_ClubID]
+  mov [rdi+19C], rcx
+
+  mov rcx, [PAP_OfferedWage]
+  mov [rdi+1A8], rcx
+
+code_EditPlayerBid:
+  mov r8d,FFFFD943
+  jmp return_EditPlayerBid
+
+$INJECT_EditPlayerBid:
+  jmp cave_EditPlayerBid
+  nop
+return_EditPlayerBid:
+[DISABLE]
+{$lua}
+writeBytes(INJECT_EditPlayerBid, ORG_EditPlayerBid)
+{$asm}
+
+unregistersymbol(PAP_ClubID)
+dealloc(PAP_ClubID)
+unregistersymbol(PAP_OfferedWage)
+dealloc(PAP_OfferedWage)
+dealloc(cave_EditPlayerBid)
+
+{
+// ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+37CFC93
+
+"FIFA19.exe"+37CFC67: 41 B8 EF D8 FF FF        -  mov r8d,FFFFD8EF
+"FIFA19.exe"+37CFC6D: 48 8B CB                 -  mov rcx,rbx
+"FIFA19.exe"+37CFC70: FF 50 28                 -  call qword ptr [rax+28]
+"FIFA19.exe"+37CFC73: 48 8B 03                 -  mov rax,[rbx]
+"FIFA19.exe"+37CFC76: 48 8D 15 5B B4 B5 01     -  lea rdx,[FIFA19.exe+532B0D8]
+"FIFA19.exe"+37CFC7D: 41 B8 42 D9 FF FF        -  mov r8d,FFFFD942
+"FIFA19.exe"+37CFC83: 48 8B CB                 -  mov rcx,rbx
+"FIFA19.exe"+37CFC86: FF 50 28                 -  call qword ptr [rax+28]
+"FIFA19.exe"+37CFC89: 48 8B 03                 -  mov rax,[rbx]
+"FIFA19.exe"+37CFC8C: 48 8D 15 25 B4 B5 01     -  lea rdx,[FIFA19.exe+532B0B8]
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+37CFC93: 41 B8 43 D9 FF FF        -  mov r8d,FFFFD943
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+37CFC99: 48 8B CB                 -  mov rcx,rbx
+"FIFA19.exe"+37CFC9C: FF 50 28                 -  call qword ptr [rax+28]
+"FIFA19.exe"+37CFC9F: 48 8B 03                 -  mov rax,[rbx]
+"FIFA19.exe"+37CFCA2: 48 8D 15 57 53 9B 01     -  lea rdx,[FIFA19.exe+5185000]
+"FIFA19.exe"+37CFCA9: 44 8B 87 9C 01 00 00     -  mov r8d,[rdi+0000019C]
+"FIFA19.exe"+37CFCB0: 48 8B CB                 -  mov rcx,rbx
+"FIFA19.exe"+37CFCB3: FF 50 28                 -  call qword ptr [rax+28]
+"FIFA19.exe"+37CFCB6: 48 8B 03                 -  mov rax,[rbx]
+"FIFA19.exe"+37CFCB9: 48 8D 15 54 F9 B3 01     -  lea rdx,[FIFA19.exe+530F614]
+"FIFA19.exe"+37CFCC0: 44 8B 87 A8 01 00 00     -  mov r8d,[rdi+000001A8]
+}
+</AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>2946</ID>
+                  <Description>"Club ID"</Description>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>PAP_ClubID</Address>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>2947</ID>
+                  <Description>"Wage"</Description>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>PAP_OfferedWage</Address>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
           <ID>1667</ID>
           <Description>"FIFA Database"</Description>
           <Options moHideChildren="1"/>
-          <LastState Value="" RealAddress="00000000"/>
+          <LastState Value="" Activated="1" RealAddress="00000000"/>
           <GroupHeader>1</GroupHeader>
           <CheatEntries>
             <CheatEntry>
               <ID>1668</ID>
               <Description>"WARNING!! Make a backup save before you edit anything here!"</Description>
               <Options moHideChildren="1"/>
-              <LastState Value="" RealAddress="00000000"/>
+              <LastState Value="" Activated="1" RealAddress="00000000"/>
               <Color>0000FF</Color>
               <GroupHeader>1</GroupHeader>
               <CheatEntries>
@@ -287,12 +478,13 @@ dealloc(newmem_CreatePlayerMax)
                   <ID>2058</ID>
                   <Description>"Database Tables"</Description>
                   <Options moHideChildren="1"/>
-                  <LastState/>
+                  <LastState Activated="1"/>
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>[ENABLE]
 //code from here to '[DISABLE]' will be used to enable the cheat
 {$lua}
 INJECT_DatabaseRead = get_validated_address('AOB_DatabaseRead')
+ORG_DatabaseRead = readBytes(INJECT_DatabaseRead, 7, true)
 
 {$asm}
 alloc(new_DatabaseReadCave,$1000,$INJECT_DatabaseRead)
@@ -545,8 +737,9 @@ return:
 
 [DISABLE]
 //code from here till the end of the code will be used to disable the cheat
-$INJECT_DatabaseRead:
-  db 48 03 D3 4C 03 46 30
+{$lua}
+writeBytes(INJECT_DatabaseRead, ORG_DatabaseRead)
+{$asm}
 
 unregistersymbol(playerDataPtr)
 unregistersymbol(ptrTeamkits)
@@ -8827,6 +9020,7 @@ dealloc(ptrTeamplayerlinks)
                           <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_managerhead = get_validated_address('AOB_ManagerHead')
+ORG_managerhead = readBytes(INJECT_managerhead, 7, true)
 
 {$asm}					  
 alloc(newmem,$1000,$INJECT_managerhead)
@@ -8853,8 +9047,9 @@ return:
 
 [DISABLE]
 //code from here till the end of the code will be used to disable the cheat
-$INJECT_managerhead+01:
-  db 48 8B 03 44 8B C6
+{$lua}
+writeBytes(INJECT_managerhead, ORG_managerhead)
+{$asm}
 
 unregistersymbol(managertable_teamid)
 dealloc(newmem)
@@ -11110,6 +11305,7 @@ dealloc(managertable_teamid)
               <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_uniquedribble = get_validated_address('AOB_UniqueDribble')
+ORG_uniquedribble = readBytes(INJECT_uniquedribble, 6, true)
 
 {$asm}	
 alloc(newmem_uniquedribble,$1000,$INJECT_uniquedribble)
@@ -11495,8 +11691,9 @@ ret_uniquedribble:
 
 [DISABLE]
 //code_uniquedribble from here till the end of the code_uniquedribble will be used to disable the cheat
-$INJECT_uniquedribble:
-  db 81 FA 18 FD 02 00
+{$lua}
+writeBytes(INJECT_uniquedribble, ORG_uniquedribble)
+{$asm}
 
 dealloc(newmem_uniquedribble)
 unregistersymbol(bDribbleLike_Sterling)
@@ -12069,6 +12266,7 @@ end
               <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_uniquesprint = get_validated_address('AOB_UniqueSprint')
+ORG_uniquesprint = readBytes(INJECT_uniquesprint, 6, true)
 
 {$asm}
 alloc(newmem_uniquesprint,$1000,$INJECT_uniquesprint)
@@ -12274,8 +12472,9 @@ ret_uniquesprint:
 
 [DISABLE]
 //code_uniquesprint from here till the end of the code_uniquesprint will be used to disable the cheat
-$INJECT_uniquesprint:
-  db 89 B1 48 5B 00 00
+{$lua}
+writeBytes(INJECT_uniquesprint, ORG_uniquesprint)
+{$asm}
 
 dealloc(newmem_uniquesprint)
 unregistersymbol(bSprintLike_Messi)
@@ -12916,6 +13115,7 @@ dealloc(ptrEasyEditNameOnShirt)
           <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_PlayerInjury = get_validated_address('AOB_PlayerInjury')
+ORG_PlayerInjury = readBytes(INJECT_PlayerInjury, 6, true)
 
 {$asm}
 alloc(newmem_PlayerInjury,$1000,$INJECT_PlayerInjury)
@@ -12942,8 +13142,9 @@ ret_PlayerInjury:
 
 [DISABLE]
 //code_PlayerInjury from here till the end of the code_PlayerInjury will be used to disable the cheat
-$INJECT_PlayerInjury:
-  db 8B 43 24 89 47 14
+{$lua}
+writeBytes(INJECT_PlayerInjury, ORG_PlayerInjury)
+{$asm}
 
 unregistersymbol(playerInjuryPtr)
 dealloc(newmem_PlayerInjury)
@@ -13057,17 +13258,18 @@ dealloc(playerInjuryPtr)
           <ID>2505</ID>
           <Description>"Players Training"</Description>
           <Options moHideChildren="1"/>
-          <LastState Value="" RealAddress="00000000"/>
+          <LastState Value="" Activated="1" RealAddress="00000000"/>
           <GroupHeader>1</GroupHeader>
           <CheatEntries>
             <CheatEntry>
               <ID>1662</ID>
               <Description>"Unlimited Training Sessions"</Description>
-              <LastState/>
+              <LastState Activated="1"/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_UnlimitedTraining = get_validated_address('AOB_UnlimitedTraining')
+ORG_UnlimitedTraining = readBytes(INJECT_UnlimitedTraining, 8, true)
 
 {$asm}
 alloc(newmem_UnlimitedTraining,$1000,$INJECT_UnlimitedTraining)
@@ -13111,8 +13313,9 @@ ret_UnlimitedTraining:
 
 [DISABLE]
 //code_UnlimitedTraining from here till the end of the code_UnlimitedTraining will be used to disable the cheat
-$INJECT_UnlimitedTraining:
-  db 45 8B 76 44 49 8B 4D 08
+{$lua}
+writeBytes(INJECT_UnlimitedTraining, ORG_UnlimitedTraining)
+{$asm}
 
 dealloc(newmem_UnlimitedTraining)
 
@@ -13149,11 +13352,12 @@ dealloc(newmem_UnlimitedTraining)
             <CheatEntry>
               <ID>467</ID>
               <Description>"More efficient training"</Description>
-              <LastState/>
+              <LastState Activated="1"/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_moreEfficientTraining = get_validated_address('AOB_MoreEfficientTraining')
+ORG_moreEfficientTraining = readBytes(INJECT_moreEfficientTraining, 5, true)
 
 {$asm}
 alloc(newmem_moreEfficientTraining,$1000,$INJECT_moreEfficientTraining)
@@ -13178,8 +13382,9 @@ ret_moreEfficientTraining:
 
 [DISABLE]
 //code_moreEfficientTraining from here till the end of the code_moreEfficientTraining will be used to disable the cheat
-$INJECT_moreEfficientTraining:
-  db 66 0F 6E 5E 1C
+{$lua}
+writeBytes(INJECT_moreEfficientTraining, ORG_moreEfficientTraining)
+{$asm}
 
 dealloc(newmem_moreEfficientTraining)
 
@@ -13215,11 +13420,12 @@ dealloc(newmem_moreEfficientTraining)
             <CheatEntry>
               <ID>2664</ID>
               <Description>"Training Everyday"</Description>
-              <LastState/>
+              <LastState Activated="1"/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_TrainingEveryDay = get_validated_address('AOB_TrainingEveryDay')
+ORG_TrainingEveryDay = readBytes(INJECT_TrainingEveryDay, 10, true)
 
 {$asm}
 alloc(newmem_TrainingEveryDay,$1000,$INJECT_TrainingEveryDay)
@@ -13274,8 +13480,9 @@ ret_TrainingEveryDay:
 
 [DISABLE]
 //code from here till the end of the code will be used to disable the cheat
-$INJECT_TrainingEveryDay:
-  db 83 6B 44 01 0F 89 78 03 00 00
+{$lua}
+writeBytes(INJECT_TrainingEveryDay, ORG_TrainingEveryDay)
+{$asm}
 
 dealloc(newmem_TrainingEveryDay)
 
@@ -13311,12 +13518,13 @@ dealloc(newmem_TrainingEveryDay)
             <CheatEntry>
               <ID>2501</ID>
               <Description>"Training sim - A"</Description>
-              <LastState/>
+              <LastState Activated="1"/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 //code from here to '[DISABLE]' will be used to enable the cheat
 {$lua}
 INJECT_SimA = get_validated_address('AOB_SimA')
+ORG_SimA = readBytes(INJECT_SimA, 7, true)
 
 {$asm}
 alloc(newmem_SimA,$1000,$INJECT_SimA)
@@ -13339,8 +13547,9 @@ return:
 
 [DISABLE]
 //code from here till the end of the code will be used to disable the cheat
-$INJECT_SimA:
-  db 44 8B F8 4C 8D 45 C0
+{$lua}
+writeBytes(INJECT_SimA, ORG_SimA)
+{$asm}
 
 dealloc(newmem_SimA)
 {
@@ -13390,6 +13599,7 @@ dealloc(newmem_SimA)
               <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_boardini = get_validated_address('AOB_BoardIni')
+ORG_boardini = readBytes(INJECT_boardini, 7, true)
 
 {$asm}
 alloc(newmem_boardini,$1000,$INJECT_boardini)
@@ -13420,8 +13630,9 @@ ret_boardini:
 
 [DISABLE]
 //code_boardini from here till the end of the code_boardini will be used to disable the cheat
-$INJECT_boardini:
-  db 89 44 24 50 41 8B FE
+{$lua}
+writeBytes(INJECT_boardini, ORG_boardini)
+{$asm}
 
 dealloc(newmem_boardini)
 
@@ -13463,6 +13674,7 @@ dealloc(newmem_boardini)
               <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_ManagerRating = get_validated_address('AOB_ManagerRating')
+ORG_ManagerRating = readBytes(INJECT_ManagerRating, 6, true)
 
 {$asm}
 alloc(newmem_ManagerRating,$1000,$INJECT_ManagerRating)
@@ -13485,8 +13697,9 @@ ret_ManagerRating:
 
 [DISABLE]
 //code_ManagerRating from here till the end of the code_ManagerRating will be used to disable the cheat
-$INJECT_ManagerRating:
-  db 89 83 70 05 00 00
+{$lua}
+writeBytes(INJECT_ManagerRating, ORG_ManagerRating)
+{$asm}
 
 dealloc(newmem_ManagerRating)
 
@@ -13527,6 +13740,7 @@ dealloc(newmem_ManagerRating)
               <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_editCareerUsers = get_validated_address('AOB_EditCareerUsers')
+ORG_editCareerUsers = readBytes(INJECT_editCareerUsers, 5, true)
 
 {$asm}
 alloc(newmem_editCareerUsers,$1000,$INJECT_editCareerUsers)
@@ -13547,8 +13761,9 @@ ret_editCareerUsers:
 
 [DISABLE]
 //code_editCareerUsers from here till the end of the code_editCareerUsers will be used to disable the cheat
-$INJECT_editCareerUsers:
-  db 8B 03 89 45 90
+{$lua}
+writeBytes(INJECT_editCareerUsers, ORG_editCareerUsers)
+{$asm}
 
 dealloc(newmem_editCareerUsers)
 
@@ -13593,6 +13808,7 @@ dealloc(newmem_editCareerUsers)
           <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_ptrTransferBudgetCave = get_validated_address('AOB_TransferBudget')
+ORG_ptrTransferBudgetCave = readBytes(INJECT_ptrTransferBudgetCave, 7, true)
 
 {$asm}
 alloc(ptrTransferBudgetCave,$1000, $INJECT_ptrTransferBudgetCave)
@@ -13620,8 +13836,10 @@ ptrTransferBudgetCave_ret:
  
 [DISABLE]
 //code from here till the end of the code will be used to disable the cheat
-$INJECT_ptrTransferBudgetCave:
-  db 44 8B 48 08 44 8B C3
+{$lua}
+writeBytes(INJECT_ptrTransferBudgetCave, ORG_ptrTransferBudgetCave)
+{$asm}
+
 dealloc(ptrTransferBudgetCave)
 dealloc(ptrTransferBudget)
 unregistersymbol(ptrTransferBudget)
@@ -13672,7 +13890,7 @@ unregistersymbol(ptrTransferBudget)
           <ID>1971</ID>
           <Description>"Transfer HUB"</Description>
           <Options moHideChildren="1"/>
-          <LastState Value="" RealAddress="00000000"/>
+          <LastState Value="" Activated="1" RealAddress="00000000"/>
           <GroupHeader>1</GroupHeader>
           <CheatEntries>
             <CheatEntry>
@@ -13683,6 +13901,7 @@ unregistersymbol(ptrTransferBudget)
               <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_EditReleaseClause = get_validated_address('AOB_EditReleaseClause')
+ORG_EditReleaseClause = readBytes(INJECT_EditReleaseClause, 6, true)
 
 {$asm}
 alloc(newmem_EditReleaseClause,$1000,$INJECT_EditReleaseClause)
@@ -13704,9 +13923,9 @@ $INJECT_EditReleaseClause:
 ret_EditReleaseClause:
 
 [DISABLE]
-
-$INJECT_EditReleaseClause:
-  db 8B 48 08 83 F9 FF
+{$lua}
+writeBytes(INJECT_EditReleaseClause, ORG_EditReleaseClause)
+{$asm}
 
 dealloc(newmem_EditReleaseClause)
 
@@ -13748,6 +13967,7 @@ dealloc(newmem_EditReleaseClause)
               <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_allowtransferapp_thtxt = get_validated_address('AOB_AllowTransferAppThTxt')
+ORG_allowtransferapp_thtxt = readBytes(INJECT_allowtransferapp_thtxt, 10, true)
 
 {$asm}
 alloc(newmem_allowtransferapp_thtxt,$1000,$INJECT_allowtransferapp_thtxt)
@@ -13768,6 +13988,7 @@ ret_allowtransferapp_thtxt:
 
 {$lua}
 INJECT_allowtransferapp_btnclick = get_validated_address('AOB_AllowTransferAppBtnClick')
+ORG_allowtransferapp_btnclick = readBytes(INJECT_allowtransferapp_btnclick, 7, true)
 
 {$asm}
 alloc(newmem_allowtransferapp_btnclick,$1000,$INJECT_allowtransferapp_btnclick)
@@ -13790,13 +14011,15 @@ ret_allowtransferapp_btnclick:
 
 [DISABLE]
 //code_allowtransferapp_thtxt from here till the end of the code_allowtransferapp_thtxt will be used to disable the cheat
-$INJECT_allowtransferapp_thtxt+5:
-  db 8B D8 83 F8 0E
+{$lua}
+writeBytes(INJECT_allowtransferapp_thtxt, ORG_allowtransferapp_thtxt)
+{$asm}
 
 dealloc(newmem_allowtransferapp_thtxt)
 
-$INJECT_allowtransferapp_btnclick:
-  db 41 FF 91 E0 00 00 00
+{$lua}
+writeBytes(INJECT_allowtransferapp_btnclick, ORG_allowtransferapp_btnclick)
+{$asm}
 
 dealloc(newmem_allowtransferapp_btnclick)
 
@@ -13847,6 +14070,7 @@ dealloc(newmem_allowtransferapp_btnclick)
 //code_neg_status_check from here to '[DISABLE]' will be used to enable the cheat
 {$lua}
 INJECT_neg_status_check = get_validated_address('AOB_NegStatusCheck')
+ORG_neg_status_check = readBytes(INJECT_neg_status_check, 9, true)
 
 {$asm}
 alloc(newmem_neg_status_check,$1000,$INJECT_neg_status_check)
@@ -13872,8 +14096,9 @@ ret_neg_status_check:
 
 [DISABLE]
 //code_neg_status_check from here till the end of the code_neg_status_check will be used to disable the cheat
-$INJECT_neg_status_check:
-  db 49 8B CE FF 90 F8 00 00 00
+{$lua}
+writeBytes(INJECT_neg_status_check, ORG_neg_status_check)
+{$asm}
 
 dealloc(newmem_neg_status_check)
 
@@ -14116,6 +14341,7 @@ unregistersymbol(ContractNeg_BonusType_Sum)
           <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_Scout = get_validated_address('AOB_HireScout')
+ORG_Scout = readBytes(INJECT_Scout, 6, true)
 
 {$asm}
 alloc(newmem_Scout,$1000,$INJECT_Scout)
@@ -14159,8 +14385,9 @@ return:
 
 [DISABLE]
 //code from here till the end of the code will be used to disable the cheat
-$INJECT_Scout:
-  db 41 8B 01 89 45 48
+{$lua}
+writeBytes(INJECT_Scout, ORG_Scout)
+{$asm}
 
 unregistersymbol(bFreeScouts)
 unregistersymbol(scoutPtr)
@@ -14650,6 +14877,7 @@ bFreeScouts:
               <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_JobOfferINI = get_validated_address('AOB_JobOfferINI')
+ORG_JobOfferINI = readBytes(INJECT_JobOfferINI, 8, true)
 
 {$asm}
 alloc(newmem_JobOfferINI,$1000,$INJECT_JobOfferINI)
@@ -14681,8 +14909,9 @@ ret_JobOfferINI:
 
 [DISABLE]
 //code_JobOfferINI from here till the end of the code_JobOfferINI will be used to disable the cheat
-$INJECT_JobOfferINI:
-  db 89 45 3B B8 FF FF FF FF
+{$lua}
+writeBytes(INJECT_JobOfferINI, ORG_JobOfferINI)
+{$asm}
 
 dealloc(newmem_JobOfferINI)
 
@@ -14725,6 +14954,7 @@ dealloc(newmem_JobOfferINI)
               <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_IntJobOffer = get_validated_address('AOB_IntJobOffer')
+ORG_IntJobOffer = readBytes(INJECT_IntJobOffer, 7, true)
 
 {$asm}
 alloc(cave_IntJobOffer,$1000,$INJECT_IntJobOffer)
@@ -14757,6 +14987,7 @@ return_IntJobOffer:
 
 {$lua}
 INJECT_ClubJobOffer = get_validated_address('AOB_ClubJobOffer')
+ORG_ClubJobOffer = readBytes(INJECT_ClubJobOffer, 7, true)
 
 {$asm}
 alloc(cave_ClubJobOffer,$1000,$INJECT_ClubJobOffer)
@@ -14792,15 +15023,17 @@ return_ClubJobOffer:
 
 
 [DISABLE]
-$INJECT_IntJobOffer:
-  db 48 8B 81 90 01 00 00
+{$lua}
+writeBytes(INJECT_IntJobOffer, ORG_IntJobOffer)
+{$asm}
 
 unregistersymbol(NationalTeamID)
 dealloc(NationalTeamID)
 dealloc(cave_IntJobOffer)
 
-$INJECT_ClubJobOffer:
-  db 48 8B 86 D0 00 00 00
+{$lua}
+writeBytes(INJECT_ClubJobOffer, ORG_ClubJobOffer)
+{$asm}
 
 unregistersymbol(ClubID)
 dealloc(cave_ClubJobOffer)
@@ -14891,6 +15124,7 @@ dealloc(ClubID)
           <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_UnlimitedPlayerRelease = get_validated_address('AOB_UnlimitedPlayerRelease')
+ORG_UnlimitedPlayerRelease = readBytes(INJECT_UnlimitedPlayerRelease, 7, true)
 
 {$asm}
 alloc(newmem_UnlimitedPlayerRelease,$1000,$INJECT_UnlimitedPlayerRelease)
@@ -14914,6 +15148,7 @@ ret_UnlimitedPlayerRelease:
 
 {$lua}
 INJECT_ReleasePlayerMsgBox = get_validated_address('AOB_ReleasePlayerMsgBox')
+ORG_ReleasePlayerMsgBox = readBytes(INJECT_ReleasePlayerMsgBox, 5, true)
 
 {$asm}
 alloc(newmem_ReleasePlayerMsgBox,$1000,$INJECT_ReleasePlayerMsgBox)
@@ -14934,6 +15169,7 @@ ret_ReleasePlayerMsgBox:
 
 {$lua}
 INJECT_ReleasePlayerFee = get_validated_address('AOB_ReleasePlayerFee')
+ORG_ReleasePlayerFee = readBytes(INJECT_ReleasePlayerFee, 6, true)
 
 {$asm}
 alloc(newmem_ReleasePlayerFee,$1000,"FIFA19.exe"+4052399)
@@ -14956,18 +15192,21 @@ registersymbol(INJECT_ReleasePlayerFee)
 
 [DISABLE]
 //code_UnlimitedPlayerRelease from here till the end of the code_UnlimitedPlayerRelease will be used to disable the cheat
-$INJECT_UnlimitedPlayerRelease:
-  db 39 46 54 40 0F 9C C7
+{$lua}
+writeBytes(INJECT_UnlimitedPlayerRelease, ORG_UnlimitedPlayerRelease)
+{$asm}
 
 dealloc(newmem_UnlimitedPlayerRelease)
 
-$INJECT_ReleasePlayerMsgBox:
-  db 4C 8B E0 85 FF
+{$lua}
+writeBytes(INJECT_ReleasePlayerMsgBox, ORG_ReleasePlayerMsgBox)
+{$asm}
 
 dealloc(newmem_ReleasePlayerMsgBox)
 
-INJECT_ReleasePlayerFee:
-  db 8B D8 48 8B 45 77
+{$lua}
+writeBytes(INJECT_ReleasePlayerFee, ORG_ReleasePlayerFee)
+{$asm}
 
 unregistersymbol(INJECT_ReleasePlayerFee)
 dealloc(newmem_ReleasePlayerFee)
@@ -15075,6 +15314,7 @@ cm_ap_release_releasetoomanyplayers
               <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_transferini = get_validated_address('AOB_TransfersIni')
+ORG_transferini = readBytes(INJECT_transferini, 7, true)
 
 {$asm}
 alloc(newmem_transferini,$1000,$INJECT_transferini)
@@ -15141,6 +15381,7 @@ ret_transferini:
 
 {$lua}
 INJECT_transferini2 = get_validated_address('AOB_TransferIni')
+ORG_transferini2 = readBytes(INJECT_transferini2, 6, true)
 
 {$asm}
 alloc(newmem_transferini2,$1000,$INJECT_transferini2)
@@ -15175,13 +15416,15 @@ ret_transferini2:
 
 
 [DISABLE]
-$INJECT_transferini:
-  db 41 89 87 D0 01 00 00
+{$lua}
+writeBytes(INJECT_transferini, ORG_transferini)
+{$asm}
 
 dealloc(newmem_transferini)
 
-$INJECT_transferini2:
-  db 89 83 A0 01 00 00
+{$lua}
+writeBytes(INJECT_transferini2, ORG_transferini2)
+{$asm}
 
 dealloc(newmem_transferini2)
 
@@ -15234,7 +15477,7 @@ dealloc(newmem_transferini2)
                 <CheatEntry>
                   <ID>2506</ID>
                   <Description>"Reveal player data (scouting players not needed)"</Description>
-                  <LastState/>
+                  <LastState Activated="1"/>
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>[ENABLE]
 {$lua}
@@ -15312,17 +15555,18 @@ dealloc(newmem_gtn_reveal)
           <ID>2503</ID>
           <Description>"Morale"</Description>
           <Options moHideChildren="1"/>
-          <LastState Value="" RealAddress="00000000"/>
+          <LastState Value="" Activated="1" RealAddress="00000000"/>
           <GroupHeader>1</GroupHeader>
           <CheatEntries>
             <CheatEntry>
               <ID>2504</ID>
               <Description>"Disable Morale"</Description>
-              <LastState/>
+              <LastState Activated="1"/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_disablemorale = get_validated_address('AOB_DisableMorale')
+ORG_disablemorale = readBytes(INJECT_disablemorale, 6, true)
 
 {$asm}
 alloc(newmem_disablemorale,$1000,$INJECT_disablemorale)
@@ -15343,8 +15587,9 @@ return:
 
 [DISABLE]
 //code from here till the end of the code will be used to disable the cheat
-$INJECT_disablemorale:
-  db 0F 95 C1 88 4F 10
+{$lua}
+writeBytes(INJECT_disablemorale, ORG_disablemorale)
+{$asm}
 
 dealloc(newmem_disablemorale)
 
@@ -15410,11 +15655,12 @@ UPDATE 3
             <CheatEntry>
               <ID>2502</ID>
               <Description>"MORALE_LEVELS (more happier players)"</Description>
-              <LastState/>
+              <LastState Activated="1"/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_bettermorale = get_validated_address('AOB_BetterMorale')
+ORG_bettermorale = readBytes(INJECT_bettermorale, 6, true)
 
 {$asm}
 alloc(newmem_bettermorale,$1000,$INJECT_bettermorale)
@@ -15440,8 +15686,9 @@ return:
 
 [DISABLE]
 //code from here till the end of the code will be used to disable the cheat
-$INJECT_bettermorale:
-  db 41 B8 FF FF FF FF
+{$lua}
+writeBytes(INJECT_bettermorale, ORG_bettermorale)
+{$asm}
 
 dealloc(newmem_bettermorale)
 
@@ -15491,6 +15738,7 @@ dealloc(newmem_bettermorale)
               <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_FORM_SETTINGS = get_validated_address('AOB_Form_Settings')
+ORG_FORM_SETTINGS = readBytes(INJECT_FORM_SETTINGS, 6, true)
 
 {$asm}
 alloc(newmem_formsettings,$1000,$INJECT_FORM_SETTINGS)
@@ -15512,8 +15760,9 @@ ret_formsettings:
 
 [DISABLE]
 //code_formsettings from here till the end of the code_formsettings will be used to disable the cheat
-$INJECT_FORM_SETTINGS:
-  db 89 86 F8 00 00 00
+{$lua}
+writeBytes(INJECT_FORM_SETTINGS, ORG_FORM_SETTINGS)
+{$asm}
 
 dealloc(newmem_formsettings)
 
@@ -15557,6 +15806,7 @@ dealloc(newmem_formsettings)
           <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_SideManipulator = get_validated_address('AOB_SideManipulator')
+ORG_SideManipulator = readBytes(INJECT_SideManipulator, 8, true)
 
 {$asm}
 alloc(newmem_SideManipulator,$1000,$INJECT_SideManipulator)
@@ -15629,8 +15879,9 @@ ret_SideManipulator:
 
 [DISABLE]
 //code_SideManipulator from here till the end of the code_SideManipulator will be used to disable the cheat
-$INJECT_SideManipulator:
-  db 48 8B 84 CB 18 01 00 00
+{$lua}
+writeBytes(INJECT_SideManipulator, ORG_SideManipulator)
+{$asm}
 
 dealloc(newmem_SideManipulator)
 unregistersymbol(intUserController)
@@ -15730,24 +15981,25 @@ dd (int)-1
           <ID>2657</ID>
           <Description>"Youth Academy"</Description>
           <Options moHideChildren="1"/>
-          <LastState Value="" RealAddress="00000000"/>
+          <LastState Value="" Activated="1" RealAddress="00000000"/>
           <GroupHeader>1</GroupHeader>
           <CheatEntries>
             <CheatEntry>
               <ID>2658</ID>
               <Description>"Activate scripts BEFORE you load your career mode save."</Description>
               <Options moHideChildren="1"/>
-              <LastState Value="" RealAddress="00000000"/>
+              <LastState Value="" Activated="1" RealAddress="00000000"/>
               <GroupHeader>1</GroupHeader>
               <CheatEntries>
                 <CheatEntry>
                   <ID>1264</ID>
                   <Description>"SCOUT_REPORT_PLAYERS = 15"</Description>
-                  <LastState/>
+                  <LastState Activated="1"/>
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_moreyouthplayers = get_validated_address('AOB_YouthAcademyMoreYouthPlayers')
+ORG_moreyouthplayers = readBytes(INJECT_moreyouthplayers, 8, true)
 
 {$asm}
 alloc(newmem_moreyoungplayers,$1000,$INJECT_moreyouthplayers)
@@ -15771,8 +16023,9 @@ $INJECT_moreyouthplayers:
 return:
 
 [DISABLE]
-$INJECT_moreyouthplayers:
-  db 89 06 FF C7 48 83 C6 04
+{$lua}
+writeBytes(INJECT_moreyouthplayers, ORG_moreyouthplayers)
+{$asm}
 
 dealloc(newmem_moreyoungplayers)
 
@@ -15812,11 +16065,12 @@ dealloc(newmem_moreyoungplayers)
                 <CheatEntry>
                   <ID>1266</ID>
                   <Description>"Reveal ovr and pot"</Description>
-                  <LastState/>
+                  <LastState Activated="1"/>
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_YA_REVEAL_POT_AND_OVR = get_validated_address('AOB_YouthAcademyRevealPotAndOvr')
+ORG_YA_REVEAL_POT_AND_OVR = readBytes(INJECT_YA_REVEAL_POT_AND_OVR, 8, true)
 
 {$asm}
 alloc(newmem_YA_REVEAL_POT_AND_OVR,$1000,$INJECT_YA_REVEAL_POT_AND_OVR)
@@ -15843,8 +16097,9 @@ ret_YA_REVEAL_POT_AND_OVR:
 
 [DISABLE]
 //code_YA_REVEAL_POT_AND_OVR from here till the end of the code_YA_REVEAL_POT_AND_OVR will be used to disable the cheat
-$INJECT_YA_REVEAL_POT_AND_OVR:
-  db 89 07 FF C3 48 83 C7 04
+{$lua}
+writeBytes(INJECT_YA_REVEAL_POT_AND_OVR, ORG_YA_REVEAL_POT_AND_OVR)
+{$asm}
 
 dealloc(newmem_YA_REVEAL_POT_AND_OVR)
 
@@ -15890,6 +16145,7 @@ dealloc(newmem_YA_REVEAL_POT_AND_OVR)
                   <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_PrimAttr = get_validated_address('AOB_YouthAcademyPrimAttr')
+ORG_PrimAttr = readBytes(INJECT_PrimAttr, 5, true)
 
 {$asm}
 alloc(newmem_PrimAttr,$1000,$INJECT_PrimAttr)
@@ -15924,8 +16180,9 @@ ret_PrimAttr:
 
 [DISABLE]
 //code_PrimAttr from here till the end of the code_PrimAttr will be used to disable the cheat
-$INJECT_PrimAttr:
-  db 43 89 44 F7 30
+{$lua}
+writeBytes(INJECT_PrimAttr, ORG_PrimAttr)
+{$asm}
 
 unregistersymbol(primattr_rangelow)
 unregistersymbol(primattr_rangehigh)
@@ -15985,6 +16242,7 @@ dealloc(primattr_rangehigh)
                   <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_SecAttr = get_validated_address('AOB_YouthAcademySecAttr')
+ORG_SecAttr = readBytes(INJECT_SecAttr, 5, true)
 
 {$asm}
 alloc(newmem_SecAttr,$1000,$INJECT_SecAttr)
@@ -16016,8 +16274,9 @@ ret_SecAttr:
 
 [DISABLE]
 //code_SecAttr from here till the end of the code_SecAttr will be used to disable the cheat
-$INJECT_SecAttr:
-  db 43 89 44 F7 68
+{$lua}
+writeBytes(INJECT_SecAttr, ORG_SecAttr)
+{$asm}
 
 unregistersymbol(secmattr_rangelow)
 unregistersymbol(secmattr_rangehigh)
@@ -16077,6 +16336,7 @@ dealloc(secmattr_rangehigh)
                   <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_MinAgeForPromotion = get_validated_address('AOB_YouthAcademyMinAgeForPromotion')
+ORG_MinAgeForPromotion = readBytes(INJECT_MinAgeForPromotion, 6, true)
 
 {$asm}
 alloc(newmem_MinAgeForPromotion,$1000,$INJECT_MinAgeForPromotion)
@@ -16097,8 +16357,9 @@ ret_MinAgeForPromotion:
 
 [DISABLE]
 //code_MinAgeForPromotion from here till the end of the code_MinAgeForPromotion will be used to disable the cheat
-$INJECT_MinAgeForPromotion:
-  db 41 B8 03 00 00 00
+{$lua}
+writeBytes(INJECT_MinAgeForPromotion, ORG_MinAgeForPromotion)
+{$asm}
 
 dealloc(newmem_MinAgeForPromotion)
 
@@ -16139,6 +16400,7 @@ dealloc(newmem_MinAgeForPromotion)
                   <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_PlayerAgeRange = get_validated_address('AOB_YouthAcademyPlayerAgeRange')
+ORG_PlayerAgeRange = readBytes(INJECT_PlayerAgeRange, 6, true)
 
 {$asm}
 alloc(newmem_PlayerAgeRange,$1000,$INJECT_PlayerAgeRange)
@@ -16163,8 +16425,9 @@ ret_PlayerAgeRange:
 
 [DISABLE]
 //code_PlayerAgeRange from here till the end of the code_PlayerAgeRange will be used to disable the cheat
-$INJECT_PlayerAgeRange:
-  db 41 B8 04 00 00 00
+{$lua}
+writeBytes(INJECT_PlayerAgeRange, ORG_PlayerAgeRange)
+{$asm}
 
 dealloc(newmem_PlayerAgeRange)
 
@@ -16206,6 +16469,7 @@ dealloc(newmem_PlayerAgeRange)
                   <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_YouthPlayersRetirement = get_validated_address('AOB_YouthAcademyYouthPlayersRetirement')
+ORG_YouthPlayersRetirement = readBytes(INJECT_YouthPlayersRetirement, 5, true)
 
 {$asm}
 alloc(new_YouthPlayersRetirement,$1000,$INJECT_YouthPlayersRetirement)
@@ -16226,8 +16490,9 @@ ret_YouthPlayersRetirement:
 
 [DISABLE]
 //code_YouthPlayersRetirement from here till the end of the code_YouthPlayersRetirement will be used to disable the cheat
-$INJECT_YouthPlayersRetirement:
-  db 41 FF C4 89 03
+{$lua}
+writeBytes(INJECT_YouthPlayersRetirement, ORG_YouthPlayersRetirement)
+{$asm}
 
 dealloc(new_YouthPlayersRetirement)
 
@@ -16269,6 +16534,7 @@ dealloc(new_YouthPlayersRetirement)
                   <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_YA_PlayerPotential = get_validated_address('AOB_YouthAcademyPlayerPotential')
+ORG_YA_PlayerPotential = readBytes(INJECT_DatabaseRead, 6, true)
 
 {$asm}
 alloc(newmem_YA_PlayerPotential,$1000,$INJECT_YA_PlayerPotential)
@@ -16290,8 +16556,9 @@ ret_YA_PlayerPotential:
 
 [DISABLE]
 //code_YA_PlayerPotential from here till the end of the code_YA_PlayerPotential will be used to disable the cheat
-$INJECT_YA_PlayerPotential:
-  db 89 06 48 8D 76 04
+{$lua}
+writeBytes(INJECT_YA_PlayerPotential, ORG_YA_PlayerPotential)
+{$asm}
 
 dealloc(newmem_YA_PlayerPotential)
 
@@ -16333,6 +16600,7 @@ dealloc(newmem_YA_PlayerPotential)
                   <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_WeakFootChance = get_validated_address('AOB_YouthAcademyWeakFootChance')
+ORG_WeakFootChance = readBytes(INJECT_WeakFootChance, 8, true)
 
 {$asm}
 alloc(newmem_WeakFootChance,$1000,$INJECT_WeakFootChance)
@@ -16372,8 +16640,9 @@ ret_WeakFootChance:
 
 [DISABLE]
 //code_WeakFootChance from here till the end of the code_WeakFootChance will be used to disable the cheat
-$INJECT_WeakFootChance:
-  db FF C3 89 07 48 8D 7F 04
+{$lua}
+writeBytes(INJECT_WeakFootChance, ORG_WeakFootChance)
+{$asm}
 
 dealloc(newmem_WeakFootChance)
 
@@ -16418,6 +16687,7 @@ dealloc(newmem_WeakFootChance)
                   <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_allCountriesAvailable = get_validated_address('AOB_YouthAcademyAllCountriesAvailable')
+ORG_allCountriesAvailable = readBytes(INJECT_allCountriesAvailable, 9, true)
 
 {$asm}
 alloc(newmem_allCountriesAvailable,$1000,$INJECT_allCountriesAvailable)
@@ -16447,8 +16717,9 @@ ret_allCountriesAvailable:
 
 [DISABLE]
 //code_allCountriesAvailable from here till the end of the code_allCountriesAvailable will be used to disable the cheat
-$INJECT_allCountriesAvailable:
-  db 89 4C 24 30 B9 04 00 00 00
+{$lua}
+writeBytes(INJECT_allCountriesAvailable, ORG_allCountriesAvailable)
+{$asm}
 
 dealloc(newmem_allCountriesAvailable)
 unregistersymbol(ptr_YA_NatID)
@@ -16494,141 +16765,67 @@ dealloc(ptr_YA_NatID)
                 </CheatEntry>
                 <CheatEntry>
                   <ID>1270</ID>
-                  <Description>"100% chance for 5* skill moves (need fix)"</Description>
+                  <Description>"100% chance for 5* skill moves"</Description>
                   <LastState/>
                   <VariableType>Auto Assembler Script</VariableType>
-                  <AssemblerScript>// TODO FIX THIS SHIT
-
-[ENABLE]
-{$lua}
-INJECT_smchance2 = get_validated_address('AOB_YouthAcademySkillMoveChance2')
-
-{$asm}
-alloc(newmem_smchance2,$1000,$INJECT_smchance2)
-
-label(code_smchance2)
-label(return_smchance2)
-
-newmem_smchance2:
-
-code_smchance2:
-  mov [rdi],eax
-  lea rdi,[rdi+04]
-  jmp return_smchance2
-
-$INJECT_smchance2:
-  jmp newmem_smchance2
-  nop
-return_smchance2:
-
+                  <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_SkillMoveChance = get_validated_address('AOB_YouthAcademySkillMoveChance')
+ORG_SkillMoveChance = readBytes(INJECT_SkillMoveChance, 6, true)
 
 {$asm}
 alloc(newmem_SkillMoveChance,$1000,$INJECT_SkillMoveChance)
 
 label(code_SkillMoveChance)
 label(ret_SkillMoveChance)
-label(five_star)
-label(zero)
 
 newmem_SkillMoveChance:
-
+  mov esi, #4  // Off by one, so #4 == 5* stars
 code_SkillMoveChance:
-  inc edi
-  cmp edi, 06
-  je five_star
-  jmp zero
-
- zero:
-  mov eax, 1 // Chance for skill level below 5* = 0%
-  mov [rbx],eax
-  add rbx,04
+  mov [rbp+0000017C],esi
   jmp ret_SkillMoveChance
 
-five_star:
-  mov eax, #97 // Chance for skill level 5* = 100%
-  mov [rbx],eax
-  add rbx,04
-  jmp ret_SkillMoveChance
 
 $INJECT_SkillMoveChance:
   jmp newmem_SkillMoveChance
   nop
-  nop
-  nop
 ret_SkillMoveChance:
 
 [DISABLE]
+// Track from ini file
 //code_SkillMoveChance from here till the end of the code_SkillMoveChance will be used to disable the cheat
-$INJECT_SkillMoveChance:
-  db 89 03 FF C7 48 83 C3 04
+{$lua}
+writeBytes(INJECT_SkillMoveChance, ORG_SkillMoveChance)
+{$asm}
 
 dealloc(newmem_SkillMoveChance)
 
-$INJECT_smchance2:
-  db 89 07 48 8D 7F 04
-
-dealloc(newmem_smchance2)
-
-
 {
-// ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+40F69FE
+// ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+3702BA4
 
-"FIFA19.exe"+40F69D0: 45 8B CE                          -  mov r9d,r14d
-"FIFA19.exe"+40F69D3: 89 7C 24 20                       -  mov [rsp+20],edi
-"FIFA19.exe"+40F69D7: 4C 8D 05 12 70 28 01              -  lea r8,[FIFA19.exe+537D9F0]
-"FIFA19.exe"+40F69DE: BA 64 00 00 00                    -  mov edx,00000064
-"FIFA19.exe"+40F69E3: 48 8D 4D 80                       -  lea rcx,[rbp-80]
-"FIFA19.exe"+40F69E7: E8 34 3D 23 FC                    -  call FIFA19.exe+32A720
-"FIFA19.exe"+40F69EC: 41 B8 FF FF FF FF                 -  mov r8d,FFFFFFFF
-"FIFA19.exe"+40F69F2: 48 8D 55 80                       -  lea rdx,[rbp-80]
-"FIFA19.exe"+40F69F6: 49 8B CD                          -  mov rcx,r13
-"FIFA19.exe"+40F69F9: E8 42 5E 22 FE                    -  call FIFA19.exe+231C840
+"FIFA19.exe"+3702B87: 44 03 02                 -  add r8d,[rdx]
+"FIFA19.exe"+3702B8A: 41 3B C0                 -  cmp eax,r8d
+"FIFA19.exe"+3702B8D: 7C 12                    -  jl FIFA19.exe+3702BA1
+"FIFA19.exe"+3702B8F: 41 FF C2                 -  inc r10d
+"FIFA19.exe"+3702B92: 49 FF C1                 -  inc r9
+"FIFA19.exe"+3702B95: 48 83 C2 04              -  add rdx,04
+"FIFA19.exe"+3702B99: 49 83 F9 05              -  cmp r9,05
+"FIFA19.exe"+3702B9D: 7C E8                    -  jl FIFA19.exe+3702B87
+"FIFA19.exe"+3702B9F: EB 03                    -  jmp FIFA19.exe+3702BA4
+"FIFA19.exe"+3702BA1: 41 8B F2                 -  mov esi,r10d
 // ---------- INJECTING HERE ----------
-"FIFA19.exe"+40F69FE: 89 03                             -  mov [rbx],eax
-"FIFA19.exe"+40F6A00: FF C7                             -  inc edi
-"FIFA19.exe"+40F6A02: 48 83 C3 04                       -  add rbx,04
+"FIFA19.exe"+3702BA4: 89 B5 7C 01 00 00        -  mov [rbp+0000017C],esi
 // ---------- DONE INJECTING  ----------
-"FIFA19.exe"+40F6A06: 49 2B F4                          -  sub rsi,r12
-"FIFA19.exe"+40F6A09: 75 C5                             -  jne FIFA19.exe+40F69D0
-"FIFA19.exe"+40F6A0B: 41 FF C6                          -  inc r14d
-"FIFA19.exe"+40F6A0E: 4D 2B FC                          -  sub r15,r12
-"FIFA19.exe"+40F6A11: 75 AD                             -  jne FIFA19.exe+40F69C0
-"FIFA19.exe"+40F6A13: 48 8B 74 24 38                    -  mov rsi,[rsp+38]
-"FIFA19.exe"+40F6A18: 45 33 E4                          -  xor r12d,r12d
-"FIFA19.exe"+40F6A1B: 41 8B DC                          -  mov ebx,r12d
-"FIFA19.exe"+40F6A1E: 48 8D BE 48 08 00 00              -  lea rdi,[rsi+00000848]
-"FIFA19.exe"+40F6A25: 66 66 66 0F 1F 84 00 00 00 00 00  -  nop [rax+rax+00000000]
-}
-
-{
-// ORIGINAL CODE - INJECT_smchance2ION POINT: "FIFA19.exe"+40F699D
-
-"FIFA19.exe"+40F6971: 44 8B CB                          -  mov r9d,ebx
-"FIFA19.exe"+40F6974: 4C 8D 05 3D 70 28 01              -  lea r8,[FIFA19.exe+537D9B8]
-"FIFA19.exe"+40F697B: BA 64 00 00 00                    -  mov edx,00000064
-"FIFA19.exe"+40F6980: 48 8D 4D 80                       -  lea rcx,[rbp-80]
-"FIFA19.exe"+40F6984: E8 97 3D 23 FC                    -  call FIFA19.exe+32A720
-"FIFA19.exe"+40F6989: 41 B8 FF FF FF FF                 -  mov r8d,FFFFFFFF
-"FIFA19.exe"+40F698F: 48 8D 55 80                       -  lea rdx,[rbp-80]
-"FIFA19.exe"+40F6993: 49 8B CD                          -  mov rcx,r13
-"FIFA19.exe"+40F6996: E8 A5 5E 22 FE                    -  call FIFA19.exe+231C840
-"FIFA19.exe"+40F699B: FF C3                             -  inc ebx
-// ---------- INJECT_smchance2ING HERE ----------
-"FIFA19.exe"+40F699D: 89 07                             -  mov [rdi],eax
-"FIFA19.exe"+40F699F: 48 8D 7F 04                       -  lea rdi,[rdi+04]
-// ---------- DONE INJECT_smchance2ING  ----------
-"FIFA19.exe"+40F69A3: 83 FB 0A                          -  cmp ebx,0A
-"FIFA19.exe"+40F69A6: 7C C9                             -  jl FIFA19.exe+40F6971
-"FIFA19.exe"+40F69A8: 41 BC 01 00 00 00                 -  mov r12d,00000001
-"FIFA19.exe"+40F69AE: 49 8D 9F 80 07 00 00              -  lea rbx,[r15+00000780]
-"FIFA19.exe"+40F69B5: 45 8B F4                          -  mov r14d,r12d
-"FIFA19.exe"+40F69B8: 45 8D 7C 24 09                    -  lea r15d,[r12+09]
-"FIFA19.exe"+40F69BD: 0F 1F 00                          -  nop [rax]
-"FIFA19.exe"+40F69C0: 41 8B FC                          -  mov edi,r12d
-"FIFA19.exe"+40F69C3: BE 05 00 00 00                    -  mov esi,00000005
-"FIFA19.exe"+40F69C8: 0F 1F 84 00 00 00 00 00           -  nop [rax+rax+00000000]
+"FIFA19.exe"+3702BAA: 4C 8D 4D B0              -  lea r9,[rbp-50]
+"FIFA19.exe"+3702BAE: 4C 8D 45 20              -  lea r8,[rbp+20]
+"FIFA19.exe"+3702BB2: 48 8D 95 D0 00 00 00     -  lea rdx,[rbp+000000D0]
+"FIFA19.exe"+3702BB9: 4C 8B 75 88              -  mov r14,[rbp-78]
+"FIFA19.exe"+3702BBD: 49 8B CE                 -  mov rcx,r14
+"FIFA19.exe"+3702BC0: E8 FB 53 10 00           -  call FIFA19.exe+3807FC0
+"FIFA19.exe"+3702BC5: 8B F8                    -  mov edi,eax
+"FIFA19.exe"+3702BC7: 8B 5D 80                 -  mov ebx,[rbp-80]
+"FIFA19.exe"+3702BCA: 3B C3                    -  cmp eax,ebx
+"FIFA19.exe"+3702BCC: 0F 85 AE 01 00 00        -  jne FIFA19.exe+3702D80
 }
 </AssemblerScript>
                 </CheatEntry>
@@ -16640,6 +16837,7 @@ dealloc(newmem_smchance2)
                   <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_CountryIsBeingScouted = get_validated_address('AOB_CountryIsBeingScouted')
+ORG_CountryIsBeingScouted = readBytes(INJECT_CountryIsBeingScouted, 5, true)
 
 {$asm}
 alloc(newmem_CountryIsBeingScouted,$1000,$INJECT_CountryIsBeingScouted)
@@ -16660,8 +16858,9 @@ ret_CountryIsBeingScouted:
 
 [DISABLE]
 //code_CountryIsBeingScouted from here till the end of the code_CountryIsBeingScouted will be used to disable the cheat
-$INJECT_CountryIsBeingScouted:
-  db 80 FB 01 75 0C
+{$lua}
+writeBytes(INJECT_CountryIsBeingScouted, ORG_CountryIsBeingScouted)
+{$asm}
 
 dealloc(newmem_CountryIsBeingScouted)
 
@@ -16722,6 +16921,7 @@ dealloc(newmem_CountryIsBeingScouted)
 //code_NoPlayerRegens from here to '[DISABLE]' will be used to enable the cheat
 {$lua}
 INJECT_NoPlayerRegens = get_validated_address('AOB_NoPlayerRegens')
+ORG_NoPlayerRegens = readBytes(INJECT_NoPlayerRegens, 6, true)
 
 {$asm}
 alloc(newmem_NoPlayerRegens,$1000,$INJECT_NoPlayerRegens)
@@ -16742,8 +16942,9 @@ ret_NoPlayerRegens:
 
 [DISABLE]
 //code_NoPlayerRegens from here till the end of the code_NoPlayerRegens will be used to disable the cheat
-$INJECT_NoPlayerRegens:
-  db 41 BF 10 00 00 00
+{$lua}
+writeBytes(INJECT_NoPlayerRegens, ORG_NoPlayerRegens)
+{$asm}
 
 dealloc(newmem_NoPlayerRegens)
 
@@ -16796,6 +16997,7 @@ dealloc(newmem_NoPlayerRegens)
               <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_ChangeStadium = get_validated_address('AOB_ChangeStadium')
+ORG_ChangeStadium = readBytes(INJECT_ChangeStadium, 7, true)
 
 {$asm}
 alloc(newmem_ChangeStadium,$1000,$INJECT_ChangeStadium)
@@ -16824,8 +17026,9 @@ ret_ChangeStadium:
 
 [DISABLE]
 //code_ChangeStadium from here till the end of the code_ChangeStadium will be used to disable the cheat
-$INJECT_ChangeStadium:
-  db 41 8B 9D E4 13 00 00
+{$lua}
+writeBytes(INJECT_ChangeStadium, ORG_ChangeStadium)
+{$asm}
 
 dealloc(newmem_ChangeStadium)
 unregistersymbol(StadiumID)
@@ -16877,6 +17080,7 @@ dealloc(StadiumID)
               <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_Match_Half_Length = get_validated_address('AOB_MatchHalfLength')
+ORG_Match_Half_Length = readBytes(INJECT_Match_Half_Length, 7, true)
 
 {$asm}
 alloc(newmem_Match_Half_Length,$1000,$INJECT_Match_Half_Length)
@@ -16905,8 +17109,9 @@ ret_Match_Half_Length:)
 
 [DISABLE]
 //code_Match_Half_Length from here till the end of the code_Match_Half_Length will be used to disable the cheat
-$INJECT_Match_Half_Length:
-  db 45 8B 87 08 14 00 00
+{$lua}
+writeBytes(INJECT_Match_Half_Length, ORG_Match_Half_Length)
+{$asm}
 
 dealloc(newmem_Match_Half_Length)
 unregistersymbol(HalfLength)
@@ -16958,6 +17163,7 @@ dealloc(HalfLength)
               <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_Match_Weather = get_validated_address('AOB_MatchWeather')
+ORG_Match_Weather = readBytes(INJECT_Match_Weather, 6, true)
 
 {$asm}
 alloc(newmem_Match_Weather,$1000,$INJECT_Match_Weather)
@@ -16997,8 +17203,9 @@ ret_Match_Weather:
 
 [DISABLE]
 //code_Match_Weather from here till the end of the code_Match_Weather will be used to disable the cheat
-$INJECT_Match_Weather:
-  db 83 F8 FF 0F 44 C6
+{$lua}
+writeBytes(INJECT_Match_Weather, ORG_Match_Weather)
+{$asm}
 
 dealloc(newmem_Match_Weather)
 unregistersymbol(Weather)
@@ -17076,6 +17283,7 @@ dealloc(Weather)
                   <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_sim_maxCards = get_validated_address('AOB_SimMaxCards')
+ORG_sim_maxCards = readBytes(INJECT_sim_maxCards, 6, true)
 
 {$asm}
 alloc(newmem_sim_maxCards,$1000,$INJECT_sim_maxCards)
@@ -17096,8 +17304,9 @@ ret_sim_maxCards:
 
 [DISABLE]
 //code_sim_maxCards from here till the end of the code_sim_maxCards will be used to disable the cheat
-$INJECT_sim_maxCards:
-  db 89 87 5C 01 00 00
+{$lua}
+writeBytes(INJECT_sim_maxCards, ORG_sim_maxCards)
+{$asm}
 
 dealloc(newmem_sim_maxCards)
 
@@ -17139,6 +17348,7 @@ dealloc(newmem_sim_maxCards)
                   <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_MAX_INJURIES = get_validated_address('AOB_SimMaxInjuries')
+ORG_MAX_INJURIES = readBytes(INJECT_MAX_INJURIES, 6, true)
 
 {$asm}
 alloc(newmem,$1000,$INJECT_MAX_INJURIES)
@@ -17159,8 +17369,9 @@ return:
 
 [DISABLE]
 //code from here till the end of the code will be used to disable the cheat
-$INJECT_MAX_INJURIES:
-  db 89 87 24 01 00 00
+{$lua}
+writeBytes(INJECT_MAX_INJURIES, ORG_MAX_INJURIES)
+{$asm}
 
 dealloc(newmem)
 
@@ -17202,6 +17413,7 @@ dealloc(newmem)
                   <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_FatigueBase = get_validated_address('AOB_SimFatigueBase')
+ORG_FatigueBase = readBytes(INJECT_FatigueBase, 6, true)
 
 {$asm}
 alloc(newmem_FatigueBase,$1000,$INJECT_FatigueBase)
@@ -17222,8 +17434,9 @@ ret_FatigueBase:
 
 [DISABLE]
 //code_FatigueBase from here till the end of the code_FatigueBase will be used to disable the cheat
-$INJECT_FatigueBase:
-  db 41 B8 FF FF FF FF
+{$lua}
+writeBytes(INJECT_FatigueBase, ORG_FatigueBase)
+{$asm}
 
 dealloc(newmem_FatigueBase)
 
@@ -17317,6 +17530,7 @@ return_matchscore:
 
 {$lua}
 INJECT_DisableSubstitutions = get_validated_address('AOB_DisableSubstitutions')
+ORG_DisableSubstitutions = readBytes(INJECT_DisableSubstitutions, 8, true)
 
 {$asm}
 alloc(newmem_DisableSubstitutions,$1000,$INJECT_DisableSubstitutions)
@@ -17390,6 +17604,7 @@ ret_DisableSubstitutions:
 
 {$lua}
 INJECT_ingame_stamina = get_validated_address('AOB_IngameStamina')
+ORG_ingame_stamina = readBytes(INJECT_ingame_stamina, 10, true)
 
 {$asm}
 alloc(cave_ingame_stamina,$1000,$INJECT_ingame_stamina)
@@ -17711,6 +17926,7 @@ dealloc(bAwayTeam_FiveStars)
               <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_MatchTimer = get_validated_address('AOB_MatchTimer')
+ORG_MatchTimer = readBytes(INJECT_MatchTimer, 6, true)
 
 {$asm}
 alloc(newmem,$1000,$INJECT_MatchTimer)
@@ -17736,8 +17952,9 @@ return:
 
 [DISABLE]
 //code from here till the end of the code will be used to disable the cheat
-$INJECT_MatchTimer:
-  db 8B 41 50 89 46 10
+{$lua}
+writeBytes(INJECT_MatchTimer, ORG_MatchTimer)
+{$asm}
 
 dealloc(newmem)
 unregistersymbol(ptrMatchTime)
@@ -17831,6 +18048,7 @@ getAddressList().getMemoryRecordByDescription("TIME").Value=0
               <AssemblerScript>[ENABLE]
 {$lua}
 INJECT_UnlimitedSubstitutions = get_validated_address('AOB_UnlimitedSubstitutions')
+ORG_UnlimitedSubstitutions = readBytes(INJECT_UnlimitedSubstitutions, 7, true)
 
 {$asm}
 alloc(newmem_UnlimitedSubstitutions,$1000,$INJECT_UnlimitedSubstitutions)
@@ -17853,8 +18071,9 @@ ret_UnlimitedSubstitutions:
 
 [DISABLE]
 //code_UnlimitedSubstitutions from here till the end of the code_UnlimitedSubstitutions will be used to disable the cheat
-$INJECT_UnlimitedSubstitutions:
-  db 8B 84 01 D4 8E 00 00
+{$lua}
+writeBytes(INJECT_UnlimitedSubstitutions, ORG_UnlimitedSubstitutions)
+{$asm}
 
 dealloc(newmem_UnlimitedSubstitutions)
 
@@ -18145,6 +18364,7 @@ bAwayTeam_Tired:
   <LuaScript>local status, err = pcall(require, "lua/main")
 if not status then
    showMessage('Error\nDid you unzipped archive?\n Full Error:\n' .. err)
+   print(err)
 end
 
 </LuaScript>

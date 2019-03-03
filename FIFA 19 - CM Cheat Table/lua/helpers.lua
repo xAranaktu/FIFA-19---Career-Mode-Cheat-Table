@@ -1,9 +1,9 @@
 require 'lua/commons';
 -- helpers
 
-function os_execute(cmd)
-    do_log(string.format('os_execute %s', cmd))
-    os.execute(cmd)
+function execute_cmd(cmd)
+    do_log(string.format('execute cmd -  %s', cmd))
+    do_log(string.format('execute cmd result - %s', io.popen(cmd):read'*l'))
 end
 
 -- Check Cheat Engine Version
@@ -18,7 +18,7 @@ end
 
 -- Check Cheat Table Version
 function check_ct_version()
-    local ver = '1.1.7'
+    local ver = '1.1.8'
     do_log(string.format('Cheat table version: %s', ver))
     MainWindowForm.LabelCTVer.Caption = ver -- update version in GUI
     local ver_record = ADDR_LIST.getMemoryRecordByID(2794)
@@ -28,21 +28,26 @@ function check_ct_version()
 end
 
 function create_dirs()
-    local cmd1 = "md " .. '"' .. string.gsub(CACHE_DIR .. 'crest', "/","\\") .. '"'
-    local cmd2 = "md " .. '"' .. string.gsub(CACHE_DIR .. 'heads', "/","\\") .. '"'
-    local cmd3 = "md " .. '"' .. string.gsub(CACHE_DIR .. 'youthheads', "/","\\") .. '"'
-    local cmd4 = "md " .. '"' .. string.gsub(DATA_DIR, "/","\\"):sub(1,-2) .. '"'
+    local cmds = {
+        "md " .. '"' .. string.gsub(CACHE_DIR .. 'crest', "/","\\") .. '"',
+        "md " .. '"' .. string.gsub(CACHE_DIR .. 'heads', "/","\\") .. '"',
+        "md " .. '"' .. string.gsub(CACHE_DIR .. 'youthheads', "/","\\") .. '"',
+        "md " .. '"' .. string.gsub(DATA_DIR, "/","\\"):sub(1,-2) .. '"',
+    }
+    for i=1, #cmds do
+        execute_cmd(cmds[i])
+    end
 
-    os_execute(string.format('%s & %s & %s', cmd1, cmd2, cmd3))
-    os_execute(cmd4)
-    
 end
 
 function copy_template_files()
-    local cmd1 = "copy " .. 'tmp\\crest_notfound.png "' .. string.gsub(CACHE_DIR .. 'crest\\notfound.png"', "/","\\")
-    local cmd2 = "copy " .. 'tmp\\heads_notfound.png "' .. string.gsub(CACHE_DIR .. 'heads\\notfound.png"', "/","\\")
-
-    os_execute(string.format('%s & %s', cmd1, cmd2))
+    local cmds = {
+        "copy " .. 'tmp\\crest_notfound.png "' .. string.gsub(CACHE_DIR .. 'crest\\notfound.png"', "/","\\"),
+        "copy " .. 'tmp\\heads_notfound.png "' .. string.gsub(CACHE_DIR .. 'heads\\notfound.png"', "/","\\"),
+    }
+    for i=1, #cmds do
+        execute_cmd(cmds[i])
+    end
 end
 
 local time = os.date("*t")
@@ -57,9 +62,16 @@ function do_log(text, level)
         if level == 'ERROR' then
             showMessage(text)
         end
-        logger = io.open("logs/log_".. string.format("%02d-%02d-%02d", time.year, time.month, time.day) .. ".txt", "a+")
-        logger:write(string.format("[ %s ] %s - %s\n", level, os.date("%c", os.time()), text))
-        io.close(logger)
+        logger, err = io.open("logs/log_".. string.format("%02d-%02d-%02d", time.year, time.month, time.day) .. ".txt", "a+")
+        if logger == nil then
+            -- log in console if file can't be open
+            DEBUG_MODE = true
+            print(io.popen"cd":read'*l')
+            print(string.format("[ %s ] %s - %s", level, os.date("%c", os.time()), 'Error opening file: ' .. err))
+        else
+            logger:write(string.format("[ %s ] %s - %s\n", level, os.date("%c", os.time()), text))
+            io.close(logger)
+        end
     end
 end
 
@@ -225,7 +237,7 @@ end
 
 function check_process() 
     if FIFA_PROCESS_NAME == nil then 
-        do_log('Check process has failed. FIFA_PROCESS_NAME is nil. ', 'ERROR')
+        do_log('Check process has failed. FIFA_PROCESS_NAME is nil. Did you allowed CE to execute lua script at starup? ', 'ERROR')
         assert(false, 'Not initialized')
     end
     local pCurrentPID = getProcessIDFromProcessName(FIFA_PROCESS_NAME) 
@@ -443,8 +455,7 @@ function load_aobs()
         AOB_YouthAcademyPlayerPotential = '89 06 48 8D 76 04 83 FF 02 ?? ?? 4C 8B 7C 24 48',
         AOB_YouthAcademyWeakFootChance = 'FF C3 89 07 48 8D 7F 04 83 FB 06',
         AOB_YouthAcademyAllCountriesAvailable = '89 4C 24 30 B9 04 00 00 00',
-        AOB_YouthAcademySkillMoveChance2 = '89 07 48 8D 7F 04 83 FB 0A',
-        AOB_YouthAcademySkillMoveChance = '89 03 FF C7 48 83 C3 04 49 2B',
+        AOB_YouthAcademySkillMoveChance = '89 B5 7C 01 00 00 4C',
         AOB_CountryIsBeingScouted = '80 FB 01 75 0C 4C',
         AOB_NoPlayerRegens = '41 BF 10 00 00 00 48 8B CE',
         AOB_ChangeStadium = '41 8B 9D E4 13 00 00',
@@ -458,6 +469,10 @@ function load_aobs()
         AOB_IngameStamina = '8B 43 68 41 89 82 78 03 00 00',
         AOB_MatchTimer = '8B 41 50 89 46 10',
         AOB_UnlimitedSubstitutions = '8B 84 01 D4 8E 00 00 C3',
+
+        -- PAP
+        AOB_AgreeTransferRequest = "44 8B F0 89 84 24 90 00 00 00",
+        AOB_EditPlayerBid = "41 B8 43 D9 FF FF",
     }
 end
 

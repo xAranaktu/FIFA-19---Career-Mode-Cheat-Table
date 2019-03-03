@@ -48,7 +48,7 @@ function save_changes_in_settingsform(new_cfg_data)
             string.gsub(new_cfg_data.directories.cache_dir, "/","\\"):sub(1,-2)
         )
 
-        os_execute(copy_cmd)
+        execute_cmd(copy_cmd)
         delete_directory(old_cache)
     end
     

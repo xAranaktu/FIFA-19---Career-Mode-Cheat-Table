@@ -19,10 +19,11 @@ require 'lua/GUI/forms/settingsform/events';
 do_log('New session started', 'INFO')
 
 -- DEFAULT GLOBALS, better leave it as is
+HOMEDRIVE = os.getenv('HOMEDRIVE') or os.getenv('SystemDrive') or 'C:'
 
 FIFA_SETTINGS_DIR = string.format(
     "%s/Users/%s/Documents/FIFA %s/",
-    os.getenv('HOMEDRIVE'), os.getenv('USERNAME'), FIFA
+    HOMEDRIVE, os.getenv('USERNAME'), FIFA
 );
 DATA_DIR = FIFA_SETTINGS_DIR .. 'Cheat Table/data/';
 CONFIG_FILE_PATH = DATA_DIR .. 'config.ini'; --> 'path to config.ini file 

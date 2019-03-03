@@ -37,7 +37,7 @@ function deepcopy(orig)
 end
 
 function delete_directory(dir)
-  os_execute(string.format('rmdir /s /q "%s"', dir))
+  execute_cmd(string.format('rmdir /s /q "%s"', dir))
 end
 
 function getfield (f)
