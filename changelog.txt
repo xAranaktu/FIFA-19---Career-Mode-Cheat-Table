@@ -142,3 +142,7 @@ Changelog:
     - Added 'Edit Transfer Bid' script to 'Play As Player'.
     - Fixed '100% chance for 5* skill moves' script.
     - Added 'users lua scripts' folder with 'randomize.lua' and 'untuck_shirts.lua'
+    
+    v1.1.9:
+    - Added 'cmsettings.ini', You can increase max size of your squad. Use at your own risk.
+    - Added 'Multiplier' to 'More efficient training'
