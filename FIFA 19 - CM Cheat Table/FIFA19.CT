@@ -8,7 +8,7 @@
   <CheatEntries>
     <CheatEntry>
       <ID>2794</ID>
-      <Description>"v1.1.8"</Description>
+      <Description>"v1.1.9"</Description>
       <LastState Value="" RealAddress="00000000"/>
       <GroupHeader>1</GroupHeader>
     </CheatEntry>
@@ -106,6 +106,14 @@ PlayersEditorForm.hide()
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_ALTTAB = get_validated_address('AOB_AltTab')
 ORG_ALTTAB = readBytes(INJECT_ALTTAB, 11, true)
 
@@ -204,6 +212,14 @@ Update 3
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_CreatePlayerMax = get_validated_address('AOB_CreatePlayerMax')
 ORG_CreatePlayerMax = readBytes(INJECT_CreatePlayerMax, 5, true)
 
@@ -298,6 +314,14 @@ dealloc(newmem_CreatePlayerMax)
 
 [ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_AgreeTransferRequest = get_validated_address('AOB_AgreeTransferRequest')
 ORG_AgreeTransferRequest = readBytes(INJECT_AgreeTransferRequest, 10, true)
 
@@ -370,6 +394,14 @@ dealloc(newmem_AgreeTransferRequest)
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_EditPlayerBid = get_validated_address('AOB_EditPlayerBid')
 ORG_EditPlayerBid = readBytes(INJECT_EditPlayerBid, 6, true)
 
@@ -483,6 +515,14 @@ dealloc(cave_EditPlayerBid)
                   <AssemblerScript>[ENABLE]
 //code from here to '[DISABLE]' will be used to enable the cheat
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_DatabaseRead = get_validated_address('AOB_DatabaseRead')
 ORG_DatabaseRead = readBytes(INJECT_DatabaseRead, 7, true)
 
@@ -9019,6 +9059,14 @@ dealloc(ptrTeamplayerlinks)
                           <VariableType>Auto Assembler Script</VariableType>
                           <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_managerhead = get_validated_address('AOB_ManagerHead')
 ORG_managerhead = readBytes(INJECT_managerhead, 7, true)
 
@@ -11304,6 +11352,14 @@ dealloc(managertable_teamid)
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_uniquedribble = get_validated_address('AOB_UniqueDribble')
 ORG_uniquedribble = readBytes(INJECT_uniquedribble, 6, true)
 
@@ -12265,6 +12321,14 @@ end
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_uniquesprint = get_validated_address('AOB_UniqueSprint')
 ORG_uniquesprint = readBytes(INJECT_uniquesprint, 6, true)
 
@@ -12748,6 +12812,14 @@ end
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_ISEDITPLAYERUNLOCKED = get_validated_address('AOB_IsEditPlayerUnlocked')
 
 {$asm}
@@ -12805,6 +12877,14 @@ unregistersymbol(_dojmp_ISEDITPLAYERUNLOCKED)
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_EditPlayerName = get_validated_address('AOB_EditPlayerName')
 
 {$asm}
@@ -13114,6 +13194,14 @@ dealloc(ptrEasyEditNameOnShirt)
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_PlayerInjury = get_validated_address('AOB_PlayerInjury')
 ORG_PlayerInjury = readBytes(INJECT_PlayerInjury, 6, true)
 
@@ -13268,6 +13356,14 @@ dealloc(playerInjuryPtr)
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_UnlimitedTraining = get_validated_address('AOB_UnlimitedTraining')
 ORG_UnlimitedTraining = readBytes(INJECT_UnlimitedTraining, 8, true)
 
@@ -13356,6 +13452,14 @@ dealloc(newmem_UnlimitedTraining)
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_moreEfficientTraining = get_validated_address('AOB_MoreEfficientTraining')
 ORG_moreEfficientTraining = readBytes(INJECT_moreEfficientTraining, 5, true)
 
@@ -13365,15 +13469,27 @@ alloc(newmem_moreEfficientTraining,$1000,$INJECT_moreEfficientTraining)
 label(code_moreEfficientTraining)
 label(ret_moreEfficientTraining)
 
+// Training result multiplier
+alloc(intTrainingMultiplier, 4)
+registersymbol(intTrainingMultiplier)
+intTrainingMultiplier:
+db 0A
+
 newmem_moreEfficientTraining:
-  mov [rsi+C], #300 								// ATTRIBUTE_GROWTH_CAP (?) (default 300)
-  mov [rsi+1C], #5000								// BASE_CALC_VALUE (default 3500)
-  mov [rsi+rax*4+00000344],(float)2.25 				// PERFORMANCE_GRADE_A_MODIFIER (default 1.25)
+  push rcx
+  mov r11d, #3500                                   // BASE_CALC_VALUE (default 3500)
+  mov rcx, [intTrainingMultiplier]
+  imul r11d, rcx
+
+  mov [rsi+C], #9999 								// ATTRIBUTE_GROWTH_CAP (?) (default 300)
+  mov [rsi+1C], r11d
+  mov [rsi+rax*4+00000344],(float)1.25 				// PERFORMANCE_GRADE_A_MODIFIER (default 1.25)
   mov [rsi+rax*4+00000358],(float)1.25  			// ? (default 1.25)
   mov [rsi+rax*4+00000364],(float)2.0  			    // ? (default 2.00)
 
 code_moreEfficientTraining:
   movd xmm3,[rsi+1C]
+  pop rcx
   jmp ret_moreEfficientTraining
 
 $INJECT_moreEfficientTraining:
@@ -13386,6 +13502,8 @@ ret_moreEfficientTraining:
 writeBytes(INJECT_moreEfficientTraining, ORG_moreEfficientTraining)
 {$asm}
 
+unregistersymbol(intTrainingMultiplier)
+dealloc(intTrainingMultiplier)
 dealloc(newmem_moreEfficientTraining)
 
 {
@@ -13416,6 +13534,14 @@ dealloc(newmem_moreEfficientTraining)
 "FIFA19.exe"+33C2CCB: F3 0F 59 C3                 -  mulss xmm0,xmm3
 }
 </AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>2950</ID>
+                  <Description>"Multiplier"</Description>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>intTrainingMultiplier</Address>
+                </CheatEntry>
+              </CheatEntries>
             </CheatEntry>
             <CheatEntry>
               <ID>2664</ID>
@@ -13424,6 +13550,14 @@ dealloc(newmem_moreEfficientTraining)
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_TrainingEveryDay = get_validated_address('AOB_TrainingEveryDay')
 ORG_TrainingEveryDay = readBytes(INJECT_TrainingEveryDay, 10, true)
 
@@ -13523,6 +13657,14 @@ dealloc(newmem_TrainingEveryDay)
               <AssemblerScript>[ENABLE]
 //code from here to '[DISABLE]' will be used to enable the cheat
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_SimA = get_validated_address('AOB_SimA')
 ORG_SimA = readBytes(INJECT_SimA, 7, true)
 
@@ -13598,6 +13740,14 @@ dealloc(newmem_SimA)
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_boardini = get_validated_address('AOB_BoardIni')
 ORG_boardini = readBytes(INJECT_boardini, 7, true)
 
@@ -13673,6 +13823,14 @@ dealloc(newmem_boardini)
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_ManagerRating = get_validated_address('AOB_ManagerRating')
 ORG_ManagerRating = readBytes(INJECT_ManagerRating, 6, true)
 
@@ -13739,6 +13897,14 @@ dealloc(newmem_ManagerRating)
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_editCareerUsers = get_validated_address('AOB_EditCareerUsers')
 ORG_editCareerUsers = readBytes(INJECT_editCareerUsers, 5, true)
 
@@ -13807,6 +13973,14 @@ dealloc(newmem_editCareerUsers)
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_ptrTransferBudgetCave = get_validated_address('AOB_TransferBudget')
 ORG_ptrTransferBudgetCave = readBytes(INJECT_ptrTransferBudgetCave, 7, true)
 
@@ -13890,7 +14064,7 @@ unregistersymbol(ptrTransferBudget)
           <ID>1971</ID>
           <Description>"Transfer HUB"</Description>
           <Options moHideChildren="1"/>
-          <LastState Value="" Activated="1" RealAddress="00000000"/>
+          <LastState Value="" RealAddress="00000000"/>
           <GroupHeader>1</GroupHeader>
           <CheatEntries>
             <CheatEntry>
@@ -13900,6 +14074,14 @@ unregistersymbol(ptrTransferBudget)
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_EditReleaseClause = get_validated_address('AOB_EditReleaseClause')
 ORG_EditReleaseClause = readBytes(INJECT_EditReleaseClause, 6, true)
 
@@ -13966,6 +14148,14 @@ dealloc(newmem_EditReleaseClause)
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_allowtransferapp_thtxt = get_validated_address('AOB_AllowTransferAppThTxt')
 ORG_allowtransferapp_thtxt = readBytes(INJECT_allowtransferapp_thtxt, 10, true)
 
@@ -13987,6 +14177,14 @@ $INJECT_allowtransferapp_thtxt+5:
 ret_allowtransferapp_thtxt:
 
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_allowtransferapp_btnclick = get_validated_address('AOB_AllowTransferAppBtnClick')
 ORG_allowtransferapp_btnclick = readBytes(INJECT_allowtransferapp_btnclick, 7, true)
 
@@ -14069,6 +14267,14 @@ dealloc(newmem_allowtransferapp_btnclick)
               <AssemblerScript>[ENABLE]
 //code_neg_status_check from here to '[DISABLE]' will be used to enable the cheat
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_neg_status_check = get_validated_address('AOB_NegStatusCheck')
 ORG_neg_status_check = readBytes(INJECT_neg_status_check, 9, true)
 
@@ -14140,6 +14346,14 @@ dealloc(newmem_neg_status_check)
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_ContractNeg = get_validated_address('AOB_ContractNeg')
 
 {$asm}
@@ -14340,6 +14554,14 @@ unregistersymbol(ContractNeg_BonusType_Sum)
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_Scout = get_validated_address('AOB_HireScout')
 ORG_Scout = readBytes(INJECT_Scout, 6, true)
 
@@ -14876,6 +15098,14 @@ bFreeScouts:
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_JobOfferINI = get_validated_address('AOB_JobOfferINI')
 ORG_JobOfferINI = readBytes(INJECT_JobOfferINI, 8, true)
 
@@ -14953,6 +15183,14 @@ dealloc(newmem_JobOfferINI)
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_IntJobOffer = get_validated_address('AOB_IntJobOffer')
 ORG_IntJobOffer = readBytes(INJECT_IntJobOffer, 7, true)
 
@@ -14986,6 +15224,14 @@ $INJECT_IntJobOffer:
 return_IntJobOffer:
 
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_ClubJobOffer = get_validated_address('AOB_ClubJobOffer')
 ORG_ClubJobOffer = readBytes(INJECT_ClubJobOffer, 7, true)
 
@@ -15119,10 +15365,18 @@ dealloc(ClubID)
         <CheatEntry>
           <ID>1626</ID>
           <Description>"Free &amp; Unlimited Releasing Players"</Description>
-          <LastState/>
+          <LastState Activated="1"/>
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_UnlimitedPlayerRelease = get_validated_address('AOB_UnlimitedPlayerRelease')
 ORG_UnlimitedPlayerRelease = readBytes(INJECT_UnlimitedPlayerRelease, 7, true)
 
@@ -15147,6 +15401,14 @@ $INJECT_UnlimitedPlayerRelease:
 ret_UnlimitedPlayerRelease:
 
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_ReleasePlayerMsgBox = get_validated_address('AOB_ReleasePlayerMsgBox')
 ORG_ReleasePlayerMsgBox = readBytes(INJECT_ReleasePlayerMsgBox, 5, true)
 
@@ -15168,6 +15430,14 @@ $INJECT_ReleasePlayerMsgBox:
 ret_ReleasePlayerMsgBox:
 
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_ReleasePlayerFee = get_validated_address('AOB_ReleasePlayerFee')
 ORG_ReleasePlayerFee = readBytes(INJECT_ReleasePlayerFee, 6, true)
 
@@ -15313,6 +15583,14 @@ cm_ap_release_releasetoomanyplayers
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_transferini = get_validated_address('AOB_TransfersIni')
 ORG_transferini = readBytes(INJECT_transferini, 7, true)
 
@@ -15380,6 +15658,14 @@ $INJECT_transferini:
 ret_transferini:
 
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_transferini2 = get_validated_address('AOB_TransferIni')
 ORG_transferini2 = readBytes(INJECT_transferini2, 6, true)
 
@@ -15464,14 +15750,14 @@ dealloc(newmem_transferini2)
           <ID>440</ID>
           <Description>"Global Transfer Network"</Description>
           <Options moHideChildren="1"/>
-          <LastState Value="" RealAddress="00000000"/>
+          <LastState Value="" Activated="1" RealAddress="00000000"/>
           <GroupHeader>1</GroupHeader>
           <CheatEntries>
             <CheatEntry>
               <ID>441</ID>
               <Description>"Activate scripts BEFORE you load your career mode save."</Description>
               <Options moHideChildren="1"/>
-              <LastState Value="" RealAddress="00000000"/>
+              <LastState Value="" Activated="1" RealAddress="00000000"/>
               <GroupHeader>1</GroupHeader>
               <CheatEntries>
                 <CheatEntry>
@@ -15481,6 +15767,14 @@ dealloc(newmem_transferini2)
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_gtn_reveal = get_validated_address('AOB_GtnRevealPlayerData')
 
 {$asm}
@@ -15565,6 +15859,14 @@ dealloc(newmem_gtn_reveal)
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_disablemorale = get_validated_address('AOB_DisableMorale')
 ORG_disablemorale = readBytes(INJECT_disablemorale, 6, true)
 
@@ -15659,6 +15961,14 @@ UPDATE 3
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_bettermorale = get_validated_address('AOB_BetterMorale')
 ORG_bettermorale = readBytes(INJECT_bettermorale, 6, true)
 
@@ -15737,6 +16047,14 @@ dealloc(newmem_bettermorale)
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_FORM_SETTINGS = get_validated_address('AOB_Form_Settings')
 ORG_FORM_SETTINGS = readBytes(INJECT_FORM_SETTINGS, 6, true)
 
@@ -15805,6 +16123,14 @@ dealloc(newmem_formsettings)
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_SideManipulator = get_validated_address('AOB_SideManipulator')
 ORG_SideManipulator = readBytes(INJECT_SideManipulator, 8, true)
 
@@ -15998,6 +16324,14 @@ dd (int)-1
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_moreyouthplayers = get_validated_address('AOB_YouthAcademyMoreYouthPlayers')
 ORG_moreyouthplayers = readBytes(INJECT_moreyouthplayers, 8, true)
 
@@ -16069,6 +16403,14 @@ dealloc(newmem_moreyoungplayers)
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_YA_REVEAL_POT_AND_OVR = get_validated_address('AOB_YouthAcademyRevealPotAndOvr')
 ORG_YA_REVEAL_POT_AND_OVR = readBytes(INJECT_YA_REVEAL_POT_AND_OVR, 8, true)
 
@@ -16144,6 +16486,14 @@ dealloc(newmem_YA_REVEAL_POT_AND_OVR)
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_PrimAttr = get_validated_address('AOB_YouthAcademyPrimAttr')
 ORG_PrimAttr = readBytes(INJECT_PrimAttr, 5, true)
 
@@ -16241,6 +16591,14 @@ dealloc(primattr_rangehigh)
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_SecAttr = get_validated_address('AOB_YouthAcademySecAttr')
 ORG_SecAttr = readBytes(INJECT_SecAttr, 5, true)
 
@@ -16335,6 +16693,14 @@ dealloc(secmattr_rangehigh)
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_MinAgeForPromotion = get_validated_address('AOB_YouthAcademyMinAgeForPromotion')
 ORG_MinAgeForPromotion = readBytes(INJECT_MinAgeForPromotion, 6, true)
 
@@ -16399,6 +16765,14 @@ dealloc(newmem_MinAgeForPromotion)
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_PlayerAgeRange = get_validated_address('AOB_YouthAcademyPlayerAgeRange')
 ORG_PlayerAgeRange = readBytes(INJECT_PlayerAgeRange, 6, true)
 
@@ -16468,6 +16842,14 @@ dealloc(newmem_PlayerAgeRange)
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_YouthPlayersRetirement = get_validated_address('AOB_YouthAcademyYouthPlayersRetirement')
 ORG_YouthPlayersRetirement = readBytes(INJECT_YouthPlayersRetirement, 5, true)
 
@@ -16533,6 +16915,14 @@ dealloc(new_YouthPlayersRetirement)
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_YA_PlayerPotential = get_validated_address('AOB_YouthAcademyPlayerPotential')
 ORG_YA_PlayerPotential = readBytes(INJECT_DatabaseRead, 6, true)
 
@@ -16599,6 +16989,14 @@ dealloc(newmem_YA_PlayerPotential)
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_WeakFootChance = get_validated_address('AOB_YouthAcademyWeakFootChance')
 ORG_WeakFootChance = readBytes(INJECT_WeakFootChance, 8, true)
 
@@ -16686,6 +17084,14 @@ dealloc(newmem_WeakFootChance)
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_allCountriesAvailable = get_validated_address('AOB_YouthAcademyAllCountriesAvailable')
 ORG_allCountriesAvailable = readBytes(INJECT_allCountriesAvailable, 9, true)
 
@@ -16770,6 +17176,14 @@ dealloc(ptr_YA_NatID)
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_SkillMoveChance = get_validated_address('AOB_YouthAcademySkillMoveChance')
 ORG_SkillMoveChance = readBytes(INJECT_SkillMoveChance, 6, true)
 
@@ -16836,6 +17250,14 @@ dealloc(newmem_SkillMoveChance)
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_CountryIsBeingScouted = get_validated_address('AOB_CountryIsBeingScouted')
 ORG_CountryIsBeingScouted = readBytes(INJECT_CountryIsBeingScouted, 5, true)
 
@@ -16920,6 +17342,14 @@ dealloc(newmem_CountryIsBeingScouted)
                   <AssemblerScript>[ENABLE]
 //code_NoPlayerRegens from here to '[DISABLE]' will be used to enable the cheat
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_NoPlayerRegens = get_validated_address('AOB_NoPlayerRegens')
 ORG_NoPlayerRegens = readBytes(INJECT_NoPlayerRegens, 6, true)
 
@@ -16996,6 +17426,14 @@ dealloc(newmem_NoPlayerRegens)
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_ChangeStadium = get_validated_address('AOB_ChangeStadium')
 ORG_ChangeStadium = readBytes(INJECT_ChangeStadium, 7, true)
 
@@ -17079,6 +17517,14 @@ dealloc(StadiumID)
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_Match_Half_Length = get_validated_address('AOB_MatchHalfLength')
 ORG_Match_Half_Length = readBytes(INJECT_Match_Half_Length, 7, true)
 
@@ -17162,6 +17608,14 @@ dealloc(HalfLength)
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_Match_Weather = get_validated_address('AOB_MatchWeather')
 ORG_Match_Weather = readBytes(INJECT_Match_Weather, 6, true)
 
@@ -17282,6 +17736,14 @@ dealloc(Weather)
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_sim_maxCards = get_validated_address('AOB_SimMaxCards')
 ORG_sim_maxCards = readBytes(INJECT_sim_maxCards, 6, true)
 
@@ -17347,6 +17809,14 @@ dealloc(newmem_sim_maxCards)
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_MAX_INJURIES = get_validated_address('AOB_SimMaxInjuries')
 ORG_MAX_INJURIES = readBytes(INJECT_MAX_INJURIES, 6, true)
 
@@ -17412,6 +17882,14 @@ dealloc(newmem)
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_FatigueBase = get_validated_address('AOB_SimFatigueBase')
 ORG_FatigueBase = readBytes(INJECT_FatigueBase, 6, true)
 
@@ -17482,6 +17960,14 @@ dealloc(newmem_FatigueBase)
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_matchScore = get_validated_address('AOB_MatchScore')
 
 {$asm}
@@ -17529,6 +18015,14 @@ $INJECT_matchScore+58:
 return_matchscore:
 
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_DisableSubstitutions = get_validated_address('AOB_DisableSubstitutions')
 ORG_DisableSubstitutions = readBytes(INJECT_DisableSubstitutions, 8, true)
 
@@ -17603,6 +18097,14 @@ $INJECT_DisableSubstitutions:
 ret_DisableSubstitutions:
 
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_ingame_stamina = get_validated_address('AOB_IngameStamina')
 ORG_ingame_stamina = readBytes(INJECT_ingame_stamina, 10, true)
 
@@ -17925,6 +18427,14 @@ dealloc(bAwayTeam_FiveStars)
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_MatchTimer = get_validated_address('AOB_MatchTimer')
 ORG_MatchTimer = readBytes(INJECT_MatchTimer, 6, true)
 
@@ -18047,6 +18557,14 @@ getAddressList().getMemoryRecordByDescription("TIME").Value=0
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
 INJECT_UnlimitedSubstitutions = get_validated_address('AOB_UnlimitedSubstitutions')
 ORG_UnlimitedSubstitutions = readBytes(INJECT_UnlimitedSubstitutions, 7, true)
 
@@ -18312,6 +18830,90 @@ bAwayTeam_Tired:
             </CheatEntry>
           </CheatEntries>
         </CheatEntry>
+        <CheatEntry>
+          <ID>2949</ID>
+          <Description>"cmsettings.ini (Activate before you load Career Save)"</Description>
+          <LastState Activated="1"/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+{$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
+INJECT_CMSettingsIINI = get_validated_address('AOB_CMSETTINGS')
+ORG_CMSettingsIINI = readBytes(INJECT_CMSettingsIINI, 5, true)
+
+{$asm}
+alloc(newmem_CMSettingsIINI,$1000,$INJECT_CMSettingsIINI)
+
+label(code_CMSettingsIINI)
+label(ret_CMSettingsIINI)
+
+// Script contains default settings, edit values by yourself.
+newmem_CMSettingsIINI:
+  mov [rsi+24],#11         // NUMPLAYERSONPITCH
+  mov [rsi+28],#7          // DEFPLAYERSONBENCH
+  mov [rsi+2C],#62         // MAX_SQUAD_SIZE (default = 52)
+  mov [rsi+30],#18         // MIN_SQUAD_SIZE
+  mov [rsi+34],#2          // MIX_GK_PER_SQUAD
+  mov [rsi+38],#40         // MIN_FREE_AGENTS_TEAM_SIZE
+  mov [rsi+3C],#25         // FREE_AGENTS_MIN_NUM_PLAYERS_ON_TEAMS
+  mov [rsi+40],#1          // RUN_FIRST_SEASON_code_CMSettingsIINI
+  mov [rsi+44],#70         // MIN_CROWD_ATTENDANCE
+  mov [rsi+18],#1          // CALSTART_DAY
+  mov [rsi+1C],#1          // CALSTART_MONTH
+  mov [rsi+20],#2018       // CALSTART_YEAR
+
+code_CMSettingsIINI:
+  mov rbp,[rsp+58]
+  jmp ret_CMSettingsIINI
+
+$INJECT_CMSettingsIINI:
+  jmp newmem_CMSettingsIINI
+ret_CMSettingsIINI:
+
+[DISABLE]
+//code_CMSettingsIINI from here till the end of the code_CMSettingsIINI will be used to disable the cheat
+{$lua}
+writeBytes(INJECT_CMSettingsIINI, ORG_CMSettingsIINI)
+{$asm}
+
+dealloc(newmem_CMSettingsIINI)
+
+{
+// ORIGINAL code_CMSettingsIINI - INJECTION POINT: "FIFA19.exe"+38839F9
+
+"FIFA19.exe"+38839CC: E8 DF 79 AB FE        -  call FIFA19.exe+233B3B0
+"FIFA19.exe"+38839D1: 85 C0                 -  test eax,eax
+"FIFA19.exe"+38839D3: 48 8B 0D DE E7 41 02  -  mov rcx,[FIFA19.exe+5CA21B8]
+"FIFA19.exe"+38839DA: 48 8D 15 BF 65 AC 01  -  lea rdx,[FIFA19.exe+5349FA0]
+"FIFA19.exe"+38839E1: 40 0F 95 C7           -  setne dil
+"FIFA19.exe"+38839E5: 45 33 C0              -  xor r8d,r8d
+"FIFA19.exe"+38839E8: E8 C3 79 AB FE        -  call FIFA19.exe+233B3B0
+"FIFA19.exe"+38839ED: 4C 8B 7C 24 30        -  mov r15,[rsp+30]
+"FIFA19.exe"+38839F2: 85 C0                 -  test eax,eax
+"FIFA19.exe"+38839F4: 4C 8B 74 24 60        -  mov r14,[rsp+60]
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+38839F9: 48 8B 6C 24 58        -  mov rbp,[rsp+58]
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+38839FE: 0F 95 C0              -  setne al
+"FIFA19.exe"+3883A01: 40 84 FF              -  test dil,dil
+"FIFA19.exe"+3883A04: 75 04                 -  jne FIFA19.exe+3883A0A
+"FIFA19.exe"+3883A06: 84 C0                 -  test al,al
+"FIFA19.exe"+3883A08: 74 11                 -  je FIFA19.exe+3883A1B
+"FIFA19.exe"+3883A0A: 48 8B 06              -  mov rax,[rsi]
+"FIFA19.exe"+3883A0D: 48 8B 80 18 06 00 00  -  mov rax,[rax+00000618]
+"FIFA19.exe"+3883A14: 48 8B 08              -  mov rcx,[rax]
+"FIFA19.exe"+3883A17: C6 41 10 01           -  mov byte ptr [rcx+10],01
+"FIFA19.exe"+3883A1B: 8B 46 18              -  mov eax,[rsi+18]
+}
+</AssemblerScript>
+        </CheatEntry>
       </CheatEntries>
     </CheatEntry>
     <CheatEntry>
@@ -18361,10 +18963,18 @@ bAwayTeam_Tired:
       <Address>004D0A00</Address>
     </SymbolEntry>
   </UserdefinedSymbols>
-  <LuaScript>local status, err = pcall(require, "lua/main")
+  <LuaScript>-- Hello!
+-- Follow these steps to avoid problems:
+-- Allow Cheat Engine to execute this code, otherwise CT will not work.
+-- Don't open FIFA19.exe process by yourself. Cheat Table will do it for you.
+-- Make sure you have unzipped everything from the .zip archive. lua folder must be in the same directory where FIFA19.CT is.
+-- If Cheat Engine stops responding then it means that it's waiting until you enter main menu in game.
+-- Detailed guide on github: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started
+
+local status, err = pcall(require, "lua/main")
 if not status then
    showMessage('Error\nDid you unzipped archive?\n Full Error:\n' .. err)
-   print(err)
+   assert(false, err)
 end
 
 </LuaScript>

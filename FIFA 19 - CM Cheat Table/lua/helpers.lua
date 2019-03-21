@@ -18,7 +18,7 @@ end
 
 -- Check Cheat Table Version
 function check_ct_version()
-    local ver = '1.1.8'
+    local ver = '1.1.9'
     do_log(string.format('Cheat table version: %s', ver))
     MainWindowForm.LabelCTVer.Caption = ver -- update version in GUI
     local ver_record = ADDR_LIST.getMemoryRecordByID(2794)
@@ -95,7 +95,10 @@ function get_address_with_offset(base_addr, offset)
 end
 
 function get_validated_address(name)
+    if name == nil then return end
+
     check_process()  -- Check if we are correctly attached to the game
+
     local inject_at = nil
     if getfield(string.format('OFFSETS_DATA.offsets.%s', name)) ~= nil then
         inject_at = verify_offset(name)
@@ -261,7 +264,7 @@ function auto_attach_to_process()
     local ProcIDNormal = getProcessIDFromProcessName(ProcessName)
     
     -- Trial when FIFA is from Origin Access
-    local ProcessName_Trial = CFG_DATA.game.name_trial	
+    local ProcessName_Trial = CFG_DATA.game.name_trial
     local ProcIDTrial = getProcessIDFromProcessName(ProcessName_Trial)
     
     
@@ -277,7 +280,7 @@ function auto_attach_to_process()
     if pid > 0 and attached_to ~= nil then
         timer_setEnabled(AutoAttachTimer, false)
         do_log(string.format("Attached to %s", attached_to), 'INFO')
-        FIFA_PROCESS_NAME = attached_to
+        FIFA_PROCESS_NAME = getOpenedProcessName()
         BASE_ADDRESS = getAddress(FIFA_PROCESS_NAME)
         FIFA_MODULE_SIZE = getModuleSize(FIFA_PROCESS_NAME)
         start()
@@ -407,6 +410,7 @@ end
 -- load AOBs
 function load_aobs()
     return {
+        AOB_CMSETTINGS = '48 8B 6C 24 58 0F 95 C0 40',
         AOB_codeGameDB = '48 0F 44 2D ?? ?? ?? ?? 8B 4D 08',
         AOB_screenID = '4C 0F 45 35 ?? ?? ?? ?? 49 8B FF 48 FF C7 41 80 3C',
         AOB_Form_Settings = '89 86 F8 00 00 00 B8',

@@ -80,6 +80,9 @@ function start()
 
     -- Don't activate too early
     do_log("Waiting for valid screen")
+    if getScreenID() == nil then
+        print("Cheat Engine is waiting until you enter main menu in game. It may stop responding until you do that. Please, don't report this problem. It's working that way on purpose")
+    end
     while getScreenID() == nil do
         sleep(1000)
     end
