@@ -146,3 +146,11 @@ Changelog:
     v1.1.9:
     - Added 'cmsettings.ini', You can increase max size of your squad. Use at your own risk.
     - Added 'Multiplier' to 'More efficient training'
+    
+    v1.2.0:
+    - Fixed 'Transfer.ini & Transfers.ini' script
+    - Added 'Time Of Day' to 'Match Settings'
+    - Added 'Disable player growth and decline' script.
+    - Added 'make everyone 16 (or any other age).lua' to 'users lua scripts'
+    - Added 'all regens (makes everyone retire).lua' to 'users lua scripts'
+    - 'cmsettings.ini' contains default settings now.
