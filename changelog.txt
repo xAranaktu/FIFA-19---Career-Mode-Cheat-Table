@@ -154,3 +154,7 @@ Changelog:
     - Added 'make everyone 16 (or any other age).lua' to 'users lua scripts'
     - Added 'all regens (makes everyone retire).lua' to 'users lua scripts'
     - 'cmsettings.ini' contains default settings now.
+    
+    v1.2.1:
+    - Fixed 'Half Length' script
+    - Removed 'all regens (makes everyone retire).lua' script. (It was causing game crashes on 2nd season)
