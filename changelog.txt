@@ -158,3 +158,6 @@ Changelog:
     v1.2.1:
     - Fixed 'Half Length' script
     - Removed 'all regens (makes everyone retire).lua' script. (It was causing game crashes on 2nd season)
+    
+    v1.2.2:
+    - Fixed 'PRIMARY_ATTRIBUTES_RANGE' script.
