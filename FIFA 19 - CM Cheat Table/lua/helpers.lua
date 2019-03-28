@@ -18,7 +18,7 @@ end
 
 -- Check Cheat Table Version
 function check_ct_version()
-    local ver = '1.1.9'
+    local ver = '1.2.0'
     do_log(string.format('Cheat table version: %s', ver))
     MainWindowForm.LabelCTVer.Caption = ver -- update version in GUI
     local ver_record = ADDR_LIST.getMemoryRecordByID(2794)
@@ -443,7 +443,7 @@ function load_aobs()
         AOB_UnlimitedPlayerRelease = '39 46 54 40 0F 9C C7',
         AOB_ReleasePlayerMsgBox = '4C 8B E0 85 FF 0F',
         AOB_ReleasePlayerFee = '8B D8 48 8B 45 77',
-        AOB_TransfersIni = '41 89 87 D0 01 00 00 33',
+        AOB_TransfersIni = '41 89 87 D0 01 00 00 41',
         AOB_TransferIni = '89 83 A0 01 00 00 33 D2',
         AOB_GtnRevealPlayerData = '85 C0 75 0C 4C 8D 86 8C 02 00 00',
         AOB_DisableMorale = '0F 95 C1 88 4F 10',
@@ -462,6 +462,7 @@ function load_aobs()
         AOB_YouthAcademySkillMoveChance = '89 B5 7C 01 00 00 4C',
         AOB_CountryIsBeingScouted = '80 FB 01 75 0C 4C',
         AOB_NoPlayerRegens = '41 BF 10 00 00 00 48 8B CE',
+        AOB_NoPlayerGrowth = '48 89 45 B8 48 85 C0 0F 84 FC',
         AOB_ChangeStadium = '41 8B 9D E4 13 00 00',
         AOB_MatchHalfLength = '45 8B 87 08 14 00 00 33',
         AOB_MatchWeather = '83 F8 FF 0F 44 C6 EB',
@@ -473,6 +474,8 @@ function load_aobs()
         AOB_IngameStamina = '8B 43 68 41 89 82 78 03 00 00',
         AOB_MatchTimer = '8B 41 50 89 46 10',
         AOB_UnlimitedSubstitutions = '8B 84 01 D4 8E 00 00 C3',
+        AOB_TODDisplay = '4C 8B 13 C7 44 24 30 01 00 00 00 C6',
+        AOB_TODReal = '4C 8B CE 49 8B C5',
 
         -- PAP
         AOB_AgreeTransferRequest = "44 8B F0 89 84 24 90 00 00 00",
