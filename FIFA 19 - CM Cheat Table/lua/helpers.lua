@@ -18,7 +18,7 @@ end
 
 -- Check Cheat Table Version
 function check_ct_version()
-    local ver = '1.2.0'
+    local ver = '1.2.1'
     do_log(string.format('Cheat table version: %s', ver))
     MainWindowForm.LabelCTVer.Caption = ver -- update version in GUI
     local ver_record = ADDR_LIST.getMemoryRecordByID(2794)
@@ -94,9 +94,19 @@ function get_address_with_offset(base_addr, offset)
     return string.format('%X',tonumber(offset, 16) + base_addr)
 end
 
-function get_validated_address(name)
+function get_validated_address(name, module_name, section)
     if name == nil then return end
 
+    if module_name then
+        name = string.format('%s.AOBS.%s', section, name)
+        local res = AOBScanModule(
+            getfield(string.format('AOB_DATA.%s', name)),
+            module_name,
+            module_size
+        )
+        return res[0]
+    end
+    
     check_process()  -- Check if we are correctly attached to the game
 
     local inject_at = nil
@@ -143,11 +153,19 @@ end
 
 -- AOBScanModule
 -- https://www.cheatengine.org/forum/viewtopic.php?p=5621132&sid=c4dd9b1a4d0ddabf23f99b8f9bfe5f4e
-function AOBScanModule(aob)
+function AOBScanModule(aob, module_name, module_size)
+    if module_name == nil then
+        module_name = FIFA_PROCESS_NAME
+    end
+
+    if module_size == nil then
+        module_size = FIFA_MODULE_SIZE
+    end
+
     local memscan = createMemScan() 
     local foundlist = createFoundList(memscan) 
-    local start = getAddress(FIFA_PROCESS_NAME)
-    local stop = start + FIFA_MODULE_SIZE
+    local start = getAddress(module_name)
+    local stop = start + module_size
 
     memscan.firstScan( 
       soExactValue, vtByteArray, rtRounded, 
@@ -197,12 +215,22 @@ end
 
 -- Update offset
 -- Return true if success
-function update_offset(name, save)
+function update_offset(name, save, module_name, module_size, section)
     local res_offset = nil
     local valid_i = {}
+    local base_addr = BASE_ADDRESS
+
+    if module_name then
+        name = string.format('%s.AOBS.%s', section, name)
+        base_addr = getAddress(module_name)
+    end
     
     do_log(string.format("AOBScanModule %s", name), 'INFO')
-    local res = AOBScanModule(getfield(string.format('AOB_DATA.%s', name)))
+    local res = AOBScanModule(
+        getfield(string.format('AOB_DATA.%s', name)),
+        module_name,
+        module_size
+    )
     local res_count = res.getCount()
     if res_count == 0 then 
         do_log(string.format("%s AOBScanModule error. Try to restart FIFA and Cheat Engine", name), 'ERROR')
@@ -216,13 +244,13 @@ function update_offset(name, save)
         end
         if #valid_i >= 1 then
             do_log(string.format("picking offset at index - %i", valid_i[1]), 'WARNING')
-            setfield(string.format('OFFSETS_DATA.offsets.%s', name), get_offset(BASE_ADDRESS, res[valid_i[1]]))
+            setfield(string.format('OFFSETS_DATA.offsets.%s', name), get_offset(base_addr, res[valid_i[1]]))
         else
             do_log(string.format("%s AOBScanModule error", name), 'ERROR')
             return false
         end
     else
-        setfield(string.format('OFFSETS_DATA.offsets.%s', name), get_offset(BASE_ADDRESS, res[0]))
+        setfield(string.format('OFFSETS_DATA.offsets.%s', name), get_offset(base_addr, res[0]))
     end
     res.destroy()
     if save then save_offsets() end
@@ -232,7 +260,17 @@ end
 -- Update all offsets (may take a few minutes)
 function update_offsets()
     for k,v in pairs(AOB_DATA) do
-        update_offset(k, false)
+        if type(v) == 'string' then
+            -- main FIFA module
+            update_offset(k, false)
+        else
+            -- DLC Module
+            local module_name = v['MODULE_NAME']
+            local module_size = getModuleSize(module_name)
+            for kk, vv in pairs(v['AOBS']) do
+                update_offset(kk, false, module_name, module_size, k)
+            end
+        end
     end
 
     save_offsets()
@@ -480,6 +518,14 @@ function load_aobs()
         -- PAP
         AOB_AgreeTransferRequest = "44 8B F0 89 84 24 90 00 00 00",
         AOB_EditPlayerBid = "41 B8 43 D9 FF FF",
+
+        -- FootballCompEng_Win64_retail.dll
+        FootballCompEng = {
+            MODULE_NAME = 'FootballCompEng_Win64_retail.dll',
+            AOBS = {
+                AOB_Calendar = "8B 4E 14 3B C8",
+            }
+        }
     }
 end
 

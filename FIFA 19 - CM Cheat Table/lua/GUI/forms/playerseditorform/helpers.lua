@@ -476,10 +476,14 @@ function ApplyChanges()
     for i=0, PlayersEditorForm.ComponentCount-1 do
         local component = PlayersEditorForm.Component[i]
         local component_name = component.Name
+        
+        -- Just in case we somehow fail at validating playerid
+        -- We can't allow that playerid will be changed
+        if component_name == 'PlayerIDEdit' then goto continue end
+
         local comp_desc = COMPONENTS_DESCRIPTION_PLAYER_EDIT[component_name]
         if comp_desc == nil then goto continue end
         if comp_desc['id'] == nil then goto continue end
-
         local component_class = component.ClassName
         
         if component_class == 'TCEEdit' then
