@@ -18,13 +18,10 @@ end
 
 -- Check Cheat Table Version
 function check_ct_version()
-    local ver = '1.2.1'
+    local ver = string.gsub(ADDR_LIST.getMemoryRecordByID(2794).Description, 'v', '')
+
     do_log(string.format('Cheat table version: %s', ver))
     MainWindowForm.LabelCTVer.Caption = ver -- update version in GUI
-    local ver_record = ADDR_LIST.getMemoryRecordByID(2794)
-    if ver_record then
-        ver_record.Description = string.format("v%s", ver) -- update version in cheat table
-    end
 end
 
 function create_dirs()
