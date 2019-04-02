@@ -194,7 +194,7 @@ With GUI editing players is easier and faster than before.
 
 Three important games within 5 days? Sounds familiar? With Schedule Editor you can now edit date of the match!
 
-![](https://i.imgur.com/PfiTVdf.gif)
+[gif](https://i.imgur.com/PfiTVdf.gif)
 
 
 **HOW TO EDIT FIXTURES :**
