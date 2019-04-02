@@ -16,6 +16,8 @@ And the last thing but not least, __tick checkboxes only when you are activating
    * [Frequently asked questions](#faq)
    * [Auto activating scripts](#auto-activating-scripts)
    * [FIFA 19 IDs](#fifa-19-ids)
+   * [GUI](#gui)
+   * [Schedule Editor](#Schedule editor)
    * [Permanent Stadium Change](#permanent-stadium-change)
    * [Changing Player Head Model](#changing-player-head-model)
    * [Changing Manager Head Model](#changing-manager-head-model)
@@ -65,7 +67,7 @@ When new version will be released? Answer is here: [Release Schedule](https://do
 
 
 * __How can I edit age of a player?__
-  - "Editing Player->Edit Player" and change "Birth Year". Editing birthdate under "player_data" is more complex.  It seems to be a number of days since 15.10.1582. You can use [online date calculators](https://www.timeanddate.com/date/durationresult.html?y1=1582&m1=10&d1=15&y2=2017&m2=9&d2=29&ti=on) for this. start date must be 1582-10-15, end date should be a date of birth of your player. if you want to have 17yo player just put there for example 2010-7-3. Result will be "156 221". So, if you set Messi birthdate to "156221" he should be 17yo.
+  - "Editing Player->Edit Player" and change "Birth Year". Or change player age through GUI
 
 
 * __How can I edit player traits?__
@@ -117,29 +119,36 @@ When new version will be released? Answer is here: [Release Schedule](https://do
   - Yes, you need to edit "playerjointeamdate". Value "158229" should be fine. You will find it in "FIFA Database->Database Tables->Players table->Player Info".
   
 * __How can I change player name?__
-  
-  - In "Editing Player" activate "Edit Player" script.
-  - In game go to "Edit Player" 
-  
-  ![](https://i.imgur.com/lzIThn0.png)
-  
-  - If you want to edit "Known As" name you need to initialize pointers on a player that has got that name. In example. Arthur from FC Barcelona or Isco from Real. To initialize pointers you need to enter into editing Arthur and then just "Done"->"Apply & Exit"
-  
-  ![](https://i.imgur.com/l5xy7Tv.png)
-  
-  - Now you can see in Cheat Table that it's ready for editing player names
-  
-  ![](https://i.imgur.com/gOa3Nvu.png)
-  
-  - Find on Edit Player list player that you want to edit and click on him
-  
-  ![](https://i.imgur.com/FI0o5xo.png)
-  
-  - You can edit player name now including "Known As" name. Remember to click on "Apply & Exit" to save the changes.
-  
-  ![](https://i.imgur.com/FaeU9kX.png)
-  
 
+  - [Watch on YT](https://youtu.be/oUZuT4ZRx_c)
+  
+* __Does the table work with player career?__
+  
+  - The cheat table was designed for manager career, so for player career some things will work, and some won't. The only way to make stats/tattoos/etc permanent is to tick the red box on what you want applied, but then it will apply to your whole team. If you want your stats to permanently be applied, you have to change them at the end of the season (after the last match) or you can use some of the training scripts to increase your attributes.
+
+* __What does the primary and secondary attributes range do?__
+
+  - What does the primary and secondary attributes range do?
+
+    With this script you can controll base attributes of the players that your youth scout brings you. When the game is generating new player it's using these ranges to define how good player will be at the beginning of his career. Which attributes are primary and which are secondary depends on what type of players your scout is trying to find.
+    For example for "attack minded" type, primary attributes are:
+    - DRIBBLING
+    - SHOT POWER
+    - VISION
+    - INTERCEPTIONS
+    - MARKING
+    - CURVE
+    
+    secondary:
+    - STAMINA
+    - ACCELERATION
+    - BALANCE
+    - SPRINT SPEED
+    
+    so, when you have set PRIMARY_ATTRIBUTES_RANGE = [10, 20] and now when game is generating new attack minded player with 60 dribbling it will also add a random number from range 10-20 to this 60 dribbling. So he may end up with 70-80 dribbling.
+    
+    **WARNING!** In FIFA 18 I've noticed that this script is reponsible for generating regens with very high ovr. In my career Ronaldo regen had ~88 ovr at 16 yo, same with Buffon and other good players.
+    
 ## Auto activating scripts
 Because cheat table contains a lot of scripts, you may want to let cheat engine to activate it for you.
 * For latest cheat table version
@@ -155,6 +164,52 @@ Because cheat table contains a lot of scripts, you may want to let cheat engine 
 
 List of FIFA 19 IDs is available here -> [Google Drive](https://docs.google.com/spreadsheets/d/1eYx5j7FZwlaPKymv3_G-ezZKtfWmQ6hwjXukAfqYoto/edit?usp=sharing) 
 
+## GUI
+GUI ([graphical user interface](https://en.wikipedia.org/wiki/Graphical_user_interface)) was added in v1.1.2.
+![](https://i.imgur.com/Y3IMna3.png)
+
+With GUI editing players is easier and faster than before.
+
+**Main features:**
+
+- Automatic OVR relaculation on attributes/position change (Not including player international reputation)
+- You can search for players by their ID 
+![](https://i.imgur.com/sevnhWG.gif)
+- "Best At" section will help you to assing player to this best position.
+![](https://i.imgur.com/wyFpxsR.png)
+- Date fields are automatically converted to human readable form. You don't need online calculators to calculate player age. 
+![](https://i.imgur.com/6xglehD.png)
+- Randomizing player attributes 
+![](https://i.imgur.com/XQyQdw0.gif)
+- Live preview on youth player headshot image while editing his headtype or haircolor. 
+![](https://i.imgur.com/lLWZM9e.gif)
+
+## Schedule editor
+
+Three important games within 5 days? Sounds familiar? With Schedule Editor you can now edit date of the match!
+![](https://i.imgur.com/PfiTVdf.gif)
+
+
+**HOW TO EDIT FIXTURES :**
+1. Load your career save
+1. Activate 'Fixture Edit' script
+2. Open 'Calendar' in-game
+3. In Cheat table GUI open 'Schedule editor'. It should load matches that are currently display in in-game calendar
+4. Change date -> Press 'Apply Changes'
+
+To edit match date in other months just switch month in in-game calendar and refresh schedule editor (by pressing on refresh icon for example)
+
+If you can't activate 'Fixture Edit' script.
+1. Press "Memory View" button in CE
+2. In Memory Viewer window press "View" -> "Enumerate Dlls and Symbols"
+3. Close it
+4. Close "Memory Viewer"
+5. Try to activate script again
+
+Some basic rules that imo. you should stick to:
+0. MAKE BACKUP OF YOUR SAVE!!! Your changes may cause game crashes.
+1. Don't edit match date on match day.
+2. Don't move match date to your current date.
 
 ## Permanent Stadium Change
 How to change your home stadium permanently.
