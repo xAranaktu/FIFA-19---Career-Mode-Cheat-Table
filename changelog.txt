@@ -161,3 +161,9 @@ Changelog:
     
     v1.2.2:
     - Fixed 'PRIMARY_ATTRIBUTES_RANGE' script.
+    
+    v1.2.3:
+    - Added "FIXTURE EDITOR" (HOW TO USE: http://bit.ly/schedule-editor-19)
+    - Added 'Pin' icon to all GUI forms. Use to make window stay always on top
+    - Added 'Resize' icon to all GUI forms (bottom right corner). You can resize any form. 
+    - Fixed calulating player ovr in GUI (replaced math.floor with math.round Im still not including int. rep.)
