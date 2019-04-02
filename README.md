@@ -17,7 +17,7 @@ And the last thing but not least, __tick checkboxes only when you are activating
    * [Auto activating scripts](#auto-activating-scripts)
    * [FIFA 19 IDs](#fifa-19-ids)
    * [GUI](#gui)
-   * [Schedule Editor](#Schedule editor)
+   * [Schedule Editor](#schedule-editor)
    * [Permanent Stadium Change](#permanent-stadium-change)
    * [Changing Player Head Model](#changing-player-head-model)
    * [Changing Manager Head Model](#changing-manager-head-model)
@@ -174,19 +174,26 @@ With GUI editing players is easier and faster than before.
 
 - Automatic OVR relaculation on attributes/position change (Not including player international reputation)
 - You can search for players by their ID 
+
 ![](https://i.imgur.com/sevnhWG.gif)
 - "Best At" section will help you to assing player to this best position.
+
 ![](https://i.imgur.com/wyFpxsR.png)
 - Date fields are automatically converted to human readable form. You don't need online calculators to calculate player age. 
+
 ![](https://i.imgur.com/6xglehD.png)
 - Randomizing player attributes 
+
 ![](https://i.imgur.com/XQyQdw0.gif)
+
 - Live preview on youth player headshot image while editing his headtype or haircolor. 
+
 ![](https://i.imgur.com/lLWZM9e.gif)
 
 ## Schedule editor
 
 Three important games within 5 days? Sounds familiar? With Schedule Editor you can now edit date of the match!
+
 ![](https://i.imgur.com/PfiTVdf.gif)
 
 
