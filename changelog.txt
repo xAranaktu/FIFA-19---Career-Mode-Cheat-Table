@@ -171,3 +171,7 @@ Changelog:
     v1.2.4:
     - Added 'randomize_shoe_models.lua' script to 'users lua scripts'
     - Fixed: Player current age will not be reset anymore if you 'Apply changes' in GUI.
+    
+    v1.2.5:
+    - Added description in all scripts. To see it you need to right click on script -> 'Change Script'.
+    - Minor bug fixes in GUI
