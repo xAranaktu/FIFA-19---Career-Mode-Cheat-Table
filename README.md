@@ -9,8 +9,8 @@ And the last thing but not least, __tick checkboxes only when you are activating
 [Become a Patron](https://www.patreon.com/xAranaktu)
 
 # Table of Contents
-   * [Update Progress](#update-progress)
    * [Release Schedule](#release-schedule)
+   * [Roadmap](#roadmap)
    * [Video Tutorials](#video-tutorials)
    * [Getting Started](#getting-started)
    * [Frequently asked questions](#faq)
@@ -28,6 +28,8 @@ And the last thing but not least, __tick checkboxes only when you are activating
 ## Release Schedule
 When new version will be released? Answer is here: [Release Schedule](https://docs.google.com/spreadsheets/d/1EsYf4I4oDD6kw5jTGTFsv7rR1qL-Oausd1ZRbbSWm84/edit?usp=sharing)
 
+## Roadmap
+[Here you can find what and when will be added](https://trello.com/b/rJNRwIP2/fifa-19-ct-roadmap)
 
 ## Video Tutorials
 
@@ -128,7 +130,7 @@ When new version will be released? Answer is here: [Release Schedule](https://do
 
 * __What does the primary and secondary attributes range do?__
 
-  - What does the primary and secondary attributes range do?
+  What does the primary and secondary attributes range do?
 
     With this script you can controll base attributes of the players that your youth scout brings you. When the game is generating new player it's using these ranges to define how good player will be at the beginning of his career. Which attributes are primary and which are secondary depends on what type of players your scout is trying to find.
     For example for "attack minded" type, primary attributes are:
@@ -258,7 +260,11 @@ __Effect__
 ## Changing Manager Head Model
 __List of Head IDs can be found on [FIFA 19 IDs](https://docs.google.com/spreadsheets/d/1eYx5j7FZwlaPKymv3_G-ezZKtfWmQ6hwjXukAfqYoto/edit?usp=sharing) list__
 
-Method 1 (my method):
+[Method 1 (RDBM 19)](https://docs.google.com/document/d/1LUM2z1cO_RcS2k91Jpea04lhQW33cjOO1-2BXeE-CSM/edit?usp=sharing)
+
+[Method 2 (Dunno who is the author of this)](https://docs.google.com/document/d/e/2PACX-1vTwIl5tMySFCSqymJsBXtAOSKFNmyv7kUfembGp7EFbXFJzcjmnAGh9N8LHKU5GBl8rfSJU2cckiCyA/pub)
+
+Method 3 (my method and not recommended):
 1. Activate "Manager Table"
 2. Activate "Filter"
 3. In "Team ID Filter" put ID of your team. From sofifa for example or from [FIFA 19 IDs](https://docs.google.com/spreadsheets/d/1eYx5j7FZwlaPKymv3_G-ezZKtfWmQ6hwjXukAfqYoto/edit?usp=sharing).
@@ -270,9 +276,6 @@ Method 1 (my method):
 
 __If condition from point 6. is not met you need to find a news which will query manager database. Just click randomly on different tabs and news until you will have same situation as on screen above.__
 
-[Method 2 (Dunno who is the author of this)](https://docs.google.com/document/d/e/2PACX-1vTwIl5tMySFCSqymJsBXtAOSKFNmyv7kUfembGp7EFbXFJzcjmnAGh9N8LHKU5GBl8rfSJU2cckiCyA/pub)
-
-[Method 3 (RDBM 19)](https://docs.google.com/document/d/1LUM2z1cO_RcS2k91Jpea04lhQW33cjOO1-2BXeE-CSM/edit?usp=sharing)
 
 ## Removing injury from a player
 
