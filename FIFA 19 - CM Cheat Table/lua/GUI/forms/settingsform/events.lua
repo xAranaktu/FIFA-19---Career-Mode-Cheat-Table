@@ -10,6 +10,29 @@ function SettingsFormTopPanelMouseDown(sender, button, x, y)
     SettingsForm.dragNow()
 end
 
+
+
+function SettingsAlwaysOnTopOnClick(sender)
+    if sender.FormStyle == "fsNormal" then
+        sender.AlwaysOnTop.Visible = false
+        sender.AlwaysOnTopOn.Visible = true
+        sender.FormStyle = "fsSystemStayOnTop"
+    else
+        sender.AlwaysOnTop.Visible = true
+        sender.AlwaysOnTopOn.Visible = false
+        sender.FormStyle = "fsNormal"
+    end
+end
+function SettingsResizeMouseDown(sender, button, x, y)
+
+end
+function SettingsResizeMouseMove(sender, x, y)
+
+end
+function SettingsResizeMouseUp(sender, button, x, y)
+
+end
+
 function SettingsFormShow(sender)
     new_cfg_data = deepcopy(CFG_DATA)
     -- Fill General

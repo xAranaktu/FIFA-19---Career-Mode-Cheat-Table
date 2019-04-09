@@ -14,6 +14,7 @@ require 'lua/helpers';
 -- GUI Events
 require 'lua/GUI/forms/mainform/events';
 require 'lua/GUI/forms/playerseditorform/events';
+require 'lua/GUI/forms/matchscheduleeditorform/events';
 require 'lua/GUI/forms/settingsform/events';
 
 do_log('New session started', 'INFO')
@@ -29,7 +30,7 @@ DATA_DIR = FIFA_SETTINGS_DIR .. 'Cheat Table/data/';
 CONFIG_FILE_PATH = DATA_DIR .. 'config.ini'; --> 'path to config.ini file 
 OFFSETS_FILE_PATH = DATA_DIR .. 'offsets.ini'; --> 'path to offsets.ini file
 FORMS = {
-    MainWindowForm, PlayersEditorForm, SettingsForm
+    MainWindowForm, PlayersEditorForm, MatchScheduleEditorForm, SettingsForm
 }
 SETTINGS_INDEX = 0
 -- DEFAULT GLOBALS, better leave it as is

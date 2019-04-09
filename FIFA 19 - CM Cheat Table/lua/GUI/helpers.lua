@@ -33,6 +33,45 @@ function MakeComponentShorter(sender)
     end
 end
 
+-- Make window resizeable
+RESIZER= {
+    allow_resize = false
+}
+function ResizerMouseDown(sender, button, x, y)
+    RESIZER = {
+        allow_resize = true,
+        w = sender.Owner.Width,
+        h = sender.Owner.Height,
+        mx = x,
+        my = y
+    }
+end
+
+function ResizerMouseMove(sender, x, y)
+    if RESIZER['allow_resize'] then
+        RESIZER['w'] = x - RESIZER['mx'] + sender.Owner.Width
+        RESIZER['h'] = y - RESIZER['my'] + sender.Owner.Height
+    end
+end
+function ResizerMouseUp(sender, button, x, y)
+    RESIZER['allow_resize'] = false
+    sender.Owner.Width = RESIZER['w']
+    sender.Owner.Height = RESIZER['h']
+end
+
+-- stay on top
+function AlwaysOnTopClick(sender)
+    if sender.Owner.FormStyle == "fsNormal" then
+        sender.Owner.AlwaysOnTop.Visible = false
+        sender.Owner.AlwaysOnTopOn.Visible = true
+        sender.Owner.FormStyle = "fsSystemStayOnTop"
+    else
+        sender.Owner.AlwaysOnTop.Visible = true
+        sender.Owner.AlwaysOnTopOn.Visible = false
+        sender.Owner.FormStyle = "fsNormal"
+    end
+end
+
 
 -- load player head
 -- return string stream
@@ -102,7 +141,9 @@ function load_img(path, url)
             io.close(f)
         else
             do_log('Error opening img file: ' .. CACHE_DIR .. path)
-            do_log('Error - ' .. err)
+            if err then
+                do_log('Error - ' .. err)
+            end
         end
     end
     return createStringStream(img)

@@ -318,7 +318,7 @@ function RandomAttackAttrClick(sender)
 end
 
 function PlayerEditorSettingsClick(sender)
-    SETTINGS_INDEX = 1
+    SETTINGS_INDEX = 0
     SettingsForm.show()
 end
 function FindPlayerByIDClick(sender)

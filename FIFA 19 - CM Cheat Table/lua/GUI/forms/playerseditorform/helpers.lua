@@ -87,6 +87,10 @@ end
 
 -- Recalculate OVR
 -- update_ovr_edit - bool. If true then value in OverallEdit will be updated
+function math.round(n)
+    return n % 1 >= 0.5 and math.ceil(n) or math.floor(n)
+end
+
 function recalculate_ovr(update_ovr_edit)
     local preferred_position_id = PlayersEditorForm.PreferredPosition1CB.ItemIndex
     if preferred_position_id == 1 then return end -- ignore SW
@@ -105,7 +109,7 @@ function recalculate_ovr(update_ovr_edit)
             end
             sum = sum + (attr_val * perc)
         end
-        sum = math.floor(sum)
+        sum = math.round(sum)
         unique_ovrs[sum] = sum
 
         calculated_ovrs[posid] = sum

@@ -19,6 +19,7 @@ function FillScriptsTree(record, tn)
     local next_node = nil
     for i=0, record.Count-1 do
         if record.Child[i].Type == 0 or record.Child[i].Type == 11 then
+            -- print(record.Child[i].Description)
             next_node = tn.add(record.Child[i].Description)
             next_node.Data = record.Child[i].ID
             if record.Child[i].Active then
