@@ -433,6 +433,15 @@ function FillPlayerEditForm(playerid)
 end
 
 function age_to_birthdate(args)
+    local current_age = birthdate_to_age(args)
+    local component = args['component']
+    local age = tonumber(component.Text)
+
+    -- Don't overwrite age if not changed
+    if current_age == age then
+        return ADDR_LIST.getMemoryRecordByID(CT_MEMORY_RECORDS['BIRTHDATE']).Value
+    end
+
     local comp_desc = args['comp_desc']
     local str_current_date = string.format("%d", 20080101 + (tonumber(ADDR_LIST.getMemoryRecordByID(CT_MEMORY_RECORDS['CURRDATE']).Value) or 0))
 
@@ -441,8 +450,7 @@ function age_to_birthdate(args)
         month=tonumber(string.sub(str_current_date, 5, 6)),
         day=tonumber(string.sub(str_current_date, 7, 8))
     }
-    local component = args['component']
-    local age = tonumber(component.Text)
+
     local new_birthdate = convert_to_days(os.time{
         year=tonumber(string.sub(str_current_date, 1, 4)) - age,
         month=tonumber(string.sub(str_current_date, 5, 6)),
