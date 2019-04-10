@@ -175,3 +175,8 @@ Changelog:
     v1.2.5:
     - Added description in all scripts. To see it you need to right click on script -> 'Change Script'.
     - Minor bug fixes in GUI
+    
+    v1.2.6:
+    - Fixed in Schedule Editor:
+      - League games are now displayed correctly if the month contains national team games.
+      - Form is not pinned by default anymore
