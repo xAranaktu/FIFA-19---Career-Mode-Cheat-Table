@@ -44,6 +44,8 @@ DEBUG_MODE = false
 
 -- start code
 -- Activate "GUI" script
+MainWindowForm.LoadingPanel.Caption = 'Loading data...'
+update_status_label("Waiting for FIFA 19...")
 ADDR_LIST.getMemoryRecordByID(CT_MEMORY_RECORDS['GUI_SCRIPT']).Active = true
 
 -- Check version of Cheat Table and Cheat Engine
@@ -70,7 +72,6 @@ end
 -- After attach
 function start()
     update_status_label("Attached to the game process.")
-
     -- "FIFA19.exe"+06267F98
     -- MM_TAB_HOME
     -- MM_TAB_PLAY

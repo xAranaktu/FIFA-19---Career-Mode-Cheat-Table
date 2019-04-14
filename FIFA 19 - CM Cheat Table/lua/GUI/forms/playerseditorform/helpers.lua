@@ -167,11 +167,16 @@ function recalculate_ovr(update_ovr_edit)
     end
 
     for i = 1, 3 do
-        PlayersEditorForm[string.format("BestPositionLabel%d", i)].Caption = string.format("- %s: %d ovr", table.concat(position_names[string.format("%d", i)]['short'], '/'), top_ovrs[i])
-        if position_names[string.format("%d", i)]['showhint'] then
-            PlayersEditorForm[string.format("BestPositionLabel%d", i)].Hint = string.format("- %s: %d ovr", table.concat(position_names[string.format("%d", i)]['long'], '/'), top_ovrs[i])
-            PlayersEditorForm[string.format("BestPositionLabel%d", i)].ShowHint = true
+        if top_ovrs[i] then
+            PlayersEditorForm[string.format("BestPositionLabel%d", i)].Caption = string.format("- %s: %d ovr", table.concat(position_names[string.format("%d", i)]['short'], '/'), top_ovrs[i])
+            if position_names[string.format("%d", i)]['showhint'] then
+                PlayersEditorForm[string.format("BestPositionLabel%d", i)].Hint = string.format("- %s: %d ovr", table.concat(position_names[string.format("%d", i)]['long'], '/'), top_ovrs[i])
+                PlayersEditorForm[string.format("BestPositionLabel%d", i)].ShowHint = true
+            else
+                PlayersEditorForm[string.format("BestPositionLabel%d", i)].ShowHint = false
+            end
         else
+            PlayersEditorForm[string.format("BestPositionLabel%d", i)].Caption = '-'
             PlayersEditorForm[string.format("BestPositionLabel%d", i)].ShowHint = false
         end
     end
@@ -499,6 +504,14 @@ function ApplyChanges()
         local component_class = component.ClassName
         
         if component_class == 'TCEEdit' then
+            if string.len(component.Text) <= 0 then
+                do_log(
+                    string.format("Empty component: %s", component_name)
+                )
+                showMessage(
+                    string.format("%s component is empty. Please, fill it and try again", component_name)
+                )
+            end
             if comp_desc['onApplyChanges'] then
                 ADDR_LIST.getMemoryRecordByID(comp_desc['id']).Value = comp_desc['onApplyChanges']({
                     component = component,
