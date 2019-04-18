@@ -180,3 +180,7 @@ Changelog:
     - Fixed in Schedule Editor:
       - League games are now displayed correctly if the month contains national team games.
       - Form is not pinned by default anymore
+      
+    v1.2.7:
+    - Added 'Clone' option to player editor (You can copy data from FUT card to any of your CM players)
+      
