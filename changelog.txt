@@ -183,4 +183,7 @@ Changelog:
       
     v1.2.7:
     - Added 'Clone' option to player editor (You can copy data from FUT card to any of your CM players)
+    
+    v1.2.8:
+    - Added 'Generate players with custom ID' script to 'Youth Academy' section
       
