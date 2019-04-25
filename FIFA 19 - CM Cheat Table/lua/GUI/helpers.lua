@@ -132,7 +132,6 @@ function load_img(path, url)
         int.destroy()
         -- If file is not a png file
         if img == nil or string.sub(img, 2, 4) ~= 'PNG' then
-            do_log('Img is nil: '.. url, 'WARNING')
             return false
         end
         f, err=io.open(CACHE_DIR .. path, "w+b")
@@ -150,7 +149,15 @@ function load_img(path, url)
 end
 
 function convert_from_days(days)
-    return FIFA_EPOCH_TIME + (tonumber(days)*24*60*60)
+    if not days then return nil end
+
+    local result = FIFA_EPOCH_TIME + (tonumber(days)*24*60*60)
+    if result < 1 then
+        -- For very old players return 1 (age around 50)
+        result = 1
+    end
+
+    return result
 end
 
 function days_to_date(args)

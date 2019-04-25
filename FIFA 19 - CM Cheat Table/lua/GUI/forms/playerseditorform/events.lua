@@ -2,6 +2,7 @@ require 'lua/GUI/consts';
 require 'lua/GUI/helpers';
 require 'lua/GUI/forms/playerseditorform/consts';
 require 'lua/GUI/forms/playerseditorform/helpers';
+require 'lua/fut_requests'
 
 -- Make window dragable
 function PlayerEditTopPanelMouseDown(sender, button, x, y)
@@ -70,7 +71,16 @@ function TruePlayerEditFormShow()
     -- Create Hotkeys
     create_hotkeys()
 
+    -- Clone CM
+    PlayersEditorForm.CopyCMFindPlayerByID.Text = 'Find player by ID...'
+
+    -- FUT
+    RARITY_DISPLAY = fut_get_rarity_display()
+    PlayersEditorForm.CloneFromListBox.setItemIndex(0)
+    PlayersEditorForm.CardContainerPanel.Visible = false
+
     -- Hide Loading Panel and show components
+    PlayerInfoTabClick()
     PlayersEditorForm.FindPlayerByID.Text = 'Find player by ID...'
     PlayersEditorForm.FindPlayerByID.Visible = true
     PlayersEditorForm.SearchPlayerByID.Visible = true
@@ -108,6 +118,7 @@ function PlayerInfoTabClick(sender)
     PlayersEditorForm.AppearanceTab.Color = '0x0049363C'
     PlayersEditorForm.AccessoriesTab.Color = '0x0049363C'
     PlayersEditorForm.OtherTab.Color = '0x0049363C'
+    PlayersEditorForm.PlayerCloneTab.Color = '0x0049363C'
     
     -- Activate tab
     PlayersEditorForm.PlayerInfoPanel.Visible = true
@@ -116,6 +127,7 @@ function PlayerInfoTabClick(sender)
     PlayersEditorForm.AppearancePanel.Visible = false
     PlayersEditorForm.AccessoriesPanel.Visible = false
     PlayersEditorForm.OtherPanel.Visible = false
+    PlayersEditorForm.PlayerClonePanel.Visible = false
 end
 function AttributesTabClick(sender)
     if PlayersEditorForm.AttributesPanel.Visible then return end
@@ -126,6 +138,7 @@ function AttributesTabClick(sender)
     PlayersEditorForm.AppearanceTab.Color = '0x0049363C'
     PlayersEditorForm.AccessoriesTab.Color = '0x0049363C'
     PlayersEditorForm.OtherTab.Color = '0x0049363C'
+    PlayersEditorForm.PlayerCloneTab.Color = '0x0049363C'
 
     PlayersEditorForm.PlayerInfoPanel.Visible = false
     PlayersEditorForm.AttributesPanel.Visible = true
@@ -133,6 +146,7 @@ function AttributesTabClick(sender)
     PlayersEditorForm.AppearancePanel.Visible = false
     PlayersEditorForm.AccessoriesPanel.Visible = false
     PlayersEditorForm.OtherPanel.Visible = false
+    PlayersEditorForm.PlayerClonePanel.Visible = false
 end
 function TraitsTabClick(sender)
     if PlayersEditorForm.TraitsPanel.Visible then return end
@@ -143,6 +157,7 @@ function TraitsTabClick(sender)
     PlayersEditorForm.AppearanceTab.Color = '0x0049363C'
     PlayersEditorForm.AccessoriesTab.Color = '0x0049363C'
     PlayersEditorForm.OtherTab.Color = '0x0049363C'
+    PlayersEditorForm.PlayerCloneTab.Color = '0x0049363C'
 
     PlayersEditorForm.PlayerInfoPanel.Visible = false
     PlayersEditorForm.AttributesPanel.Visible = false
@@ -150,6 +165,7 @@ function TraitsTabClick(sender)
     PlayersEditorForm.AppearancePanel.Visible = false
     PlayersEditorForm.AccessoriesPanel.Visible = false
     PlayersEditorForm.OtherPanel.Visible = false
+    PlayersEditorForm.PlayerClonePanel.Visible = false
 end
 function AppearanceTabClick(sender)
     if PlayersEditorForm.AppearancePanel.Visible then return end
@@ -160,6 +176,7 @@ function AppearanceTabClick(sender)
     PlayersEditorForm.AppearanceTab.Color = '0x001D1618'
     PlayersEditorForm.AccessoriesTab.Color = '0x0049363C'
     PlayersEditorForm.OtherTab.Color = '0x0049363C'
+    PlayersEditorForm.PlayerCloneTab.Color = '0x0049363C'
 
     PlayersEditorForm.PlayerInfoPanel.Visible = false
     PlayersEditorForm.AttributesPanel.Visible = false
@@ -167,6 +184,7 @@ function AppearanceTabClick(sender)
     PlayersEditorForm.AppearancePanel.Visible = true
     PlayersEditorForm.AccessoriesPanel.Visible = false
     PlayersEditorForm.OtherPanel.Visible = false
+    PlayersEditorForm.PlayerClonePanel.Visible = false
 end
 function AccessoriesTabClick(sender)
     if PlayersEditorForm.AccessoriesPanel.Visible then return end
@@ -177,6 +195,7 @@ function AccessoriesTabClick(sender)
     PlayersEditorForm.AppearanceTab.Color = '0x0049363C'
     PlayersEditorForm.AccessoriesTab.Color = '0x001D1618'
     PlayersEditorForm.OtherTab.Color = '0x0049363C'
+    PlayersEditorForm.PlayerCloneTab.Color = '0x0049363C'
 
     PlayersEditorForm.PlayerInfoPanel.Visible = false
     PlayersEditorForm.AttributesPanel.Visible = false
@@ -184,6 +203,7 @@ function AccessoriesTabClick(sender)
     PlayersEditorForm.AppearancePanel.Visible = false
     PlayersEditorForm.AccessoriesPanel.Visible = true
     PlayersEditorForm.OtherPanel.Visible = false
+    PlayersEditorForm.PlayerClonePanel.Visible = false
 end
 function OtherTabClick(sender)
     if PlayersEditorForm.OtherPanel.Visible then return end
@@ -194,6 +214,7 @@ function OtherTabClick(sender)
     PlayersEditorForm.AppearanceTab.Color = '0x0049363C'
     PlayersEditorForm.AccessoriesTab.Color = '0x0049363C'
     PlayersEditorForm.OtherTab.Color = '0x001D1618'
+    PlayersEditorForm.PlayerCloneTab.Color = '0x0049363C'
 
     PlayersEditorForm.PlayerInfoPanel.Visible = false
     PlayersEditorForm.AttributesPanel.Visible = false
@@ -201,6 +222,28 @@ function OtherTabClick(sender)
     PlayersEditorForm.AppearancePanel.Visible = false
     PlayersEditorForm.AccessoriesPanel.Visible = false
     PlayersEditorForm.OtherPanel.Visible = true
+    PlayersEditorForm.PlayerClonePanel.Visible = false
+end
+
+function PlayerCloneTabClick(sender)
+    if PlayersEditorForm.PlayerClonePanel.Visible then return end
+    
+    PlayersEditorForm.PlayerInfoTab.Color = '0x0049363C'
+    PlayersEditorForm.AttributesTab.Color = '0x0049363C'
+    PlayersEditorForm.TraitsTab.Color = '0x0049363C'
+    PlayersEditorForm.AppearanceTab.Color = '0x0049363C'
+    PlayersEditorForm.AccessoriesTab.Color = '0x0049363C'
+    PlayersEditorForm.OtherTab.Color = '0x0049363C'
+    PlayersEditorForm.PlayerCloneTab.Color = '0x001D1618'
+
+    PlayersEditorForm.PlayerInfoPanel.Visible = false
+    PlayersEditorForm.AttributesPanel.Visible = false
+    PlayersEditorForm.TraitsPanel.Visible = false
+    PlayersEditorForm.AppearancePanel.Visible = false
+    PlayersEditorForm.AccessoriesPanel.Visible = false
+    PlayersEditorForm.OtherPanel.Visible = false
+    PlayersEditorForm.PlayerClonePanel.Visible = true
+
 end
 
 -- Hover
@@ -264,6 +307,16 @@ function OtherTabMouseLeave(sender)
     
     PlayersEditorForm.OtherTab.Color = '0x0049363C'
 end
+function PlayerCloneTabMouseEnter(sender)
+    if PlayersEditorForm.PlayerClonePanel.Visible then return end
+    
+    PlayersEditorForm.PlayerCloneTab.Color = '0x00271D20'
+end
+function PlayerCloneTabMouseLeave(sender)
+    if PlayersEditorForm.PlayerClonePanel.Visible then return end
+    
+    PlayersEditorForm.PlayerCloneTab.Color = '0x0049363C'
+end
 
 -- Apply Changes Click
 function ApplyChangesBtnClick(sender)
@@ -322,6 +375,7 @@ function PlayerEditorSettingsClick(sender)
     SettingsForm.show()
 end
 function FindPlayerByIDClick(sender)
+    create_hotkeys()
     sender.Text = ''
 end
 
@@ -503,4 +557,259 @@ function HeadTypeGroupCBOnChange(sender)
         end
     end
     CommonCBOnChange(sender)
+end
+
+-- COPY CM
+COPY_FROM_CM_PLAYER_ID = nil
+function CopyCMFindPlayerByIDClick(sender)
+    create_hotkeys({
+        sender = sender
+    })
+    COPY_FROM_CM_PLAYER_ID = nil
+    PlayersEditorForm.CopyCMImage.Visible = false
+    sender.Text = ''
+end
+
+function CopyCMSearchPlayerByIDClick(sender)
+    COPY_FROM_CM_PLAYER_ID = nil
+    local playerid = tonumber(PlayersEditorForm.CopyCMFindPlayerByID.Text)
+    if playerid == nil then 
+        PlayersEditorForm.CopyCMImage.Visible = false
+        return 
+    end
+
+    local org_players = readQword('playerDataPtr')
+    local org_tplinks = readQword('ptrTeamplayerlinks')
+
+    COPY_FROM_CM_PLAYER_ID = {
+        org_players = org_players,
+        keep_original = {
+            always = {
+                comps = {
+                    PlayerIDEdit = PlayersEditorForm.PlayerIDEdit.Text,
+                    TeamIDEdit = PlayersEditorForm.TeamIDEdit.Text,
+                    ContractValidUntilEdit = PlayersEditorForm.ContractValidUntilEdit.Text,
+                    PlayerJoinTeamDateEdit = PlayersEditorForm.PlayerJoinTeamDateEdit.Text,
+                    JerseyNumberEdit = PlayersEditorForm.JerseyNumberEdit.Text
+                }
+            },
+            age = {
+                cb = PlayersEditorForm.CMCopyAgeCB,
+                comps = {
+                    AgeEdit = PlayersEditorForm.JerseyNumberEdit.Text
+                }
+            },
+            headmodel = {
+                cb = PlayersEditorForm.CMCopyHeadModelCB,
+                comps = {
+                    HeadClassCodeEdit = PlayersEditorForm.HeadClassCodeEdit.Text,
+                    HeadAssetIDEdit = PlayersEditorForm.HeadAssetIDEdit.Text,
+                    HeadVariationEdit = PlayersEditorForm.HeadVariationEdit.Text,
+                    HairTypeEdit = PlayersEditorForm.HairTypeEdit.Text,
+                    HairStyleEdit = PlayersEditorForm.HairStyleEdit.Text,
+                    FacialHairTypeEdit = PlayersEditorForm.FacialHairTypeEdit.Text,
+                    FacialHairColorEdit = PlayersEditorForm.FacialHairColorEdit.Text,
+                    SideburnsEdit = PlayersEditorForm.SideburnsEdit.Text,
+                    EyebrowEdit = PlayersEditorForm.EyebrowEdit.Text,
+                    EyeColorEdit = PlayersEditorForm.EyeColorEdit.Text,
+                    SkinTypeEdit = PlayersEditorForm.SkinTypeEdit.Text,
+                    SkinColorCB = PlayersEditorForm.SkinColorCB.ItemIndex,
+                    HasHighQualityHeadCB = PlayersEditorForm.HasHighQualityHeadCB.ItemIndex,
+                    HairColorCB = PlayersEditorForm.HairColorCB.ItemIndex,
+                    HeadTypeCodeCB = PlayersEditorForm.HeadTypeCodeCB.Items[PlayersEditorForm.HeadTypeCodeCB.ItemIndex]
+                }
+            },
+            nameids = {
+                cb = PlayersEditorForm.CMCopyNameCB,
+                comps = {
+                    FirstNameIDEdit = PlayersEditorForm.FirstNameIDEdit.Text,
+                    LastNameIDEdit = PlayersEditorForm.LastNameIDEdit.Text,
+                    JerseyNameIDEdit = PlayersEditorForm.JerseyNameIDEdit.Text,
+                    CommonNameIDEdit = PlayersEditorForm.CommonNameIDEdit.Text
+                }
+            }
+        }
+    }
+
+    find_player_by_id(playerid)
+    COPY_FROM_CM_PLAYER_ID['players'] = readQword('playerDataPtr')
+
+    -- load headshot
+    local stream = load_headshot(
+        tonumber(ADDR_LIST.getMemoryRecordByID(CT_MEMORY_RECORDS['PLAYERID']).Value),
+        tonumber(ADDR_LIST.getMemoryRecordByID(CT_MEMORY_RECORDS['HEADTYPECODE']).Value),
+        tonumber(ADDR_LIST.getMemoryRecordByID(CT_MEMORY_RECORDS['HAIRCOLORCODE']).Value)
+    )
+    PlayersEditorForm.CopyCMImage.Picture.LoadFromStream(stream)
+    stream.destroy()
+
+    -- Restore org player in CT
+    writeQword('playerDataPtr', org_players)
+    writeQword('ptrTeamplayerlinks', org_tplinks)
+
+    if not PlayersEditorForm.CopyCMImage.Visible then
+        PlayersEditorForm.CopyCMImage.Visible = true
+    end
+end
+
+function CopyCMPlayerLabelClick(sender)
+    CopyCMPlayerBtnClick(sender)
+end
+
+function CopyCMPlayerBtnClick(sender)
+    if not COPY_FROM_CM_PLAYER_ID then
+        ShowMessage('Find player first')
+        return
+    end
+
+    writeQword('playerDataPtr', COPY_FROM_CM_PLAYER_ID['players'])
+    FillPlayerEditForm()
+
+    local org = COPY_FROM_CM_PLAYER_ID['keep_original']
+
+    for key, value in pairs(org) do
+        if key == 'always' then
+            for c, v in pairs(org['always']['comps']) do
+                PlayersEditorForm[c].Text = v
+            end
+        else
+            if org[key]['cb'].State == 1 then
+                for c, v in pairs(org[key]['comps']) do
+                    if PlayersEditorForm[c].ClassName == 'TCEEdit' then
+                        PlayersEditorForm[c].Text = v
+                    elseif PlayersEditorForm[c].ClassName == 'TCEComboBox' then
+                        if type(v) == 'number' then
+                            PlayersEditorForm[c].ItemIndex = v
+                        elseif type(v) == 'string' then
+                            FillHeadTypeCB({
+                                headtypecode = tonumber(v)
+                            })
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    -- Load Img
+    local ss_hs = load_headshot(
+        tonumber(PlayersEditorForm.PlayerIDEdit.Text),
+        tonumber(PlayersEditorForm.HeadTypeCodeCB.Items[PlayersEditorForm.HeadTypeCodeCB.ItemIndex]),
+        tonumber(PlayersEditorForm.HairColorCB.ItemIndex)
+    )
+    PlayersEditorForm.Headshot.Picture.LoadFromStream(ss_hs)
+    ss_hs.destroy()
+
+    recalculate_ovr()
+    writeQword('playerDataPtr', COPY_FROM_CM_PLAYER_ID['org_players'])
+    ShowMessage('Player data has been copied to GUI.\nTo see the changes in game you need to "Apply Changes"')
+end
+
+-- FUT
+function FUTChemStyleCBChange(sender)
+    sender.Hint = sender.Items[sender.ItemIndex]
+
+    -- Labels on card
+    local selected = PlayersEditorForm.FUTPickPlayerListBox.ItemIndex + 1
+    local player = FOUND_FUT_PLAYERS['items'][selected]
+    if not player then return end
+
+    fut_fill_attributes(player)
+end
+
+function FindPlayerByNameFUTEditClick(sender)
+    create_hotkeys({
+        sender = sender
+    })
+    sender.Text = ''
+end
+
+FOUND_FUT_PLAYERS = nil
+function SearchPlayerByNameFUTBtnClick(sender)
+    if sender.Text == '' then return end 
+
+    PlayersEditorForm.CardContainerPanel.Visible = false
+    PlayersEditorForm.FUTPickPlayerListBox.clear()
+    
+    FOUND_FUT_PLAYERS = fut_find_player(PlayersEditorForm.FindPlayerByNameFUTEdit.Text)
+    local players = FOUND_FUT_PLAYERS
+    local scrollbox_width = 310
+
+    for i=1, players['count'] do
+        local player = players['items'][i]
+        local card_type = RARITY_DISPLAY['dynamicRarities'][string.format('%d-%s', player['rarityId'], player['quality'])]
+        local formated_string = string.format(
+            '%s - %s - %d ovr - %s',
+            player['name'], card_type, player['rating'], player['position']
+        )
+
+        -- Dynamic width
+        local str_len = string.len(formated_string)
+        if str_len >= 35 then
+            local new_width = 310 + ((str_len - 35) * 8)
+            if new_width > scrollbox_width then
+                scrollbox_width = new_width
+            end
+        end
+        PlayersEditorForm.FUTPickPlayerListBox.Items.Add(formated_string)
+    end
+
+    -- Change width (add scroll)
+    if scrollbox_width ~= PlayersEditorForm.FUTPickPlayerListBox.Width then
+        PlayersEditorForm.FUTPickPlayerListBox.Width = scrollbox_width
+    end
+
+    if scrollbox_width > 310 then
+        PlayersEditorForm.FUTPickPlayerScrollBox.HorzScrollBar.Visible = true
+    else
+        PlayersEditorForm.FUTPickPlayerScrollBox.HorzScrollBar.Visible = false
+    end
+
+    if players['count'] >= 28 then
+        PlayersEditorForm.FUTPickPlayerScrollBox.VertScrollBar.Visible = true
+    else
+        PlayersEditorForm.FUTPickPlayerScrollBox.VertScrollBar.Visible = false
+    end
+
+end
+
+function FUTPickPlayerListBoxSelectionChange(sender, user)
+    local selected = PlayersEditorForm.FUTPickPlayerListBox.ItemIndex + 1
+    local player = FOUND_FUT_PLAYERS['items'][selected]
+    if not player then return end
+    -- Create CARD in GUI
+    fut_create_card(player)
+
+    if not PlayersEditorForm.CardContainerPanel.Visible then
+        PlayersEditorForm.CardContainerPanel.Visible = true
+    end
+end
+function CloneFromListBoxSelectionChange(sender, user)
+    local Panels = {
+        'CloneFromFUTPanel',
+        'CloneFromCMPanel',
+    }
+    for i=1, #Panels do
+        if sender.ItemIndex == i-1 then
+            PlayersEditorForm[Panels[i]].Visible = true
+        else
+            PlayersEditorForm[Panels[i]].Visible = false
+        end
+    end
+end
+
+function FUTCopyPlayerLabelClick(sender)
+    FUTCopyPlayerBtnClick(sender)
+end
+
+function FUTCopyPlayerBtnClick(sender)
+    local selected = PlayersEditorForm.FUTPickPlayerListBox.ItemIndex + 1
+    local player = FOUND_FUT_PLAYERS['items'][selected]
+
+    if not player then
+        ShowMessage('Select player card first.')
+        return
+    end
+
+    fut_copy_card_to_gui(player)
 end

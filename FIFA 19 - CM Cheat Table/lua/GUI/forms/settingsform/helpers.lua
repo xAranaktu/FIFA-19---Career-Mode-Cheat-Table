@@ -1,10 +1,9 @@
-local Panels = {
-    'GeneralSettingsPanel',
-    'PlayerEditorSettingsPanel',
-    'AutoActivationSettingsPanel'
-}
-
 function ActivateSection(index)
+    local Panels = {
+        'GeneralSettingsPanel',
+        'PlayerEditorSettingsPanel',
+        'AutoActivationSettingsPanel'
+    }
     SettingsForm.SettingsSectionsListBox.setItemIndex(index)
     for i=1, #Panels do
         if index == i-1 then

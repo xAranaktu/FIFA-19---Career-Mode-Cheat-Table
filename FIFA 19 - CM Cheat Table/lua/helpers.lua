@@ -26,25 +26,13 @@ end
 
 function create_dirs()
     local cmds = {
-        "md " .. '"' .. string.gsub(CACHE_DIR .. 'crest', "/","\\") .. '"',
-        "md " .. '"' .. string.gsub(CACHE_DIR .. 'heads', "/","\\") .. '"',
-        "md " .. '"' .. string.gsub(CACHE_DIR .. 'youthheads', "/","\\") .. '"',
-        "md " .. '"' .. string.gsub(DATA_DIR, "/","\\"):sub(1,-2) .. '"',
+        "mkdir " .. '"' .. string.gsub(DATA_DIR, "/","\\") .. '"',
+        "ECHO A | xcopy cache " .. '"' .. string.gsub(FIFA_SETTINGS_DIR .. 'Cheat Table/cache', "/","\\") .. '" /E /i',
     }
     for i=1, #cmds do
         execute_cmd(cmds[i])
     end
 
-end
-
-function copy_template_files()
-    local cmds = {
-        "copy " .. 'tmp\\crest_notfound.png "' .. string.gsub(CACHE_DIR .. 'crest\\notfound.png"', "/","\\"),
-        "copy " .. 'tmp\\heads_notfound.png "' .. string.gsub(CACHE_DIR .. 'heads\\notfound.png"', "/","\\"),
-    }
-    for i=1, #cmds do
-        execute_cmd(cmds[i])
-    end
 end
 
 local time = os.date("*t")
@@ -532,45 +520,79 @@ function load_cfg()
         do_log(string.format('Loading CFG_DATA from %s', CONFIG_FILE_PATH), 'INFO')
         local cfg = LIP.load(CONFIG_FILE_PATH);
 
+        if not cfg.new_dirs then
+            local def_cfg = default_cfg()
+            cfg.new_dirs = def_cfg.new_dirs
+        end
+
+        -- Create new dirs
+        local created = false
+        local save_required = false
+        for k,v in pairs(cfg.new_dirs) do
+            if not v then
+                if not created then
+                    created = true
+                    save_required = true
+                    create_dirs()
+                end
+                cfg.new_dirs[k] = true
+            end
+        end
         CACHE_DIR = cfg.directories.cache_dir
         DEBUG_MODE = cfg.flags.debug_mode
+
         return cfg
     else
         do_log(string.format('cfg file not found at %s - loading default data', CONFIG_FILE_PATH), 'INFO')
-        local data =
-        {
-            flags = {
-                debug_mode = DEBUG_MODE,
-                deactive_on_close = false,
-            },
-            directories = {
-                cache_dir = CACHE_DIR,
-            },
-            game =
-            {
-                name = string.format('FIFA%s.exe', FIFA),
-                name_trial = string.format('FIFA%s_TRIAL.exe', FIFA)
-            },
-            gui = {
-                opacity = 255
-            },
-            auto_activate = {
-                1666, 1667, 1668, 2058
-            },
-            hotkeys = {
-                sync_with_game = 'VK_F5',
-                search_player_by_id = 'VK_RETURN'
-            },
-            other = {
-                something = 'something'
-            }
-        };
+        local data = default_cfg()
         create_dirs()
-        copy_template_files()
 
-        LIP.save(CONFIG_FILE_PATH, data);
+        local status, err = pcall(LIP.save, CONFIG_FILE_PATH, data)
+
+        if not status then
+            do_log(string.format('LIP.SAVE FAILED for %s with err: ', CONFIG_FILE_PATH, err))
+            CACHE_DIR = 'cache/'
+            OFFSETS_FILE_PATH = 'offsets.ini'
+        end
+
         return data
     end
+end
+
+function default_cfg()
+    local data = {
+        flags = {
+            debug_mode = DEBUG_MODE,
+            deactive_on_close = false,
+        },
+        directories = {
+            cache_dir = CACHE_DIR,
+        },
+        game =
+        {
+            name = string.format('FIFA%s.exe', FIFA),
+            name_trial = string.format('FIFA%s_TRIAL.exe', FIFA)
+        },
+        gui = {
+            opacity = 255
+        },
+        auto_activate = {
+            1666, 1667, 1668, 2058
+        },
+        hotkeys = {
+            sync_with_game = 'VK_F5',
+            search_player_by_id = 'VK_RETURN'
+        },
+        new_dirs = {
+            ut = false,
+            flags = false,
+        },
+        other = {
+            something = 'something'
+        }
+    };
+
+    return data
 end
 
 function save_cfg()

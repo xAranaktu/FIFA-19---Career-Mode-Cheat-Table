@@ -60,6 +60,25 @@ function setfield (f, v)
   end
 end
 
+function split(s, delimiter)
+  result = {};
+  for match in (s..delimiter):gmatch("(.-)"..delimiter) do
+      table.insert(result, match);
+  end
+  return result;
+end
+
+function toBits(num)
+  local t={} -- will contain the bits
+  local bits=32
+  for b=bits,1,-1 do
+      rest=math.floor((math.fmod(num,2)))
+      t[b]=rest
+      num=(num-rest)/2
+  end
+  return string.reverse(table.concat(t))
+end
+
 function file_exists(name)
    local f=io.open(name,"r")
    if f~=nil then io.close(f) return true else return false end

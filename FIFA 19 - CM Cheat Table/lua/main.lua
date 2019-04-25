@@ -21,6 +21,7 @@ do_log('New session started', 'INFO')
 
 -- DEFAULT GLOBALS, better leave it as is
 HOMEDRIVE = os.getenv('HOMEDRIVE') or os.getenv('SystemDrive') or 'C:'
+-- HOMEDRIVE = 'Y:'
 
 FIFA_SETTINGS_DIR = string.format(
     "%s/Users/%s/Documents/FIFA %s/",
@@ -91,7 +92,7 @@ function start()
     logScreenID()
 
     -- update_offsets()
-    -- save_cfg()
+    save_cfg()
     autoactivate_scripts()
     
     for i = 1, #FORMS do

@@ -38,18 +38,18 @@ function get_components_description_player_edit()
         GKKickStyleEdit = {id = 91, modifier = 0},
     
         PreferredPosition1CB = {id = 46, modifier = 0},
-        PreferredPosition2CB = {id = 42, modifier = 0},
-        PreferredPosition3CB = {id = 13, modifier = 0},
-        PreferredPosition4CB = {id = 115, modifier = 0},
+        PreferredPosition2CB = {id = 42, modifier = -1},
+        PreferredPosition3CB = {id = 13, modifier = -1},
+        PreferredPosition4CB = {id = 115, modifier = -1},
     
         AttackingWorkRateCB = {id = 67, modifier = 0},
         DefensiveWorkRateCB = {id = 83, modifier = 0},
         SkillMovesCB = {id = 64, modifier = 0},
-        WeakFootCB = {id = 87, modifier = 0},
+        WeakFootCB = {id = 87, modifier = 1},
     
         IsRetiringCB = {id = 18, modifier = 0},
-        InternationalReputationCB = {id = 60, modifier = 0},
-        PreferredFootCB = {id = 85, modifier = 0},
+        InternationalReputationCB = {id = 60, modifier = 1},
+        PreferredFootCB = {id = 85, modifier = 1},
         GenderCB = {id = 120, modifier = 0},
         
         AttackTrackBar = {
@@ -470,7 +470,7 @@ function get_components_description_player_edit()
         StutterPenaltyCB = {id = 1843,},
         DivingHeaderCB = {id = 1840,},
         DrivenPassCB = {id = 1839,},
-        BacksIntoPlayerCB = {id = 1851,},
+        BacksBacksIntoPlayerCB = {id = 1851,},
         HiddenSetPlaySpecialistCB = {id = 1852,},
         TakesFinesseFreeKicksCB = {id = 1853,},
         TargetForwardCB = {id = 1857,},
@@ -524,7 +524,7 @@ function get_components_description_player_edit()
         EyebrowEdit = {id = 73, modifier = 0},
         EyeColorEdit = {id = 77, modifier = 0},
         SkinTypeEdit = {id = 89, modifier = 0},
-        SkinColorEdit = {id = 100, modifier = 0},
+        SkinColorCB = {id = 100, modifier = 1},
         HasHighQualityHeadCB = {id = 52, modifier = 0},
         HeadAssetIDEdit = {id = 57, modifier = 0},
         HeadVariationEdit = {id = 97, modifier = 0},

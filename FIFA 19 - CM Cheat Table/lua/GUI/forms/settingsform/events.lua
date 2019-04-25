@@ -41,8 +41,8 @@ function SettingsFormShow(sender)
     SettingsForm.CacheFilesDirEdit.Text = CACHE_DIR
     SettingsForm.GUIOpacityEdit.Text = CFG_DATA.gui.opacity
 
-    -- Fill Player Editor
     SettingsForm.SyncWithGameHotkeyEdit.Text = CFG_DATA.hotkeys.sync_with_game
+    SettingsForm.SearchPlayerByIDHotkeyEdit.Text = CFG_DATA.hotkeys.search_player_by_id
 
     -- Fill Auto Activation
     SettingsForm.CTTreeview.Items.clear()
@@ -142,7 +142,6 @@ function ClearCacheButtonClick(sender)
     delete_directory(string.gsub(CACHE_DIR, "/","\\"):sub(1,-2))
 
     create_dirs()
-    copy_template_files()
 
     showMessage('All cached files has been deleted.')
 end
