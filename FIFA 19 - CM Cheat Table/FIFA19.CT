@@ -9,7 +9,7 @@
   <CheatEntries>
     <CheatEntry>
       <ID>2794</ID>
-      <Description>"v1.2.7"</Description>
+      <Description>"v1.2.8"</Description>
       <LastState Value="" RealAddress="00000000"/>
       <GroupHeader>1</GroupHeader>
     </CheatEntry>
@@ -11458,7 +11458,6 @@ dealloc(managertable_teamid)
             <CheatEntry>
               <ID>2781</ID>
               <Description>"Unique Run Style"</Description>
-              <Options moHideChildren="1"/>
               <LastState/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>{
@@ -18406,6 +18405,232 @@ dealloc(newmem_CountryIsBeingScouted)
 "FIFA19.exe"+3FD1832: BA 01 00 00 00           -  mov edx,00000001
 }
 </AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>2975</ID>
+                  <Description>"Generate players with custom ID"</Description>
+                  <Options moHideChildren="1"/>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>{
+AUTHOR:
+- Aranaktu
+
+GAME VERSION:
+- Script should always work with newest version of the game which can be downloaded from Origin.
+
+RISK LEVEL:
+- 3/5 (This script will harm your cm save if you mess up something with your editions.)
+
+DESCRIPTION:
+  Edit playerid of the players that your youth academy scout brings you
+
+  Some basic rules that you should stick to:
+  1. Don't create more than 1 player with the same id. If playerid will be duplicated your game will crash.
+
+HOW TO USE:
+  1. Load your career save
+  2. Activate this script
+  3. Edit 'PlayerID 1', 'PlayerID 2' etc. If you want to create only one player with custom ID then put playerid in 'PlayerID 1' and set rest values on '0'
+  4. Simulate to the next YA scout report.
+  5. Done
+
+VIDEO TUTORIAL:
+- https://youtu.be/zxrjYBgksvE
+}
+
+[ENABLE]
+{$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
+INJECT_YA_GeneratePlayer = get_validated_address('AOB_YouthAcademyGeneratePlayer')
+ORG_YA_GeneratePlayer = readBytes(INJECT_YA_GeneratePlayer, 20, true)
+
+{$asm}
+
+alloc(newmem_YA_GeneratePlayer,$1000,$INJECT_YA_GeneratePlayer)
+
+alloc(arr_YACustomPlayerID,100)
+registersymbol(arr_YACustomPlayerID)
+
+label(code)
+label(clean)
+label(loop)
+label(return)
+
+newmem_YA_GeneratePlayer:
+  cmp [rsi], FFFFFFFF // playerid == -1
+  je code
+  cmp [arr_YACustomPlayerID], 0
+  je code
+  push rsi
+  mov rsi, [rsp+18]
+  mov ebx, [arr_YACustomPlayerID]
+  mov [rsi], ebx
+  pop rsi
+  jmp clean
+
+clean:
+  xor ebx, ebx
+  mov [arr_YACustomPlayerID], ebx
+  mov rbx, arr_YACustomPlayerID
+loop:
+  add rbx, 4
+  cmp [rbx], 0
+  je code
+  mov eax, [rbx]
+  mov [rbx-4], eax
+  xor eax, eax
+  mov [rbx], eax
+  jmp loop
+
+code:
+  mov rbx,[rsp+00000080]
+  jmp return
+
+$INJECT_YA_GeneratePlayer+08:
+  jmp newmem_YA_GeneratePlayer
+  nop
+  nop
+  nop
+return:
+
+[DISABLE]
+//code_YA_PlayerPotential from here till the end of the code_YA_PlayerPotential will be used to disable the cheat
+{$lua}
+writeBytes(INJECT_YA_GeneratePlayer, ORG_YA_GeneratePlayer)
+{$asm}
+
+dealloc(newmem_YA_GeneratePlayer)
+unregistersymbol(arr_YACustomPlayerID)
+dealloc(arr_YACustomPlayerID)
+
+{
+// ORIGINAL CODE - INJECTION POINT: "FIFA19.exe"+380A896
+
+"FIFA19.exe"+380A859: 40 B6 01                    -  mov sil,01
+"FIFA19.exe"+380A85C: EB 31                       -  jmp FIFA19.exe+380A88F
+"FIFA19.exe"+380A85E: 48 C7 06 FF FF FF FF        -  mov qword ptr [rsi],FFFFFFFF
+"FIFA19.exe"+380A865: 48 C7 46 08 FF FF FF FF     -  mov qword ptr [rsi+08],FFFFFFFF
+"FIFA19.exe"+380A86D: 48 C7 46 10 FF FF FF FF     -  mov qword ptr [rsi+10],FFFFFFFF
+"FIFA19.exe"+380A875: 48 C7 46 18 FF FF FF FF     -  mov qword ptr [rsi+18],FFFFFFFF
+"FIFA19.exe"+380A87D: 48 C7 46 20 FF FF FF FF     -  mov qword ptr [rsi+20],FFFFFFFF
+"FIFA19.exe"+380A885: C7 46 28 FF FF FF FF        -  mov [rsi+28],FFFFFFFF
+"FIFA19.exe"+380A88C: 40 32 F6                    -  xor sil,sil
+"FIFA19.exe"+380A88F: 48 8B 3D 62 59 A1 02        -  mov rdi,[FIFA19.exe+62201F8]
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+380A896: 48 8B 9C 24 80 00 00 00     -  mov rbx,[rsp+00000080]
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+380A89E: 48 85 DB                    -  test rbx,rbx
+"FIFA19.exe"+380A8A1: 74 1C                       -  je FIFA19.exe+380A8BF
+"FIFA19.exe"+380A8A3: 4C 8B 03                    -  mov r8,[rbx]
+"FIFA19.exe"+380A8A6: 33 D2                       -  xor edx,edx
+"FIFA19.exe"+380A8A8: 48 8B CB                    -  mov rcx,rbx
+"FIFA19.exe"+380A8AB: 41 FF 10                    -  call qword ptr [r8]
+"FIFA19.exe"+380A8AE: 4C 8B 0F                    -  mov r9,[rdi]
+"FIFA19.exe"+380A8B1: 45 33 C0                    -  xor r8d,r8d
+"FIFA19.exe"+380A8B4: 48 8B D3                    -  mov rdx,rbx
+"FIFA19.exe"+380A8B7: 48 8B CF                    -  mov rcx,rdi
+}
+</AssemblerScript>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>2976</ID>
+                      <Description>"PlayerID 1"</Description>
+                      <VariableType>4 Bytes</VariableType>
+                      <Address>arr_YACustomPlayerID</Address>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2977</ID>
+                      <Description>"PlayerID 2"</Description>
+                      <VariableType>4 Bytes</VariableType>
+                      <Address>arr_YACustomPlayerID+4</Address>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2978</ID>
+                      <Description>"PlayerID 3"</Description>
+                      <VariableType>4 Bytes</VariableType>
+                      <Address>arr_YACustomPlayerID+8</Address>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2990</ID>
+                      <Description>"PlayerID 4"</Description>
+                      <VariableType>4 Bytes</VariableType>
+                      <Address>arr_YACustomPlayerID+C</Address>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2989</ID>
+                      <Description>"PlayerID 5"</Description>
+                      <VariableType>4 Bytes</VariableType>
+                      <Address>arr_YACustomPlayerID+10</Address>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2988</ID>
+                      <Description>"PlayerID 6"</Description>
+                      <VariableType>4 Bytes</VariableType>
+                      <Address>arr_YACustomPlayerID+14</Address>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2987</ID>
+                      <Description>"PlayerID 7"</Description>
+                      <VariableType>4 Bytes</VariableType>
+                      <Address>arr_YACustomPlayerID+18</Address>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2986</ID>
+                      <Description>"PlayerID 8"</Description>
+                      <VariableType>4 Bytes</VariableType>
+                      <Address>arr_YACustomPlayerID+1C</Address>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2985</ID>
+                      <Description>"PlayerID 9"</Description>
+                      <VariableType>4 Bytes</VariableType>
+                      <Address>arr_YACustomPlayerID+20</Address>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2984</ID>
+                      <Description>"PlayerID 10"</Description>
+                      <VariableType>4 Bytes</VariableType>
+                      <Address>arr_YACustomPlayerID+24</Address>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2983</ID>
+                      <Description>"PlayerID 11"</Description>
+                      <VariableType>4 Bytes</VariableType>
+                      <Address>arr_YACustomPlayerID+28</Address>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2982</ID>
+                      <Description>"PlayerID 12"</Description>
+                      <VariableType>4 Bytes</VariableType>
+                      <Address>arr_YACustomPlayerID+2C</Address>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2981</ID>
+                      <Description>"PlayerID 13"</Description>
+                      <VariableType>4 Bytes</VariableType>
+                      <Address>arr_YACustomPlayerID+30</Address>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2980</ID>
+                      <Description>"PlayerID 14"</Description>
+                      <VariableType>4 Bytes</VariableType>
+                      <Address>arr_YACustomPlayerID+34</Address>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>2979</ID>
+                      <Description>"PlayerID 15"</Description>
+                      <VariableType>4 Bytes</VariableType>
+                      <Address>arr_YACustomPlayerID+38</Address>
+                    </CheatEntry>
+                  </CheatEntries>
                 </CheatEntry>
               </CheatEntries>
             </CheatEntry>

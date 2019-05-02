@@ -483,6 +483,7 @@ function load_aobs()
         AOB_YouthAcademyWeakFootChance = 'FF C3 89 07 48 8D 7F 04 83 FB 06',
         AOB_YouthAcademyAllCountriesAvailable = '89 4C 24 30 B9 04 00 00 00',
         AOB_YouthAcademySkillMoveChance = '89 B5 7C 01 00 00 4C',
+        AOB_YouthAcademyGeneratePlayer = 'F6 48 8B 3D ?? ?? ?? ?? 48 8B 9C 24 80 00 00 00',
         AOB_CountryIsBeingScouted = '80 FB 01 75 0C 4C',
         AOB_NoPlayerRegens = '41 BF 10 00 00 00 48 8B CE',
         AOB_NoPlayerGrowth = '48 89 45 B8 48 85 C0 0F 84 FC',
