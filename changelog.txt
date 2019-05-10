@@ -186,4 +186,7 @@ Changelog:
     
     v1.2.8:
     - Added 'Generate players with custom ID' script to 'Youth Academy' section
+    
+    v1.2.9:
+    - Added 'Free Fly Camera' script to 'Non-CM Related' section
       
