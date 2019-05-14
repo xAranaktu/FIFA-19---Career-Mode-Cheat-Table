@@ -189,4 +189,8 @@ Changelog:
     
     v1.2.9:
     - Added 'Free Fly Camera' script to 'Non-CM Related' section
+    
+    v1.3.0
+    - 'Free Fly Camera' is also working with gamepad now.
+    - Fixed bug in player editor. Now you can edit players through GUI even if you don't have internet connection.
       
