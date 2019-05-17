@@ -505,6 +505,16 @@ function load_aobs()
         AOB_AgreeTransferRequest = "44 8B F0 89 84 24 90 00 00 00",
         AOB_EditPlayerBid = "41 B8 43 D9 FF FF",
 
+        -- FREE CAM
+        AOB_CAM_TARGET = "0F 11 AB 00 0B 00 00",
+        AOB_CAM_ROTATE = "F3 0F 11 83 C8 05 00 00",
+        AOB_CAM_V_ROTATE_SPEED_MUL = "F3 0F 5E C7 F3 0F 11 83 50 0B 00 00",
+        AOB_CAM_H_ROTATE_SPEED_MUL = "F3 0F 11 83 4C 0B 00 00",
+        AOB_CAM_Z_ROTATE_SPEED_MUL = "F3 0F 11 83 54 0B 00 00 F3",
+        AOB_STADIUM_BOUNDARY = "F3 0F 10 35 76 AC 10 F9",
+        AOB_CAM_Z_BOUNDARY = "F3 0F 6F 12 0F 28 C3",
+        AOB_FULL_ANGLE_ROTV = "F3 0F 10 40 60 F3 0F 58 83 B4",
+
         -- FootballCompEng_Win64_retail.dll
         FootballCompEng = {
             MODULE_NAME = 'FootballCompEng_Win64_retail.dll',

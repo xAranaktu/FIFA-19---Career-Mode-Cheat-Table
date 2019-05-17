@@ -9,7 +9,7 @@
   <CheatEntries>
     <CheatEntry>
       <ID>2794</ID>
-      <Description>"v1.2.8"</Description>
+      <Description>"v1.2.9"</Description>
       <LastState Value="" RealAddress="00000000"/>
       <GroupHeader>1</GroupHeader>
     </CheatEntry>
@@ -73,7 +73,7 @@
     <CheatEntry>
       <ID>2892</ID>
       <Description>"GUI"</Description>
-      <LastState/>
+      <LastState Activated="1"/>
       <VariableType>Auto Assembler Script</VariableType>
       <AssemblerScript>// This script will show/hide Main Form
 
@@ -93,20 +93,20 @@ PlayersEditorForm.hide()
       <ID>1666</ID>
       <Description>"Scripts"</Description>
       <Options moHideChildren="1"/>
-      <LastState Value="" RealAddress="00000000"/>
+      <LastState Value="" Activated="1" RealAddress="00000000"/>
       <GroupHeader>1</GroupHeader>
       <CheatEntries>
         <CheatEntry>
           <ID>2895</ID>
           <Description>"Non-CM Related"</Description>
           <Options moHideChildren="1"/>
-          <LastState Value="" RealAddress="00000000"/>
+          <LastState Value="" Activated="1" RealAddress="00000000"/>
           <GroupHeader>1</GroupHeader>
           <CheatEntries>
             <CheatEntry>
               <ID>2793</ID>
               <Description>"Dont Pause Game on AltTab"</Description>
-              <LastState/>
+              <LastState Activated="1"/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>{
 AUTHOR: Aranaktu
@@ -225,6 +225,721 @@ Update 3
 "FIFA19.exe"+EBD2313: 66 66 66 66 2E 0F 1F 84 00 00 00 00 00     -  nop cs:[rax+rax+00000000]
 }
 </AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>2991</ID>
+              <Description>"Free Fly Camera"</Description>
+              <Options moHideChildren="1"/>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>{
+AUTHOR: Aranaktu
+
+GAME VERSION: Script should always work with newest version of the game which can be downloaded from Origin.
+
+RISK LEVEL: 0/5 (There is no chance that this script will harm your cm save.)
+
+DESCRIPTION:
+Free fly camera/Photo mode (call is as you want). Basically you can move camera anywhere during replays
+Tested only for "Camera: Orbit"
+
+HOW TO USE:
+1. Pause game while you are playing match.
+2. Click on "Instant Replay"
+3. Set camera on "Orbit"
+4. Move your camera using buttons on your keyboard.
+
+Default Button Mappings:
+(You can change them below, lua part of the code)
+
+
+R - Reset camera position and modifiers
+U - Forward
+H - Left
+J - Backward
+K - Right
+O - UP
+L - DOWN
+NUMPAD +  - Speed Up
+NUMPAD -  - Slow Down
+
+VIDEO TUTORIAL(S):
+- https://www.youtube.com/watch?v=Jm2ePRNORfw
+}
+
+{
+  Slightly edited lua script for moving camera from:
+  https://reverseengineering.stackexchange.com/questions/18144/need-help-with-reverse-engineering-camera-related-information-in-a-video-game
+}
+globalalloc(CamSpeedModifier,8)
+CamSpeedModifier:
+dd (float)10
+
+globalalloc(CamRotSpeedMultiplier,8)
+CamRotSpeedMultiplier:
+dd (float)2
+
+globalalloc(StadiumBoundary,8)
+StadiumBoundary:
+dd (float)20000
+
+globalalloc(CamZBoundary,8)
+CamZBoundary:
+dd (float)-50000
+
+globalalloc(RotVMaxPositiveVal,8)
+RotVMaxPositiveVal:
+dd (float)1.57
+
+globalalloc(RotVMaxNegativeVal,8)
+RotVMaxNegativeVal:
+dd (float)-1.57
+
+globalalloc(ptrCamTarget,8)
+ptrCamTarget:
+dq 0
+
+globalalloc(ptrCamRot,8)
+ptrCamRot:
+dq 0
+
+globalalloc(bDisableZoom,1)
+bDisableZoom:
+db 0
+
+
+
+[ENABLE]
+{$lua}
+-- Check if user has set up CT correctly
+local status, error = pcall(get_validated_address)
+if not status then
+    showMessage('Error during script activation, error:\n' .. error)
+    print("Read guide to avoid problems like this: https://github.com/xAranaktu/FIFA-19---Career-Mode-Cheat-Table#getting-started")
+    assert(false, error)
+end
+
+INJECT_CAM_ROTATE = get_validated_address('AOB_CAM_ROTATE')
+ORG_CAM_ROTATE = readBytes(INJECT_CAM_ROTATE, 12, true)
+
+INJECT_CAM_TARGET = get_validated_address('AOB_CAM_TARGET')
+ORG_CAM_TARGET = readBytes(INJECT_CAM_TARGET, 12, true)
+
+INJECT_CAM_V_ROTATE_SPEED_MUL = get_validated_address('AOB_CAM_V_ROTATE_SPEED_MUL')
+ORG_CAM_V_ROTATE_SPEED_MUL = readBytes(INJECT_CAM_V_ROTATE_SPEED_MUL, 12, true)
+
+INJECT_CAM_H_ROTATE_SPEED_MUL = get_validated_address('AOB_CAM_H_ROTATE_SPEED_MUL')
+ORG_CAM_H_ROTATE_SPEED_MUL = readBytes(INJECT_CAM_H_ROTATE_SPEED_MUL, 12, true)
+
+INJECT_CAM_Z_ROTATE_SPEED_MUL = get_validated_address('AOB_CAM_Z_ROTATE_SPEED_MUL')
+ORG_CAM_Z_ROTATE_SPEED_MUL = readBytes(INJECT_CAM_Z_ROTATE_SPEED_MUL, 12, true)
+
+INJECT_STADIUM_BOUNDARY = get_validated_address('AOB_STADIUM_BOUNDARY')
+ORG_STADIUM_BOUNDARY = readBytes(INJECT_STADIUM_BOUNDARY, 12, true)
+
+INJECT_CAM_Z_BOUNDARY = get_validated_address('AOB_CAM_Z_BOUNDARY')
+ORG_CAM_Z_BOUNDARY = readBytes(INJECT_CAM_Z_BOUNDARY, 12, true)
+
+INJECT_FULL_ANGLE_ROTV = get_validated_address('AOB_FULL_ANGLE_ROTV')
+ORG_FULL_ANGLE_ROTV = readBytes(INJECT_FULL_ANGLE_ROTV, 12, true)
+
+-- HOTKEYS
+
+--Speed modifier value, read from memory location we allocated earlier
+t=createTimer(nil)
+
+function checkKeys() --Check keys for input (check on a timer)
+
+-- camera speed
+local speed = readFloat("CamSpeedModifier")
+
+-- Camera coordinates
+local camx_ptr = "[ptrCamTarget]+B00"   -- Camera X
+local camy_ptr = "[ptrCamTarget]+B08"   -- Camera Y
+local camz_ptr = "[ptrCamTarget]+B04"   -- Camera Z
+local rotv_ptr = "[ptrCamRot]+5B4"      -- Vertical (Pitch) (UP-DOWN) (Radians)
+local roth_ptr = "[ptrCamRot]+5B8"      -- Horizontal (Yaw) (LEFT-RIGHT) (Radians)
+
+--Camera coordinates values
+local camx = readFloat(camx_ptr) -- Camera X
+local camy = readFloat(camy_ptr) -- Camera Y
+local camz = readFloat(camz_ptr) -- Camera Z
+local rotv = readFloat(rotv_ptr) -- Vertical (Pitch) (UP-DOWN) (Radians)
+local roth = readFloat(roth_ptr) -- Horizontal (Yaw) (LEFT-RIGHT) (Radians)
+
+if camx == nil then return end
+
+--Sine and Cosine of Rotation Values
+local sinh = math.sin(roth) -- Sine of Horizontal (Yaw)
+local cosh = math.cos(roth) -- Cosine of Horizontal (Yaw)
+local sinv = math.sin(rotv) -- Sine of Vertical (Pitch)
+local cosv = math.cos(rotv) -- Cosine of Vertical (Pitch)
+
+  --Hotkey Setup
+  --[[
+        Button Mappings:
+        R - Reset camera position and modifiers
+        U - Forward
+        H - Left
+        J - Backward
+        K - Right
+        O - UP
+        L - DOWN
+        NUMPAD +  - Speed Up
+        NUMPAD -  - Slow Down
+  ]]
+
+  --Forward
+  if isKeyPressed(VK_U) then
+    writeFloat(camx_ptr, camx - (cosh * cosv * speed))
+    writeFloat(camy_ptr, camy + (sinh * cosv * speed))
+    writeFloat(camz_ptr, camz - (sinv * speed))
+  end
+  --Left
+  if isKeyPressed(VK_H) then
+    writeFloat(camx_ptr, camx + (sinh * speed))
+    writeFloat(camy_ptr, camy + (cosh * speed))
+  end
+  --Back
+  if isKeyPressed(VK_J) then
+    writeFloat(camx_ptr, camx + (cosh * cosv * speed))
+    writeFloat(camy_ptr, camy - (sinh * cosv * speed))
+    writeFloat(camz_ptr, camz + (sinv * speed))
+  end
+  --Right
+  if isKeyPressed(VK_K) then
+    writeFloat(camx_ptr, camx - (sinh * speed))
+    writeFloat(camy_ptr, camy - (cosh * speed))
+  end
+  --Up
+  if isKeyPressed(VK_O) then
+   writeFloat(camz_ptr, camz + (speed * 0.5))
+  end
+  --Down
+  if isKeyPressed(VK_L) then
+   writeFloat(camz_ptr, camz - (speed * 0.5))
+  end
+
+
+  -- Reset
+  if isKeyPressed(VK_R) then
+    writeFloat(camx_ptr, 0.0)
+    writeFloat(camy_ptr, 0.0)
+    writeFloat(camz_ptr, 0.0)
+    writeFloat(rotv_ptr, 0.0)
+    writeFloat(roth_ptr, 0.0)
+
+    writeFloat("CamSpeedModifier", 10.0)
+  end
+
+  --Speed Modifiers
+  if isKeyPressed(VK_ADD) then --If C is pressed, increase speed; max of 100
+    if (speed &lt; 200) then
+      writeFloat("CamSpeedModifier", speed + 2.0)
+    end
+  elseif isKeyPressed(VK_SUBTRACT) then --If Alt is pressed, slow way down
+    if (speed &gt; 10) then
+        writeFloat("CamSpeedModifier", speed - 2.0)
+    end
+  end
+
+end
+
+timer_setInterval(t, 10)
+timer_onTimer(t, checkKeys)
+timer_setEnabled(t, true)
+{$asm}
+alloc(newmem_CAM_ROTATE, $1000, $INJECT_CAM_ROTATE)
+
+label(code_CAM_ROTATE)
+label(ret_CAM_ROTATE)
+
+newmem_CAM_ROTATE:
+  mov [ptrCamRot], rbx
+
+code_CAM_ROTATE:
+  cmp [bDisableZoom], 1
+  je ret_CAM_ROTATE
+  movss [rbx+000005C8],xmm0
+  jmp ret_CAM_ROTATE
+
+$INJECT_CAM_ROTATE:
+  jmp newmem_CAM_ROTATE
+  nop
+  nop
+  nop
+ret_CAM_ROTATE:
+
+alloc(newmem_CAM_TARGET, $1000, $INJECT_CAM_TARGET)
+
+label(code_CAM_TARGET)
+label(ret_CAM_TARGET)
+
+newmem_CAM_TARGET:
+  mov [ptrCamTarget], rbx
+
+code_CAM_TARGET:
+  // movups [rbx+00000B00],xmm5
+  jmp ret_CAM_TARGET
+
+$INJECT_CAM_TARGET:
+  jmp newmem_CAM_TARGET
+  nop
+  nop
+ret_CAM_TARGET:
+
+alloc(newmem_CAM_V_ROTATE_SPEED_MUL, $1000, $INJECT_CAM_V_ROTATE_SPEED_MUL)
+
+label(code_CAM_V_ROTATE_SPEED_MUL)
+label(ret_CAM_V_ROTATE_SPEED_MUL)
+
+newmem_CAM_V_ROTATE_SPEED_MUL:
+
+code_CAM_V_ROTATE_SPEED_MUL:
+  divss xmm0,xmm7
+  mulss xmm0, [CamRotSpeedMultiplier]
+  movss [rbx+00000B50],xmm0
+  jmp ret_CAM_V_ROTATE_SPEED_MUL
+
+$INJECT_CAM_V_ROTATE_SPEED_MUL:
+  jmp newmem_CAM_V_ROTATE_SPEED_MUL
+  nop
+  nop
+  nop
+  nop
+  nop
+  nop
+  nop
+ret_CAM_V_ROTATE_SPEED_MUL:
+
+alloc(newmem_CAM_H_ROTATE_SPEED_MUL, $1000, $INJECT_CAM_H_ROTATE_SPEED_MUL)
+
+label(code_CAM_H_ROTATE_SPEED_MUL)
+label(ret_CAM_H_ROTATE_SPEED_MUL)
+
+newmem_CAM_H_ROTATE_SPEED_MUL:
+  mulss xmm0, [CamRotSpeedMultiplier]
+
+code_CAM_H_ROTATE_SPEED_MUL:
+  movss [rbx+00000B4C],xmm0
+  jmp ret_CAM_H_ROTATE_SPEED_MUL
+
+$INJECT_CAM_H_ROTATE_SPEED_MUL:
+  jmp newmem_CAM_H_ROTATE_SPEED_MUL
+  nop
+  nop
+  nop
+
+ret_CAM_H_ROTATE_SPEED_MUL:
+
+alloc(newmem_CAM_Z_ROTATE_SPEED_MUL, $1000, $INJECT_CAM_Z_ROTATE_SPEED_MUL)
+
+label(code_CAM_Z_ROTATE_SPEED_MUL)
+label(ret_CAM_Z_ROTATE_SPEED_MUL)
+
+newmem_CAM_Z_ROTATE_SPEED_MUL:
+
+code_CAM_Z_ROTATE_SPEED_MUL:
+  mulss xmm0, [CamRotSpeedMultiplier]
+  movss [rbx+00000B54],xmm0
+  jmp ret_CAM_Z_ROTATE_SPEED_MUL
+
+$INJECT_CAM_Z_ROTATE_SPEED_MUL:
+  jmp newmem_CAM_Z_ROTATE_SPEED_MUL
+  nop
+  nop
+  nop
+ret_CAM_Z_ROTATE_SPEED_MUL:
+
+alloc(newmem_STADIUM_BOUNDARY, $1000, $INJECT_STADIUM_BOUNDARY)
+
+label(code_STADIUM_BOUNDARY)
+label(ret_STADIUM_BOUNDARY)
+
+newmem_STADIUM_BOUNDARY:
+
+code_STADIUM_BOUNDARY:
+  movss xmm6,[StadiumBoundary]
+  jmp ret_STADIUM_BOUNDARY
+
+$INJECT_STADIUM_BOUNDARY:
+  jmp newmem_STADIUM_BOUNDARY
+  nop
+  nop
+  nop
+ret_STADIUM_BOUNDARY:
+
+alloc(newmem_CAM_Z_BOUNDARY, $1000, $INJECT_CAM_Z_BOUNDARY)
+
+label(code_CAM_Z_BOUNDARY)
+label(ret_CAM_Z_BOUNDARY)
+
+newmem_CAM_Z_BOUNDARY:
+  movss xmm3,[CamZBoundary]
+code_CAM_Z_BOUNDARY:
+  movdqu xmm2,[rdx]
+  movaps xmm0,xmm3
+  jmp ret_CAM_Z_BOUNDARY
+
+$INJECT_CAM_Z_BOUNDARY:
+  jmp newmem_CAM_Z_BOUNDARY
+  nop
+  nop
+ret_CAM_Z_BOUNDARY:
+
+alloc(newmem_FULL_ANGLE_ROTV, $1000, $INJECT_FULL_ANGLE_ROTV)
+
+label(code_FULL_ANGLE_ROTV)
+label(ret_FULL_ANGLE_ROTV)
+label(check_lte_FULL_ANGLE_ROTV)
+
+newmem_FULL_ANGLE_ROTV:
+  push eax
+  // ORG
+  movss xmm0,[rax+60]
+  addss xmm0,dword ptr [rbx+000005B4]
+  movss [rbx+000005B4],xmm0
+  // ORG
+
+  comiss xmm0,[RotVMaxPositiveVal]
+  jb check_lte_FULL_ANGLE_ROTV
+  mov eax, [RotVMaxPositiveVal]
+  mov [rbx+5B4], eax
+
+check_lte_FULL_ANGLE_ROTV:
+  comiss xmm0,[RotVMaxNegativeVal]
+  ja code_FULL_ANGLE_ROTV
+  mov eax, [RotVMaxNegativeVal]
+  mov [rbx+5B4], eax
+
+code_FULL_ANGLE_ROTV:
+  pop eax
+
+  jmp ret_FULL_ANGLE_ROTV+39
+
+$INJECT_FULL_ANGLE_ROTV:
+  jmp newmem_FULL_ANGLE_ROTV
+
+ret_FULL_ANGLE_ROTV:
+
+[DISABLE]
+{$lua}
+timer_setEnabled(t, false)
+writeBytes(INJECT_CAM_ROTATE, ORG_CAM_ROTATE)
+writeBytes(INJECT_CAM_TARGET, ORG_CAM_TARGET)
+writeBytes(INJECT_CAM_V_ROTATE_SPEED_MUL, ORG_CAM_V_ROTATE_SPEED_MUL)
+writeBytes(INJECT_CAM_H_ROTATE_SPEED_MUL, ORG_CAM_H_ROTATE_SPEED_MUL)
+writeBytes(INJECT_CAM_Z_ROTATE_SPEED_MUL, ORG_CAM_Z_ROTATE_SPEED_MUL)
+writeBytes(INJECT_STADIUM_BOUNDARY, ORG_STADIUM_BOUNDARY)
+writeBytes(INJECT_CAM_Z_BOUNDARY, ORG_CAM_Z_BOUNDARY)
+writeBytes(INJECT_FULL_ANGLE_ROTV, ORG_FULL_ANGLE_ROTV)
+{$asm}
+
+dealloc(newmem_CAM_ROTATE)
+dealloc(newmem_CAM_TARGET)
+dealloc(newmem_CAM_V_ROTATE_SPEED_MUL)
+dealloc(newmem_CAM_H_ROTATE_SPEED_MUL)
+dealloc(newmem_CAM_Z_ROTATE_SPEED_MUL)
+dealloc(newmem_STADIUM_BOUNDARY)
+dealloc(newmem_CAM_Z_BOUNDARY)
+dealloc(newmem_FULL_ANGLE_ROTV)
+
+
+{
+// ORIGINAL CODE - INJECT_CAM_ROTATE POINT: "FIFA19.exe"+8B49D05
+
+"FIFA19.exe"+8B49CC5: E8 06 5D 98 FB                 -  call FIFA19.exe+44CF9D0
+"FIFA19.exe"+8B49CCA: F3 0F 59 47 50                 -  mulss xmm0,[rdi+50]
+"FIFA19.exe"+8B49CCF: F3 0F 5C F8                    -  subss xmm7,xmm0
+"FIFA19.exe"+8B49CD3: F3 0F 58 BB BC 05 00 00        -  addss xmm7,dword ptr [rbx+000005BC]
+"FIFA19.exe"+8B49CDB: F3 0F 11 BB BC 05 00 00        -  movss [rbx+000005BC],xmm7
+"FIFA19.exe"+8B49CE3: F3 0F 10 47 54                 -  movss xmm0,[rdi+54]
+"FIFA19.exe"+8B49CE8: F3 0F 58 83 C4 05 00 00        -  addss xmm0,dword ptr [rbx+000005C4]
+"FIFA19.exe"+8B49CF0: F3 0F 11 83 C4 05 00 00        -  movss [rbx+000005C4],xmm0
+"FIFA19.exe"+8B49CF8: F3 0F 10 47 68                 -  movss xmm0,[rdi+68]
+"FIFA19.exe"+8B49CFD: F3 0F 58 83 C8 05 00 00        -  addss xmm0,dword ptr [rbx+000005C8]
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+8B49D05: F3 0F 11 83 C8 05 00 00        -  movss [rbx+000005C8],xmm0
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+8B49D0D: F3 0F 11 46 40                 -  movss [rsi+40],xmm0
+"FIFA19.exe"+8B49D12: F3 0F 10 4F 64                 -  movss xmm1,[rdi+64]
+"FIFA19.exe"+8B49D17: F3 0F 58 8B B0 05 00 00        -  addss xmm1,dword ptr [rbx+000005B0]
+"FIFA19.exe"+8B49D1F: F3 0F 10 05 8D CA 8B FC        -  movss xmm0,[FIFA19.exe+54067B4]
+"FIFA19.exe"+8B49D27: 0F 2F C1                       -  comiss xmm0,xmm1
+"FIFA19.exe"+8B49D2A: F3 0F 11 8B B0 05 00 00        -  movss [rbx+000005B0],xmm1
+"FIFA19.exe"+8B49D32: 76 0A                          -  jna FIFA19.exe+8B49D3E
+"FIFA19.exe"+8B49D34: C7 83 B0 05 00 00 00 00 20 41  -  mov [rbx+000005B0],41200000
+"FIFA19.exe"+8B49D3E: F3 0F 10 83 B4 05 00 00        -  movss xmm0,[rbx+000005B4]
+"FIFA19.exe"+8B49D46: 0F 10 3E                       -  movups xmm7,[rsi]
+}
+
+{
+// ORIGINAL CODE - INJECT_CAM_TARGET POINT: "FIFA19.exe"+1262CB7
+
+"FIFA19.exe"+1262C84: 0F 14 E3                 -  unpcklps xmm4,xmm3
+"FIFA19.exe"+1262C87: 0F 28 CD                 -  movaps xmm1,xmm5
+"FIFA19.exe"+1262C8A: 0F 5C CC                 -  subps xmm1,xmm4
+"FIFA19.exe"+1262C8D: C6 83 5C 0B 00 00 01     -  mov byte ptr [rbx+00000B5C],01
+"FIFA19.exe"+1262C94: 0F 28 C1                 -  movaps xmm0,xmm1
+"FIFA19.exe"+1262C97: 0F C6 C1 AA              -  shufps xmm0,xmm1-56
+"FIFA19.exe"+1262C9B: F3 0F 11 83 48 0B 00 00  -  movss [rbx+00000B48],xmm0
+"FIFA19.exe"+1262CA3: F3 0F 11 8B 40 0B 00 00  -  movss [rbx+00000B40],xmm1
+"FIFA19.exe"+1262CAB: 0F C6 C9 55              -  shufps xmm1,xmm155
+"FIFA19.exe"+1262CAF: F3 0F 11 8B 44 0B 00 00  -  movss [rbx+00000B44],xmm1
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+1262CB7: 0F 11 AB 00 0B 00 00     -  movups [rbx+00000B00],xmm5
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+1262CBE: F3 0F 10 83 48 0B 00 00  -  movss xmm0,[rbx+00000B48]
+"FIFA19.exe"+1262CC6: 0F 57 05 13 AD CD 03     -  xorps xmm0,[FIFA19.exe+4F3D9E0]
+"FIFA19.exe"+1262CCD: F3 0F 11 83 48 0B 00 00  -  movss [rbx+00000B48],xmm0
+"FIFA19.exe"+1262CD5: F3 0F 10 8B 4C 0B 00 00  -  movss xmm1,[rbx+00000B4C]
+"FIFA19.exe"+1262CDD: 0F 57 0D FC AC CD 03     -  xorps xmm1,[FIFA19.exe+4F3D9E0]
+"FIFA19.exe"+1262CE4: F3 0F 11 8B 4C 0B 00 00  -  movss [rbx+00000B4C],xmm1
+"FIFA19.exe"+1262CEC: 48 8D 83 F0 0A 00 00     -  lea rax,[rbx+00000AF0]
+"FIFA19.exe"+1262CF3: 48 89 07                 -  mov [rdi],rax
+"FIFA19.exe"+1262CF6: C6 83 60 0B 00 00 00     -  mov byte ptr [rbx+00000B60],00
+"FIFA19.exe"+1262CFD: 4C 8D 9C 24 C0 00 00 00  -  lea r11,[rsp+000000C0]
+}
+
+{
+// ORIGINAL CODE - INJECT_CAM_V_ROTATE_SPEED_MUL POINT: "FIFA19.exe"+1262CB7
+
+"FIFA19.exe"+1262C84: 0F 14 E3                 -  unpcklps xmm4,xmm3
+"FIFA19.exe"+1262C87: 0F 28 CD                 -  movaps xmm1,xmm5
+"FIFA19.exe"+1262C8A: 0F 5C CC                 -  subps xmm1,xmm4
+"FIFA19.exe"+1262C8D: C6 83 5C 0B 00 00 01     -  mov byte ptr [rbx+00000B5C],01
+"FIFA19.exe"+1262C94: 0F 28 C1                 -  movaps xmm0,xmm1
+"FIFA19.exe"+1262C97: 0F C6 C1 AA              -  shufps xmm0,xmm1-56
+"FIFA19.exe"+1262C9B: F3 0F 11 83 48 0B 00 00  -  movss [rbx+00000B48],xmm0
+"FIFA19.exe"+1262CA3: F3 0F 11 8B 40 0B 00 00  -  movss [rbx+00000B40],xmm1
+"FIFA19.exe"+1262CAB: 0F C6 C9 55              -  shufps xmm1,xmm155
+"FIFA19.exe"+1262CAF: F3 0F 11 8B 44 0B 00 00  -  movss [rbx+00000B44],xmm1
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+1262CB7: 0F 11 AB 00 0B 00 00     -  movups [rbx+00000B00],xmm5
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+1262CBE: F3 0F 10 83 48 0B 00 00  -  movss xmm0,[rbx+00000B48]
+"FIFA19.exe"+1262CC6: 0F 57 05 13 AD CD 03     -  xorps xmm0,[FIFA19.exe+4F3D9E0]
+"FIFA19.exe"+1262CCD: F3 0F 11 83 48 0B 00 00  -  movss [rbx+00000B48],xmm0
+"FIFA19.exe"+1262CD5: F3 0F 10 8B 4C 0B 00 00  -  movss xmm1,[rbx+00000B4C]
+"FIFA19.exe"+1262CDD: 0F 57 0D FC AC CD 03     -  xorps xmm1,[FIFA19.exe+4F3D9E0]
+"FIFA19.exe"+1262CE4: F3 0F 11 8B 4C 0B 00 00  -  movss [rbx+00000B4C],xmm1
+"FIFA19.exe"+1262CEC: 48 8D 83 F0 0A 00 00     -  lea rax,[rbx+00000AF0]
+"FIFA19.exe"+1262CF3: 48 89 07                 -  mov [rdi],rax
+"FIFA19.exe"+1262CF6: C6 83 60 0B 00 00 00     -  mov byte ptr [rbx+00000B60],00
+"FIFA19.exe"+1262CFD: 4C 8D 9C 24 C0 00 00 00  -  lea r11,[rsp+000000C0]
+}
+
+{
+// ORIGINAL CODE - INJECT_CAM_H_ROTATE_SPEED_MUL POINT: "FIFA19.exe"+12629C5
+
+"FIFA19.exe"+126299B: 66 0F 6E C1              -  movd xmm0,ecx
+"FIFA19.exe"+126299F: 0F 5B C0                 -  cvtdq2ps xmm0,xmm0
+"FIFA19.exe"+12629A2: F3 0F 59 05 82 47 1A 04  -  mulss xmm0,[FIFA19.exe+540712C]
+"FIFA19.exe"+12629AA: EB 15                    -  jmp FIFA19.exe+12629C1
+"FIFA19.exe"+12629AC: 45 85 F6                 -  test r14d,r14d
+"FIFA19.exe"+12629AF: 7E 1C                    -  jle FIFA19.exe+12629CD
+"FIFA19.exe"+12629B1: 66 41 0F 6E C6           -  movd xmm0,r14d
+"FIFA19.exe"+12629B6: 0F 5B C0                 -  cvtdq2ps xmm0,xmm0
+"FIFA19.exe"+12629B9: F3 0F 59 05 9F 1A 1A 04  -  mulss xmm0,[FIFA19.exe+5404460]
+"FIFA19.exe"+12629C1: F3 0F 5E C7              -  divss xmm0,xmm7
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+12629C5: F3 0F 11 83 4C 0B 00 00  -  movss [rbx+00000B4C],xmm0
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+12629CD: 45 85 FF                 -  test r15d,r15d
+"FIFA19.exe"+12629D0: 7E 12                    -  jle FIFA19.exe+12629E4
+"FIFA19.exe"+12629D2: 66 41 0F 6E C7           -  movd xmm0,r15d
+"FIFA19.exe"+12629D7: 0F 5B C0                 -  cvtdq2ps xmm0,xmm0
+"FIFA19.exe"+12629DA: F3 0F 59 05 E6 19 1A 04  -  mulss xmm0,[FIFA19.exe+54043C8]
+"FIFA19.exe"+12629E2: EB 15                    -  jmp FIFA19.exe+12629F9
+"FIFA19.exe"+12629E4: 45 85 E4                 -  test r12d,r12d
+"FIFA19.exe"+12629E7: 7E 1C                    -  jle FIFA19.exe+1262A05
+"FIFA19.exe"+12629E9: 66 41 0F 6E C4           -  movd xmm0,r12d
+"FIFA19.exe"+12629EE: 0F 5B C0                 -  cvtdq2ps xmm0,xmm0
+}
+
+{
+// ORIGINAL CODE - INJECT_CAM_Z_ROTATE_SPEED_MUL POINT: "FIFA19.exe"+1262CB7
+
+"FIFA19.exe"+1262C84: 0F 14 E3                 -  unpcklps xmm4,xmm3
+"FIFA19.exe"+1262C87: 0F 28 CD                 -  movaps xmm1,xmm5
+"FIFA19.exe"+1262C8A: 0F 5C CC                 -  subps xmm1,xmm4
+"FIFA19.exe"+1262C8D: C6 83 5C 0B 00 00 01     -  mov byte ptr [rbx+00000B5C],01
+"FIFA19.exe"+1262C94: 0F 28 C1                 -  movaps xmm0,xmm1
+"FIFA19.exe"+1262C97: 0F C6 C1 AA              -  shufps xmm0,xmm1-56
+"FIFA19.exe"+1262C9B: F3 0F 11 83 48 0B 00 00  -  movss [rbx+00000B48],xmm0
+"FIFA19.exe"+1262CA3: F3 0F 11 8B 40 0B 00 00  -  movss [rbx+00000B40],xmm1
+"FIFA19.exe"+1262CAB: 0F C6 C9 55              -  shufps xmm1,xmm155
+"FIFA19.exe"+1262CAF: F3 0F 11 8B 44 0B 00 00  -  movss [rbx+00000B44],xmm1
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+1262CB7: 0F 11 AB 00 0B 00 00     -  movups [rbx+00000B00],xmm5
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+1262CBE: F3 0F 10 83 48 0B 00 00  -  movss xmm0,[rbx+00000B48]
+"FIFA19.exe"+1262CC6: 0F 57 05 13 AD CD 03     -  xorps xmm0,[FIFA19.exe+4F3D9E0]
+"FIFA19.exe"+1262CCD: F3 0F 11 83 48 0B 00 00  -  movss [rbx+00000B48],xmm0
+"FIFA19.exe"+1262CD5: F3 0F 10 8B 4C 0B 00 00  -  movss xmm1,[rbx+00000B4C]
+"FIFA19.exe"+1262CDD: 0F 57 0D FC AC CD 03     -  xorps xmm1,[FIFA19.exe+4F3D9E0]
+"FIFA19.exe"+1262CE4: F3 0F 11 8B 4C 0B 00 00  -  movss [rbx+00000B4C],xmm1
+"FIFA19.exe"+1262CEC: 48 8D 83 F0 0A 00 00     -  lea rax,[rbx+00000AF0]
+"FIFA19.exe"+1262CF3: 48 89 07                 -  mov [rdi],rax
+"FIFA19.exe"+1262CF6: C6 83 60 0B 00 00 00     -  mov byte ptr [rbx+00000B60],00
+"FIFA19.exe"+1262CFD: 4C 8D 9C 24 C0 00 00 00  -  lea r11,[rsp+000000C0]
+}
+
+{
+// b0 01 0f 11 2a 88 81 61 0b 00
+// ORIGINAL CODE - INJECT_STADIUM_BOUNDARY POINT: "FIFA19.exe"+1262CB7
+
+"FIFA19.exe"+C2FBD9E: F3 0F 10 99 C4 08 00 00  -  movss xmm3,[rcx+000008C4]
+"FIFA19.exe"+C2FBDA6: 0F 28 CA                 -  movaps xmm1,xmm2
+"FIFA19.exe"+C2FBDA9: F3 0F 10 A1 C0 08 00 00  -  movss xmm4,[rcx+000008C0]
+"FIFA19.exe"+C2FBDB1: 48 89 D3                 -  mov rbx,rdx
+"FIFA19.exe"+C2FBDB4: 88 81 61 0B 00 00        -  mov [rcx+00000B61],al
+"FIFA19.exe"+C2FBDBA: 48 89 CF                 -  mov rdi,rcx
+"FIFA19.exe"+C2FBDBD: F3 0F 6F 2A              -  movdqu xmm5,[rdx]
+"FIFA19.exe"+C2FBDC1: 66 0F 70 C5 AA           -  pshufd xmm0,xmm5-56
+"FIFA19.exe"+C2FBDC6: 0F 59 C8                 -  mulps xmm1,xmm0
+"FIFA19.exe"+C2FBDC9: 41 0F 29 73 E8           -  movaps [r11-18],xmm6
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+C2FBDCE: F3 0F 10 35 76 AC 10 F9  -  movss xmm6,[FIFA19.exe+5406A4C]
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+C2FBDD6: 41 0F 29 7B D8           -  movaps [r11-28],xmm7
+"FIFA19.exe"+C2FBDDB: F3 0F 10 3D FD 1B C4 F8  -  movss xmm7,[FIFA19.exe+4F3D9E0]
+"FIFA19.exe"+C2FBDE3: 0F 5F C8                 -  maxps xmm1,xmm0
+"FIFA19.exe"+C2FBDE6: 0F 28 C3                 -  movaps xmm0,xmm3
+"FIFA19.exe"+C2FBDE9: 0F C6 C0 00              -  shufps xmm0,xmm000
+"FIFA19.exe"+C2FBDED: 0F 5C C8                 -  subps xmm1,xmm0
+"FIFA19.exe"+C2FBDF0: 0F 28 C4                 -  movaps xmm0,xmm4
+"FIFA19.exe"+C2FBDF3: 0F C6 C0 00              -  shufps xmm0,xmm000
+"FIFA19.exe"+C2FBDF7: 0F 29 4D D7              -  movaps [rbp-29],xmm1
+"FIFA19.exe"+C2FBDFB: 66 0F 70 CD 00           -  pshufd xmm1,xmm500
+}
+
+
+
+{
+// ORIGINAL CODE - INJECT_CAM_Z_BOUNDARY POINT: "FIFA19.exe"+1262CB7
+
+"FIFA19.exe"+C2FBE60: 0F 11 12                    -  movups [rdx],xmm2
+"FIFA19.exe"+C2FBE63: 88 81 61 0B 00 00           -  mov [rcx+00000B61],al
+"FIFA19.exe"+C2FBE69: 0F 29 55 D7                 -  movaps [rbp-29],xmm2
+"FIFA19.exe"+C2FBE6D: 66 0F 70 89 70 0B 00 00 55  -  pshufd xmm1,[rcx+00000B70]55
+"FIFA19.exe"+C2FBE76: 0F 57 C0                    -  xorps xmm0,xmm0
+"FIFA19.exe"+C2FBE79: 0F 2F C1                    -  comiss xmm0,xmm1
+"FIFA19.exe"+C2FBE7C: 76 0A                       -  jna FIFA19.exe+C2FBE88
+"FIFA19.exe"+C2FBE7E: 0F 10 02                    -  movups xmm0,[rdx]
+"FIFA19.exe"+C2FBE81: 0F 11 81 70 0B 00 00        -  movups [rcx+00000B70],xmm0
+"FIFA19.exe"+C2FBE88: F3 0F 10 1D AC 26 AF F9     -  movss xmm3,[FIFA19.exe+5DEE53C]
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+C2FBE90: F3 0F 6F 12                 -  movdqu xmm2,[rdx]
+"FIFA19.exe"+C2FBE94: 0F 28 C3                    -  movaps xmm0,xmm3
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+C2FBE97: 66 0F 70 CA 55              -  pshufd xmm1,xmm255
+"FIFA19.exe"+C2FBE9C: 0F 2F D9                    -  comiss xmm3,xmm1
+"FIFA19.exe"+C2FBE9F: 76 13                       -  jna FIFA19.exe+C2FBEB4
+"FIFA19.exe"+C2FBEA1: 0F C6 D2 E1                 -  shufps xmm2,xmm2-1F
+"FIFA19.exe"+C2FBEA5: F3 0F 10 D3                 -  movss xmm2,xmm3
+"FIFA19.exe"+C2FBEA9: 0F C6 D2 E1                 -  shufps xmm2,xmm2-1F
+"FIFA19.exe"+C2FBEAD: 0F 29 55 D7                 -  movaps [rbp-29],xmm2
+"FIFA19.exe"+C2FBEB1: 0F 11 12                    -  movups [rdx],xmm2
+"FIFA19.exe"+C2FBEB4: 84 C0                       -  test al,al
+"FIFA19.exe"+C2FBEB6: 0F 84 62 01 00 00           -  je FIFA19.exe+C2FC01E
+}
+
+{
+// ORIGINAL CODE - INJECT_FULL_ANGLE_ROTV POINT: "FIFA19.exe"+1262CB7
+"FIFA19.exe"+8B49B92: F3 0F 10 40 60                 -  movss xmm0,[rax+60]
+"FIFA19.exe"+8B49B97: F3 0F 58 83 B4 05 00 00        -  addss xmm0,dword ptr [rbx+000005B4]
+"FIFA19.exe"+8B49B9F: 0F 2F 05 52 BB 8B FC           -  comiss xmm0,[FIFA19.exe+54056F8]
+"FIFA19.exe"+8B49BA6: F3 0F 11 83 B4 05 00 00        -  movss [rbx+000005B4],xmm0
+"FIFA19.exe"+8B49BAE: 76 0A                          -  jna FIFA19.exe+8B49BBA
+"FIFA19.exe"+8B49BB0: C7 83 B4 05 00 00 4C BE 8C 3F  -  mov [rbx+000005B4],3F8CBE4C
+"FIFA19.exe"+8B49BBA: 0F 57 C0                       -  xorps xmm0,xmm0
+"FIFA19.exe"+8B49BBD: 0F 2F 83 B4 05 00 00           -  comiss xmm0,[rbx+000005B4]
+"FIFA19.exe"+8B49BC4: 76 0A                          -  jna FIFA19.exe+8B49BD0
+"FIFA19.exe"+8B49BC6: C7 83 B4 05 00 00 00 00 00 00  -  mov [rbx+000005B4],00000000
+// ---------- INJECTING HERE ----------
+"FIFA19.exe"+8B49BD0: F3 0F 10 40 5C                 -  movss xmm0,[rax+5C]
+// ---------- DONE INJECTING  ----------
+"FIFA19.exe"+8B49BD5: F3 0F 58 83 B8 05 00 00        -  addss xmm0,dword ptr [rbx+000005B8]
+"FIFA19.exe"+8B49BDD: F3 0F 10 15 B3 CA 8B FC        -  movss xmm2,[FIFA19.exe+5406698]
+"FIFA19.exe"+8B49BE5: 0F 2F C2                       -  comiss xmm0,xmm2
+"FIFA19.exe"+8B49BE8: F3 0F 11 83 B8 05 00 00        -  movss [rbx+000005B8],xmm0
+"FIFA19.exe"+8B49BF0: 76 0C                          -  jna FIFA19.exe+8B49BFE
+"FIFA19.exe"+8B49BF2: F3 0F 5C C2                    -  subss xmm0,xmm2
+"FIFA19.exe"+8B49BF6: F3 0F 11 83 B8 05 00 00        -  movss [rbx+000005B8],xmm0
+"FIFA19.exe"+8B49BFE: F3 0F 10 8B B8 05 00 00        -  movss xmm1,[rbx+000005B8]
+"FIFA19.exe"+8B49C06: F3 0F 10 05 3E D9 8B FC        -  movss xmm0,[FIFA19.exe+540754C]
+"FIFA19.exe"+8B49C0E: 0F 2F C1                       -  comiss xmm0,xmm1
+}
+</AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>431</ID>
+                  <Description>"Camera rotation multiplier"</Description>
+                  <VariableType>Float</VariableType>
+                  <Address>CamRotSpeedMultiplier</Address>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>430</ID>
+                  <Description>"Camera move speed"</Description>
+                  <VariableType>Float</VariableType>
+                  <Address>CamSpeedModifier</Address>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>421</ID>
+                  <Description>"X"</Description>
+                  <VariableType>Float</VariableType>
+                  <Address>ptrCamTarget</Address>
+                  <Offsets>
+                    <Offset>b00</Offset>
+                  </Offsets>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>422</ID>
+                  <Description>"Y"</Description>
+                  <VariableType>Float</VariableType>
+                  <Address>ptrCamTarget</Address>
+                  <Offsets>
+                    <Offset>b08</Offset>
+                  </Offsets>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>423</ID>
+                  <Description>"Z"</Description>
+                  <VariableType>Float</VariableType>
+                  <Address>ptrCamTarget</Address>
+                  <Offsets>
+                    <Offset>b04</Offset>
+                  </Offsets>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>428</ID>
+                  <Description>"RotV"</Description>
+                  <VariableType>Float</VariableType>
+                  <Address>ptrCamRot</Address>
+                  <Offsets>
+                    <Offset>5B4</Offset>
+                  </Offsets>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>427</ID>
+                  <Description>"RotH"</Description>
+                  <VariableType>Float</VariableType>
+                  <Address>ptrCamRot</Address>
+                  <Offsets>
+                    <Offset>5B8</Offset>
+                  </Offsets>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>2992</ID>
+                  <Description>"Disable Zoom"</Description>
+                  <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
+1: 'Yes'
+</DropDownList>
+                  <VariableType>Byte</VariableType>
+                  <Address>bDisableZoom</Address>
+                </CheatEntry>
+              </CheatEntries>
             </CheatEntry>
             <CheatEntry>
               <ID>2897</ID>
@@ -578,14 +1293,14 @@ dealloc(cave_EditPlayerBid)
           <ID>1667</ID>
           <Description>"FIFA Database"</Description>
           <Options moHideChildren="1"/>
-          <LastState Value="" RealAddress="00000000"/>
+          <LastState Value="" Activated="1" RealAddress="00000000"/>
           <GroupHeader>1</GroupHeader>
           <CheatEntries>
             <CheatEntry>
               <ID>1668</ID>
               <Description>"WARNING!! Make a backup save before you edit anything here!"</Description>
               <Options moHideChildren="1"/>
-              <LastState Value="" RealAddress="00000000"/>
+              <LastState Value="" Activated="1" RealAddress="00000000"/>
               <Color>0000FF</Color>
               <GroupHeader>1</GroupHeader>
               <CheatEntries>
@@ -593,7 +1308,7 @@ dealloc(cave_EditPlayerBid)
                   <ID>2058</ID>
                   <Description>"Database Tables"</Description>
                   <Options moHideChildren="1"/>
-                  <LastState/>
+                  <LastState Activated="1"/>
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>{
 AUTHOR:
@@ -13564,13 +14279,13 @@ dealloc(playerInjuryPtr)
           <ID>2505</ID>
           <Description>"Players Training"</Description>
           <Options moHideChildren="1"/>
-          <LastState Value="" RealAddress="00000000"/>
+          <LastState Value="" Activated="1" RealAddress="00000000"/>
           <GroupHeader>1</GroupHeader>
           <CheatEntries>
             <CheatEntry>
               <ID>1662</ID>
               <Description>"Unlimited Training Sessions"</Description>
-              <LastState/>
+              <LastState Activated="1"/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>{
 AUTHOR:
@@ -13691,7 +14406,7 @@ dealloc(newmem_UnlimitedTraining)
               <ID>467</ID>
               <Description>"More efficient training"</Description>
               <Options moHideChildren="1"/>
-              <LastState/>
+              <LastState Activated="1"/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>{
 AUTHOR:
@@ -13811,7 +14526,7 @@ dealloc(newmem_moreEfficientTraining)
             <CheatEntry>
               <ID>2664</ID>
               <Description>"Training Everyday"</Description>
-              <LastState/>
+              <LastState Activated="1"/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>{
 AUTHOR:
@@ -13940,7 +14655,7 @@ dealloc(newmem_TrainingEveryDay)
             <CheatEntry>
               <ID>2501</ID>
               <Description>"Training sim - A"</Description>
-              <LastState/>
+              <LastState Activated="1"/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>{
 AUTHOR:
@@ -15994,7 +16709,7 @@ dealloc(ClubID)
         <CheatEntry>
           <ID>1626</ID>
           <Description>"Free &amp; Unlimited Releasing Players"</Description>
-          <LastState/>
+          <LastState Activated="1"/>
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>{
 AUTHOR:
@@ -16435,20 +17150,20 @@ dealloc(newmem_transferini2)
           <ID>440</ID>
           <Description>"Global Transfer Network"</Description>
           <Options moHideChildren="1"/>
-          <LastState Value="" RealAddress="00000000"/>
+          <LastState Value="" Activated="1" RealAddress="00000000"/>
           <GroupHeader>1</GroupHeader>
           <CheatEntries>
             <CheatEntry>
               <ID>441</ID>
               <Description>"Activate scripts BEFORE you load your career mode save."</Description>
               <Options moHideChildren="1"/>
-              <LastState Value="" RealAddress="00000000"/>
+              <LastState Value="" Activated="1" RealAddress="00000000"/>
               <GroupHeader>1</GroupHeader>
               <CheatEntries>
                 <CheatEntry>
                   <ID>2506</ID>
                   <Description>"Reveal player data (scouting players not needed)"</Description>
-                  <LastState/>
+                  <LastState Activated="1"/>
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>{
 AUTHOR:
@@ -16556,13 +17271,13 @@ dealloc(newmem_gtn_reveal)
           <ID>2503</ID>
           <Description>"Morale"</Description>
           <Options moHideChildren="1"/>
-          <LastState Value="" RealAddress="00000000"/>
+          <LastState Value="" Activated="1" RealAddress="00000000"/>
           <GroupHeader>1</GroupHeader>
           <CheatEntries>
             <CheatEntry>
               <ID>2504</ID>
               <Description>"Disable Morale"</Description>
-              <LastState/>
+              <LastState Activated="1"/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>{
 AUTHOR:
@@ -16686,7 +17401,7 @@ UPDATE 3
             <CheatEntry>
               <ID>2502</ID>
               <Description>"MORALE_LEVELS (more happier players)"</Description>
-              <LastState/>
+              <LastState Activated="1"/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>{
 AUTHOR:
@@ -17103,21 +17818,21 @@ dd (int)-1
           <ID>2657</ID>
           <Description>"Youth Academy"</Description>
           <Options moHideChildren="1"/>
-          <LastState Value="" RealAddress="00000000"/>
+          <LastState Value="" Activated="1" RealAddress="00000000"/>
           <GroupHeader>1</GroupHeader>
           <CheatEntries>
             <CheatEntry>
               <ID>2658</ID>
               <Description>"Activate scripts BEFORE you load your career mode save."</Description>
               <Options moHideChildren="1"/>
-              <LastState Value="" RealAddress="00000000"/>
+              <LastState Value="" Activated="1" RealAddress="00000000"/>
               <GroupHeader>1</GroupHeader>
               <CheatEntries>
                 <CheatEntry>
                   <ID>1264</ID>
                   <Description>"SCOUT_REPORT_PLAYERS"</Description>
                   <Options moHideChildren="1"/>
-                  <LastState/>
+                  <LastState Activated="1"/>
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>{
 AUTHOR:
@@ -17236,7 +17951,7 @@ dealloc(newmem_moreyoungplayers)
                 <CheatEntry>
                   <ID>1266</ID>
                   <Description>"Reveal ovr and pot"</Description>
-                  <LastState/>
+                  <LastState Activated="1"/>
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>{
 AUTHOR:
@@ -21185,6 +21900,42 @@ dealloc(fixturesData)
     <SymbolEntry>
       <Name>arr_SprintLike_NeymarAndAlba</Name>
       <Address>004D0A00</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>CamSpeedModifier</Name>
+      <Address>02B70000</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>CamRotSpeedMultiplier</Name>
+      <Address>02B70010</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>StadiumBoundary</Name>
+      <Address>02B70020</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>CamZBoundary</Name>
+      <Address>02B70030</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>RotVMaxPositiveVal</Name>
+      <Address>02B70040</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>RotVMaxNegativeVal</Name>
+      <Address>02B70050</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>ptrCamTarget</Name>
+      <Address>02B70060</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>ptrCamRot</Name>
+      <Address>02B70070</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>bDisableZoom</Name>
+      <Address>02B70080</Address>
     </SymbolEntry>
   </UserdefinedSymbols>
   <LuaScript>-- Hello!
