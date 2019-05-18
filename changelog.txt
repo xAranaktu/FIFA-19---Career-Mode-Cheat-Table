@@ -195,6 +195,7 @@ Changelog:
     - Fixed bug in player editor. Now you can edit players through GUI even if you don't have internet connection.
     
     v1.3.1:
+    - CE 6.8.3 is now required to use Cheat Table.
     - Added 'Generate new report' script to 'Youth Academy' section
     - Added pagination to FUT Clone
     - Added "Don't copy attributes" checkbox to FUT Clone
