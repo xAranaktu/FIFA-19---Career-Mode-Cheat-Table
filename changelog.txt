@@ -190,7 +190,15 @@ Changelog:
     v1.2.9:
     - Added 'Free Fly Camera' script to 'Non-CM Related' section
     
-    v1.3.0
+    v1.3.0:
     - 'Free Fly Camera' is also working with gamepad now.
     - Fixed bug in player editor. Now you can edit players through GUI even if you don't have internet connection.
+    
+    v1.3.1:
+    - Added 'Generate new report' script to 'Youth Academy' section
+    - Added pagination to FUT Clone
+    - Added "Don't copy attributes" checkbox to FUT Clone
+    - 'randomize_shoe_models.lua' script will not also set shoedesigncode on 0.
+    - Added 'medium_socklenghtcode.lua' to 'users lua scripts'
+    - Minor bug fixes in GUI
       
