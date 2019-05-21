@@ -14,8 +14,7 @@ function match_date_to_value(match_date)
     local m_date, _ = string.gsub(match_date, '%W', '')
     if string.len(m_date) ~= 8 then
         local txt = string.format('Invalid date format: %s', match_date)
-        do_log(txt)
-        ShowMessage(txt)
+        do_log(txt, 'ERROR')
         return false
     end
     m_date = string.format(
@@ -59,8 +58,7 @@ function create_match_containers()
     local games_in_current_month = readInteger('fixturesData+8')
     if games_in_current_month == nil or games_in_current_month <= 0 then
         local txt = 'Open the in-game calendar in a month that contains matches. You can also try to exit calendar and enter there again'
-        do_log(txt)
-        ShowMessage(txt)
+        do_log(txt, 'ERROR')
         MatchScheduleExitClick(sender)
     end
     -- Fill GUI

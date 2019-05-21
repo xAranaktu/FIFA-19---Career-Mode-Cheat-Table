@@ -18,9 +18,15 @@ end
 
 function fut_get_rarity_display()
     local r = getInternet()
-    request = FUT_URLS['display']
-    response = json.decode(
-        r.getURL(request)
+    local request = FUT_URLS['display']
+    local reply = r.getURL(request)
+    if reply == nil then
+        do_log('No internet connection? No reply from: ' .. request, 'ERROR')
+        return nil
+    end
+    
+    local response = json.decode(
+        reply
     )
     r.destroy()
 
@@ -32,14 +38,20 @@ function fut_find_player(player_data)
     if string.match(player_data, '[0-9]') then
         -- TODO player name from playerid
     end
-    request = FUT_URLS['player_search'] .. encodeURI(string.format(
+    local request = FUT_URLS['player_search'] .. encodeURI(string.format(
         '{"name":"%s"}',
         player_data
     ))
 
     local r = getInternet()
-    response = json.decode(
-        r.getURL(request)
+    local reply = r.getURL(request)
+    if reply == nil then
+        do_log('No internet connection? No reply from: ' .. request, 'ERROR')
+        return nil
+    end
+
+    local response = json.decode(
+        reply
     )
     r.destroy()
 

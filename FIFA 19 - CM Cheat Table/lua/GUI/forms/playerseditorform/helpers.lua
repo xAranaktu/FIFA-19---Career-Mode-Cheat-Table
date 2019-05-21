@@ -515,10 +515,8 @@ function ApplyChanges()
         if component_class == 'TCEEdit' then
             if string.len(component.Text) <= 0 then
                 do_log(
-                    string.format("Empty component: %s", component_name)
-                )
-                showMessage(
-                    string.format("%s component is empty. Please, fill it and try again", component_name)
+                    string.format("%s component is empty. Please, fill it and try again", component_name),
+                    'ERROR'
                 )
             end
             if comp_desc['onApplyChanges'] then

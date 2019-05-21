@@ -9,7 +9,7 @@
   <CheatEntries>
     <CheatEntry>
       <ID>2794</ID>
-      <Description>"v1.2.9"</Description>
+      <Description>"v1.3.0"</Description>
       <LastState Value="" RealAddress="00000000"/>
       <GroupHeader>1</GroupHeader>
     </CheatEntry>
@@ -73,7 +73,7 @@
     <CheatEntry>
       <ID>2892</ID>
       <Description>"GUI"</Description>
-      <LastState Activated="1"/>
+      <LastState/>
       <VariableType>Auto Assembler Script</VariableType>
       <AssemblerScript>// This script will show/hide Main Form
 
@@ -93,20 +93,20 @@ PlayersEditorForm.hide()
       <ID>1666</ID>
       <Description>"Scripts"</Description>
       <Options moHideChildren="1"/>
-      <LastState Value="" Activated="1" RealAddress="00000000"/>
+      <LastState Value="" RealAddress="00000000"/>
       <GroupHeader>1</GroupHeader>
       <CheatEntries>
         <CheatEntry>
           <ID>2895</ID>
           <Description>"Non-CM Related"</Description>
           <Options moHideChildren="1"/>
-          <LastState Value="" Activated="1" RealAddress="00000000"/>
+          <LastState Value="" RealAddress="00000000"/>
           <GroupHeader>1</GroupHeader>
           <CheatEntries>
             <CheatEntry>
               <ID>2793</ID>
               <Description>"Dont Pause Game on AltTab"</Description>
-              <LastState Activated="1"/>
+              <LastState/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>{
 AUTHOR: Aranaktu
@@ -307,10 +307,15 @@ globalalloc(bDisableZoom,1)
 bDisableZoom:
 db 0
 
+globalalloc(bUseGamepad,1)
+bUseGamepad:
+db 1
+
 
 
 [ENABLE]
 {$lua}
+if syntaxcheck then return end
 -- Check if user has set up CT correctly
 local status, error = pcall(get_validated_address)
 if not status then
@@ -359,6 +364,7 @@ local camy_ptr = "[ptrCamTarget]+B08"   -- Camera Y
 local camz_ptr = "[ptrCamTarget]+B04"   -- Camera Z
 local rotv_ptr = "[ptrCamRot]+5B4"      -- Vertical (Pitch) (UP-DOWN) (Radians)
 local roth_ptr = "[ptrCamRot]+5B8"      -- Horizontal (Yaw) (LEFT-RIGHT) (Radians)
+local zoom_ptr = "[ptrCamRot]+5C8"      -- zoom from 0 to 1.2
 
 --Camera coordinates values
 local camx = readFloat(camx_ptr) -- Camera X
@@ -366,6 +372,7 @@ local camy = readFloat(camy_ptr) -- Camera Y
 local camz = readFloat(camz_ptr) -- Camera Z
 local rotv = readFloat(rotv_ptr) -- Vertical (Pitch) (UP-DOWN) (Radians)
 local roth = readFloat(roth_ptr) -- Horizontal (Yaw) (LEFT-RIGHT) (Radians)
+local zoom = readFloat(zoom_ptr) -- zoom from 0 to 1.2
 
 if camx == nil then return end
 
@@ -375,7 +382,7 @@ local cosh = math.cos(roth) -- Cosine of Horizontal (Yaw)
 local sinv = math.sin(rotv) -- Sine of Vertical (Pitch)
 local cosv = math.cos(rotv) -- Cosine of Vertical (Pitch)
 
-  --Hotkey Setup
+  --Hotkey Setup for keyboard
   --[[
         Button Mappings:
         R - Reset camera position and modifiers
@@ -388,6 +395,91 @@ local cosv = math.cos(rotv) -- Cosine of Vertical (Pitch)
         NUMPAD +  - Speed Up
         NUMPAD -  - Slow Down
   ]]
+
+  --Hotkey Setup for gamepad
+  --[[
+        Button Mappings:
+        R - Reset camera position and modifiers
+        Left thumb UP - Forward
+        Left thumb LEFT - Left
+        Left thumb DOWN - Backward
+        Left thumb RIGHT - Right
+        DPAD UP - UP
+        DPAD DOWN - DOWN
+        DPAD RIGHT - zoom in
+        DPAD LEFT - zoom out
+        NUMPAD +  - Speed Up
+        NUMPAD -  - Slow Down
+  ]]
+  if readBytes("bUseGamepad", 1, false) == 1 then
+    writeBytes("bDisableZoom", 1)
+
+    -- You may need to change deadzones
+    local INPUT_DEADZONE_X = 0.4
+    local INPUT_DEADZONE_Y = 0.3
+
+    local xcs = getXBox360ControllerState()
+    local LX = xcs.ThumbLeftX
+    local LY = xcs.ThumbLeftY
+
+    local normalizedLX = math.max(-1, LX / 32767)
+    local normalizedLY = math.max(-1, LY / 32767)
+
+    local leftStickX = 0
+    local leftStickY = 0
+
+    if math.abs(normalizedLX) &gt; INPUT_DEADZONE_X then
+        leftStickX = (math.abs(normalizedLX) - INPUT_DEADZONE_X) * (normalizedLX / math.abs(normalizedLX))
+    end
+
+    if INPUT_DEADZONE_X &gt; 0 then
+        leftStickX = leftStickX * 1 / (1-INPUT_DEADZONE_X)
+    end
+
+    if math.abs(normalizedLY) &gt; INPUT_DEADZONE_Y then
+        leftStickY = (math.abs(normalizedLY) - INPUT_DEADZONE_Y) * (normalizedLY / math.abs(normalizedLY))
+    end
+
+    if INPUT_DEADZONE_Y &gt; 0 then
+        leftStickY = leftStickY * 1 / (1-INPUT_DEADZONE_Y)
+    end
+
+    if leftStickY &gt; 0 then
+        writeFloat(camx_ptr, camx - (cosh * cosv * speed * leftStickY))
+        writeFloat(camy_ptr, camy + (sinh * cosv * speed * leftStickY))
+        writeFloat(camz_ptr, camz - (sinv * speed * leftStickY))
+    elseif leftStickY &lt; 0 then
+        writeFloat(camx_ptr, camx + (cosh * cosv * speed * math.abs(leftStickY)))
+        writeFloat(camy_ptr, camy - (sinh * cosv * speed * math.abs(leftStickY)))
+        writeFloat(camz_ptr, camz + (sinv * speed * math.abs(leftStickY)))
+    end
+
+    if leftStickX &gt; 0 then
+        writeFloat(camx_ptr, camx - (sinh * speed * leftStickX))
+        writeFloat(camy_ptr, camy - (cosh * speed * leftStickX))
+    elseif leftStickX &lt; 0 then
+        writeFloat(camx_ptr, camx + (sinh * speed * math.abs(leftStickX)))
+        writeFloat(camy_ptr, camy + (cosh * speed * math.abs(leftStickX)))
+    end
+
+    if xcs.GAMEPAD_DPAD_UP then
+        writeFloat(camz_ptr, camz + (speed * 0.5))
+    end
+    if xcs.GAMEPAD_DPAD_DOWN then
+        writeFloat(camz_ptr, camz - (speed * 0.5))
+    end
+
+    if xcs.GAMEPAD_DPAD_RIGHT then
+        local new_zoom = zoom - (7 * 0.002)
+        if new_zoom &lt; 0 then new_zoom = 0 end
+        writeFloat(zoom_ptr, new_zoom)
+    end
+    if xcs.GAMEPAD_DPAD_LEFT then
+        local new_zoom = zoom + (7 * 0.002)
+        if new_zoom &gt; 1.2 then new_zoom = 1.2 end
+        writeFloat(zoom_ptr, new_zoom)
+    end
+  end
 
   --Forward
   if isKeyPressed(VK_U) then
@@ -624,6 +716,7 @@ ret_FULL_ANGLE_ROTV:
 
 [DISABLE]
 {$lua}
+if syntaxcheck then return end
 timer_setEnabled(t, false)
 writeBytes(INJECT_CAM_ROTATE, ORG_CAM_ROTATE)
 writeBytes(INJECT_CAM_TARGET, ORG_CAM_TARGET)
@@ -874,14 +967,36 @@ dealloc(newmem_FULL_ANGLE_ROTV)
 </AssemblerScript>
               <CheatEntries>
                 <CheatEntry>
+                  <ID>2993</ID>
+                  <Description>"Use Gamepad for camera movement"</Description>
+                  <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
+1: 'Yes'
+</DropDownList>
+                  <LastState Value="1" RealAddress="00740090"/>
+                  <VariableType>Byte</VariableType>
+                  <Address>bUseGamepad</Address>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>2992</ID>
+                  <Description>"Disable Zoom"</Description>
+                  <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
+1: 'Yes'
+</DropDownList>
+                  <LastState Value="0" RealAddress="00740080"/>
+                  <VariableType>Byte</VariableType>
+                  <Address>bDisableZoom</Address>
+                </CheatEntry>
+                <CheatEntry>
                   <ID>431</ID>
                   <Description>"Camera rotation multiplier"</Description>
+                  <LastState Value="2" RealAddress="00740010"/>
                   <VariableType>Float</VariableType>
                   <Address>CamRotSpeedMultiplier</Address>
                 </CheatEntry>
                 <CheatEntry>
                   <ID>430</ID>
                   <Description>"Camera move speed"</Description>
+                  <LastState Value="10" RealAddress="00740000"/>
                   <VariableType>Float</VariableType>
                   <Address>CamSpeedModifier</Address>
                 </CheatEntry>
@@ -931,13 +1046,13 @@ dealloc(newmem_FULL_ANGLE_ROTV)
                   </Offsets>
                 </CheatEntry>
                 <CheatEntry>
-                  <ID>2992</ID>
-                  <Description>"Disable Zoom"</Description>
-                  <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
-1: 'Yes'
-</DropDownList>
-                  <VariableType>Byte</VariableType>
-                  <Address>bDisableZoom</Address>
+                  <ID>2994</ID>
+                  <Description>"Zoom"</Description>
+                  <VariableType>Float</VariableType>
+                  <Address>ptrCamRot</Address>
+                  <Offsets>
+                    <Offset>5c8</Offset>
+                  </Offsets>
                 </CheatEntry>
               </CheatEntries>
             </CheatEntry>
@@ -1293,14 +1408,14 @@ dealloc(cave_EditPlayerBid)
           <ID>1667</ID>
           <Description>"FIFA Database"</Description>
           <Options moHideChildren="1"/>
-          <LastState Value="" Activated="1" RealAddress="00000000"/>
+          <LastState Value="" RealAddress="00000000"/>
           <GroupHeader>1</GroupHeader>
           <CheatEntries>
             <CheatEntry>
               <ID>1668</ID>
               <Description>"WARNING!! Make a backup save before you edit anything here!"</Description>
               <Options moHideChildren="1"/>
-              <LastState Value="" Activated="1" RealAddress="00000000"/>
+              <LastState Value="" RealAddress="00000000"/>
               <Color>0000FF</Color>
               <GroupHeader>1</GroupHeader>
               <CheatEntries>
@@ -1308,7 +1423,7 @@ dealloc(cave_EditPlayerBid)
                   <ID>2058</ID>
                   <Description>"Database Tables"</Description>
                   <Options moHideChildren="1"/>
-                  <LastState Activated="1"/>
+                  <LastState/>
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>{
 AUTHOR:
@@ -1682,6 +1797,7 @@ dealloc(ptrTeamplayerlinks)
                         <CheatEntry>
                           <ID>689</ID>
                           <Description>"Base Address - players table"</Description>
+                          <LastState Value="000000008AB4FE38" RealAddress="13FFF1000"/>
                           <ShowAsHex>1</ShowAsHex>
                           <VariableType>8 Bytes</VariableType>
                           <Address>playerDataPtr</Address>
@@ -1699,6 +1815,7 @@ dealloc(ptrTeamplayerlinks)
                               <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'Male'
 1: 'Female'
 </DropDownList>
+                              <LastState Value="0" RealAddress="8AB4FE70"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>4</BitStart>
                               <BitLength>1</BitLength>
@@ -1714,6 +1831,7 @@ dealloc(ptrTeamplayerlinks)
                               <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                              <LastState Value="0" RealAddress="8AB4FE4E"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>4</BitStart>
                               <BitLength>1</BitLength>
@@ -1729,6 +1847,7 @@ dealloc(ptrTeamplayerlinks)
                               <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'Right'
 1: 'Left'
 </DropDownList>
+                              <LastState Value="0" RealAddress="8AB4FE84"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>4</BitStart>
                               <BitLength>1</BitLength>
@@ -1841,6 +1960,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                              <LastState Value="70" RealAddress="8AB4FE8E"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>6</BitStart>
                               <BitLength>7</BitLength>
@@ -1953,6 +2073,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                              <LastState Value="70" RealAddress="8AB4FE52"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>6</BitStart>
                               <BitLength>7</BitLength>
@@ -1965,6 +2086,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>93</ID>
                               <Description>"Player ID (not editable)"</Description>
+                              <LastState Value="16" RealAddress="8AB4FE88"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>4</BitStart>
                               <BitLength>19</BitLength>
@@ -1977,6 +2099,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>1867</ID>
                               <Description>"TeamID (don't change)"</Description>
+                              <LastState Value="268" RealAddress="8AE3B02E"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>0</BitStart>
                               <BitLength>17</BitLength>
@@ -1989,6 +2112,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>38</ID>
                               <Description>"First Name ID"</Description>
+                              <LastState Value="16017" RealAddress="8AB4FE38"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>0</BitStart>
                               <BitLength>16</BitLength>
@@ -2001,6 +2125,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>59</ID>
                               <Description>"Last Name ID"</Description>
+                              <LastState Value="9260" RealAddress="8AB4FE3A"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>0</BitStart>
                               <BitLength>16</BitLength>
@@ -2019,6 +2144,7 @@ dealloc(ptrTeamplayerlinks)
 3: '4 Stars'
 4: '5 Stars'
 </DropDownList>
+                              <LastState Value="0" RealAddress="8AB4FE73"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>7</BitStart>
                               <BitLength>3</BitLength>
@@ -2031,6 +2157,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>111</ID>
                               <Description>"Common Name ID"</Description>
+                              <LastState Value="16034" RealAddress="8AB4FE3E"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>0</BitStart>
                               <BitLength>16</BitLength>
@@ -2043,6 +2170,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>108</ID>
                               <Description>"Player Jersey Name ID"</Description>
+                              <LastState Value="16033" RealAddress="8AB4FE3C"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>0</BitStart>
                               <BitLength>16</BitLength>
@@ -2055,6 +2183,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>30</ID>
                               <Description>"Contract Valid Until"</Description>
+                              <LastState Value="2019" RealAddress="8AB4FE58"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>0</BitStart>
                               <BitLength>11</BitLength>
@@ -2067,6 +2196,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>81</ID>
                               <Description>"Player Join Team Date"</Description>
+                              <LastState Value="157698" RealAddress="8AB4FE80"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>0</BitStart>
                               <BitLength>20</BitLength>
@@ -2108,6 +2238,7 @@ dealloc(ptrTeamplayerlinks)
 26: 'LS'
 27: 'LW'
 </DropDownList>
+                              <LastState Value="14" RealAddress="8AB4FE66"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>4</BitStart>
                               <BitLength>5</BitLength>
@@ -2150,6 +2281,7 @@ dealloc(ptrTeamplayerlinks)
 27: 'LS'
 28: 'LW'
 </DropDownList>
+                              <LastState Value="19" RealAddress="8AB4FE61"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>2</BitStart>
                               <BitLength>6</BitLength>
@@ -2192,6 +2324,7 @@ dealloc(ptrTeamplayerlinks)
 27: 'LS'
 28: 'LW'
 </DropDownList>
+                              <LastState Value="11" RealAddress="8AB4FE4B"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>2</BitStart>
                               <BitLength>6</BitLength>
@@ -2234,6 +2367,7 @@ dealloc(ptrTeamplayerlinks)
 27: 'LS'
 28: 'LW'
 </DropDownList>
+                              <LastState Value="0" RealAddress="8AB4FE95"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>3</BitStart>
                               <BitLength>6</BitLength>
@@ -2465,6 +2599,7 @@ dealloc(ptrTeamplayerlinks)
 147: 'Zambia'
 148: 'Zimbabwe'
 </DropDownList>
+                              <LastState Value="45" RealAddress="8AB4FE83"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>0</BitStart>
                               <BitLength>12</BitLength>
@@ -2477,6 +2612,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>45</ID>
                               <Description>"Birthdate"</Description>
+                              <LastState Value="145482" RealAddress="8AB4FE64"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>0</BitStart>
                               <BitLength>20</BitLength>
@@ -2605,6 +2741,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="67" RealAddress="8AB4FE96"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>1</BitStart>
                                   <BitLength>7</BitLength>
@@ -2717,6 +2854,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="42" RealAddress="8AB4FE49"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>5</BitStart>
                                   <BitLength>7</BitLength>
@@ -2829,6 +2967,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="39" RealAddress="8AB4FE5B"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>3</BitStart>
                                   <BitLength>7</BitLength>
@@ -2941,6 +3080,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="74" RealAddress="8AB4FE68"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>0</BitStart>
                                   <BitLength>7</BitLength>
@@ -3053,6 +3193,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="75" RealAddress="8AB4FE74"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>5</BitStart>
                                   <BitLength>7</BitLength>
@@ -3165,6 +3306,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="69" RealAddress="8AB4FE8A"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>7</BitStart>
                                   <BitLength>7</BitLength>
@@ -3277,6 +3419,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="70" RealAddress="8AB4FE4E"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>5</BitStart>
                                   <BitLength>7</BitLength>
@@ -3389,6 +3532,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="70" RealAddress="8AB4FE4C"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>0</BitStart>
                                   <BitLength>7</BitLength>
@@ -3501,6 +3645,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="60" RealAddress="8AB4FE7A"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>2</BitStart>
                                   <BitLength>7</BitLength>
@@ -3613,6 +3758,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="63" RealAddress="8AB4FE59"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>5</BitStart>
                                   <BitLength>7</BitLength>
@@ -3725,6 +3871,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="78" RealAddress="8AB4FE75"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>4</BitStart>
                                   <BitLength>7</BitLength>
@@ -3837,6 +3984,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="68" RealAddress="8AB4FE5A"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>4</BitStart>
                                   <BitLength>7</BitLength>
@@ -3949,6 +4097,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="78" RealAddress="8AB4FE44"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>1</BitStart>
                                   <BitLength>7</BitLength>
@@ -4061,6 +4210,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="67" RealAddress="8AB4FE51"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>7</BitStart>
                                   <BitLength>7</BitLength>
@@ -4173,6 +4323,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="70" RealAddress="8AB4FE67"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>1</BitStart>
                                   <BitLength>7</BitLength>
@@ -4285,6 +4436,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="74" RealAddress="8AB4FE4C"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>7</BitStart>
                                   <BitLength>7</BitLength>
@@ -4406,6 +4558,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="63" RealAddress="8AB4FE87"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>5</BitStart>
                                   <BitLength>7</BitLength>
@@ -4518,6 +4671,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="49" RealAddress="8AB4FE5F"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>1</BitStart>
                                   <BitLength>7</BitLength>
@@ -4630,6 +4784,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="53" RealAddress="8AB4FE85"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>2</BitStart>
                                   <BitLength>7</BitLength>
@@ -4742,6 +4897,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="71" RealAddress="8AB4FE6F"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>5</BitStart>
                                   <BitLength>7</BitLength>
@@ -4854,6 +5010,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="61" RealAddress="8AB4FE45"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>1</BitStart>
                                   <BitLength>7</BitLength>
@@ -4966,6 +5123,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="55" RealAddress="8AB4FE79"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>3</BitStart>
                                   <BitLength>7</BitLength>
@@ -5078,6 +5236,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="59" RealAddress="8AB4FE62"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>0</BitStart>
                                   <BitLength>7</BitLength>
@@ -5199,6 +5358,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="64" RealAddress="8AB4FE55"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>3</BitStart>
                                   <BitLength>7</BitLength>
@@ -5311,6 +5471,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="70" RealAddress="8AB4FE50"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>3</BitStart>
                                   <BitLength>7</BitLength>
@@ -5423,6 +5584,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="78" RealAddress="8AB4FE56"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>2</BitStart>
                                   <BitLength>7</BitLength>
@@ -5535,6 +5697,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="71" RealAddress="8AB4FE46"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>6</BitStart>
                                   <BitLength>7</BitLength>
@@ -5647,6 +5810,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="70" RealAddress="8AB4FE78"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>4</BitStart>
                                   <BitLength>7</BitLength>
@@ -5759,6 +5923,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="72" RealAddress="8AB4FE57"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>1</BitStart>
                                   <BitLength>7</BitLength>
@@ -5880,6 +6045,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="8" RealAddress="8AB4FE4F"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>4</BitStart>
                                   <BitLength>7</BitLength>
@@ -5992,6 +6158,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="11" RealAddress="8AB4FE7D"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>1</BitStart>
                                   <BitLength>7</BitLength>
@@ -6104,6 +6271,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="12" RealAddress="8AB4FE73"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>0</BitStart>
                                   <BitLength>7</BitLength>
@@ -6216,6 +6384,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="10" RealAddress="8AB4FE8C"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>2</BitStart>
                                   <BitLength>7</BitLength>
@@ -6328,6 +6497,7 @@ dealloc(ptrTeamplayerlinks)
 97: '98'
 98: '99'
 </DropDownList>
+                                  <LastState Value="10" RealAddress="8AB4FE53"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>5</BitStart>
                                   <BitLength>7</BitLength>
@@ -6369,6 +6539,7 @@ dealloc(ptrTeamplayerlinks)
                                       <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                      <LastState Value="0" RealAddress="8AB4FE69"/>
                                       <VariableType>Binary</VariableType>
                                       <BitStart>6</BitStart>
                                       <BitLength>1</BitLength>
@@ -6384,6 +6555,7 @@ dealloc(ptrTeamplayerlinks)
                                       <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                      <LastState Value="0" RealAddress="8AB4FE6A"/>
                                       <VariableType>Binary</VariableType>
                                       <BitStart>6</BitStart>
                                       <BitLength>1</BitLength>
@@ -6399,6 +6571,7 @@ dealloc(ptrTeamplayerlinks)
                                       <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                      <LastState Value="0" RealAddress="8AB4FE6A"/>
                                       <VariableType>Binary</VariableType>
                                       <BitStart>7</BitStart>
                                       <BitLength>1</BitLength>
@@ -6414,6 +6587,7 @@ dealloc(ptrTeamplayerlinks)
                                       <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                      <LastState Value="1" RealAddress="8AB4FE6B"/>
                                       <VariableType>Binary</VariableType>
                                       <BitStart>1</BitStart>
                                       <BitLength>1</BitLength>
@@ -6431,6 +6605,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE68"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>7</BitStart>
                                   <BitLength>1</BitLength>
@@ -6446,6 +6621,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE69"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>0</BitStart>
                                   <BitLength>1</BitLength>
@@ -6461,6 +6637,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE69"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>1</BitStart>
                                   <BitLength>1</BitLength>
@@ -6476,6 +6653,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE69"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>2</BitStart>
                                   <BitLength>1</BitLength>
@@ -6491,6 +6669,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE69"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>3</BitStart>
                                   <BitLength>1</BitLength>
@@ -6506,6 +6685,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE69"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>4</BitStart>
                                   <BitLength>1</BitLength>
@@ -6521,6 +6701,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE69"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>5</BitStart>
                                   <BitLength>1</BitLength>
@@ -6536,6 +6717,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE69"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>7</BitStart>
                                   <BitLength>1</BitLength>
@@ -6551,6 +6733,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE6A"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>0</BitStart>
                                   <BitLength>1</BitLength>
@@ -6566,6 +6749,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="1" RealAddress="8AB4FE6A"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>1</BitStart>
                                   <BitLength>1</BitLength>
@@ -6581,6 +6765,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE6A"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>2</BitStart>
                                   <BitLength>1</BitLength>
@@ -6596,6 +6781,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE6A"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>3</BitStart>
                                   <BitLength>1</BitLength>
@@ -6611,6 +6797,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE6A"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>4</BitStart>
                                   <BitLength>1</BitLength>
@@ -6626,6 +6813,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE6A"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>5</BitStart>
                                   <BitLength>1</BitLength>
@@ -6641,6 +6829,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE6B"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>0</BitStart>
                                   <BitLength>1</BitLength>
@@ -6656,6 +6845,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE6B"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>2</BitStart>
                                   <BitLength>1</BitLength>
@@ -6671,6 +6861,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE6B"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>3</BitStart>
                                   <BitLength>1</BitLength>
@@ -6686,6 +6877,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE6B"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>4</BitStart>
                                   <BitLength>1</BitLength>
@@ -6701,6 +6893,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE6B"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>5</BitStart>
                                   <BitLength>1</BitLength>
@@ -6716,6 +6909,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE6B"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>6</BitStart>
                                   <BitLength>1</BitLength>
@@ -6731,6 +6925,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE6B"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>7</BitStart>
                                   <BitLength>1</BitLength>
@@ -6746,6 +6941,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE6C"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>0</BitStart>
                                   <BitLength>1</BitLength>
@@ -6761,6 +6957,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE6C"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>1</BitStart>
                                   <BitLength>1</BitLength>
@@ -6776,6 +6973,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE6C"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>2</BitStart>
                                   <BitLength>1</BitLength>
@@ -6791,6 +6989,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE6C"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>3</BitStart>
                                   <BitLength>1</BitLength>
@@ -6806,6 +7005,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE6C"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>4</BitStart>
                                   <BitLength>1</BitLength>
@@ -6838,6 +7038,7 @@ dealloc(ptrTeamplayerlinks)
                                       <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                      <LastState Value="0" RealAddress="8AB4FE41"/>
                                       <VariableType>Binary</VariableType>
                                       <BitStart>3</BitStart>
                                       <BitLength>1</BitLength>
@@ -6853,6 +7054,7 @@ dealloc(ptrTeamplayerlinks)
                                       <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                      <LastState Value="0" RealAddress="8AB4FE41"/>
                                       <VariableType>Binary</VariableType>
                                       <BitStart>4</BitStart>
                                       <BitLength>1</BitLength>
@@ -6870,6 +7072,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE40"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>0</BitStart>
                                   <BitLength>1</BitLength>
@@ -6885,6 +7088,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE40"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>1</BitStart>
                                   <BitLength>1</BitLength>
@@ -6900,6 +7104,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE40"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>2</BitStart>
                                   <BitLength>1</BitLength>
@@ -6915,6 +7120,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE40"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>3</BitStart>
                                   <BitLength>1</BitLength>
@@ -6930,6 +7136,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE40"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>4</BitStart>
                                   <BitLength>1</BitLength>
@@ -6945,6 +7152,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE40"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>5</BitStart>
                                   <BitLength>1</BitLength>
@@ -6960,6 +7168,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE40"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>6</BitStart>
                                   <BitLength>1</BitLength>
@@ -6975,6 +7184,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE40"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>7</BitStart>
                                   <BitLength>1</BitLength>
@@ -6990,6 +7200,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE41"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>0</BitStart>
                                   <BitLength>1</BitLength>
@@ -7005,6 +7216,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE41"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>1</BitStart>
                                   <BitLength>1</BitLength>
@@ -7020,6 +7232,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE41"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>2</BitStart>
                                   <BitLength>1</BitLength>
@@ -7035,6 +7248,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE41"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>5</BitStart>
                                   <BitLength>1</BitLength>
@@ -7050,6 +7264,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE41"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>6</BitStart>
                                   <BitLength>1</BitLength>
@@ -7065,6 +7280,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="1" RealAddress="8AB4FE41"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>7</BitStart>
                                   <BitLength>1</BitLength>
@@ -7080,6 +7296,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="1" RealAddress="8AB4FE42"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>0</BitStart>
                                   <BitLength>1</BitLength>
@@ -7095,6 +7312,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE42"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>1</BitStart>
                                   <BitLength>1</BitLength>
@@ -7110,6 +7328,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE42"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>2</BitStart>
                                   <BitLength>1</BitLength>
@@ -7125,6 +7344,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE42"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>3</BitStart>
                                   <BitLength>1</BitLength>
@@ -7140,6 +7360,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE42"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>4</BitStart>
                                   <BitLength>1</BitLength>
@@ -7155,6 +7376,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE42"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>5</BitStart>
                                   <BitLength>1</BitLength>
@@ -7170,6 +7392,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE42"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>6</BitStart>
                                   <BitLength>1</BitLength>
@@ -7185,6 +7408,7 @@ dealloc(ptrTeamplayerlinks)
                                   <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                                  <LastState Value="0" RealAddress="8AB4FE42"/>
                                   <VariableType>Binary</VariableType>
                                   <BitStart>7</BitStart>
                                   <BitLength>1</BitLength>
@@ -7208,6 +7432,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>44</ID>
                               <Description>"shoetypecode"</Description>
+                              <LastState Value="55" RealAddress="8AB4FE62"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>7</BitStart>
                               <BitLength>9</BitLength>
@@ -7220,6 +7445,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>107</ID>
                               <Description>"shoedesigncode"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE91"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>5</BitStart>
                               <BitLength>2</BitLength>
@@ -7232,6 +7458,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>109</ID>
                               <Description>"shoecolorcode1"</Description>
+                              <LastState Value="30" RealAddress="8AB4FE91"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>7</BitStart>
                               <BitLength>5</BitLength>
@@ -7244,6 +7471,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>22</ID>
                               <Description>"shoecolorcode2"</Description>
+                              <LastState Value="31" RealAddress="8AB4FE51"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>2</BitStart>
                               <BitLength>5</BitLength>
@@ -7256,6 +7484,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>36</ID>
                               <Description>"accessorycolourcode1"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE5C"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>7</BitStart>
                               <BitLength>4</BitLength>
@@ -7268,6 +7497,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>117</ID>
                               <Description>"accessorycolourcode2"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE97"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>0</BitStart>
                               <BitLength>4</BitLength>
@@ -7280,6 +7510,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>79</ID>
                               <Description>"accessorycolourcode3"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE7E"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>7</BitStart>
                               <BitLength>4</BitLength>
@@ -7292,6 +7523,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>95</ID>
                               <Description>"accessorycolourcode4"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE8B"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>6</BitStart>
                               <BitLength>4</BitLength>
@@ -7304,6 +7536,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>80</ID>
                               <Description>"accessorycode1"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE7F"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>3</BitStart>
                               <BitLength>5</BitLength>
@@ -7316,6 +7549,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>106</ID>
                               <Description>"accessorycode2"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE91"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>0</BitStart>
                               <BitLength>5</BitLength>
@@ -7328,6 +7562,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>35</ID>
                               <Description>"accessorycode3"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE5C"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>2</BitStart>
                               <BitLength>5</BitLength>
@@ -7340,6 +7575,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>6</ID>
                               <Description>"accessorycode4"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE46"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>0</BitStart>
                               <BitLength>5</BitLength>
@@ -7361,6 +7597,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>53</ID>
                               <Description>"GK - Glove Type Code"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE6E"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>0</BitStart>
                               <BitLength>7</BitLength>
@@ -7460,6 +7697,7 @@ dealloc(ptrTeamplayerlinks)
 84: '214 cm'
 85: '215 cm'
 </DropDownList>
+                              <LastState Value="48" RealAddress="8AB4FE60"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>0</BitStart>
                               <BitLength>7</BitLength>
@@ -7559,6 +7797,7 @@ dealloc(ptrTeamplayerlinks)
 84: '114 kg'
 85: '115 kg'
 </DropDownList>
+                              <LastState Value="35" RealAddress="8AB4FE6D"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>0</BitStart>
                               <BitLength>7</BitLength>
@@ -7843,6 +8082,7 @@ dealloc(ptrTeamplayerlinks)
 10501: '10501'
 10502: '10502'
 </DropDownList>
+                              <LastState Value="1513" RealAddress="8AB4FE5D"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>3</BitStart>
                               <BitLength>14</BitLength>
@@ -7879,6 +8119,7 @@ dealloc(ptrTeamplayerlinks)
 23: 'Ronaldo (prime/medium)'
 24: 'Salah'
 </DropDownList>
+                              <LastState Value="0" RealAddress="8AB4FE93"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>1</BitStart>
                               <BitLength>7</BitLength>
@@ -7891,6 +8132,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>10</ID>
                               <Description>"hairtypecode"</Description>
+                              <LastState Value="65" RealAddress="8AB4FE48"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>3</BitStart>
                               <BitLength>10</BitLength>
@@ -7903,6 +8145,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>110</ID>
                               <Description>"hairstylecode"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE92"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>4</BitStart>
                               <BitLength>5</BitLength>
@@ -7932,6 +8175,7 @@ dealloc(ptrTeamplayerlinks)
 14: 'Blue'
 15: 'Blue'
 </DropDownList>
+                              <LastState Value="6" RealAddress="8AB4FE43"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>0</BitStart>
                               <BitLength>4</BitLength>
@@ -7944,6 +8188,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>118</ID>
                               <Description>"facialhaircolorcode"</Description>
+                              <LastState Value="2" RealAddress="8AB4FE97"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>4</BitStart>
                               <BitLength>4</BitLength>
@@ -7956,6 +8201,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>2</ID>
                               <Description>"facialhairtypecode"</Description>
+                              <LastState Value="4" RealAddress="8AB4FE43"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>4</BitStart>
                               <BitLength>5</BitLength>
@@ -7968,6 +8214,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>73</ID>
                               <Description>"eyebrowcode"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE7B"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>2</BitStart>
                               <BitLength>4</BitLength>
@@ -7980,6 +8227,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>77</ID>
                               <Description>"eyecolorcode"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE7E"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>0</BitStart>
                               <BitLength>4</BitLength>
@@ -7992,6 +8240,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>86</ID>
                               <Description>"sideburnscode"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE84"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>5</BitStart>
                               <BitLength>2</BitLength>
@@ -8015,6 +8264,7 @@ dealloc(ptrTeamplayerlinks)
 8: 'Medium Brown'
 9: 'Dark Brown'
 </DropDownList>
+                              <LastState Value="1" RealAddress="8AB4FE8E"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>1</BitStart>
                               <BitLength>4</BitLength>
@@ -8027,6 +8277,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>89</ID>
                               <Description>"skintypecode"</Description>
+                              <LastState Value="2" RealAddress="8AB4FE86"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>1</BitStart>
                               <BitLength>4</BitLength>
@@ -8039,6 +8290,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>4</ID>
                               <Description>"jerseystylecode"</Description>
+                              <LastState Value="1" RealAddress="8AB4FE45"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>0</BitStart>
                               <BitLength>1</BitLength>
@@ -8051,6 +8303,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>41</ID>
                               <Description>"hasseasonaljersey"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE60"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>7</BitStart>
                               <BitLength>3</BitLength>
@@ -8063,6 +8316,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>78</ID>
                               <Description>"jerseysleevelengthcode"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE7E"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>4</BitStart>
                               <BitLength>3</BitLength>
@@ -8075,6 +8329,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>105</ID>
                               <Description>"jerseyfit"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE90"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>6</BitStart>
                               <BitLength>2</BitLength>
@@ -8087,6 +8342,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>101</ID>
                               <Description>"shortstyle"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE8E"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>5</BitStart>
                               <BitLength>1</BitLength>
@@ -8099,6 +8355,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>50</ID>
                               <Description>"socklengthcode"</Description>
+                              <LastState Value="2" RealAddress="8AB4FE6C"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>5</BitStart>
                               <BitLength>3</BitLength>
@@ -8111,6 +8368,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>9</ID>
                               <Description>"Tattoo - Left Arm"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE47"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>5</BitStart>
                               <BitLength>6</BitLength>
@@ -8123,6 +8381,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>103</ID>
                               <Description>"Tattoo - Left Neck"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE8F"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>5</BitStart>
                               <BitLength>6</BitLength>
@@ -8135,6 +8394,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>54</ID>
                               <Description>"Tattoo - Right Arm"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE6E"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>7</BitStart>
                               <BitLength>6</BitLength>
@@ -8147,6 +8407,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>90</ID>
                               <Description>"Tattoo - Right Neck"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE86"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>5</BitStart>
                               <BitLength>6</BitLength>
@@ -8159,6 +8420,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>12</ID>
                               <Description>"Tattoo - Back Neck"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE4A"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>4</BitStart>
                               <BitLength>6</BitLength>
@@ -8180,6 +8442,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>65</ID>
                               <Description>"faceposerpreset"</Description>
+                              <LastState Value="4" RealAddress="8AB4FE76"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>6</BitStart>
                               <BitLength>4</BitLength>
@@ -8192,6 +8455,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>104</ID>
                               <Description>"emotion"</Description>
+                              <LastState Value="2" RealAddress="8AB4FE90"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>3</BitStart>
                               <BitLength>3</BitLength>
@@ -8204,6 +8468,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>7</ID>
                               <Description>"GK - Save Type"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE46"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>5</BitStart>
                               <BitLength>1</BitLength>
@@ -8216,6 +8481,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>91</ID>
                               <Description>"GK - Kickstyle"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE87"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>3</BitStart>
                               <BitLength>2</BitLength>
@@ -8231,6 +8497,7 @@ dealloc(ptrTeamplayerlinks)
                               <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0: 'No'
 1: 'Yes'
 </DropDownList>
+                              <LastState Value="0" RealAddress="8AB4FE6D"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>7</BitStart>
                               <BitLength>1</BitLength>
@@ -8243,6 +8510,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>82</ID>
                               <Description>"Head Class Code"</Description>
+                              <LastState Value="1" RealAddress="8AB4FE82"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>4</BitStart>
                               <BitLength>2</BitLength>
@@ -8255,6 +8523,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>57</ID>
                               <Description>"Head Asset ID"</Description>
+                              <LastState Value="16" RealAddress="8AB4FE70"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>5</BitStart>
                               <BitLength>19</BitLength>
@@ -8267,6 +8536,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>97</ID>
                               <Description>"Head Variation"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE8D"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>1</BitStart>
                               <BitLength>5</BitLength>
@@ -8285,6 +8555,7 @@ dealloc(ptrTeamplayerlinks)
 3: '4 Stars'
 4: '5 Stars'
 </DropDownList>
+                              <LastState Value="2" RealAddress="8AB4FE76"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>3</BitStart>
                               <BitLength>3</BitLength>
@@ -8303,6 +8574,7 @@ dealloc(ptrTeamplayerlinks)
 3: '4 Stars'
 4: '5 Stars'
 </DropDownList>
+                              <LastState Value="2" RealAddress="8AB4FE8D"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>6</BitStart>
                               <BitLength>3</BitLength>
@@ -8321,6 +8593,7 @@ dealloc(ptrTeamplayerlinks)
 3: '4 Stars'
 4: '5 Stars'
 </DropDownList>
+                              <LastState Value="3" RealAddress="8AB4FE84"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>7</BitStart>
                               <BitLength>3</BitLength>
@@ -8337,6 +8610,7 @@ dealloc(ptrTeamplayerlinks)
 0: 'Medium'
 2: 'High'
 </DropDownList>
+                              <LastState Value="0" RealAddress="8AB4FE77"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>3</BitStart>
                               <BitLength>2</BitLength>
@@ -8353,6 +8627,7 @@ dealloc(ptrTeamplayerlinks)
 0: 'Medium'
 2: 'High'
 </DropDownList>
+                              <LastState Value="0" RealAddress="8AB4FE82"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>6</BitStart>
                               <BitLength>2</BitLength>
@@ -8365,6 +8640,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>114</ID>
                               <Description>"runningcode1"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE94"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>4</BitStart>
                               <BitLength>7</BitLength>
@@ -8377,6 +8653,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>74</ID>
                               <Description>"runningcode2"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE7B"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>6</BitStart>
                               <BitLength>7</BitLength>
@@ -8389,6 +8666,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>75</ID>
                               <Description>"modifier"</Description>
+                              <LastState Value="6" RealAddress="8AB4FE7C"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>5</BitStart>
                               <BitLength>4</BitLength>
@@ -8401,6 +8679,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>16</ID>
                               <Description>"animfreekickstartposcode"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE4D"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>6</BitStart>
                               <BitLength>4</BitLength>
@@ -8413,6 +8692,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>31</ID>
                               <Description>"animpenaltiesapproachcode"</Description>
+                              <LastState Value="1" RealAddress="8AB4FE59"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>3</BitStart>
                               <BitLength>2</BitLength>
@@ -8425,6 +8705,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>17</ID>
                               <Description>"animpenaltieskickstylecode"</Description>
+                              <LastState Value="1" RealAddress="8AB4FE4E"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>2</BitStart>
                               <BitLength>2</BitLength>
@@ -8437,6 +8718,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>61</ID>
                               <Description>"animpenaltiesmotionstylecode"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE74"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>2</BitStart>
                               <BitLength>3</BitLength>
@@ -8449,6 +8731,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>113</ID>
                               <Description>"animpenaltiesstartposcode"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE94"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>0</BitStart>
                               <BitLength>4</BitLength>
@@ -8461,6 +8744,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>26</ID>
                               <Description>"finishingcode1"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE54"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>4</BitStart>
                               <BitLength>7</BitLength>
@@ -8473,6 +8757,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>68</ID>
                               <Description>"finishingcode2"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE77"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>5</BitStart>
                               <BitLength>7</BitLength>
@@ -8485,6 +8770,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>72</ID>
                               <Description>"iscustomized"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE7B"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>1</BitStart>
                               <BitLength>1</BitLength>
@@ -8497,6 +8783,7 @@ dealloc(ptrTeamplayerlinks)
                             <CheatEntry>
                               <ID>66</ID>
                               <Description>"usercaneditname"</Description>
+                              <LastState Value="0" RealAddress="8AB4FE77"/>
                               <VariableType>Binary</VariableType>
                               <BitStart>2</BitStart>
                               <BitLength>1</BitLength>
@@ -9670,6 +9957,7 @@ dealloc(ptrTeamplayerlinks)
                         <CheatEntry>
                           <ID>1865</ID>
                           <Description>"Base Address - teamplayerlinks table"</Description>
+                          <LastState Value="000000008AE3B028" RealAddress="13FFF1090"/>
                           <ShowAsHex>1</ShowAsHex>
                           <VariableType>8 Bytes</VariableType>
                           <Address>ptrTeamplayerlinks</Address>
@@ -9677,6 +9965,7 @@ dealloc(ptrTeamplayerlinks)
                         <CheatEntry>
                           <ID>2762</ID>
                           <Description>"isamongtopscorers"</Description>
+                          <LastState Value="0" RealAddress="8AE3B029"/>
                           <VariableType>Binary</VariableType>
                           <BitStart>0</BitStart>
                           <BitLength>1</BitLength>
@@ -9689,6 +9978,7 @@ dealloc(ptrTeamplayerlinks)
                         <CheatEntry>
                           <ID>2763</ID>
                           <Description>"yellows"</Description>
+                          <LastState Value="0" RealAddress="8AE3B029"/>
                           <VariableType>Binary</VariableType>
                           <BitStart>1</BitStart>
                           <BitLength>6</BitLength>
@@ -9701,6 +9991,7 @@ dealloc(ptrTeamplayerlinks)
                         <CheatEntry>
                           <ID>2764</ID>
                           <Description>"isamongtopscorersinteam"</Description>
+                          <LastState Value="0" RealAddress="8AE3B029"/>
                           <VariableType>Binary</VariableType>
                           <BitStart>7</BitStart>
                           <BitLength>1</BitLength>
@@ -9713,6 +10004,7 @@ dealloc(ptrTeamplayerlinks)
                         <CheatEntry>
                           <ID>2765</ID>
                           <Description>"leaguegoals"</Description>
+                          <LastState Value="0" RealAddress="8AE3B028"/>
                           <VariableType>Binary</VariableType>
                           <BitStart>0</BitStart>
                           <BitLength>8</BitLength>
@@ -9725,6 +10017,7 @@ dealloc(ptrTeamplayerlinks)
                         <CheatEntry>
                           <ID>2766</ID>
                           <Description>"jerseynumber"</Description>
+                          <LastState Value="0" RealAddress="8AE3B02A"/>
                           <VariableType>Binary</VariableType>
                           <BitStart>0</BitStart>
                           <BitLength>7</BitLength>
@@ -9737,6 +10030,7 @@ dealloc(ptrTeamplayerlinks)
                         <CheatEntry>
                           <ID>2767</ID>
                           <Description>"position"</Description>
+                          <LastState Value="0" RealAddress="8AE3B02A"/>
                           <VariableType>Binary</VariableType>
                           <BitStart>7</BitStart>
                           <BitLength>6</BitLength>
@@ -9749,6 +10043,7 @@ dealloc(ptrTeamplayerlinks)
                         <CheatEntry>
                           <ID>2768</ID>
                           <Description>"artificialkey"</Description>
+                          <LastState Value="0" RealAddress="8AE3B02B"/>
                           <VariableType>Binary</VariableType>
                           <BitStart>5</BitStart>
                           <BitLength>19</BitLength>
@@ -9761,6 +10056,7 @@ dealloc(ptrTeamplayerlinks)
                         <CheatEntry>
                           <ID>2769</ID>
                           <Description>"teamid"</Description>
+                          <LastState Value="268" RealAddress="8AE3B02E"/>
                           <VariableType>Binary</VariableType>
                           <BitStart>0</BitStart>
                           <BitLength>18</BitLength>
@@ -9773,6 +10069,7 @@ dealloc(ptrTeamplayerlinks)
                         <CheatEntry>
                           <ID>2770</ID>
                           <Description>"leaguegoalsprevmatch"</Description>
+                          <LastState Value="0" RealAddress="8AE3B030"/>
                           <VariableType>Binary</VariableType>
                           <BitStart>2</BitStart>
                           <BitLength>4</BitLength>
@@ -9785,6 +10082,7 @@ dealloc(ptrTeamplayerlinks)
                         <CheatEntry>
                           <ID>2771</ID>
                           <Description>"injury"</Description>
+                          <LastState Value="0" RealAddress="8AE3B030"/>
                           <VariableType>Binary</VariableType>
                           <BitStart>6</BitStart>
                           <BitLength>6</BitLength>
@@ -9797,6 +10095,7 @@ dealloc(ptrTeamplayerlinks)
                         <CheatEntry>
                           <ID>2772</ID>
                           <Description>"leagueappearances"</Description>
+                          <LastState Value="0" RealAddress="8AE3B031"/>
                           <VariableType>Binary</VariableType>
                           <BitStart>4</BitStart>
                           <BitLength>6</BitLength>
@@ -9809,6 +10108,7 @@ dealloc(ptrTeamplayerlinks)
                         <CheatEntry>
                           <ID>2773</ID>
                           <Description>"istopscorer"</Description>
+                          <LastState Value="0" RealAddress="8AE3B032"/>
                           <VariableType>Binary</VariableType>
                           <BitStart>2</BitStart>
                           <BitLength>1</BitLength>
@@ -9821,6 +10121,7 @@ dealloc(ptrTeamplayerlinks)
                         <CheatEntry>
                           <ID>2774</ID>
                           <Description>"leaguegoalsprevthreematches"</Description>
+                          <LastState Value="0" RealAddress="8AE3B032"/>
                           <VariableType>Binary</VariableType>
                           <BitStart>3</BitStart>
                           <BitLength>5</BitLength>
@@ -9833,6 +10134,7 @@ dealloc(ptrTeamplayerlinks)
                         <CheatEntry>
                           <ID>2775</ID>
                           <Description>"playerid"</Description>
+                          <LastState Value="224041" RealAddress="8AE3B033"/>
                           <VariableType>Binary</VariableType>
                           <BitStart>0</BitStart>
                           <BitLength>19</BitLength>
@@ -9845,6 +10147,7 @@ dealloc(ptrTeamplayerlinks)
                         <CheatEntry>
                           <ID>2776</ID>
                           <Description>"form"</Description>
+                          <LastState Value="3" RealAddress="8AE3B035"/>
                           <VariableType>Binary</VariableType>
                           <BitStart>3</BitStart>
                           <BitLength>3</BitLength>
@@ -9857,6 +10160,7 @@ dealloc(ptrTeamplayerlinks)
                         <CheatEntry>
                           <ID>2777</ID>
                           <Description>"reds"</Description>
+                          <LastState Value="0" RealAddress="8AE3B035"/>
                           <VariableType>Binary</VariableType>
                           <BitStart>6</BitStart>
                           <BitLength>5</BitLength>
@@ -9970,6 +10274,7 @@ dealloc(managertable_teamid)
                                 <CheatEntry>
                                   <ID>2035</ID>
                                   <Description>"Base Address - Manager table"</Description>
+                                  <LastState Value="0000000000000000" RealAddress="13FFF1018"/>
                                   <ShowAsHex>1</ShowAsHex>
                                   <VariableType>8 Bytes</VariableType>
                                   <Address>ptrManager</Address>
@@ -11460,6 +11765,7 @@ dealloc(managertable_teamid)
                         <CheatEntry>
                           <ID>2131</ID>
                           <Description>"Base Address - career_users table"</Description>
+                          <LastState Value="0000000000000000" RealAddress="13FFF1058"/>
                           <ShowAsHex>1</ShowAsHex>
                           <VariableType>8 Bytes</VariableType>
                           <Address>usersDataPtr</Address>
@@ -12038,6 +12344,7 @@ dealloc(managertable_teamid)
                         <CheatEntry>
                           <ID>2902</ID>
                           <Description>"transferwindowend1"</Description>
+                          <LastState Value="730" RealAddress="409208E8"/>
                           <VariableType>Binary</VariableType>
                           <BitStart>0</BitStart>
                           <BitLength>11</BitLength>
@@ -12050,6 +12357,7 @@ dealloc(managertable_teamid)
                         <CheatEntry>
                           <ID>2903</ID>
                           <Description>"transferwindowstart1"</Description>
+                          <LastState Value="600" RealAddress="409208E9"/>
                           <VariableType>Binary</VariableType>
                           <BitStart>3</BitStart>
                           <BitLength>11</BitLength>
@@ -12062,6 +12370,7 @@ dealloc(managertable_teamid)
                         <CheatEntry>
                           <ID>2904</ID>
                           <Description>"transferwindowend2"</Description>
+                          <LastState Value="30" RealAddress="409208EA"/>
                           <VariableType>Binary</VariableType>
                           <BitStart>6</BitStart>
                           <BitLength>11</BitLength>
@@ -12074,6 +12383,7 @@ dealloc(managertable_teamid)
                         <CheatEntry>
                           <ID>2905</ID>
                           <Description>"setupdate"</Description>
+                          <LastState Value="0" RealAddress="409208EC"/>
                           <VariableType>Binary</VariableType>
                           <BitStart>1</BitStart>
                           <BitLength>19</BitLength>
@@ -12086,6 +12396,7 @@ dealloc(managertable_teamid)
                         <CheatEntry>
                           <ID>2906</ID>
                           <Description>"dateid"</Description>
+                          <LastState Value="0" RealAddress="409208EE"/>
                           <VariableType>Binary</VariableType>
                           <BitStart>4</BitStart>
                           <BitLength>1</BitLength>
@@ -12098,6 +12409,7 @@ dealloc(managertable_teamid)
                         <CheatEntry>
                           <ID>2907</ID>
                           <Description>"enddate"</Description>
+                          <LastState Value="0" RealAddress="409208EE"/>
                           <VariableType>Binary</VariableType>
                           <BitStart>5</BitStart>
                           <BitLength>19</BitLength>
@@ -12110,6 +12422,7 @@ dealloc(managertable_teamid)
                         <CheatEntry>
                           <ID>2908</ID>
                           <Description>"currdate"</Description>
+                          <LastState Value="0" RealAddress="409208F1"/>
                           <VariableType>Binary</VariableType>
                           <BitStart>0</BitStart>
                           <BitLength>19</BitLength>
@@ -12122,6 +12435,7 @@ dealloc(managertable_teamid)
                         <CheatEntry>
                           <ID>2909</ID>
                           <Description>"startdate"</Description>
+                          <LastState Value="0" RealAddress="409208F3"/>
                           <VariableType>Binary</VariableType>
                           <BitStart>3</BitStart>
                           <BitLength>19</BitLength>
@@ -12134,6 +12448,7 @@ dealloc(managertable_teamid)
                         <CheatEntry>
                           <ID>2910</ID>
                           <Description>"transferwindowstart2"</Description>
+                          <LastState Value="0" RealAddress="409208F5"/>
                           <VariableType>Binary</VariableType>
                           <BitStart>6</BitStart>
                           <BitLength>11</BitLength>
@@ -12146,6 +12461,7 @@ dealloc(managertable_teamid)
                         <CheatEntry>
                           <ID>2911</ID>
                           <Description>"objectivecheckdate"</Description>
+                          <LastState Value="0" RealAddress="409208F7"/>
                           <VariableType>Binary</VariableType>
                           <BitStart>1</BitStart>
                           <BitLength>19</BitLength>
@@ -14279,13 +14595,13 @@ dealloc(playerInjuryPtr)
           <ID>2505</ID>
           <Description>"Players Training"</Description>
           <Options moHideChildren="1"/>
-          <LastState Value="" Activated="1" RealAddress="00000000"/>
+          <LastState Value="" RealAddress="00000000"/>
           <GroupHeader>1</GroupHeader>
           <CheatEntries>
             <CheatEntry>
               <ID>1662</ID>
               <Description>"Unlimited Training Sessions"</Description>
-              <LastState Activated="1"/>
+              <LastState/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>{
 AUTHOR:
@@ -14406,7 +14722,7 @@ dealloc(newmem_UnlimitedTraining)
               <ID>467</ID>
               <Description>"More efficient training"</Description>
               <Options moHideChildren="1"/>
-              <LastState Activated="1"/>
+              <LastState/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>{
 AUTHOR:
@@ -14526,7 +14842,7 @@ dealloc(newmem_moreEfficientTraining)
             <CheatEntry>
               <ID>2664</ID>
               <Description>"Training Everyday"</Description>
-              <LastState Activated="1"/>
+              <LastState/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>{
 AUTHOR:
@@ -14655,7 +14971,7 @@ dealloc(newmem_TrainingEveryDay)
             <CheatEntry>
               <ID>2501</ID>
               <Description>"Training sim - A"</Description>
-              <LastState Activated="1"/>
+              <LastState/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>{
 AUTHOR:
@@ -16709,7 +17025,7 @@ dealloc(ClubID)
         <CheatEntry>
           <ID>1626</ID>
           <Description>"Free &amp; Unlimited Releasing Players"</Description>
-          <LastState Activated="1"/>
+          <LastState/>
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>{
 AUTHOR:
@@ -17150,20 +17466,20 @@ dealloc(newmem_transferini2)
           <ID>440</ID>
           <Description>"Global Transfer Network"</Description>
           <Options moHideChildren="1"/>
-          <LastState Value="" Activated="1" RealAddress="00000000"/>
+          <LastState Value="" RealAddress="00000000"/>
           <GroupHeader>1</GroupHeader>
           <CheatEntries>
             <CheatEntry>
               <ID>441</ID>
               <Description>"Activate scripts BEFORE you load your career mode save."</Description>
               <Options moHideChildren="1"/>
-              <LastState Value="" Activated="1" RealAddress="00000000"/>
+              <LastState Value="" RealAddress="00000000"/>
               <GroupHeader>1</GroupHeader>
               <CheatEntries>
                 <CheatEntry>
                   <ID>2506</ID>
                   <Description>"Reveal player data (scouting players not needed)"</Description>
-                  <LastState Activated="1"/>
+                  <LastState/>
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>{
 AUTHOR:
@@ -17271,13 +17587,13 @@ dealloc(newmem_gtn_reveal)
           <ID>2503</ID>
           <Description>"Morale"</Description>
           <Options moHideChildren="1"/>
-          <LastState Value="" Activated="1" RealAddress="00000000"/>
+          <LastState Value="" RealAddress="00000000"/>
           <GroupHeader>1</GroupHeader>
           <CheatEntries>
             <CheatEntry>
               <ID>2504</ID>
               <Description>"Disable Morale"</Description>
-              <LastState Activated="1"/>
+              <LastState/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>{
 AUTHOR:
@@ -17401,7 +17717,7 @@ UPDATE 3
             <CheatEntry>
               <ID>2502</ID>
               <Description>"MORALE_LEVELS (more happier players)"</Description>
-              <LastState Activated="1"/>
+              <LastState/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>{
 AUTHOR:
@@ -17818,21 +18134,21 @@ dd (int)-1
           <ID>2657</ID>
           <Description>"Youth Academy"</Description>
           <Options moHideChildren="1"/>
-          <LastState Value="" Activated="1" RealAddress="00000000"/>
+          <LastState Value="" RealAddress="00000000"/>
           <GroupHeader>1</GroupHeader>
           <CheatEntries>
             <CheatEntry>
               <ID>2658</ID>
               <Description>"Activate scripts BEFORE you load your career mode save."</Description>
               <Options moHideChildren="1"/>
-              <LastState Value="" Activated="1" RealAddress="00000000"/>
+              <LastState Value="" RealAddress="00000000"/>
               <GroupHeader>1</GroupHeader>
               <CheatEntries>
                 <CheatEntry>
                   <ID>1264</ID>
                   <Description>"SCOUT_REPORT_PLAYERS"</Description>
                   <Options moHideChildren="1"/>
-                  <LastState Activated="1"/>
+                  <LastState/>
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>{
 AUTHOR:
@@ -17951,7 +18267,7 @@ dealloc(newmem_moreyoungplayers)
                 <CheatEntry>
                   <ID>1266</ID>
                   <Description>"Reveal ovr and pot"</Description>
-                  <LastState Activated="1"/>
+                  <LastState/>
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>{
 AUTHOR:
@@ -21903,39 +22219,43 @@ dealloc(fixturesData)
     </SymbolEntry>
     <SymbolEntry>
       <Name>CamSpeedModifier</Name>
-      <Address>02B70000</Address>
+      <Address>00740000</Address>
     </SymbolEntry>
     <SymbolEntry>
       <Name>CamRotSpeedMultiplier</Name>
-      <Address>02B70010</Address>
+      <Address>00740010</Address>
     </SymbolEntry>
     <SymbolEntry>
       <Name>StadiumBoundary</Name>
-      <Address>02B70020</Address>
+      <Address>00740020</Address>
     </SymbolEntry>
     <SymbolEntry>
       <Name>CamZBoundary</Name>
-      <Address>02B70030</Address>
+      <Address>00740030</Address>
     </SymbolEntry>
     <SymbolEntry>
       <Name>RotVMaxPositiveVal</Name>
-      <Address>02B70040</Address>
+      <Address>00740040</Address>
     </SymbolEntry>
     <SymbolEntry>
       <Name>RotVMaxNegativeVal</Name>
-      <Address>02B70050</Address>
+      <Address>00740050</Address>
     </SymbolEntry>
     <SymbolEntry>
       <Name>ptrCamTarget</Name>
-      <Address>02B70060</Address>
+      <Address>00740060</Address>
     </SymbolEntry>
     <SymbolEntry>
       <Name>ptrCamRot</Name>
-      <Address>02B70070</Address>
+      <Address>00740070</Address>
     </SymbolEntry>
     <SymbolEntry>
       <Name>bDisableZoom</Name>
-      <Address>02B70080</Address>
+      <Address>00740080</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>bUseGamepad</Name>
+      <Address>00740090</Address>
     </SymbolEntry>
   </UserdefinedSymbols>
   <LuaScript>-- Hello!

@@ -75,7 +75,6 @@ function TruePlayerEditFormShow()
     PlayersEditorForm.CopyCMFindPlayerByID.Text = 'Find player by ID...'
 
     -- FUT
-    RARITY_DISPLAY = fut_get_rarity_display()
     PlayersEditorForm.CloneFromListBox.setItemIndex(0)
     PlayersEditorForm.CardContainerPanel.Visible = false
 
@@ -658,7 +657,7 @@ end
 
 function CopyCMPlayerBtnClick(sender)
     if not COPY_FROM_CM_PLAYER_ID then
-        ShowMessage('Find player first')
+        do_log('Find player first', 'ERROR')
         return
     end
 
@@ -726,12 +725,18 @@ end
 
 FOUND_FUT_PLAYERS = nil
 function SearchPlayerByNameFUTBtnClick(sender)
-    if sender.Text == '' then return end 
+    if sender.Text == '' then return end
+    if RARITY_DISPLAY == nil then
+        RARITY_DISPLAY = fut_get_rarity_display()
+    end
+    if RARITY_DISPLAY == nil then return end
 
     PlayersEditorForm.CardContainerPanel.Visible = false
     PlayersEditorForm.FUTPickPlayerListBox.clear()
     
     FOUND_FUT_PLAYERS = fut_find_player(PlayersEditorForm.FindPlayerByNameFUTEdit.Text)
+    if FOUND_FUT_PLAYERS == nil then return end
+
     local players = FOUND_FUT_PLAYERS
     local scrollbox_width = 310
 
@@ -807,7 +812,7 @@ function FUTCopyPlayerBtnClick(sender)
     local player = FOUND_FUT_PLAYERS['items'][selected]
 
     if not player then
-        ShowMessage('Select player card first.')
+        do_log('Select player card first.', 'ERROR')
         return
     end
 

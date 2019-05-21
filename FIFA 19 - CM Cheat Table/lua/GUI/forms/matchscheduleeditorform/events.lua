@@ -44,8 +44,7 @@ function MatchScheduleFormShow(sender)
             'To use schedule editor you need to activate %s script first',
             ADDR_LIST.getMemoryRecordByID(CT_MEMORY_RECORDS['SCHEDULEEDITOR_SCRIPT']).Description
         )
-        do_log(txt)
-        ShowMessage(txt)
+        do_log(txt, 'ERROR')
         MatchScheduleExitClick(sender)
         return
     end
