@@ -782,82 +782,84 @@ function fut_copy_card_to_gui(player)
         if not f_playerid then goto continue end
 
         if f_playerid == playerid then
-            local trait1_comps = {
-                "InflexibilityCB",
-                "LongThrowInCB",
-                "PowerFreeKickCB",
-                "DiverCB",
-                "InjuryProneCB",
-                "SolidPlayerCB",
-                "AvoidsusingweakerfootCB",
-                "DivesIntoTacklesCB",
-                "TriestobeatdefensivelineCB",
-                "SelfishCB",
-                "LeadershipCB",
-                "ArguesWithRefereeCB",
-                "EarlyCrosserCB",
-                "FinesseShotCB",
-                "FlairCB",
-                "LongPasserCB",
-                "LongShotTakerCB",
-                "SpeedDribblerCB",
-                "PlaymakerCB",
-                "GKupforcornersCB",
-                "PuncherCB",
-                "GKLongthrowCB",
-                "PowerheaderCB",
-                "GKOneonOneCB",
-                "GiantthrowinCB",
-                "OutsitefootshotCB",
-                "FansfavouriteCB",
-                "SwervePassCB",
-                "SecondWindCB",
-                "AcrobaticClearanceCB"
-            }
-            local trait1 = toBits(tonumber(values[columns['trait1']]))
-            local index = 1
-            for ch in string.gmatch(trait1, '.') do
-                local comp = PlayersEditorForm[trait1_comps[index]]
-                if comp then
-                    comp.State = tonumber(ch)
+            if PlayersEditorForm.FUTCopyAttribsCB.State == 0 then
+                local trait1_comps = {
+                    "InflexibilityCB",
+                    "LongThrowInCB",
+                    "PowerFreeKickCB",
+                    "DiverCB",
+                    "InjuryProneCB",
+                    "SolidPlayerCB",
+                    "AvoidsusingweakerfootCB",
+                    "DivesIntoTacklesCB",
+                    "TriestobeatdefensivelineCB",
+                    "SelfishCB",
+                    "LeadershipCB",
+                    "ArguesWithRefereeCB",
+                    "EarlyCrosserCB",
+                    "FinesseShotCB",
+                    "FlairCB",
+                    "LongPasserCB",
+                    "LongShotTakerCB",
+                    "SpeedDribblerCB",
+                    "PlaymakerCB",
+                    "GKupforcornersCB",
+                    "PuncherCB",
+                    "GKLongthrowCB",
+                    "PowerheaderCB",
+                    "GKOneonOneCB",
+                    "GiantthrowinCB",
+                    "OutsitefootshotCB",
+                    "FansfavouriteCB",
+                    "SwervePassCB",
+                    "SecondWindCB",
+                    "AcrobaticClearanceCB"
+                }
+                local trait1 = toBits(tonumber(values[columns['trait1']]))
+                local index = 1
+                for ch in string.gmatch(trait1, '.') do
+                    local comp = PlayersEditorForm[trait1_comps[index]]
+                    if comp then
+                        comp.State = tonumber(ch)
+                    end
+                    index = index + 1
                 end
-                index = index + 1
-            end
 
-            local trait2_comps = {
-                "SkilledDribblingCB",
-                "FlairPassesCB",
-                "FancyFlicksCB",
-                "StutterPenaltyCB",
-                "ChippedPenaltyCB",
-                "BicycleKicksCB",
-                "DivingHeaderCB",
-                "DrivenPassCB",
-                "GKFlatKickCB",
-                "OneClubPlayerCB",
-                "TeamPlayerCB",
-                "ChipShotCB",
-                "TechnicalDribblerCB",
-                "RushesOutOfGoalCB",
-                "BacksBacksIntoPlayerCB",
-                "HiddenSetPlaySpecialistCB",
-                "TakesFinesseFreeKicksCB",
-                "TargetForwardCB",
-                "CautiousWithCrossesCB",
-                "ComesForCrossessCB",
-                "BlamesTeammatesCB",
-                "SaveswithFeetCB",
-                "SetPlaySpecialistCB",
-                "TornadoSkillmoveCB",
-            }
-            local trait2 = toBits(tonumber(values[columns['trait2']]))
-            local index = 1
-            for ch in string.gmatch(trait2, '.') do
-                local comp = PlayersEditorForm[trait2_comps[index]]
-                if comp then
-                    comp.State = tonumber(ch)
+                local trait2_comps = {
+                    "SkilledDribblingCB",
+                    "FlairPassesCB",
+                    "FancyFlicksCB",
+                    "StutterPenaltyCB",
+                    "ChippedPenaltyCB",
+                    "BicycleKicksCB",
+                    "DivingHeaderCB",
+                    "DrivenPassCB",
+                    "GKFlatKickCB",
+                    "OneClubPlayerCB",
+                    "TeamPlayerCB",
+                    "ChipShotCB",
+                    "TechnicalDribblerCB",
+                    "RushesOutOfGoalCB",
+                    "BacksBacksIntoPlayerCB",
+                    "HiddenSetPlaySpecialistCB",
+                    "TakesFinesseFreeKicksCB",
+                    "TargetForwardCB",
+                    "CautiousWithCrossesCB",
+                    "ComesForCrossessCB",
+                    "BlamesTeammatesCB",
+                    "SaveswithFeetCB",
+                    "SetPlaySpecialistCB",
+                    "TornadoSkillmoveCB",
+                }
+                local trait2 = toBits(tonumber(values[columns['trait2']]))
+                local index = 1
+                for ch in string.gmatch(trait2, '.') do
+                    local comp = PlayersEditorForm[trait2_comps[index]]
+                    if comp then
+                        comp.State = tonumber(ch)
+                    end
+                    index = index + 1
                 end
-                index = index + 1
             end
 
             for key, value in pairs(comp_to_column) do
@@ -911,433 +913,448 @@ function fut_copy_card_to_gui(player)
                         headtypecode = tonumber(values[columns[value]])
                     })
                 elseif component_class == 'TCEEdit' then
-                    -- clear
-                    component.OnChange = nil
-
-                    local new_comp_text = player[value] or player[comp_to_fut[key]] or values[columns[value]]
-                    -- if not tonumber(new_comp_text) then
-                    --     print(component_name)
-                    --     print(new_comp_text)
-                    --     print(value)
-                    -- end
-                    
-                    component.Text = tonumber(new_comp_text)
-        
-                    if comp_desc['events'] then
-                        for key, value in pairs(comp_desc['events']) do
-                            component[key] = value
-                        end
+                    if PlayersEditorForm.FUTCopyAttribsCB.State == 1 and (
+                        component.Parent.Parent.Name == 'AttributesPanel' or 
+                        component.Name == 'OverallEdit' or
+                        component.Name == 'PotentialEdit'
+                    ) then
+                        -- Don't copy attributes
                     else
-                        component.OnChange = CommonEditOnChange
+                        -- clear
+                        component.OnChange = nil
+
+                        local new_comp_text = player[value] or player[comp_to_fut[key]] or values[columns[value]]
+                        -- if not tonumber(new_comp_text) then
+                        --     print(component_name)
+                        --     print(new_comp_text)
+                        --     print(value)
+                        -- end
+                        
+                        component.Text = tonumber(new_comp_text)
+            
+                        if comp_desc['events'] then
+                            for key, value in pairs(comp_desc['events']) do
+                                component[key] = value
+                            end
+                        else
+                            component.OnChange = CommonEditOnChange
+                        end
                     end
                 elseif component_class == 'TCEComboBox' then
-                    -- clear
-                    component.OnChange = nil
-
-                    local new_comp_val = nil
-                    if value == 'preferredposition1' then
-                        local pos_name_to_id = {
-                            GK = 0,
-                            SW = 1,
-                            RWB = 2,
-                            RB = 3,
-                            RCB = 4,
-                            CB = 5,
-                            LCB = 6,
-                            LB = 7,
-                            LWB = 8,
-                            RDM = 9,
-                            CDM = 10,
-                            LDM = 11,
-                            RM = 12,
-                            RCM = 13,
-                            CM = 14,
-                            LCM = 15,
-                            LM = 16,
-                            RAM = 17,
-                            CAM = 18,
-                            LAM = 19,
-                            RF = 20,
-                            CF = 21,
-                            LF = 22,
-                            RW = 23,
-                            RS = 24,
-                            ST = 25,
-                            LS = 26,
-                            LW = 27,
-                        }
-                        new_comp_val = pos_name_to_id[player['position']]
+                    if PlayersEditorForm.FUTCopyAttribsCB.State == 1 and (
+                        component.Parent.Parent.Name == 'AttributesPanel'
+                    ) then
+                        -- Don't copy attributes
                     else
-                        new_comp_val = player[value] or player[comp_to_fut[key]] or values[columns[value]]
-                    end
+                        -- clear
+                        component.OnChange = nil
 
-                    local dropdown = ADDR_LIST.getMemoryRecordByID(comp_desc['id'])
-                    local dropdown_items = dropdown.DropDownList
+                        local new_comp_val = nil
+                        if value == 'preferredposition1' then
+                            local pos_name_to_id = {
+                                GK = 0,
+                                SW = 1,
+                                RWB = 2,
+                                RB = 3,
+                                RCB = 4,
+                                CB = 5,
+                                LCB = 6,
+                                LB = 7,
+                                LWB = 8,
+                                RDM = 9,
+                                CDM = 10,
+                                LDM = 11,
+                                RM = 12,
+                                RCM = 13,
+                                CM = 14,
+                                LCM = 15,
+                                LM = 16,
+                                RAM = 17,
+                                CAM = 18,
+                                LAM = 19,
+                                RF = 20,
+                                CF = 21,
+                                LF = 22,
+                                RW = 23,
+                                RS = 24,
+                                ST = 25,
+                                LS = 26,
+                                LW = 27,
+                            }
+                            new_comp_val = pos_name_to_id[player['position']]
+                        else
+                            new_comp_val = player[value] or player[comp_to_fut[key]] or values[columns[value]]
+                        end
 
-                    for j = 0, dropdown_items.Count-1 do
-                        local val, desc = string.match(dropdown_items[j], "(%d+): '(.+)'")
+                        local dropdown = ADDR_LIST.getMemoryRecordByID(comp_desc['id'])
+                        local dropdown_items = dropdown.DropDownList
 
-                        if tonumber(val) + comp_desc['modifier'] == tonumber(new_comp_val) then
-                            component.ItemIndex = j
-                            component.Hint = desc
+                        for j = 0, dropdown_items.Count-1 do
+                            local val, desc = string.match(dropdown_items[j], "(%d+): '(.+)'")
+
+                            if tonumber(val) + comp_desc['modifier'] == tonumber(new_comp_val) then
+                                component.ItemIndex = j
+                                component.Hint = desc
+                            end
+                        end
+
+                        -- Add events
+                        if comp_desc['events'] then
+                            for key, value in pairs(comp_desc['events']) do
+                                component[key] = value
+                            end
+                        else
+                            component.OnChange = CommonCBOnChange
+                            component.OnDropDown = CommonCBOnDropDown
+                            component.OnMouseEnter = CommonCBOnMouseEnter
+                            component.OnMouseLeave = CommonCBOnMouseLeave
                         end
                     end
+                end
+            end
 
-                    -- Add events
-                    if comp_desc['events'] then
-                        for key, value in pairs(comp_desc['events']) do
-                            component[key] = value
-                        end
-                    else
-                        component.OnChange = CommonCBOnChange
-                        component.OnDropDown = CommonCBOnDropDown
-                        component.OnMouseEnter = CommonCBOnMouseEnter
-                        component.OnMouseLeave = CommonCBOnMouseLeave
+            if PlayersEditorForm.FUTCopyAttribsCB.State == 0 then
+                -- Apply chem style:
+                local chem_style_itm_index = PlayersEditorForm.FUTChemStyleCB.ItemIndex
+                local chem_styles = {
+                    -- Basic
+                    {
+                        SprintSpeedEdit = 5,
+                        AttackPositioningEdit = 5,
+                        ShotPowerEdit = 5,
+                        VolleysEdit = 5,
+                        PenaltiesEdit = 5,
+                        VisionEdit = 5,
+                        ShortPassingEdit = 5,
+                        LongPassingEdit = 5,
+                        CurveEdit = 5,
+                        AgilityEdit = 5,
+                        BallControlEdit = 5,
+                        DribblingEdit = 5,
+                        MarkingEdit = 5,
+                        StandingTackleEdit = 5,
+                        SlidingTackleEdit = 5,
+                        JumpingEdit = 5,
+                        StrengthEdit = 5
+                    },
+                    -- GK Basic
+                    {
+                        GKDivingEdit = 10,
+                        GKHandlingEdit = 10,
+                        GKKickingEdit = 10,
+                        GKReflexEdit = 10,
+                        AccelerationEdit = 5,
+                        GKPositioningEdit = 10
+                    },
+                    -- Sniper
+                    {
+                        AttackPositioningEdit = 10,
+                        FinishingEdit = 15,
+                        VolleysEdit = 10,
+                        PenaltiesEdit = 15,
+                        AgilityEdit = 5,
+                        BalanceEdit = 10,
+                        ReactionsEdit = 5,
+                        BallControlEdit = 5,
+                        DribblingEdit = 15
+                    },
+                    -- Finisher
+                    {
+                        FinishingEdit = 5,
+                        ShotPowerEdit = 15,
+                        LongShotsEdit = 15,
+                        VolleysEdit = 10,
+                        PenaltiesEdit = 10,
+                        JumpingEdit = 15,
+                        StrengthEdit = 10,
+                        AggressionEdit = 10
+                    },
+                    -- Deadeye
+                    {
+                        AttackPositioningEdit = 10,
+                        FinishingEdit = 15,
+                        ShotPowerEdit = 10,
+                        LongShotsEdit = 5,
+                        PenaltiesEdit = 5,
+                        VisionEdit = 5,
+                        FreeKickAccuracyEdit = 10,
+                        LongPassingEdit = 5,
+                        ShortPassingEdit = 15,
+                        CurveEdit = 10
+                    },
+                    -- Marksman
+                    {
+                        AttackPositioningEdit = 10,
+                        FinishingEdit = 5,
+                        ShotPowerEdit = 10,
+                        LongShotsEdit = 10,
+                        VolleysEdit = 10,
+                        PenaltiesEdit = 5,
+                        AgilityEdit = 5,
+                        ReactionsEdit = 5,
+                        BallControlEdit = 5,
+                        DribblingEdit = 5,
+                        JumpingEdit = 10,
+                        StrengthEdit = 5,
+                        AggressionEdit = 5
+                    },
+                    -- Hawk
+                    {
+                        AccelerationEdit = 10,
+                        SprintSpeedEdit = 5,
+                        AttackPositioningEdit = 10,
+                        FinishingEdit = 5,
+                        ShotPowerEdit = 10,
+                        LongShotsEdit = 10,
+                        VolleysEdit = 10,
+                        PenaltiesEdit = 5,
+                        JumpingEdit = 10,
+                        StrengthEdit = 5,
+                        AggressionEdit = 10
+                    },
+                    -- Artist
+                    {
+                        VisionEdit = 15,
+                        CrossingEdit = 5,
+                        LongPassingEdit = 15,
+                        ShortPassingEdit = 10,
+                        CurveEdit = 5,
+                        AgilityEdit = 5,
+                        BalanceEdit = 5,
+                        ReactionsEdit = 10,
+                        BallControlEdit = 5,
+                        DribblingEdit = 15
+                    },
+                    -- Architect
+                    {
+                        VisionEdit = 10,
+                        CrossingEdit = 15,
+                        FreeKickAccuracyEdit = 5,
+                        LongPassingEdit = 15,
+                        ShortPassingEdit = 10,
+                        CurveEdit = 5,
+                        JumpingEdit = 5,
+                        StrengthEdit = 15,
+                        AggressionEdit = 10
+                    },
+                    -- Powerhouse
+                    {
+                        VisionEdit = 10,
+                        CrossingEdit = 5,
+                        LongPassingEdit = 10,
+                        ShortPassingEdit = 15,
+                        CurveEdit = 10,
+                        InterceptionsEdit = 5,
+                        MarkingEdit = 10,
+                        StandingTackleEdit = 15,
+                        SlidingTackleEdit = 10
+                    },
+                    -- Maestro
+                    {
+                        AttackPositioningEdit = 5,
+                        FinishingEdit = 5,
+                        ShotPowerEdit = 10,
+                        LongShotsEdit = 10,
+                        VolleysEdit = 10,
+                        VisionEdit = 5,
+                        FreeKickAccuracyEdit = 10,
+                        LongPassingEdit = 5,
+                        ShortPassingEdit = 10,
+                        ReactionsEdit = 5,
+                        BallControlEdit = 5,
+                        DribblingEdit = 10
+                    },
+                    -- Engine
+                    {
+                        AccelerationEdit = 10,
+                        SprintSpeedEdit = 5,
+                        VisionEdit = 5,
+                        CrossingEdit = 5,
+                        FreeKickAccuracyEdit = 10,
+                        LongPassingEdit = 5,
+                        ShortPassingEdit = 10,
+                        CurveEdit = 5,
+                        AgilityEdit = 5,
+                        BalanceEdit = 10,
+                        ReactionsEdit = 5,
+                        BallControlEdit = 5,
+                        DribblingEdit = 10
+                    },
+                    -- Sentinel
+                    {
+                        InterceptionsEdit = 5,
+                        HeadingAccuracyEdit = 10,
+                        MarkingEdit = 15,
+                        StandingTackleEdit = 15,
+                        SlidingTackleEdit = 10,
+                        JumpingEdit = 5,
+                        StrengthEdit = 15,
+                        AggressionEdit = 10
+                    },
+                    -- Guardian
+                    {
+                        AgilityEdit = 5,
+                        BalanceEdit = 10,
+                        ReactionsEdit = 5,
+                        BallControlEdit = 5,
+                        DribblingEdit = 15,
+                        InterceptionsEdit = 10,
+                        HeadingAccuracyEdit = 5,
+                        MarkingEdit = 15,
+                        StandingTackleEdit = 10,
+                        SlidingTackleEdit = 10
+                    },
+                    -- Gladiator
+                    {
+                        AttackPositioningEdit = 15,
+                        FinishingEdit = 5,
+                        ShotPowerEdit = 10,
+                        LongShotsEdit = 5,
+                        InterceptionsEdit = 10,
+                        HeadingAccuracyEdit = 15,
+                        MarkingEdit = 5,
+                        StandingTackleEdit = 10,
+                        SlidingTackleEdit = 15
+                    },
+                    -- Backbone
+                    {
+                        VisionEdit = 5,
+                        CrossingEdit = 5,
+                        LongPassingEdit = 5,
+                        ShortPassingEdit = 10,
+                        CurveEdit = 5,
+                        InterceptionsEdit = 5,
+                        HeadingAccuracyEdit = 5,
+                        MarkingEdit = 10,
+                        StandingTackleEdit = 10,
+                        SlidingTackleEdit = 10,
+                        JumpingEdit = 5,
+                        StrengthEdit = 10,
+                        AggressionEdit = 5
+                    },
+                    -- Anchor
+                    {
+                        AccelerationEdit = 10,
+                        SprintSpeedEdit = 5,
+                        InterceptionsEdit = 5,
+                        HeadingAccuracyEdit = 10,
+                        MarkingEdit = 10,
+                        StandingTackleEdit = 10,
+                        SlidingTackleEdit = 10,
+                        JumpingEdit = 10,
+                        StrengthEdit = 10,
+                        AggressionEdit = 10
+                    },
+                    -- Hunter
+                    {
+                        AccelerationEdit = 15,
+                        SprintSpeedEdit = 10,
+                        AttackPositioningEdit = 15,
+                        FinishingEdit = 10,
+                        ShotPowerEdit = 10,
+                        LongShotsEdit = 5,
+                        VolleysEdit = 10,
+                        PenaltiesEdit = 15
+                    },
+                    -- Catalyst
+                    {
+                        AccelerationEdit = 15,
+                        SprintSpeedEdit = 10,
+                        VisionEdit = 15,
+                        CrossingEdit = 10,
+                        FreeKickAccuracyEdit = 10,
+                        LongPassingEdit = 5,
+                        ShortPassingEdit = 10,
+                        CurveEdit = 15
+                    },
+                    -- Shadow
+                    {
+                        AccelerationEdit = 15,
+                        SprintSpeedEdit = 10,
+                        InterceptionsEdit = 10,
+                        HeadingAccuracyEdit = 10,
+                        MarkingEdit = 15,
+                        StandingTackleEdit = 15,
+                        SlidingTackleEdit = 15
+                    },
+                    -- Wall
+                    {
+                        GKDivingEdit = 15,
+                        GKHandlingEdit = 15,
+                        GKKickingEdit = 15
+                    },
+                    -- Shield
+                    {
+                        GKKickingEdit = 15,
+                        GKReflexEdit = 15,
+                        AccelerationEdit = 10,
+                        SprintSpeedEdit = 5
+                    },
+                    -- Cat
+                    {
+                        GKReflexEdit = 15,
+                        AccelerationEdit = 10,
+                        SprintSpeedEdit = 5,
+                        GKPositioningEdit = 15
+                    },
+                    -- Glove
+                    {
+                        GKDivingEdit = 15,
+                        GKHandlingEdit = 15,
+                        GKPositioningEdit = 15
+                    },
+                }
+
+                if chem_styles[chem_style_itm_index] then
+                    for component_name, modif in pairs(chem_styles[chem_style_itm_index]) do
+                        local component = PlayersEditorForm[component_name]
+                        -- tmp disable onchange event
+                        local onchange_event = component.OnChange
+                        component.OnChange = nil
+
+                        local new_attr_val = tonumber(component.Text) + modif
+                        if new_attr_val > 99 then new_attr_val = 99 end
+
+                        component.Text = new_attr_val
+                        
+                        component.OnChange = onchange_event
                     end
                 end
-            end
 
-            -- Apply chem style:
-            local chem_style_itm_index = PlayersEditorForm.FUTChemStyleCB.ItemIndex
-            local chem_styles = {
-                -- Basic
-                {
-                    SprintSpeedEdit = 5,
-                    AttackPositioningEdit = 5,
-                    ShotPowerEdit = 5,
-                    VolleysEdit = 5,
-                    PenaltiesEdit = 5,
-                    VisionEdit = 5,
-                    ShortPassingEdit = 5,
-                    LongPassingEdit = 5,
-                    CurveEdit = 5,
-                    AgilityEdit = 5,
-                    BallControlEdit = 5,
-                    DribblingEdit = 5,
-                    MarkingEdit = 5,
-                    StandingTackleEdit = 5,
-                    SlidingTackleEdit = 5,
-                    JumpingEdit = 5,
-                    StrengthEdit = 5
-                },
-                -- GK Basic
-                {
-                    GKDivingEdit = 10,
-                    GKHandlingEdit = 10,
-                    GKKickingEdit = 10,
-                    GKReflexEdit = 10,
-                    AccelerationEdit = 5,
-                    GKPositioningEdit = 10
-                },
-                -- Sniper
-                {
-                    AttackPositioningEdit = 10,
-                    FinishingEdit = 15,
-                    VolleysEdit = 10,
-                    PenaltiesEdit = 15,
-                    AgilityEdit = 5,
-                    BalanceEdit = 10,
-                    ReactionsEdit = 5,
-                    BallControlEdit = 5,
-                    DribblingEdit = 15
-                },
-                -- Finisher
-                {
-                    FinishingEdit = 5,
-                    ShotPowerEdit = 15,
-                    LongShotsEdit = 15,
-                    VolleysEdit = 10,
-                    PenaltiesEdit = 10,
-                    JumpingEdit = 15,
-                    StrengthEdit = 10,
-                    AggressionEdit = 10
-                },
-                -- Deadeye
-                {
-                    AttackPositioningEdit = 10,
-                    FinishingEdit = 15,
-                    ShotPowerEdit = 10,
-                    LongShotsEdit = 5,
-                    PenaltiesEdit = 5,
-                    VisionEdit = 5,
-                    FreeKickAccuracyEdit = 10,
-                    LongPassingEdit = 5,
-                    ShortPassingEdit = 15,
-                    CurveEdit = 10
-                },
-                -- Marksman
-                {
-                    AttackPositioningEdit = 10,
-                    FinishingEdit = 5,
-                    ShotPowerEdit = 10,
-                    LongShotsEdit = 10,
-                    VolleysEdit = 10,
-                    PenaltiesEdit = 5,
-                    AgilityEdit = 5,
-                    ReactionsEdit = 5,
-                    BallControlEdit = 5,
-                    DribblingEdit = 5,
-                    JumpingEdit = 10,
-                    StrengthEdit = 5,
-                    AggressionEdit = 5
-                },
-                -- Hawk
-                {
-                    AccelerationEdit = 10,
-                    SprintSpeedEdit = 5,
-                    AttackPositioningEdit = 10,
-                    FinishingEdit = 5,
-                    ShotPowerEdit = 10,
-                    LongShotsEdit = 10,
-                    VolleysEdit = 10,
-                    PenaltiesEdit = 5,
-                    JumpingEdit = 10,
-                    StrengthEdit = 5,
-                    AggressionEdit = 10
-                },
-                -- Artist
-                {
-                    VisionEdit = 15,
-                    CrossingEdit = 5,
-                    LongPassingEdit = 15,
-                    ShortPassingEdit = 10,
-                    CurveEdit = 5,
-                    AgilityEdit = 5,
-                    BalanceEdit = 5,
-                    ReactionsEdit = 10,
-                    BallControlEdit = 5,
-                    DribblingEdit = 15
-                },
-                -- Architect
-                {
-                    VisionEdit = 10,
-                    CrossingEdit = 15,
-                    FreeKickAccuracyEdit = 5,
-                    LongPassingEdit = 15,
-                    ShortPassingEdit = 10,
-                    CurveEdit = 5,
-                    JumpingEdit = 5,
-                    StrengthEdit = 15,
-                    AggressionEdit = 10
-                },
-                -- Powerhouse
-                {
-                    VisionEdit = 10,
-                    CrossingEdit = 5,
-                    LongPassingEdit = 10,
-                    ShortPassingEdit = 15,
-                    CurveEdit = 10,
-                    InterceptionsEdit = 5,
-                    MarkingEdit = 10,
-                    StandingTackleEdit = 15,
-                    SlidingTackleEdit = 10
-                },
-                -- Maestro
-                {
-                    AttackPositioningEdit = 5,
-                    FinishingEdit = 5,
-                    ShotPowerEdit = 10,
-                    LongShotsEdit = 10,
-                    VolleysEdit = 10,
-                    VisionEdit = 5,
-                    FreeKickAccuracyEdit = 10,
-                    LongPassingEdit = 5,
-                    ShortPassingEdit = 10,
-                    ReactionsEdit = 5,
-                    BallControlEdit = 5,
-                    DribblingEdit = 10
-                },
-                -- Engine
-                {
-                    AccelerationEdit = 10,
-                    SprintSpeedEdit = 5,
-                    VisionEdit = 5,
-                    CrossingEdit = 5,
-                    FreeKickAccuracyEdit = 10,
-                    LongPassingEdit = 5,
-                    ShortPassingEdit = 10,
-                    CurveEdit = 5,
-                    AgilityEdit = 5,
-                    BalanceEdit = 10,
-                    ReactionsEdit = 5,
-                    BallControlEdit = 5,
-                    DribblingEdit = 10
-                },
-                -- Sentinel
-                {
-                    InterceptionsEdit = 5,
-                    HeadingAccuracyEdit = 10,
-                    MarkingEdit = 15,
-                    StandingTackleEdit = 15,
-                    SlidingTackleEdit = 10,
-                    JumpingEdit = 5,
-                    StrengthEdit = 15,
-                    AggressionEdit = 10
-                },
-                -- Guardian
-                {
-                    AgilityEdit = 5,
-                    BalanceEdit = 10,
-                    ReactionsEdit = 5,
-                    BallControlEdit = 5,
-                    DribblingEdit = 15,
-                    InterceptionsEdit = 10,
-                    HeadingAccuracyEdit = 5,
-                    MarkingEdit = 15,
-                    StandingTackleEdit = 10,
-                    SlidingTackleEdit = 10
-                },
-                -- Gladiator
-                {
-                    AttackPositioningEdit = 15,
-                    FinishingEdit = 5,
-                    ShotPowerEdit = 10,
-                    LongShotsEdit = 5,
-                    InterceptionsEdit = 10,
-                    HeadingAccuracyEdit = 15,
-                    MarkingEdit = 5,
-                    StandingTackleEdit = 10,
-                    SlidingTackleEdit = 15
-                },
-                -- Backbone
-                {
-                    VisionEdit = 5,
-                    CrossingEdit = 5,
-                    LongPassingEdit = 5,
-                    ShortPassingEdit = 10,
-                    CurveEdit = 5,
-                    InterceptionsEdit = 5,
-                    HeadingAccuracyEdit = 5,
-                    MarkingEdit = 10,
-                    StandingTackleEdit = 10,
-                    SlidingTackleEdit = 10,
-                    JumpingEdit = 5,
-                    StrengthEdit = 10,
-                    AggressionEdit = 5
-                },
-                -- Anchor
-                {
-                    AccelerationEdit = 10,
-                    SprintSpeedEdit = 5,
-                    InterceptionsEdit = 5,
-                    HeadingAccuracyEdit = 10,
-                    MarkingEdit = 10,
-                    StandingTackleEdit = 10,
-                    SlidingTackleEdit = 10,
-                    JumpingEdit = 10,
-                    StrengthEdit = 10,
-                    AggressionEdit = 10
-                },
-                -- Hunter
-                {
-                    AccelerationEdit = 15,
-                    SprintSpeedEdit = 10,
-                    AttackPositioningEdit = 15,
-                    FinishingEdit = 10,
-                    ShotPowerEdit = 10,
-                    LongShotsEdit = 5,
-                    VolleysEdit = 10,
-                    PenaltiesEdit = 15
-                },
-                -- Catalyst
-                {
-                    AccelerationEdit = 15,
-                    SprintSpeedEdit = 10,
-                    VisionEdit = 15,
-                    CrossingEdit = 10,
-                    FreeKickAccuracyEdit = 10,
-                    LongPassingEdit = 5,
-                    ShortPassingEdit = 10,
-                    CurveEdit = 15
-                },
-                -- Shadow
-                {
-                    AccelerationEdit = 15,
-                    SprintSpeedEdit = 10,
-                    InterceptionsEdit = 10,
-                    HeadingAccuracyEdit = 10,
-                    MarkingEdit = 15,
-                    StandingTackleEdit = 15,
-                    SlidingTackleEdit = 15
-                },
-                -- Wall
-                {
-                    GKDivingEdit = 15,
-                    GKHandlingEdit = 15,
-                    GKKickingEdit = 15
-                },
-                -- Shield
-                {
-                    GKKickingEdit = 15,
-                    GKReflexEdit = 15,
-                    AccelerationEdit = 10,
-                    SprintSpeedEdit = 5
-                },
-                -- Cat
-                {
-                    GKReflexEdit = 15,
-                    AccelerationEdit = 10,
-                    SprintSpeedEdit = 5,
-                    GKPositioningEdit = 15
-                },
-                -- Glove
-                {
-                    GKDivingEdit = 15,
-                    GKHandlingEdit = 15,
-                    GKPositioningEdit = 15
-                },
-            }
-
-            if chem_styles[chem_style_itm_index] then
-                for component_name, modif in pairs(chem_styles[chem_style_itm_index]) do
-                    local component = PlayersEditorForm[component_name]
-                    -- tmp disable onchange event
-                    local onchange_event = component.OnChange
-                    component.OnChange = nil
-
-                    local new_attr_val = tonumber(component.Text) + modif
-                    if new_attr_val > 99 then new_attr_val = 99 end
-
-                    component.Text = new_attr_val
-                    
-                    component.OnChange = onchange_event
+                local trackbars = {
+                    'AttackTrackBar',
+                    'DefendingTrackBar',
+                    'SkillTrackBar',
+                    'GoalkeeperTrackBar',
+                    'PowerTrackBar',
+                    'MovementTrackBar',
+                    'MentalityTrackBar',
+                }
+                for i=1, #trackbars do
+                    update_trackbar(PlayersEditorForm[trackbars[i]])
                 end
-            end
-
-            local trackbars = {
-                'AttackTrackBar',
-                'DefendingTrackBar',
-                'SkillTrackBar',
-                'GoalkeeperTrackBar',
-                'PowerTrackBar',
-                'MovementTrackBar',
-                'MentalityTrackBar',
-            }
-            for i=1, #trackbars do
-                update_trackbar(PlayersEditorForm[trackbars[i]])
-            end
-
-            -- Adjust Potential
-            if PlayersEditorForm.FUTAdjustPotCB.State == 1 then
-                if tonumber(PlayersEditorForm.OverallEdit.Text) > tonumber(PlayersEditorForm.PotentialEdit.Text) then
-                    PlayersEditorForm.PotentialEdit.Text = PlayersEditorForm.OverallEdit.Text
+                
+                -- Adjust Potential
+                if PlayersEditorForm.FUTAdjustPotCB.State == 1 then
+                    if tonumber(PlayersEditorForm.OverallEdit.Text) > tonumber(PlayersEditorForm.PotentialEdit.Text) then
+                        PlayersEditorForm.PotentialEdit.Text = PlayersEditorForm.OverallEdit.Text
+                    end
                 end
-            end
 
-            -- Fix preferred positions
-            local pos_arr = {PlayersEditorForm.PreferredPosition1CB.ItemIndex+1}
-            for i=2, 4 do
-                if pos_arr[1] ~= PlayersEditorForm[string.format('PreferredPosition%dCB', i)].ItemIndex then
-                    table.insert(pos_arr, PlayersEditorForm[string.format('PreferredPosition%dCB', i)].ItemIndex)
+                -- Fix preferred positions
+                local pos_arr = {PlayersEditorForm.PreferredPosition1CB.ItemIndex+1}
+                for i=2, 4 do
+                    if pos_arr[1] ~= PlayersEditorForm[string.format('PreferredPosition%dCB', i)].ItemIndex then
+                        table.insert(pos_arr, PlayersEditorForm[string.format('PreferredPosition%dCB', i)].ItemIndex)
+                    end
                 end
-            end
-            for i=2, 4 do
-                PlayersEditorForm[string.format('PreferredPosition%dCB', i)].ItemIndex = pos_arr[i] or 0
-            end
+                for i=2, 4 do
+                    PlayersEditorForm[string.format('PreferredPosition%dCB', i)].ItemIndex = pos_arr[i] or 0
+                end
 
-            -- Recalc OVR for best at
-            recalculate_ovr(false)
-
+                -- Recalc OVR for best at
+                recalculate_ovr(false)
+            end
             -- DONE
             HAS_UNAPPLIED_PLAYER_CHANGES = true
             ShowMessage('Data from FUT has been copied to GUI.\nTo see the changes in game you need to "Apply Changes"')
@@ -1680,5 +1697,72 @@ function fut_fill_attributes(player, f_color)
         )
         component.Caption = caption
         if f_color then component.Font.Color = f_color end
+    end
+end
+
+FUT_API_PAGE = 1
+function fut_search_player(player_data, page)
+    if RARITY_DISPLAY == nil then
+        RARITY_DISPLAY = fut_get_rarity_display()
+    end
+    if RARITY_DISPLAY == nil then return end
+
+    PlayersEditorForm.CardContainerPanel.Visible = false
+    PlayersEditorForm.FUTPickPlayerListBox.clear()
+    
+    FOUND_FUT_PLAYERS = fut_find_player(player_data, page)
+    if FOUND_FUT_PLAYERS == nil then return end
+
+    local players = FOUND_FUT_PLAYERS
+    local scrollbox_width = 310
+
+    if players['count'] >= 24 then
+        can_continue = true
+    else
+        can_continue = false
+    end
+
+    PlayersEditorForm.NextPage.Enabled = can_continue
+
+    if page == 1 then
+        PlayersEditorForm.PrevPage.Enabled = false
+    else
+        PlayersEditorForm.PrevPage.Enabled = true
+    end
+
+    for i=1, players['count'] do
+        local player = players['items'][i]
+        local card_type = RARITY_DISPLAY['dynamicRarities'][string.format('%d-%s', player['rarityId'], player['quality'])]
+        local formated_string = string.format(
+            '%s - %s - %d ovr - %s',
+            player['name'], card_type, player['rating'], player['position']
+        )
+
+        -- Dynamic width
+        local str_len = string.len(formated_string)
+        if str_len >= 35 then
+            local new_width = 310 + ((str_len - 35) * 8)
+            if new_width > scrollbox_width then
+                scrollbox_width = new_width
+            end
+        end
+        PlayersEditorForm.FUTPickPlayerListBox.Items.Add(formated_string)
+    end
+
+    -- Change width (add scroll)
+    if scrollbox_width ~= PlayersEditorForm.FUTPickPlayerListBox.Width then
+        PlayersEditorForm.FUTPickPlayerListBox.Width = scrollbox_width
+    end
+
+    if scrollbox_width > 310 then
+        PlayersEditorForm.FUTPickPlayerScrollBox.HorzScrollBar.Visible = true
+    else
+        PlayersEditorForm.FUTPickPlayerScrollBox.HorzScrollBar.Visible = false
+    end
+
+    if players['count'] >= 28 then
+        PlayersEditorForm.FUTPickPlayerScrollBox.VertScrollBar.Visible = true
+    else
+        PlayersEditorForm.FUTPickPlayerScrollBox.VertScrollBar.Visible = false
     end
 end

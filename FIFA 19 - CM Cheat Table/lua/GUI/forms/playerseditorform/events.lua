@@ -725,57 +725,9 @@ end
 
 FOUND_FUT_PLAYERS = nil
 function SearchPlayerByNameFUTBtnClick(sender)
-    if sender.Text == '' then return end
-    if RARITY_DISPLAY == nil then
-        RARITY_DISPLAY = fut_get_rarity_display()
-    end
-    if RARITY_DISPLAY == nil then return end
-
-    PlayersEditorForm.CardContainerPanel.Visible = false
-    PlayersEditorForm.FUTPickPlayerListBox.clear()
-    
-    FOUND_FUT_PLAYERS = fut_find_player(PlayersEditorForm.FindPlayerByNameFUTEdit.Text)
-    if FOUND_FUT_PLAYERS == nil then return end
-
-    local players = FOUND_FUT_PLAYERS
-    local scrollbox_width = 310
-
-    for i=1, players['count'] do
-        local player = players['items'][i]
-        local card_type = RARITY_DISPLAY['dynamicRarities'][string.format('%d-%s', player['rarityId'], player['quality'])]
-        local formated_string = string.format(
-            '%s - %s - %d ovr - %s',
-            player['name'], card_type, player['rating'], player['position']
-        )
-
-        -- Dynamic width
-        local str_len = string.len(formated_string)
-        if str_len >= 35 then
-            local new_width = 310 + ((str_len - 35) * 8)
-            if new_width > scrollbox_width then
-                scrollbox_width = new_width
-            end
-        end
-        PlayersEditorForm.FUTPickPlayerListBox.Items.Add(formated_string)
-    end
-
-    -- Change width (add scroll)
-    if scrollbox_width ~= PlayersEditorForm.FUTPickPlayerListBox.Width then
-        PlayersEditorForm.FUTPickPlayerListBox.Width = scrollbox_width
-    end
-
-    if scrollbox_width > 310 then
-        PlayersEditorForm.FUTPickPlayerScrollBox.HorzScrollBar.Visible = true
-    else
-        PlayersEditorForm.FUTPickPlayerScrollBox.HorzScrollBar.Visible = false
-    end
-
-    if players['count'] >= 28 then
-        PlayersEditorForm.FUTPickPlayerScrollBox.VertScrollBar.Visible = true
-    else
-        PlayersEditorForm.FUTPickPlayerScrollBox.VertScrollBar.Visible = false
-    end
-
+    if PlayersEditorForm.FindPlayerByNameFUTEdit.Text == '' then return end
+    if PlayersEditorForm.FindPlayerByNameFUTEdit.Text == 'Enter player name you want to find' then return end
+    fut_search_player(PlayersEditorForm.FindPlayerByNameFUTEdit.Text, 1)
 end
 
 function FUTPickPlayerListBoxSelectionChange(sender, user)
@@ -801,6 +753,20 @@ function CloneFromListBoxSelectionChange(sender, user)
             PlayersEditorForm[Panels[i]].Visible = false
         end
     end
+end
+
+function PrevPageClick(sender)
+    if FUT_API_PAGE == 1 then return end
+
+    FUT_API_PAGE = FUT_API_PAGE - 1
+    if FUT_API_PAGE < 1 then
+        FUT_API_PAGE = 1
+    end
+    fut_search_player(PlayersEditorForm.FindPlayerByNameFUTEdit.Text, FUT_API_PAGE)
+end
+function NextPageClick(sender)
+    FUT_API_PAGE = FUT_API_PAGE + 1
+    fut_search_player(PlayersEditorForm.FindPlayerByNameFUTEdit.Text, FUT_API_PAGE)
 end
 
 function FUTCopyPlayerLabelClick(sender)

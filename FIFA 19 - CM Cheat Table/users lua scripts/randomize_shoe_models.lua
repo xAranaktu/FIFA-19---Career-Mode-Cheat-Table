@@ -18,7 +18,6 @@ require 'lua/GUI/forms/playerseditorform/consts';
 local comp_desc = get_components_description_player_edit()
 
 local shoe_id_list = {
-    0,
     15,
     16,
     17,
@@ -280,6 +279,7 @@ while true do
         -- Random shoecolorcode2
         local new_color_two = math.random(0, 31)
         
+        ADDR_LIST.getMemoryRecordByID(comp_desc['shoedesignEdit']['id']).Value = 0
         ADDR_LIST.getMemoryRecordByID(comp_desc['shoetypeEdit']['id']).Value = new_shoe_id
         ADDR_LIST.getMemoryRecordByID(comp_desc['shoecolorEdit1']['id']).Value = new_color_one
         ADDR_LIST.getMemoryRecordByID(comp_desc['shoecolorEdit2']['id']).Value = new_color_two

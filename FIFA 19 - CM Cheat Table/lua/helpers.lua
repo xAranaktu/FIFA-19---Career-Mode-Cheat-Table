@@ -10,8 +10,9 @@ end
 function check_ce_version()
     local ce_version = getCEVersion()
     do_log(string.format('Cheat engine version: %f', ce_version))
-    if(ce_version < 6.81) then
-        ShowMessage('Warning. Recommended Cheat Engine version is 6.8.1 or above')
+    if(ce_version < 6.83) then
+        do_log('Cheat Table requires Cheat Engine version 6.8.3 or above', "ERROR")
+        assert(false, 'Cheat Table requires Cheat Engine version 6.8.3 or above')
     end
     MainWindowForm.LabelCEVer.Caption = ce_version
 end
@@ -58,6 +59,27 @@ function do_log(text, level)
             io.close(logger)
         end
     end
+end
+
+function setup_internal_calls()
+    getBaseScriptsPtr()
+    getIntFunctionsAddrs()
+end
+
+function getBaseScriptsPtr()
+    local base_aob = tonumber(get_validated_address('AOB_SCRIPTS_BASE_PTR'), 16)
+    writeQword(
+        "ptrBaseScripts",
+        byteTableToDword(readBytes(base_aob+10, 4, true)) + base_aob + 14
+    )
+end
+
+function getIntFunctionsAddrs()
+    local funcGenReport_aob = tonumber(get_validated_address('AOB_F_GEN_REPORT'), 16)
+    writeQword(
+        "funcGenReport",
+        byteTableToDword(readBytes(funcGenReport_aob+4, 4, true)) + funcGenReport_aob + 8
+    )
 end
 
 function readMultilevelPointer(base_addr, offsets)
@@ -312,8 +334,9 @@ end
 
 function autoactivate_scripts()
     -- Always activate database tables script
+    -- And globalAllocs
     local always_activate = {
-        1666, 1667, 1668, 2058
+        1666, 1667, 1668, 2058, 2995
     }
     for i=1, #always_activate do
         local script_id = always_activate[i]
@@ -426,6 +449,7 @@ function initPtrs()
     -- career_calendar Table
     local careercalendar_firstrecord = readMultilevelPointer(DB_Two_Tables_ptr, {0xC0, 0x28, 0x30})
     writeQword("ptrCareerCalendar", careercalendar_firstrecord)
+    setup_internal_calls()
 end
 
 -- end
@@ -514,6 +538,14 @@ function load_aobs()
         AOB_STADIUM_BOUNDARY = "F3 0F 10 35 76 AC 10 F9",
         AOB_CAM_Z_BOUNDARY = "F3 0F 6F 12 0F 28 C3",
         AOB_FULL_ANGLE_ROTV = "F3 0F 10 40 60 F3 0F 58 83 B4",
+
+        AOB_GENERATE_NEW_YA_REPORT = "8D 43 0E 89 44 24 3C",
+
+        -- "ScriptManager::ScriptFunctions"
+        AOB_SCRIPTS_BASE_PTR = "48 8B 46 10 4C 89 2A",
+
+        -- "Internal functions"
+        AOB_F_GEN_REPORT = "48 8B CB E8 ?? ?? ?? ?? 48 8B CB 48 8B 5C 24 38 48 8B 74 24 40",
 
         -- FootballCompEng_Win64_retail.dll
         FootballCompEng = {

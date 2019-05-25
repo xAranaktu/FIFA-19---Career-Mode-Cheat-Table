@@ -33,14 +33,19 @@ function fut_get_rarity_display()
     return response
 end
 
-function fut_find_player(player_data)
+function fut_find_player(player_data, page)
     -- print(fut_find_player('ronaldo')['items'][1]['age'])
     if string.match(player_data, '[0-9]') then
         -- TODO player name from playerid
     end
+
+    if page == nil then
+        page = 1
+    end
+
     local request = FUT_URLS['player_search'] .. encodeURI(string.format(
-        '{"name":"%s"}',
-        player_data
+        '{"name":"%s", "page": "%d"}',
+        player_data, page
     ))
 
     local r = getInternet()
