@@ -202,4 +202,10 @@ Changelog:
     - 'randomize_shoe_models.lua' script will not also set shoedesigncode on 0.
     - Added 'medium_socklenghtcode.lua' to 'users lua scripts'
     - Minor bug fixes in GUI
+    
+    v1.3.2:
+    - Cheat Table is again working with older CE versions (For sure 6.8.1 and above)
+    - Added 'Tranfer Players' feature.
+    - Fixed 'Free fly camera' script.
+    - Minor bug fixes in GUI & lua code...    
       
