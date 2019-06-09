@@ -10,10 +10,10 @@ end
 function check_ce_version()
     local ce_version = getCEVersion()
     do_log(string.format('Cheat engine version: %f', ce_version))
-    if(ce_version < 6.83) then
-        do_log('Cheat Table requires Cheat Engine version 6.8.3 or above', "ERROR")
-        assert(false, 'Cheat Table requires Cheat Engine version 6.8.3 or above')
-    end
+    -- if(ce_version < 6.8) then
+    --     do_log('Cheat Table requires Cheat Engine version 6.8 or above', "WARNING")
+    --     # assert(false, 'Cheat Table requires Cheat Engine version 6.8.3 or above')
+    -- end
     MainWindowForm.LabelCEVer.Caption = ce_version
 end
 
@@ -257,7 +257,9 @@ function update_offset(name, save, module_name, module_size, section)
             return false
         end
     else
-        setfield(string.format('OFFSETS_DATA.offsets.%s', name), get_offset(base_addr, res[0]))
+        local offset = get_offset(base_addr, res[0])
+        setfield(string.format('OFFSETS_DATA.offsets.%s', name), offset)
+        do_log(string.format("New Offset for %s - %s", name, offset), 'INFO')
     end
     res.destroy()
     if save then save_offsets() end
@@ -336,8 +338,9 @@ function autoactivate_scripts()
     -- Always activate database tables script
     -- And globalAllocs
     local always_activate = {
-        1666, 1667, 1668, 2058, 2995
+        2995, 1667, 1668, 2058
     }
+
     for i=1, #always_activate do
         local script_id = always_activate[i]
         local script_record = ADDR_LIST.getMemoryRecordByID(script_id)
@@ -348,16 +351,18 @@ function autoactivate_scripts()
     for i=1, #CFG_DATA.auto_activate do
         local script_id = CFG_DATA.auto_activate[i]
         local script_record = ADDR_LIST.getMemoryRecordByID(script_id)
-        do_log(string.format('Activating %s (%d)', script_record.Description, script_id), 'INFO')
-        if not script_record.Active then
-            script_record.Active = true
+        if script_record then
+            do_log(string.format('Activating %s (%d)', script_record.Description, script_id), 'INFO')
+            if not script_record.Active then
+                script_record.Active = true
+            end
         end
     end
     initPtrs()
 end
 
 -- find record in game database and update pointer in CT
-function find_record_in_game_db(start, memrec_id, value_to_find, sizeOf, first_ptrname)
+function find_record_in_game_db(start, memrec_id, value_to_find, sizeOf, first_ptrname, to_exit)
     local ct_record = ADDR_LIST.getMemoryRecordByID(memrec_id)  -- Record in Cheat Table
     local offset = ct_record.getOffset(0)     -- int
 
@@ -367,6 +372,11 @@ function find_record_in_game_db(start, memrec_id, value_to_find, sizeOf, first_p
     
     local i = start
     local current_value = 0
+
+    if not to_exit then
+        to_exit = 1
+    end
+    local zeros = 0
     while true do
         current_value = bAnd(bShr(readInteger(string.format('[%s]+%X', first_ptrname, offset+(i*sizeOf))), bitstart), (bShl(1, binlen) - 1))
         if current_value == value_to_find then
@@ -375,7 +385,8 @@ function find_record_in_game_db(start, memrec_id, value_to_find, sizeOf, first_p
                 addr = (readPointer(first_ptrname) + i*sizeOf),
             }
         elseif current_value == 0 then
-            break
+            zeros = zeros + 1
+            if zeros >= to_exit then break end
         end
         i = i + 1
     end
@@ -524,6 +535,7 @@ function load_aobs()
         AOB_UnlimitedSubstitutions = '8B 84 01 D4 8E 00 00 C3',
         AOB_TODDisplay = '4C 8B 13 C7 44 24 30 01 00 00 00 C6',
         AOB_TODReal = '4C 8B CE 49 8B C5',
+        AOB_CustomTransfers = 'FF 50 10 EB 2B 48',
 
         -- PAP
         AOB_AgreeTransferRequest = "44 8B F0 89 84 24 90 00 00 00",
@@ -535,7 +547,7 @@ function load_aobs()
         AOB_CAM_V_ROTATE_SPEED_MUL = "F3 0F 5E C7 F3 0F 11 83 50 0B 00 00",
         AOB_CAM_H_ROTATE_SPEED_MUL = "F3 0F 11 83 4C 0B 00 00",
         AOB_CAM_Z_ROTATE_SPEED_MUL = "F3 0F 11 83 54 0B 00 00 F3",
-        AOB_STADIUM_BOUNDARY = "F3 0F 10 35 76 AC 10 F9",
+        AOB_STADIUM_BOUNDARY = "0F 28 C3 0F C6 C0 00 0F 5C C8 0F 28 C4",
         AOB_CAM_Z_BOUNDARY = "F3 0F 6F 12 0F 28 C3",
         AOB_FULL_ANGLE_ROTV = "F3 0F 10 40 60 F3 0F 58 83 B4",
 
@@ -581,8 +593,14 @@ function load_cfg()
                 cfg.new_dirs[k] = true
             end
         end
-        CACHE_DIR = cfg.directories.cache_dir
-        DEBUG_MODE = cfg.flags.debug_mode
+
+        if cfg.directories then
+            CACHE_DIR = cfg.directories.cache_dir
+        end
+
+        if cfg.flags then
+            DEBUG_MODE = cfg.flags.debug_mode
+        end
 
         return cfg
     else
@@ -620,7 +638,7 @@ function default_cfg()
             opacity = 255
         },
         auto_activate = {
-            1666, 1667, 1668, 2058
+            2995, 1667, 1668, 2058
         },
         hotkeys = {
             sync_with_game = 'VK_F5',

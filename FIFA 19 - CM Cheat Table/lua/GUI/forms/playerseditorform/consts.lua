@@ -567,7 +567,7 @@ function get_components_description_player_edit()
         FacePoserPresetEdit = {id = 65, modifier = 0},
         EmotionEdit = {id = 104, modifier = 0},
         SkillMoveslikelihoodEdit = {id = 98, modifier = 0},
-        ModifierEdit = {id = 75, modifier = 0},
+        ModifierEdit = {id = 75, modifier = -5},
         IsCustomizedEdit = {id = 72, modifier = 0},
         UserCanEditNameEdit = {id = 66, modifier = 0},
     }

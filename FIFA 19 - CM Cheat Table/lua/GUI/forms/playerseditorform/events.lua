@@ -22,12 +22,12 @@ function PlayerEditFormShow(sender)
     
     -- Don't update anything if we don't have players table addr
     if playerid_record == nil then 
-        do_log("playerid_record is nil", 'ERROR')
+        do_log("playerid_record is nil. Activate 'Database Tables' script and reload your career save.", 'ERROR')
         PlayersEditorForm.hide()
         MainWindowForm.show()
         return
     elseif playerid_record.Value == '??' then
-        do_log("playerid_record.Value is '??'", 'ERROR')
+        do_log("playerid_record.Value is '??'. Activate 'Database Tables' script and reload your career save.", 'ERROR')
         PlayersEditorForm.hide()
         MainWindowForm.show()
         return
@@ -41,7 +41,7 @@ function PlayerEditFormShow(sender)
         MainWindowForm.show()
         return
     elseif teamid_record.Value == '??' then
-        do_log("teamid_record.Value is '??'", 'ERROR')
+        do_log("teamid_record.Value is '??'. Activate 'Database Tables' script and reload your career save.", 'ERROR')
         PlayersEditorForm.hide()
         MainWindowForm.show()
         return

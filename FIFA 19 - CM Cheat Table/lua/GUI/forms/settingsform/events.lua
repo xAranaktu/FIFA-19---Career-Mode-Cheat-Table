@@ -71,7 +71,7 @@ function SettingsExitClick(sender)
 end
 function SettingsSaveSettingsClick(sender)
     -- Auto activate script ids
-    local scripts_ids = {1666}  -- Always expand 'Scripts'
+    local scripts_ids = {2995}  -- Always expand 'Scripts'
     for i=0, SettingsForm.CTTreeview.Items.Count-1 do
         local is_selected = SettingsForm.CTTreeview.Items[i].MultiSelected
         if is_selected then

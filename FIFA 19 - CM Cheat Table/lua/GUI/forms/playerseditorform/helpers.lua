@@ -237,20 +237,24 @@ function find_player_by_id(playerid)
             local teamid = tonumber(ADDR_LIST.getMemoryRecordByID(CT_MEMORY_RECORDS['TEAMID']).Value) + 1
             table.insert(team_ids, teamid)
             -- find league-team link
-            -- local ltl_teamid_record_id = 2913 -- TeamID in leagueteamlinks table
-            -- local ltl_sizeOf = 28 -- Size of one record in leagueteamlinks database table (0x1C)
-            -- local leagueteamlink_addr = find_record_in_game_db(0, ltl_teamid_record_id, teamid, ltl_sizeOf, 'firstleagueteamlinksDataPtr')['addr']
-            -- if leagueteamlink_addr == nil then break end
+            local ltl_teamid_record_id = 3017 -- TeamID in leagueteamlinks table
+            local ltl_sizeOf = 28 -- Size of one record in leagueteamlinks database table (0x1C)
+            local leagueteamlink_addr = find_record_in_game_db(0, ltl_teamid_record_id, teamid-1, ltl_sizeOf, 'leagueteamlinksDataFirstPtr', 2)['addr']
+            if leagueteamlink_addr == nil then
+                break 
+            end
 
-            -- writeQword('leagueteamlinksDataPtr', leagueteamlink_addr)
+            writeQword('leagueteamlinksDataPtr', leagueteamlink_addr)
             
-            PlayerTeamContext[teamid] = {
-                addr = teamplayerlink['addr']
-            }
+            local leagueid = tonumber(ADDR_LIST.getMemoryRecordByID(3006).Value) + 1
+            local team_type = 'club'
 
-            -- local leagueid = ADDR_LIST.getMemoryRecordByID(2902).Value
-            -- if leagueid == 76 then
-            --     -- MLS ALL STARS/ADIDAS 
+            if leagueid == 76 then
+                -- MLS ALL STARS/ADIDAS 
+                team_type = 'all_stars'
+            elseif leagueid == 78 or leagueid == 2136 then
+                team_type = 'national'
+            end
 
             -- elseif leagueid == 78 or leagueid == 2136 then
             --     teams['NationalTeam'] = {
@@ -261,11 +265,17 @@ function find_player_by_id(playerid)
             --         addr = teamplayerlink['addr']
             --     }
             -- end
+            PlayerTeamContext[teamid] = {
+                addr = teamplayerlink['addr'],
+                team_type = team_type
+            }
         end
         -- set first team in CT
         writeQword('ptrTeamplayerlinks', PlayerTeamContext[team_ids[1]]['addr'])
+        return true
     else
         do_log(string.format("Unable to find player with ID: %d.", playerid), 'ERROR')
+        return false
     end
 end
 

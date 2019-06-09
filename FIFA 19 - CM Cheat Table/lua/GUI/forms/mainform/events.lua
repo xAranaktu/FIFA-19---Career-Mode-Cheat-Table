@@ -125,6 +125,20 @@ function ScheduleEditorBtnClick(sender)
     MatchScheduleEditorForm.show()
 end
 
+-- Show Transfer Players Form
+function PlayersTransferImgClick(sender)
+    MainWindowForm.hide()
+    TransferPlayersForm.show()
+end
+function PlayersTransferBtnClick(sender)
+    MainWindowForm.hide()
+    TransferPlayersForm.show()
+end
+function PlayersTransferLabelClick(sender)
+    MainWindowForm.hide()
+    TransferPlayersForm.show()
+end
+
 -- Patreon Button
 function PatreonClick(sender)
     shellExecute("https://www.patreon.com/xAranaktu")
@@ -132,5 +146,5 @@ end
 
 -- Discord Button
 function DiscordClick(sender)
-    shellExecute("https://discordapp.com/invite/cbQePsR")
+    shellExecute("https://discord.gg/Nb3HX2W")
 end

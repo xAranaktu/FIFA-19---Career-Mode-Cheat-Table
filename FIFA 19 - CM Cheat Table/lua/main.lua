@@ -16,12 +16,12 @@ require 'lua/GUI/forms/mainform/events';
 require 'lua/GUI/forms/playerseditorform/events';
 require 'lua/GUI/forms/matchscheduleeditorform/events';
 require 'lua/GUI/forms/settingsform/events';
+require 'lua/GUI/forms/transferplayersform/events';
 
 do_log('New session started', 'INFO')
 
 -- DEFAULT GLOBALS, better leave it as is
 HOMEDRIVE = os.getenv('HOMEDRIVE') or os.getenv('SystemDrive') or 'C:'
--- HOMEDRIVE = 'Y:'
 
 FIFA_SETTINGS_DIR = string.format(
     "%s/Users/%s/Documents/FIFA %s/",
@@ -31,7 +31,7 @@ DATA_DIR = FIFA_SETTINGS_DIR .. 'Cheat Table/data/';
 CONFIG_FILE_PATH = DATA_DIR .. 'config.ini'; --> 'path to config.ini file 
 OFFSETS_FILE_PATH = DATA_DIR .. 'offsets.ini'; --> 'path to offsets.ini file
 FORMS = {
-    MainWindowForm, PlayersEditorForm, MatchScheduleEditorForm, SettingsForm
+    MainWindowForm, PlayersEditorForm, MatchScheduleEditorForm, SettingsForm, TransferPlayersForm
 }
 SETTINGS_INDEX = 0
 -- DEFAULT GLOBALS, better leave it as is
@@ -83,12 +83,14 @@ function start()
 
     -- Don't activate too early
     do_log("Waiting for valid screen")
-    if getScreenID() == nil then
-        print("Cheat Engine is waiting until you enter main menu in game. It may stop responding until you do that. Please, don't report this problem. It's working that way on purpose")
-        sleep(5000)
-    end
+    -- if getScreenID() == nil then
+    --     print("Cheat Engine is waiting until you enter main menu in game. It may stop responding until you do that. Please, don't report this problem. It's working that way on purpose")
+    --     sleep(5000)
+    -- end
+    
     while getScreenID() == nil do
-        sleep(1000)
+        ShowMessage('You are not in main menu in game. Enter there and close this window')
+        sleep(3500)
     end
     logScreenID()
 
