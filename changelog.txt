@@ -209,3 +209,7 @@ Changelog:
     - Fixed 'Free fly camera' script.
     - Minor bug fixes in GUI & lua code...    
       
+    v1.3.3:
+    - Added info about player injury and stamina to GUI ("Player Editor" -> "Player Info")
+    - Added info about player total stats to GUI ("Player Editor" -> "Attributes")
+    - Minor bug fixes in GUI & lua code. 
