@@ -130,8 +130,6 @@ When new version will be released? Answer is here: [Release Schedule](https://do
 
 * __What does the primary and secondary attributes range do?__
 
-  What does the primary and secondary attributes range do?
-
     With this script you can controll base attributes of the players that your youth scout brings you. When the game is generating new player it's using these ranges to define how good player will be at the beginning of his career. Which attributes are primary and which are secondary depends on what type of players your scout is trying to find.
     For example for "attack minded" type, primary attributes are:
     - DRIBBLING
