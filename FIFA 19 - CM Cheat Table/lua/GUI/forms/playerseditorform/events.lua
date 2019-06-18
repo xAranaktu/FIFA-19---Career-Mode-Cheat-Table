@@ -501,6 +501,10 @@ function AttributesTrackBarOnChange(sender)
     recalculate_ovr(true)
 end
 
+function IsInjuredCBChange(sender)
+    is_injured_visibility(sender.ItemIndex)
+end
+
 -- Common events
 function CommonEditOnChange(sender)
     HAS_UNAPPLIED_PLAYER_CHANGES = true

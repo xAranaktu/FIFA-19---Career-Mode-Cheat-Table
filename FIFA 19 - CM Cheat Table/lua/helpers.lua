@@ -83,8 +83,15 @@ function getIntFunctionsAddrs()
 end
 
 function readMultilevelPointer(base_addr, offsets)
+    if base_addr == 0 then
+        return 0
+    end
+
     for i=1, #offsets do
         base_addr = readPointer(base_addr+offsets[i])
+        if base_addr == 0 then
+            return 0
+        end
     end
     return base_addr
 end
@@ -334,6 +341,19 @@ function auto_attach_to_process()
     end
 end
 
+function can_autoactivate(script_id)
+    local not_allowed_to_aa = {
+        2998  -- "Generate new report" script, it's internal call and will cause crash when activated in Main Menu
+    }
+
+    for i=1, #not_allowed_to_aa do
+        if not_allowed_to_aa[i] == script_id then
+            return false
+        end
+    end
+    return true
+end
+
 function autoactivate_scripts()
     -- Always activate database tables script
     -- And globalAllocs
@@ -350,11 +370,13 @@ function autoactivate_scripts()
 
     for i=1, #CFG_DATA.auto_activate do
         local script_id = CFG_DATA.auto_activate[i]
-        local script_record = ADDR_LIST.getMemoryRecordByID(script_id)
-        if script_record then
-            do_log(string.format('Activating %s (%d)', script_record.Description, script_id), 'INFO')
-            if not script_record.Active then
-                script_record.Active = true
+        if can_autoactivate(script_id) then
+            local script_record = ADDR_LIST.getMemoryRecordByID(script_id)
+            if script_record then
+                do_log(string.format('Activating %s (%d)', script_record.Description, script_id), 'INFO')
+                if not script_record.Active then
+                    script_record.Active = true
+                end
             end
         end
     end
@@ -460,6 +482,16 @@ function initPtrs()
     -- career_calendar Table
     local careercalendar_firstrecord = readMultilevelPointer(DB_Two_Tables_ptr, {0xC0, 0x28, 0x30})
     writeQword("ptrCareerCalendar", careercalendar_firstrecord)
+
+    -- BASE PTR FOR STAMINA & INJURES
+    local code = tonumber(get_validated_address('AOB_BASE_STAMINA_INJURES'), 16)
+    tmp = byteTableToDword(readBytes(code+10, 4, true)) + code + 14
+    autoAssemble([[ 
+        globalalloc(basePtrStaminaInjures, 8, $tmp)
+    ]])
+    writeQword("basePtrStaminaInjures", tmp)
+
+
     setup_internal_calls()
 end
 
@@ -558,6 +590,9 @@ function load_aobs()
 
         -- "Internal functions"
         AOB_F_GEN_REPORT = "48 8B CB E8 ?? ?? ?? ?? 48 8B CB 48 8B 5C 24 38 48 8B 74 24 40",
+
+        -- Base Ptr for stamina/injures
+        AOB_BASE_STAMINA_INJURES = "0F 4F C2 85 C0 75 B2 48 8B 1D ?? ?? ?? ?? 48 8D 0D",
 
         -- FootballCompEng_Win64_retail.dll
         FootballCompEng = {

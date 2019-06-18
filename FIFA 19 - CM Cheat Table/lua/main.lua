@@ -90,7 +90,7 @@ function start()
     
     while getScreenID() == nil do
         ShowMessage('You are not in main menu in game. Enter there and close this window')
-        sleep(3500)
+        sleep(1500)
     end
     logScreenID()
 

@@ -10,7 +10,7 @@
 function get_components_description_player_edit()
     return {
         PlayerIDEdit = {id = CT_MEMORY_RECORDS['PLAYERID'], modifier = 0},
-        TeamIDEdit = {id = 2769, modifier = 1},
+        TeamIDEdit = {id = CT_MEMORY_RECORDS['TEAMID'], modifier = 1},
         OverallEdit = {id = 102, modifier = 1},
         PotentialEdit = {id = 24, modifier = 1},
         AgeEdit = {
@@ -36,7 +36,7 @@ function get_components_description_player_edit()
         JerseyNumberEdit = {id = 2766, modifier = 1},
         GKSaveTypeEdit = {id = 7, modifier = 0},
         GKKickStyleEdit = {id = 91, modifier = 0},
-    
+
         PreferredPosition1CB = {id = 46, modifier = 0},
         PreferredPosition2CB = {id = 42, modifier = -1},
         PreferredPosition3CB = {id = 13, modifier = -1},

@@ -11,7 +11,7 @@ function value_to_match_date(value)
 end
 
 function match_date_to_value(match_date)
-    local m_date, _ = string.gsub(match_date, '%W', '')
+    local m_date, _ = string.gsub(match_date, '%D', '')
     if string.len(m_date) ~= 8 then
         local txt = string.format('Invalid date format: %s', match_date)
         do_log(txt, 'ERROR')

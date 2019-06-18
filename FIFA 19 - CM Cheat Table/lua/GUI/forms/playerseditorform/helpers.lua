@@ -105,6 +105,30 @@ function math.round(n)
     return n % 1 >= 0.5 and math.ceil(n) or math.floor(n)
 end
 
+function update_total_stats()
+    local sum = 0
+    local attr_panel = PlayersEditorForm.AttributesPanel
+    for i = 0, attr_panel.ControlCount-1 do
+        for j=0, attr_panel.Control[i].ControlCount-1 do
+            local comp = attr_panel.Control[i].Control[j]
+            if comp.ClassName == 'TCEEdit' then
+                sum = sum + tonumber(comp.Text)
+            end
+        end
+    end
+
+    if sum > 3366 then
+        sum = 3366
+    elseif sum < 0 then
+        sum = 0
+    end
+
+    PlayersEditorForm.TotalStatsValueLabel.Caption = string.format(
+        "%d / 3366", sum
+    )
+    PlayersEditorForm.TotalStatsValueBar.Position = sum
+end
+
 function recalculate_ovr(update_ovr_edit)
     local preferred_position_id = PlayersEditorForm.PreferredPosition1CB.ItemIndex
     if preferred_position_id == 1 then return end -- ignore SW
@@ -194,6 +218,8 @@ function recalculate_ovr(update_ovr_edit)
             PlayersEditorForm[string.format("BestPositionLabel%d", i)].ShowHint = false
         end
     end
+
+    update_total_stats()
 end
 
 function find_player_by_id(playerid)
@@ -309,7 +335,226 @@ function update_trackbar(sender)
     PlayersEditorForm[valueLabelName].Caption = calc
 
     PlayersEditorForm[trackBarName].OnChange = onchange_func
+end
 
+function is_injured_visibility(visible)
+    local b = nil
+    if visible == 1 then
+        visible = true
+    else
+        visible = false
+    end
+
+    PlayersEditorForm.InjuryLabel.Visible = visible
+    PlayersEditorForm.InjuryCB.Visible = visible
+    PlayersEditorForm.FullFitDateLabel.Visible = visible
+    PlayersEditorForm.FullFitDateEdit.Visible = visible
+end
+
+function get_player_fitness_addr(playerid, free)
+    -- struct size
+    local size_of =  0x30
+
+    local fitness_ptr = readMultilevelPointer(
+        readPointer("basePtrStaminaInjures"),
+        {0x0, 0x10, 0x40, 0x28, 0x28, 0x1988}
+    )
+
+    if fitness_ptr == 0 then
+        return 0
+    end
+
+    local fitness_start = readPointer(fitness_ptr+0x8)
+    local fitness_end = readPointer(fitness_ptr+0x10)
+
+    -- Probably limit is 2000 players, but better calc it
+    local limit = (fitness_end-fitness_start)//size_of - 1
+
+    local count = 0
+
+    for i=0, limit do
+        -- 0x0 - 0x8 = ptr for something...
+        local pid = readInteger(fitness_start + 0x8)
+        local teamid = readInteger(fitness_start + 0xC) -- ?
+        local has_data = readInteger(fitness_start + 0x10) -- 1 or 0
+        local fitness = readInteger(fitness_start + 0x14)
+        local injury_unk = readInteger(fitness_start + 0x18) -- ?
+        local injury_unk2 = readInteger(fitness_start + 0x1C)
+        local injury_type = readInteger(fitness_start + 0x20)
+        local fit_on = readInteger(fitness_start + 0x24)  -- DATE: YYYYMMDD
+        local injury_unk3 = readInteger(fitness_start + 0x28)  -- 3 for injury??
+        local is_match_fit = readInteger(fitness_start + 0x2C) -- 1 or 0 ?
+
+        if has_data == 0 then
+            if free then
+                return fitness_start
+            end
+            goto continue
+        end
+
+        if (playerid > 0) and (pid == playerid) then
+            return fitness_start
+        end
+        ::continue::
+        fitness_start = fitness_start + size_of
+    end
+
+    return 0
+end
+
+function value_to_date(value)
+    -- Convert value from the game to human readable form (format: DD/MM/YYYY)
+    -- ex. 20180908 -> 08/09/2018
+    local to_string = string.format('%d', value)
+    return string.format(
+        '%s/%s/%s',
+        string.sub(to_string, 7),
+        string.sub(to_string, 5, 6),
+        string.sub(to_string, 1, 4)
+    )
+end
+
+function date_to_value(d)
+    local m_date, _ = string.gsub(d, '%D', '')
+    if string.len(m_date) ~= 8 then
+        local txt = string.format('Invalid date format: %s', d)
+        do_log(txt, 'ERROR')
+        return false
+    end
+    m_date = string.format(
+        '%s%s%s',
+        string.sub(m_date, 5),
+        string.sub(m_date, 3, 4),
+        string.sub(m_date, 1, 2)
+    )
+    return tonumber(m_date)
+end
+
+function load_player_fitness(playerid)
+    if not playerid then
+        return
+    end
+
+    local iicb_on_change = PlayersEditorForm.IsInjuredCB.OnChange
+    local icb_on_change = PlayersEditorForm.InjuryCB.OnChange
+    local de_on_change = PlayersEditorForm.DurabilityEdit.OnChange
+    local ffde_on_change = PlayersEditorForm.FullFitDateEdit.OnChange
+
+    PlayersEditorForm.IsInjuredCB.OnChange = nil
+    PlayersEditorForm.InjuryCB.OnChange = nil
+    PlayersEditorForm.DurabilityEdit.OnChange = nil
+    PlayersEditorForm.FullFitDateEdit.OnChange = nil
+
+    local component = PlayersEditorForm.InjuryCB
+    component.clear()
+
+    local dropdown = ADDR_LIST.getMemoryRecordByID(CT_MEMORY_RECORDS['INJURY_TYPE'])
+    local dropdown_items = dropdown.DropDownList
+    local dropdown_selected_value = dropdown.Value
+    for j = 0, dropdown_items.Count-1 do
+        local val, desc = string.match(dropdown_items[j], "(%d+): '(.+)'")
+
+        -- Fill combobox in GUI with values from memory record dropdown
+        component.items.add(desc)
+
+        -- Set active item & update hint
+        -- if dropdown_selected_value == val then
+        --     component.ItemIndex = j
+        --     component.Hint = desc
+        -- end
+    end
+
+    local addr = get_player_fitness_addr(playerid)
+    if addr == 0 then
+        PlayersEditorForm.IsInjuredCB.ItemIndex = 0
+        PlayersEditorForm.InjuryCB.ItemIndex = 0
+        PlayersEditorForm.FullFitDateEdit.Text = "01/01/2008"
+        PlayersEditorForm.DurabilityEdit.Text = "100%"
+    else
+        local injury_type = readInteger(addr + 0x20)
+        PlayersEditorForm.DurabilityEdit.Text = string.format(
+            "%d%%", readInteger(addr + 0x14)
+        )
+
+        if injury_type > 0 then
+            PlayersEditorForm.IsInjuredCB.ItemIndex = 1
+            PlayersEditorForm.InjuryCB.ItemIndex = injury_type
+            PlayersEditorForm.FullFitDateEdit.Text = value_to_date(
+                readInteger(addr + 0x24)
+            )
+        else
+            PlayersEditorForm.IsInjuredCB.ItemIndex = 0
+            PlayersEditorForm.InjuryCB.ItemIndex = 0
+            PlayersEditorForm.FullFitDateEdit.Text = "01/01/2008"
+        end
+
+    end
+
+    is_injured_visibility(PlayersEditorForm.IsInjuredCB.ItemIndex)
+
+    PlayersEditorForm.IsInjuredCB.OnChange = iicb_on_change
+    PlayersEditorForm.InjuryCB.OnChange = icb_on_change
+    PlayersEditorForm.DurabilityEdit.OnChange = de_on_change
+    PlayersEditorForm.FullFitDateEdit.OnChange = ffde_on_change
+end
+
+function save_player_fitness(playerid)
+    if not playerid then
+        return
+    end
+
+    local addr = get_player_fitness_addr(playerid)
+    local is_injured = PlayersEditorForm.IsInjuredCB.ItemIndex
+    local stamina = PlayersEditorForm.DurabilityEdit.Text
+    stamina = string.gsub(stamina, '%D', '')
+    if addr == 0 and is_injured == 0 and stamina == "100" then
+        return
+    end
+
+    if addr == 0 then
+        addr = get_player_fitness_addr(0, true)
+        if addr == 0 then
+            do_log(
+                "Unable to save player fitness. Limit reached (?)",
+                'ERROR'
+            )
+            return
+        end
+    end
+    stamina = tonumber(stamina)
+    if not stamina or stamina > 100 then
+        stamina = 100
+    elseif stamina <= 0 then
+        stamina = 1
+    end
+
+    local pid = writeInteger(addr + 0x8, playerid)
+    local teamid = writeInteger(addr + 0xC, 4294967295) -- -1
+    local has_data = writeInteger(addr + 0x10, 1)
+    local fitness = writeInteger(addr + 0x14, stamina)
+
+    if is_injured == 1 then
+        local t = PlayersEditorForm.InjuryCB.ItemIndex
+        if t == 0 then
+            t = 1
+        end
+    
+        local injury_unk = writeInteger(addr + 0x18, 2) -- ?
+        local injury_unk2 = writeInteger(addr + 0x1C, 2)
+        local injury_type = writeInteger(addr + 0x20, t)
+        local fit_on = writeInteger(addr + 0x24, date_to_value(
+            PlayersEditorForm.FullFitDateEdit.Text
+        ))  -- DATE: YYYYMMDD
+        local injury_unk3 = writeInteger(addr + 0x28, 3)  -- 3 for injury??
+        local is_match_fit = writeInteger(addr + 0x2C, 0) -- 1 or 0 ?
+    else
+        local injury_unk = writeInteger(addr + 0x18, 0) -- ?
+        local injury_unk2 = writeInteger(addr + 0x1C, 0)
+        local injury_type = writeInteger(addr + 0x20, 0)
+        local fit_on = writeInteger(addr + 0x24, 20080101)  -- DATE: YYYYMMDD
+        local injury_unk3 = writeInteger(addr + 0x28, 0)  -- 3 for injury??
+        local is_match_fit = writeInteger(addr + 0x2C, 1) -- 1 or 0 ?
+    end
 end
 
 function AttributesTrackBarVal(args)
@@ -454,6 +699,11 @@ function FillPlayerEditForm(playerid)
     PlayersEditorForm.Crest64x64.Picture.LoadFromStream(ss_c)
     ss_c.destroy()
     PlayersEditorForm.Crest64x64.stretch=true
+
+    -- Player info - fitness & injury
+    load_player_fitness(
+        tonumber(PlayersEditorForm.PlayerIDEdit.Text)
+    )
 end
 
 function age_to_birthdate(args)
@@ -516,6 +766,7 @@ function ApplyChanges()
         -- Just in case we somehow fail at validating playerid
         -- We can't allow that playerid will be changed
         if component_name == 'PlayerIDEdit' then goto continue end
+        if component_name == 'TeamIDEdit' then goto continue end
 
         local comp_desc = COMPONENTS_DESCRIPTION_PLAYER_EDIT[component_name]
         if comp_desc == nil then goto continue end
@@ -545,6 +796,10 @@ function ApplyChanges()
         end
         ::continue::
     end
+    save_player_fitness(
+        tonumber(PlayersEditorForm.PlayerIDEdit.Text)
+    )
+
     HAS_UNAPPLIED_PLAYER_CHANGES = false
     showMessage("Player edited.")
 end
