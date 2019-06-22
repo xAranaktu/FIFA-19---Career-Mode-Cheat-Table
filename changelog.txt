@@ -213,3 +213,10 @@ Changelog:
     - Added info about player injury and stamina to GUI ("Player Editor" -> "Player Info")
     - Added info about player total stats to GUI ("Player Editor" -> "Attributes")
     - Minor bug fixes in GUI & lua code. 
+    
+    v1.3.4:
+    - Fixed "Unique Player Movement" scripts
+    - Added more players to "Unique Player Movement" -> "Unique Sprint Style"
+    - Added option letting you change birthdate year in player career mode to "Play As Player" section
+    - Added accomplishments to "Play As Player".
+    - Added 'is_retiring=0.lua' to 'users lua scripts'
