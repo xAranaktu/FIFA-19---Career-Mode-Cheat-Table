@@ -220,3 +220,9 @@ Changelog:
     - Added option letting you change birthdate year in player career mode to "Play As Player" section
     - Added accomplishments to "Play As Player".
     - Added 'is_retiring=0.lua' to 'users lua scripts'
+    
+    v1.3.5:
+    - Added info about player form and option to edit it through GUI. Only for players in your team ("Player Editor" -> "Player Info")
+    - Added info about player morale and option to edit it through GUI. Only for players in your team ("Player Editor" -> "Player Info")
+    - Added info about player release clause and option to add/remove/edit it through GUI. ("Player Editor" -> "Player Info")
+    - Added "Mass edit players form in team" script to "Form" section.
