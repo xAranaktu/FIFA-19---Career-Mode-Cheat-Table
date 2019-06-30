@@ -572,6 +572,9 @@ function load_aobs()
         -- PAP
         AOB_AgreeTransferRequest = "44 8B F0 89 84 24 90 00 00 00",
         AOB_EditPlayerBid = "41 B8 43 D9 FF FF",
+        AOB_PAPBirthYear = "C0 BA CD 07 00 00",
+        AOB_BDRanges = "8B 49 78 3B D1",
+        AOB_PAPAccompl = "8B 84 A9 18 07 00 00",
 
         -- FREE CAM
         AOB_CAM_TARGET = "0F 11 AB 00 0B 00 00",
