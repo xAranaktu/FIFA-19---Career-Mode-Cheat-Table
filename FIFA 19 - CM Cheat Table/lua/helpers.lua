@@ -491,6 +491,14 @@ function initPtrs()
     ]])
     writeQword("basePtrStaminaInjures", tmp)
 
+    -- BASE PTR FOR FORM & MORALE
+    local code = tonumber(get_validated_address('AOB_BASE_FORM_MORALE'), 16)
+    tmp = byteTableToDword(readBytes(code+8, 4, true)) + code + 12
+    autoAssemble([[ 
+        globalalloc(basePtrTeamFormMorale, 8, $tmp)
+    ]])
+    writeQword("basePtrTeamFormMorale", tmp)
+
 
     setup_internal_calls()
 end
@@ -596,6 +604,10 @@ function load_aobs()
 
         -- Base Ptr for stamina/injures
         AOB_BASE_STAMINA_INJURES = "0F 4F C2 85 C0 75 B2 48 8B 1D ?? ?? ?? ?? 48 8D 0D",
+
+        -- Base Ptr form & Morale
+        -- And release clauses too...
+        AOB_BASE_FORM_MORALE = "E8 ?? ?? ?? ?? 48 89 35 ?? ?? ?? ?? 41 B8 01 00 00 00",
 
         -- FootballCompEng_Win64_retail.dll
         FootballCompEng = {

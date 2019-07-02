@@ -505,6 +505,10 @@ function IsInjuredCBChange(sender)
     is_injured_visibility(sender.ItemIndex)
 end
 
+function ReleaseClauseEditChange(sender)
+    return
+end
+
 -- Common events
 function CommonEditOnChange(sender)
     HAS_UNAPPLIED_PLAYER_CHANGES = true

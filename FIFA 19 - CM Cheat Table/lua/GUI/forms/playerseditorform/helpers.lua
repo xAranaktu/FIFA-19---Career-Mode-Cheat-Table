@@ -351,6 +351,85 @@ function is_injured_visibility(visible)
     PlayersEditorForm.FullFitDateEdit.Visible = visible
 end
 
+function get_player_release_clause_addr(playerid)
+    -- struct size
+    local size_of =  0xC
+
+    local rlc_ptr = readMultilevelPointer(
+        readPointer("basePtrTeamFormMorale"),
+        {0x0, 0x10, 0x40, 0x28, 0x1D8}
+    )
+
+    local start_addr = readPointer(rlc_ptr+0x2C8)
+    local end_addr = readPointer(rlc_ptr+0x2D0)
+
+    local list_len = ((end_addr - start_addr) // size_of) - 1
+
+    for i=0, list_len do
+        local pid = readInteger(start_addr)
+        if pid == playerid then
+            return start_addr
+        end
+
+        start_addr = start_addr + size_of
+    end
+    return nil
+end
+
+function get_player_form_addr(playerid)
+    -- struct size
+    local size_of =  0x64
+
+    local form_ptr = readMultilevelPointer(
+        readPointer("basePtrTeamFormMorale"),
+        {0x0, 0x10, 0x40, 0x28, 0x158, 0x110, 0x10}
+    )
+
+    -- Max squad size = 52
+    for i=0, 51, 1 do
+        local pid = readInteger(form_ptr)
+        if pid == 4294967295 then
+            return nil
+        end
+        if pid == playerid then
+            return form_ptr
+        end
+        form_ptr = form_ptr + size_of
+    end
+    return nil
+end
+
+function get_player_morale_addr(playerid)
+    -- struct size
+    local size_of =  0x34
+
+    local morale_ptr = readMultilevelPointer(
+        readPointer("basePtrTeamFormMorale"),
+        {0x0, 0x10, 0x40, 0x28, 0x160, 0x398}
+    )
+
+    -- teamid at morale_ptr + 0x8. May be bugged?
+
+    local _start = readPointer(morale_ptr + 0x18)
+    local _end = readPointer(morale_ptr + 0x20)
+
+    local squad_size = ((_end - _start) // size_of) + 1
+
+    morale_ptr = _start
+    -- Max squad size = 52
+    for i=0, squad_size, 1 do
+        local pid = readInteger(morale_ptr)
+        if pid == 0 then
+            return nil
+        end
+        if pid == playerid then
+            return morale_ptr
+        end
+        morale_ptr = morale_ptr + size_of
+    end
+    return nil
+end
+
 function get_player_fitness_addr(playerid, free)
     -- struct size
     local size_of =  0x30
@@ -430,6 +509,90 @@ function date_to_value(d)
     return tonumber(m_date)
 end
 
+function load_player_release_clause(playerid)
+    if not playerid then
+        return
+    end
+
+    local addr = get_player_release_clause_addr(playerid)
+    if addr == nil then
+        PlayersEditorForm.ReleaseClauseEdit.Text = "None"
+        return
+    end
+
+    PlayersEditorForm.ReleaseClauseEdit.Text = readInteger(addr+0x8)
+end
+
+function load_player_morale(playerid)
+    if not playerid then
+        PlayersEditorForm.MoraleCB.Visible = false
+        PlayersEditorForm.MoraleLabel.Visible = false
+        return
+    end
+
+    local addr = get_player_morale_addr(playerid)
+    if addr == nil then
+        PlayersEditorForm.MoraleCB.Visible = false
+        PlayersEditorForm.MoraleLabel.Visible = false
+        return
+    end
+
+    local morale = readInteger(addr+0x20)
+
+    if morale < 30 then
+        morale_level = 0    -- VERY_LOW
+    elseif morale < 45 then
+        morale_level = 1    -- LOW
+    elseif morale < 60 then
+        morale_level = 2    -- NORMAL
+    elseif morale < 80 then
+        morale_level = 3    -- HIGH
+    else
+        morale_level = 4    -- VERY_HIGH
+    end
+
+    PlayersEditorForm.MoraleCB.Visible = true
+    PlayersEditorForm.MoraleLabel.Visible = true
+    PlayersEditorForm.MoraleCB.ItemIndex = morale_level
+end
+
+function load_player_match_form(playerid)
+    if not playerid then
+        PlayersEditorForm.FormCB.Visible = false
+        PlayersEditorForm.FormLabel.Visible = false
+        return
+    end
+
+    local addr = get_player_form_addr(playerid)
+    if addr == nil then
+        PlayersEditorForm.FormCB.Visible = false
+        PlayersEditorForm.FormLabel.Visible = false
+        return
+    end
+
+    local form = readInteger(addr+8)
+    if form < 1 then
+        do_log(string.format("Invalid player form! %d - %d", form, playerid), 'ERROR')
+        form = 1
+    elseif form > 5 then
+        do_log(string.format("Invalid player form! %d - %d", form, playerid), 'ERROR')
+        form = 5
+    end
+
+    -- local fcb_on_change = PlayersEditorForm.FormCB.OnChange
+    -- PlayersEditorForm.FormCB.OnChange = nil
+
+    PlayersEditorForm.FormCB.Visible = true
+    PlayersEditorForm.FormLabel.Visible = true
+    PlayersEditorForm.FormCB.ItemIndex = form - 1
+
+    -- PlayersEditorForm.IsInjuredCB.OnChange = fcb_on_change
+
+    -- local possible_forms = {
+    --     "Bad", "Poor", "Okay", "Good", "Excellent"
+    -- }
+end
+
 function load_player_fitness(playerid)
     if not playerid then
         return
@@ -496,6 +659,135 @@ function load_player_fitness(playerid)
     PlayersEditorForm.InjuryCB.OnChange = icb_on_change
     PlayersEditorForm.DurabilityEdit.OnChange = de_on_change
     PlayersEditorForm.FullFitDateEdit.OnChange = ffde_on_change
+end
+
+function save_player_release_clause(playerid)
+    if not playerid then
+        return
+    end
+
+    -- remove non-digits
+    local release_clause, _ = string.gsub(
+        PlayersEditorForm.ReleaseClauseEdit.Text,
+        '%D', ''
+    )
+    release_clause = tonumber(release_clause) -- remove non-digits
+
+    local addr = get_player_release_clause_addr(playerid)
+    local teamid = 0
+    local add_clause = false
+    local remove_clause = false
+    local edit_clause = false
+    if addr == nil then
+        if (not release_clause) or (release_clause <= 0) then
+            return
+        elseif (release_clause >= 2147483646) then
+            do_log(string.format("Invalid release clause - %d", release_clause), 'INFO')
+            release_clause = 2147483646
+        end
+        teamid = inputQuery("Create release clause", "Enter player current teamid:", "0")
+        if not teamid or tonumber(teamid) <= 0 then
+            do_log(string.format("Release clause\nEnter Valid TeamID\n %s is invalid.", teamid), 'ERROR')
+            return
+        end
+        add_clause = true
+    else
+        if readInteger(addr+8) == release_clause then
+            -- No change
+            return
+        end
+
+        if (not release_clause) or (release_clause <= 0) then
+            remove_clause = true
+        elseif (release_clause >= 2147483646) then
+            do_log(string.format("Invalid release clause - %d", release_clause), 'INFO')
+            release_clause = 2147483646
+        else
+            teamid = readInteger(addr+4)
+            edit_clause = true
+        end
+    end
+
+    -- fix size
+    local rlc_ptr = readMultilevelPointer(
+        readPointer("basePtrTeamFormMorale"),
+        {0x0, 0x10, 0x40, 0x28, 0x1D8}
+    )
+    if remove_clause then
+        local end_addr = readPointer(rlc_ptr+0x2D0)
+        local bytecount = end_addr - addr + 0xC
+        local bytes = readBytes(addr+0xC, bytecount, true)
+        writeBytes(addr, bytes)
+        writeQword(rlc_ptr+0x2D0, readPointer(rlc_ptr+0x2D0)-0xC)
+        return
+    elseif add_clause then
+        addr = readPointer(rlc_ptr+0x2D0)
+        writeQword(rlc_ptr+0x2D0, readPointer(rlc_ptr+0x2D0)+0xC)
+    end
+    writeInteger(addr, playerid)
+    writeInteger(addr+4, teamid)
+    writeInteger(addr+8, release_clause)
+
+end
+
+function save_player_morale(playerid)
+    if not playerid then
+        return
+    end
+
+    local addr = get_player_morale_addr(playerid)
+    if addr == nil then
+        return
+    end
+
+    local morale_level = PlayersEditorForm.MoraleCB.ItemIndex + 1
+    local morale_vals = {
+        25, 35, 55, 75, 95
+    }
+
+    local morale = morale_vals[morale_level]
+
+    -- Will it be enough?
+    writeInteger(addr+0x20, morale)
+end
+
+function save_player_match_form(playerid)
+    if not playerid then
+        return
+    end
+
+    local addr = get_player_form_addr(playerid)
+    if addr == nil then
+        return
+    end
+
+    local form = PlayersEditorForm.FormCB.ItemIndex+1
+
+    if not form or form < 1 then
+        do_log(string.format("Invalid player form! %d - %d", form, playerid), 'ERROR')
+        form = 1
+    elseif form > 5 then
+        do_log(string.format("Invalid player form! %d - %d", form, playerid), 'ERROR')
+        form = 5
+    end
+
+    -- Arrow
+    writeInteger(addr+8, form)
+
+    -- avg. needed for arrow?
+    local form_vals = {
+        25, 50, 65, 75, 90
+    }
+    local form_val = form_vals[form]
+
+    -- Last 10 games?
+    for i=0, 9 do
+        local off = 12 + (i * 4)
+        writeInteger(addr+off, form_val)
+    end
+
+    -- Avg from last 10 games?
+    writeInteger(addr+4, form_val)
 end
 
 function save_player_fitness(playerid)
@@ -700,10 +992,19 @@ function FillPlayerEditForm(playerid)
     ss_c.destroy()
     PlayersEditorForm.Crest64x64.stretch=true
 
+    local iPlayerID = tonumber(PlayersEditorForm.PlayerIDEdit.Text)
+
     -- Player info - fitness & injury
-    load_player_fitness(
-        tonumber(PlayersEditorForm.PlayerIDEdit.Text)
-    )
+    load_player_fitness(iPlayerID)
+
+    -- Player info - form
+    load_player_match_form(iPlayerID)
+
+    -- Player info - Morale
+    load_player_morale(iPlayerID)
+
+    -- Player info - Release Clause
+    load_player_release_clause(iPlayerID)
 end
 
 function age_to_birthdate(args)
@@ -796,9 +1097,13 @@ function ApplyChanges()
         end
         ::continue::
     end
-    save_player_fitness(
-        tonumber(PlayersEditorForm.PlayerIDEdit.Text)
-    )
+
+    local iPlayerID = tonumber(PlayersEditorForm.PlayerIDEdit.Text)
+
+    save_player_fitness(iPlayerID)
+    save_player_match_form(iPlayerID)
+    save_player_morale(iPlayerID)
+    save_player_release_clause(iPlayerID)
 
     HAS_UNAPPLIED_PLAYER_CHANGES = false
     showMessage("Player edited.")
