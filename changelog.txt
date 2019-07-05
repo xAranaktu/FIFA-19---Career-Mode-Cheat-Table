@@ -231,3 +231,6 @@ Changelog:
     - Added option to show/hide main window of cheat engine 
     - Cheat engine memory scanner is now hidden by default
     - Minor bug fixes in GUI
+    
+    v1.3.7:
+    - Added check for new updates of the cheat table at startup
