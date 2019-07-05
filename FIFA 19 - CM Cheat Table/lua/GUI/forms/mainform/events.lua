@@ -8,6 +8,9 @@ function MainTopPanelMouseDown(sender, button, x, y)
     MainWindowForm.dragNow()
 end
 
+-- SHOW CE
+SHOW_CE = true
+
 -- Make window resizeable
 RESIZE_MAIN_WINDOW = {
     allow_resize = false
@@ -49,6 +52,10 @@ end
 
 -- OnShow -> MainMenuForm
 function MainMenuFormShow(sender)
+    if HIDE_CE_SCANNER then
+        set_ce_mem_scanner_state()
+    end
+
     -- Load Img if attached to the game process
     if BASE_ADDRESS then
         local stream = load_headshot(
@@ -95,6 +102,12 @@ end
 function MainSettingsClick(sender)
     SETTINGS_INDEX = 0
     SettingsForm.show()
+end
+
+-- Hide/Show CE
+function CEClick(sender)
+    SHOW_CE = not SHOW_CE
+    getMainForm().Visible = SHOW_CE
 end
 
 -- Show Players Editor Form

@@ -649,7 +649,17 @@ function load_cfg()
         end
 
         if cfg.flags then
+            if cfg.flags.hide_ce_scanner == nil then
+                cfg.flags.debug_mode = false
+            end
+
             DEBUG_MODE = cfg.flags.debug_mode
+
+            if cfg.flags.hide_ce_scanner == nil then
+                cfg.flags.hide_ce_scanner = true
+            end
+
+            HIDE_CE_SCANNER = cfg.flags.hide_ce_scanner
         end
 
         return cfg
@@ -675,6 +685,7 @@ function default_cfg()
         flags = {
             debug_mode = DEBUG_MODE,
             deactive_on_close = false,
+            hide_ce_scanner = true
         },
         directories = {
             cache_dir = CACHE_DIR,

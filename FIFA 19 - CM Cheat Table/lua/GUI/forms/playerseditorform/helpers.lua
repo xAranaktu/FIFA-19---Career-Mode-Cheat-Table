@@ -359,7 +359,9 @@ function get_player_release_clause_addr(playerid)
         readPointer("basePtrTeamFormMorale"),
         {0x0, 0x10, 0x40, 0x28, 0x1D8}
     )
-
+    if (not start_addr) or (not end_addr) then
+        return nil
+    end
     local start_addr = readPointer(rlc_ptr+0x2C8)
     local end_addr = readPointer(rlc_ptr+0x2D0)
 
@@ -413,6 +415,10 @@ function get_player_morale_addr(playerid)
     local _start = readPointer(morale_ptr + 0x18)
     local _end = readPointer(morale_ptr + 0x20)
 
+    if (not _start) or (not _end) then
+        return nil
+    end
+
     local squad_size = ((_end - _start) // size_of) + 1
 
     morale_ptr = _start
@@ -445,6 +451,10 @@ function get_player_fitness_addr(playerid, free)
 
     local fitness_start = readPointer(fitness_ptr+0x8)
     local fitness_end = readPointer(fitness_ptr+0x10)
+
+    if (not fitness_start) or (not fitness_end) then
+        return nil
+    end
 
     -- Probably limit is 2000 players, but better calc it
     local limit = (fitness_end-fitness_start)//size_of - 1

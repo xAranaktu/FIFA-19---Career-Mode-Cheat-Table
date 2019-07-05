@@ -1,5 +1,6 @@
 
 require 'lua/GUI/forms/settingsform/helpers';
+require 'lua/GUI/forms/mainform/helpers';
 -- MainForm Events
 
 local new_cfg_data = {}
@@ -44,6 +45,15 @@ function SettingsFormShow(sender)
     SettingsForm.SyncWithGameHotkeyEdit.Text = CFG_DATA.hotkeys.sync_with_game
     SettingsForm.SearchPlayerByIDHotkeyEdit.Text = CFG_DATA.hotkeys.search_player_by_id
 
+    if CFG_DATA.flags then
+        if CFG_DATA.flags.hide_ce_scanner == nil then
+            CFG_DATA.flags.hide_ce_scanner = true
+        end
+        if CFG_DATA.flags.hide_ce_scanner then
+            SettingsForm.HideCEMemScannerCB.State = 1
+        end
+    end
+
     -- Fill Auto Activation
     SettingsForm.CTTreeview.Items.clear()
     local root = SettingsForm.CTTreeview.Items.Add('Scripts')
@@ -84,6 +94,8 @@ function SettingsSaveSettingsClick(sender)
     new_cfg_data.hotkeys.sync_with_game = SettingsForm.SyncWithGameHotkeyEdit.Text
     new_cfg_data.hotkeys.search_player_by_id = SettingsForm.SearchPlayerByIDHotkeyEdit.Text
 
+    new_cfg_data.flags.hide_ce_scanner = SettingsForm.HideCEMemScannerCB.State == 1
+
     save_changes_in_settingsform(new_cfg_data)
     showMessage('Settings has been saved.')
 end
@@ -121,6 +133,16 @@ function GUIOpacityEditChange(sender)
     end
 
     new_cfg_data.gui.opacity = opacity
+end
+
+-- CheckBox
+function HideCEMemScannerCBChange(sender)
+    if sender.State == 1 then
+        HIDE_CE_SCANNER = true
+    else 
+        HIDE_CE_SCANNER = false
+    end
+    set_ce_mem_scanner_state()
 end
 
 -- Buttons
