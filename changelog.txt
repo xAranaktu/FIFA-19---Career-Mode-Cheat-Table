@@ -234,3 +234,7 @@ Changelog:
     
     v1.3.7:
     - Added check for new updates of the cheat table at startup
+    
+    v1.3.8:
+    - Added option to edit score of simulated games. (Match-fixing in GUI)
+    - Minor bug fixes and imporovements...
