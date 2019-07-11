@@ -238,3 +238,6 @@ Changelog:
     v1.3.8:
     - Added option to edit score of simulated games. (Match-fixing in GUI)
     - Minor bug fixes and imporovements...
+    
+    v1.3.9:
+    - Added "Create Transfer Offer" script to "Play As Player" section
