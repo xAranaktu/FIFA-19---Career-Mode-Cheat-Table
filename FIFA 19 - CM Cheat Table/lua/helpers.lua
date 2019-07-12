@@ -17,9 +17,14 @@ function check_ce_version()
     MainWindowForm.LabelCEVer.Caption = ce_version
 end
 
+-- Get Cheat Table Version
+function get_ct_version()
+    return string.gsub(ADDR_LIST.getMemoryRecordByID(2794).Description, 'v', '')
+end
+
 -- Check Cheat Table Version
 function check_ct_version()
-    local ver = string.gsub(ADDR_LIST.getMemoryRecordByID(2794).Description, 'v', '')
+    local ver = get_ct_version()
 
     do_log(string.format('Cheat table version: %s', ver))
     MainWindowForm.LabelCTVer.Caption = ver -- update version in GUI
@@ -653,6 +658,14 @@ function load_cfg()
                 cfg.flags.debug_mode = false
             end
 
+            if cfg.flags.check_for_update == nil then
+                cfg.flags.check_for_update = true
+            end
+
+            if cfg.flags.only_check_for_free_update == nil then
+                cfg.flags.only_check_for_free_update = false
+            end
+
             DEBUG_MODE = cfg.flags.debug_mode
 
             if cfg.flags.hide_ce_scanner == nil then
@@ -660,6 +673,12 @@ function load_cfg()
             end
 
             HIDE_CE_SCANNER = cfg.flags.hide_ce_scanner
+        end
+
+        if cfg.other then
+            if cfg.other.ignore_update == nil then
+                cfg.other.ignore_update = "1.0.0"
+            end
         end
 
         return cfg
@@ -685,7 +704,9 @@ function default_cfg()
         flags = {
             debug_mode = DEBUG_MODE,
             deactive_on_close = false,
-            hide_ce_scanner = true
+            hide_ce_scanner = true,
+            check_for_update = true,
+            only_check_for_free_update = false,
         },
         directories = {
             cache_dir = CACHE_DIR,
@@ -710,6 +731,7 @@ function default_cfg()
             flags = false,
         },
         other = {
+            ignore_update = "1.0.0",
             something = 'something'
         }
     };
@@ -751,5 +773,20 @@ function save_offsets()
         return 
     end
     LIP.save(OFFSETS_FILE_PATH, OFFSETS_DATA);
+end
+
+function before_start()
+    if getOpenedProcessID() == 0 then
+        MainWindowForm.bringToFront()
+        AutoAttachTimer = createTimer(nil)
+        timer_onTimer(AutoAttachTimer, auto_attach_to_process)
+        timer_setInterval(AutoAttachTimer, 1000)
+        timer_setEnabled(AutoAttachTimer, true)
+    else
+        do_log('Restart required, getOpenedProcessID != 0. Dont open process in Cheat Engine. Cheat Table will do it for you if you allow for lua code execution.', 'ERROR')
+        update_status_label("Restart FIFA and Cheat Engine.")
+        assert(false, 'Restart required, getOpenedProcessID != 0')
+    end
+    -- end
 end
 -- end

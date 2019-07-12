@@ -17,6 +17,10 @@ require 'lua/GUI/forms/playerseditorform/events';
 require 'lua/GUI/forms/matchscheduleeditorform/events';
 require 'lua/GUI/forms/settingsform/events';
 require 'lua/GUI/forms/transferplayersform/events';
+require 'lua/GUI/forms/updateform/events';
+
+-- Check Updates
+require 'lua/GUI/forms/updateform/helpers';
 
 do_log('New session started', 'INFO')
 
@@ -31,7 +35,7 @@ DATA_DIR = FIFA_SETTINGS_DIR .. 'Cheat Table/data/';
 CONFIG_FILE_PATH = DATA_DIR .. 'config.ini'; --> 'path to config.ini file 
 OFFSETS_FILE_PATH = DATA_DIR .. 'offsets.ini'; --> 'path to offsets.ini file
 FORMS = {
-    MainWindowForm, PlayersEditorForm, MatchScheduleEditorForm, SettingsForm, TransferPlayersForm
+    MainWindowForm, PlayersEditorForm, MatchScheduleEditorForm, SettingsForm, TransferPlayersForm, UpdateForm
 }
 SETTINGS_INDEX = 0
 -- DEFAULT GLOBALS, better leave it as is
@@ -45,6 +49,7 @@ DEBUG_MODE = false
 
 -- start code
 -- Activate "GUI" script
+MainWindowForm.LoadingPanel.Visible = true
 MainWindowForm.LoadingPanel.Caption = 'Loading data...'
 update_status_label("Waiting for FIFA 19...")
 ADDR_LIST.getMemoryRecordByID(CT_MEMORY_RECORDS['GUI_SCRIPT']).Active = true
@@ -57,18 +62,20 @@ AOB_DATA = load_aobs()
 CFG_DATA = load_cfg()
 OFFSETS_DATA = load_offsets()
 
-if getOpenedProcessID() == 0 then
-    MainWindowForm.bringToFront()
-    AutoAttachTimer = createTimer(nil)
-    timer_onTimer(AutoAttachTimer, auto_attach_to_process)
-    timer_setInterval(AutoAttachTimer, 1000)
-    timer_setEnabled(AutoAttachTimer, true)
+CHECK_CT_UPDATE = check_for_ct_update()
+
+if CHECK_CT_UPDATE then
+    function newMainOnShow(sender)
+        pcall(DEFAULT_ON_SHOW, sender)
+        UpdateForm.FormStyle = "fsSystemStayOnTop"
+    end
+
+    DEFAULT_ON_SHOW = getMainForm().OnShow
+    getMainForm().OnShow = newMainOnShow
+    UpdateForm.show()
 else
-    do_log('Restart required, getOpenedProcessID != 0. Dont open process in Cheat Engine. Cheat Table will do it for you if you allow for lua code execution.', 'ERROR')
-    update_status_label("Restart FIFA and Cheat Engine.")
-    assert(false, 'Restart required, getOpenedProcessID != 0')
+    before_start()
 end
--- end
 
 -- After attach
 function start()

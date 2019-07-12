@@ -2,7 +2,8 @@ function ActivateSection(index)
     local Panels = {
         'GeneralSettingsPanel',
         'PlayerEditorSettingsPanel',
-        'AutoActivationSettingsPanel'
+        'AutoActivationSettingsPanel',
+        'CTUpdatesSettingsPanel'
     }
     SettingsForm.SettingsSectionsListBox.setItemIndex(index)
     for i=1, #Panels do

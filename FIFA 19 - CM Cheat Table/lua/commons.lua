@@ -42,6 +42,10 @@ end
 
 function getfield (f)
   local v = _G    -- start with the table of globals
+  if v == nil then
+    do_log(string.format("No globals... field: %s", f), "ERROR")
+    assert(false)
+  end
   for w in string.gmatch(f, "[%w_]+") do
     v = v[w]
   end

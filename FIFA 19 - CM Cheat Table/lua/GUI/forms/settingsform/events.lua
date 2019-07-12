@@ -12,7 +12,6 @@ function SettingsFormTopPanelMouseDown(sender, button, x, y)
 end
 
 
-
 function SettingsAlwaysOnTopOnClick(sender)
     if sender.FormStyle == "fsNormal" then
         sender.AlwaysOnTop.Visible = false
@@ -49,8 +48,26 @@ function SettingsFormShow(sender)
         if CFG_DATA.flags.hide_ce_scanner == nil then
             CFG_DATA.flags.hide_ce_scanner = true
         end
+
         if CFG_DATA.flags.hide_ce_scanner then
             SettingsForm.HideCEMemScannerCB.State = 1
+        end
+
+        if CFG_DATA.flags.check_for_update == nil then
+            CFG_DATA.flags.check_for_update = true
+            
+        end
+
+        if CFG_DATA.flags.check_for_update then
+            SettingsForm.SettingsCheckForUpdateCB.State = 1
+        end
+
+        if CFG_DATA.flags.only_check_for_free_update == nil then
+            CFG_DATA.flags.only_check_for_free_update = false
+        end
+
+        if CFG_DATA.flags.only_check_for_free_update then
+            SettingsForm.SettingsCheckForFreeUpdateCB.State = 1
         end
     end
 
@@ -96,11 +113,17 @@ function SettingsSaveSettingsClick(sender)
 
     new_cfg_data.flags.hide_ce_scanner = SettingsForm.HideCEMemScannerCB.State == 1
 
+    new_cfg_data.flags.check_for_update = SettingsForm.SettingsCheckForUpdateCB.State == 1
+    new_cfg_data.flags.only_check_for_free_update = SettingsForm.SettingsCheckForFreeUpdateCB.State == 1
+
     save_changes_in_settingsform(new_cfg_data)
     showMessage('Settings has been saved.')
 end
 
 -- Editables
+function update_unsaved_settings(sender)
+    HAS_UNSAVED_SETTINGS_CHANGES = true
+end
 
 function SelectCacheDirectoryDialogShow(sender)
     HAS_UNSAVED_SETTINGS_CHANGES = true
