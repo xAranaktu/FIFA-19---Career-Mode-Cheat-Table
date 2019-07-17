@@ -152,6 +152,20 @@ function PlayersTransferLabelClick(sender)
     TransferPlayersForm.show()
 end
 
+-- Show Match-fixing Form
+function MatchFixingImgClick(sender)
+    MainWindowForm.hide()
+    MatchFixingForm.show()
+end
+function MatchFixingBtnClick(sender)
+    MainWindowForm.hide()
+    MatchFixingForm.show()
+end
+function MatchFixingLabelClick(sender)
+    MainWindowForm.hide()
+    MatchFixingForm.show()
+end
+
 -- Patreon Button
 function PatreonClick(sender)
     shellExecute("https://www.patreon.com/xAranaktu")

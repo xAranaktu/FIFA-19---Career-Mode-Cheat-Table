@@ -116,17 +116,18 @@ end
 function get_validated_address(name, module_name, section)
     if name == nil then return end
 
+    check_process()  -- Check if we are correctly attached to the game
     if module_name then
         name = string.format('%s.AOBS.%s', section, name)
+        
         local res = AOBScanModule(
             getfield(string.format('AOB_DATA.%s', name)),
             module_name,
             module_size
         )
+        do_log(string.format('AOB FROM MODULE: %s -> %s', name, res[0]), 'INFO')
         return res[0]
     end
-    
-    check_process()  -- Check if we are correctly attached to the game
 
     local inject_at = nil
     if getfield(string.format('OFFSETS_DATA.offsets.%s', name)) ~= nil then
@@ -619,6 +620,7 @@ function load_aobs()
             MODULE_NAME = 'FootballCompEng_Win64_retail.dll',
             AOBS = {
                 AOB_Calendar = "33 D2 48 89 54 24 48",
+                AOB_MatchFixing = "48 8B 0F 48 8B 00",
             }
         }
     }

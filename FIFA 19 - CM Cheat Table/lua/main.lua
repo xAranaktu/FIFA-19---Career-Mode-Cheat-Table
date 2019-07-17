@@ -18,6 +18,7 @@ require 'lua/GUI/forms/matchscheduleeditorform/events';
 require 'lua/GUI/forms/settingsform/events';
 require 'lua/GUI/forms/transferplayersform/events';
 require 'lua/GUI/forms/updateform/events';
+require 'lua/GUI/forms/matchfixingform/events';
 
 -- Check Updates
 require 'lua/GUI/forms/updateform/helpers';
@@ -35,7 +36,8 @@ DATA_DIR = FIFA_SETTINGS_DIR .. 'Cheat Table/data/';
 CONFIG_FILE_PATH = DATA_DIR .. 'config.ini'; --> 'path to config.ini file 
 OFFSETS_FILE_PATH = DATA_DIR .. 'offsets.ini'; --> 'path to offsets.ini file
 FORMS = {
-    MainWindowForm, PlayersEditorForm, MatchScheduleEditorForm, SettingsForm, TransferPlayersForm, UpdateForm
+    MainWindowForm, PlayersEditorForm, MatchScheduleEditorForm,
+    SettingsForm, TransferPlayersForm, UpdateForm, MatchFixingForm
 }
 SETTINGS_INDEX = 0
 -- DEFAULT GLOBALS, better leave it as is

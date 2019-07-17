@@ -143,10 +143,6 @@ function create_match_containers()
     end
 end
 
-function create_hotkeys_schedule_edit()
-
-end
-
 SCHEDULEEDIT_HOTKEYS_OBJECTS = {}
 function create_hotkeys_schedule_edit()
     destroy_hotkeys_schedule_edit()

@@ -40,13 +40,14 @@ end
 
 function MatchScheduleFormShow(sender)
     if not ADDR_LIST.getMemoryRecordByID(CT_MEMORY_RECORDS['SCHEDULEEDITOR_SCRIPT']).Active then
-        local txt = string.format(
-            'To use schedule editor you need to activate %s script first',
-            ADDR_LIST.getMemoryRecordByID(CT_MEMORY_RECORDS['SCHEDULEEDITOR_SCRIPT']).Description
-        )
-        do_log(txt, 'ERROR')
-        MatchScheduleExitClick(sender)
-        return
+        ADDR_LIST.getMemoryRecordByID(CT_MEMORY_RECORDS['SCHEDULEEDITOR_SCRIPT']).Active = true
+        -- local txt = string.format(
+        --     'To use schedule editor you need to activate %s script first',
+        --     ADDR_LIST.getMemoryRecordByID(CT_MEMORY_RECORDS['SCHEDULEEDITOR_SCRIPT']).Description
+        -- )
+        -- do_log(txt, 'ERROR')
+        -- MatchScheduleExitClick(sender)
+        -- return
     end
 
     clear_match_containers()
