@@ -615,6 +615,9 @@ function load_aobs()
         -- And release clauses too...
         AOB_BASE_FORM_MORALE = "E8 ?? ?? ?? ?? 48 89 35 ?? ?? ?? ?? 41 B8 01 00 00 00",
 
+        -- PAP - New offer
+        AOB_PAP_NEW_OFFER = "4C 8B F0 8B 58 28",
+
         -- FootballCompEng_Win64_retail.dll
         FootballCompEng = {
             MODULE_NAME = 'FootballCompEng_Win64_retail.dll',
