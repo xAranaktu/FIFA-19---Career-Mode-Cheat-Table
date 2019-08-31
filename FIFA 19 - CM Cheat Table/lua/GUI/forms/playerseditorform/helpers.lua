@@ -359,11 +359,13 @@ function get_player_release_clause_addr(playerid)
         readPointer("basePtrTeamFormMorale"),
         {0x0, 0x10, 0x40, 0x28, 0x1D8}
     )
+
+    local start_addr = readPointer(rlc_ptr+0x2C8)
+    local end_addr = readPointer(rlc_ptr+0x2D0)
+
     if (not start_addr) or (not end_addr) then
         return nil
     end
-    local start_addr = readPointer(rlc_ptr+0x2C8)
-    local end_addr = readPointer(rlc_ptr+0x2D0)
 
     local list_len = ((end_addr - start_addr) // size_of) - 1
 
