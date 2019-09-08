@@ -241,3 +241,6 @@ Changelog:
     
     v1.3.9:
     - Added "Create Transfer Offer" script to "Play As Player" section
+    
+    v1.4.0:
+    - Fixed "release clause" in "Player Editor" -> "Player Info"
